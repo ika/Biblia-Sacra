@@ -1,7 +1,9 @@
 import 'dart:async';
 
-import 'package:bibliasacra/cubit/chapters_cubit.dart';
-import 'package:bibliasacra/cubit/search_cubit.dart';
+import 'package:bibliasacra/colors/palette.dart';
+import 'package:bibliasacra/cubit/chaptersCubit.dart';
+import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/searchCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/main/dbModel.dart';
@@ -23,6 +25,8 @@ Future<List<Bible>> results;
 
 String _contents = '';
 
+MaterialColor primarySwatch;
+
 class MainSearch extends StatefulWidget {
   const MainSearch({Key key}) : super(key: key);
 
@@ -31,6 +35,8 @@ class MainSearch extends StatefulWidget {
 }
 
 class _MainSearchState extends State<MainSearch> {
+//primarySwatch = getMaterialColor(Theme.of(context).primaryColor);
+
   @override
   initState() {
     super.initState();
@@ -56,6 +62,9 @@ class _MainSearchState extends State<MainSearch> {
       },
     );
   }
+
+// MaterialColor getMaterialColor(Color color) => Colors.primaries
+//   .firstWhere((element) => element.value == color.value);
 
   backButton(BuildContext context) {
     Future.delayed(
@@ -106,6 +115,7 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   Widget searchWidget() {
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -179,25 +189,38 @@ class _MainSearchState extends State<MainSearch> {
         //softWrap: true,
         text: TextSpan(
           text: t.substring(0, idx),
-          style: Theme.of(context).textTheme.bodyText1,
+          style: const TextStyle(
+            fontSize: 16.0,
+            color: Colors.black,
+          ),
           children: [
             TextSpan(
               text: t.substring(idx, idx + m.length),
-              style: const TextStyle(backgroundColor: Colors.amberAccent),
+              style: TextStyle(
+                fontSize: 16.0,
+                //fontWeight: FontWeight.bold,
+                backgroundColor: primarySwatch[50],
+              ),
             ),
             TextSpan(
               text: t.substring(idx + m.length),
-              style: Theme.of(context).textTheme.bodyText1,
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.black,
+              ),
             ),
           ],
         ),
       );
     } else {
       return RichText(
-        softWrap: true,
+        //softWrap: true,
         text: TextSpan(
           text: t,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: const TextStyle(
+            fontSize: 16.0,
+            color: Colors.black,
+          ),
         ),
       );
     }

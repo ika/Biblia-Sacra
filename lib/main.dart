@@ -1,5 +1,7 @@
-import 'package:bibliasacra/cubit/chapters_cubit.dart';
-import 'package:bibliasacra/cubit/search_cubit.dart';
+import 'package:bibliasacra/colors/palette.dart';
+import 'package:bibliasacra/cubit/chaptersCubit.dart';
+import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/searchCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
@@ -74,14 +76,42 @@ class BibleApp extends StatelessWidget {
         BlocProvider<SearchCubit>(
           create: (context) => SearchCubit()..getSearchAreaKey(),
         ),
-      ],
-      child: MaterialApp(
-        title: 'Bible App',
-        theme: ThemeData(
-          primarySwatch: Colors.brown,
+        BlocProvider<PaletteCubit>(
+          create: (context) => PaletteCubit()..getPalette(),
         ),
-        home: const MainPage(),
+      ],
+      // child: MaterialApp(
+      //   title: 'Bible App',
+      //   theme: ThemeData(
+      //     primarySwatch: Palette.p1,
+      //   ),
+      //   home: const MainPage(),
+      // ),
+      child: BlocBuilder<PaletteCubit, MaterialColor>(
+        builder: ((context, palette) {
+          return _buildWithBlocPalette(context, palette);
+        }),
       ),
     );
   }
 }
+
+Widget _buildWithBlocPalette(BuildContext context, MaterialColor palette) {
+  return MaterialApp(
+    title: 'Bible App',
+    theme: ThemeData(
+      primarySwatch: palette,
+    ),
+    home: const MainPage(),
+  );
+}
+
+
+                        // BlocBuilder<ChapterCubit, int>(
+                        //   builder: (context, chapter) {
+                        //     return Text(
+                        //       chapter.toString(),
+                        //       style: const TextStyle(fontSize: 16),
+                        //     );
+                        //   },
+                        // ),

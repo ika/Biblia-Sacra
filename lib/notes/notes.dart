@@ -145,7 +145,7 @@ class NotesPageState extends State<NotesPage> {
       appBar: topAppBar,
       body: makeBody,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber,
+        //backgroundColor: Colors.amber,
         onPressed: () {
           final model = NtModel(id: null, title: '', contents: '', bid: 0);
           _addEditPage(model);

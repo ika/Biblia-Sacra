@@ -1,4 +1,4 @@
-import 'package:bibliasacra/cubit/chapters_cubit.dart';
+import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
@@ -89,16 +89,15 @@ class _MainSelectorState extends State<MainSelector>
                         Globals.chapterVerse = index;
                         backButton(context);
                       },
-                      // child: Text(
-                      //   '$verse',
-                      // ),
-                      child: Container(
-                        color: Colors.amber,
+                      child: SizedBox(
                         width: 40.0,
                         height: 40.0,
                         child: FittedBox(
                           fit: BoxFit.none,
-                          child: Text('$verse'),
+                          child: Text(
+                            '$verse',
+                            style: const TextStyle(fontSize: 18),
+                          ),
                         ),
                       ),
                     ),
@@ -144,13 +143,16 @@ class _MainSelectorState extends State<MainSelector>
                         );
                       },
                       // child: Text('$chap',
-                      child: Container(
-                        color: Colors.amber,
+                      child: SizedBox(
+                        //color: ThemeData(primarySwatch:ColorSwatch.s),
                         width: 40.0,
                         height: 40.0,
                         child: FittedBox(
                           fit: BoxFit.none,
-                          child: Text('$chap'),
+                          child: Text(
+                            '$chap',
+                            style: const TextStyle(fontSize: 18),
+                          ),
                         ),
                       ),
                     ),

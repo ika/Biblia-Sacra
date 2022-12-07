@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:bibliasacra/bmarks/bmModel.dart';
 import 'package:bibliasacra/bmarks/bmQueries.dart';
 import 'package:bibliasacra/bmarks/bookMarksPage.dart';
-import 'package:bibliasacra/cubit/chapters_cubit.dart';
+import 'package:bibliasacra/cubit/chaptersCubit.dart';
+import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/high/highMarksPage.dart';
 import 'package:bibliasacra/high/hlModel.dart';
@@ -31,6 +32,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 PageController pageController;
 ItemScrollController initialScrollController;
+MaterialColor primarySwatch;
 
 DbQueries _dbQueries; // Bible
 SharedPrefs _sharedPrefs = SharedPrefs();
@@ -267,13 +269,36 @@ class MainPageState extends State<MainPage> {
     );
   }
 
+  //   BlocBuilder<PaletteCubit, MaterialColor>(
+  //   builder: ((context, palette) {
+  // return Text(
+  //   "${snapshot.data[index].t}",
+  //   style: TextStyle(
+  //     fontSize: 16,
+  //     backgroundColor: palette[50],
+  //   ),
+  // );
+  //   }),
+  // );
+
   selectBackground(snapshot, index) {
     if (snapshot.data[index].h != 0) {
+      // BlocBuilder<PaletteCubit, MaterialColor>(
+      //   builder: ((context, palette) {
+      //     return Text(
+      //       "${snapshot.data[index].t}",
+      //       style: TextStyle(
+      //         fontSize: 16,
+      //         backgroundColor: primarySwatch[50],
+      //       ),
+      //     );
+      //   }),
+      // );
       return Text(
         "${snapshot.data[index].t}",
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 16,
-          backgroundColor: Colors.amberAccent,
+          backgroundColor: primarySwatch[50],
         ),
       );
     } else {
@@ -503,6 +528,7 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     pageController = PageController(initialPage: Globals.bookChapter - 1);
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     _dbQueries = DbQueries();
     return WillPopScope(
       onWillPop: () async {

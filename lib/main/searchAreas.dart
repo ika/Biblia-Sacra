@@ -1,4 +1,4 @@
-import 'package:bibliasacra/cubit/search_cubit.dart';
+import 'package:bibliasacra/cubit/searchCubit.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

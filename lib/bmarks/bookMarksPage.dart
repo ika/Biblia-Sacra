@@ -1,6 +1,8 @@
-import 'package:bibliasacra/cubit/chapters_cubit.dart';
+import 'package:bibliasacra/cubit/chaptersCubit.dart';
+import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/globals/globals.dart';
+import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bmarks/bmModel.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 BmQueries _bmQueries = BmQueries();
 Dialogs _dialogs = Dialogs();
+MaterialColor primarySwatch;
 
 class BookMarksPage extends StatefulWidget {
   const BookMarksPage({Key key}) : super(key: key);
@@ -26,7 +29,7 @@ class _BookMarkState extends State<BookMarksPage> {
     content: Text('Book Mark Deleted!'),
   );
 
-  backButton(BuildContext context) {
+  backPopButton(BuildContext context) {
     Future.delayed(
       const Duration(milliseconds: 200),
       () {
@@ -35,19 +38,19 @@ class _BookMarkState extends State<BookMarksPage> {
     );
   }
 
-  // backButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 200),
-  //     () {
-  //       Navigator.push(
-  //         context,
-  //         CupertinoPageRoute(
-  //           builder: (context) => const MainPage(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  backButton(BuildContext context) {
+    Future.delayed(
+      const Duration(milliseconds: 200),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
+    );
+  }
 
   onBookMarkTap(WriteVarsModel model) {
     writeVars(model).then((value) {
@@ -95,7 +98,7 @@ class _BookMarkState extends State<BookMarksPage> {
             ),
             subtitle: Row(
               children: [
-                const Icon(Icons.linear_scale, color: Colors.amber),
+                Icon(Icons.linear_scale, color: primarySwatch[900]),
                 Flexible(
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
@@ -131,7 +134,7 @@ class _BookMarkState extends State<BookMarksPage> {
           margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
           child: Container(
             decoration:
-                BoxDecoration(color: Theme.of(context).colorScheme.primary),
+                BoxDecoration(color: primarySwatch[500]),
             child: makeListTile(list, index),
           ),
         );
@@ -146,12 +149,13 @@ class _BookMarkState extends State<BookMarksPage> {
     );
 
     final topAppBar = AppBar(
+      backgroundColor: primarySwatch[500],
       elevation: 0.1,
       title: const Text('Bookmarks'),
     );
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: primarySwatch[50],
       appBar: topAppBar,
       body: makeBody,
     );
@@ -160,10 +164,11 @@ class _BookMarkState extends State<BookMarksPage> {
   @override
   Widget build(BuildContext context) {
     Globals.scrollToVerse = Globals.initialScroll = true;
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     return WillPopScope(
       onWillPop: () async {
         Globals.scrollToVerse = false;
-        Navigator.pop(context);
+        backPopButton(context);
         return false;
       },
       child: FutureBuilder<List<BmModel>>(
