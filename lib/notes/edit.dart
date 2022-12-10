@@ -1,6 +1,8 @@
 import 'package:bibliasacra/main/dbQueries.dart';
+import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
+import 'package:bibliasacra/notes/notes.dart';
 import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 
@@ -12,58 +14,69 @@ DbQueries _dbQueries = DbQueries();
 Dialogs _dialogs = Dialogs();
 
 int id;
-int time = 0;
-String title = '';
-String contents = '';
 int bid;
 String noteFunction;
+String back;
 
 class EditNotePage extends StatefulWidget {
-  const EditNotePage({Key key, this.model}) : super(key: key);
+  const EditNotePage({Key key, this.model, this.back}) : super(key: key);
 
   final NtModel model;
+  final String back;
 
   @override
   State<EditNotePage> createState() => _EditNotePageState();
 }
 
 class _EditNotePageState extends State<EditNotePage> {
+  final _titleController = TextEditingController();
+  final _contentsController = TextEditingController();
+
   @override
   initState() {
     super.initState();
+
     id = widget.model.id;
     bid = widget.model.bid;
-    title = widget.model.title;
-    contents = widget.model.contents;
+    back = widget.back;
+
+    _titleController.text = widget.model.title;
+    _contentsController.text = widget.model.contents;
+
     (id == null) ? noteFunction = 'Add Note' : noteFunction = 'Edit Note';
+
+    _titleController.addListener(handleOnChange);
+    _contentsController.addListener(handleOnChange);
   }
 
-  handleOnChange() {
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _contentsController.dispose();
+    super.dispose();
+  }
+
+  void handleOnChange() {
     (id == null) ? saveEdit() : updateEdit();
   }
 
   saveEdit() async {
-    if (id == null) {
-      id = 0; // prevent race situation
-      if (contents.isNotEmpty) {
-        id = await _ntQueries.insertNote(
-          NtModel(
-              title:
-                  title.isEmpty ? _utilities.reduceLength(25, contents) : title,
-              contents: contents,
-              bid: widget.model.bid),
-        ); // populate 'id' so that it is not saved more than once
-      }
-    }
+    id = await _ntQueries.insertNote(
+      NtModel(
+          title: _utilities.reduceLength(35, _titleController.text),
+          contents: _utilities.reduceLength(256, _contentsController.text),
+          bid: bid),
+    ); // populate 'id' so that it is not saved more than once
   }
 
   updateEdit() async {
-    if (id != null) {
-      await _ntQueries.updateNote(
-        NtModel(
-            id: id, title: title, contents: contents, bid: widget.model.bid),
-      );
-    }
+    await _ntQueries.updateNote(
+      NtModel(
+          id: id,
+          title: _utilities.reduceLength(35, _titleController.text),
+          contents: _utilities.reduceLength(256, _contentsController.text),
+          bid: bid),
+    );
   }
 
   SnackBar noteDeletedSnackBar = const SnackBar(
@@ -74,74 +87,109 @@ class _EditNotePageState extends State<EditNotePage> {
     Future.delayed(
       const Duration(milliseconds: 200),
       () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                (back == 'main') ? const MainPage() : const NotesPage(),
+          ),
+        );
+      },
+    );
+  }
+
+  backPopButton(BuildContext context) {
+    Future.delayed(
+      const Duration(milliseconds: 200),
+      () {
         Navigator.pop(context);
       },
     );
   }
 
-  deleteWrapper(BuildContext context) {
-    var arr = List.filled(2, '');
-    arr[0] = "DELETE?";
-    arr[1] = "Are you sure you want to delete this note?";
+  // deleteWrapper(BuildContext context) {
+  //   var arr = List.filled(4, '');
+  //   arr[0] = "DELETE?";
+  //   arr[1] = "Do you want to delete this note?";
+  //   arr[2] = 'YES';
+  //   arr[3] = 'NO';
 
-    _dialogs.confirmDialog(context, arr).then(
-      (value) {
-        if (value == ConfirmAction.accept) {
-          //debugPrint("PRESSES $value NOTEID $id BID $bid");
-          _ntQueries.deleteNote(id).then(
-            (value) {
-              _dbQueries.updateNoteId(0, bid).then((value) {
-                ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-                backButton(context);
-              });
-            },
-          );
-        }
-      }, //_deleteWrapper,
-    );
-  }
+  //   _dialogs.confirmDialog(context, arr).then(
+  //     (value) {
+  //       if (value == ConfirmAction.accept) {
+  //         //debugPrint("PRESSES $value NOTEID $id BID $bid");
+  //         _ntQueries.deleteNote(id).then(
+  //           (value) {
+  //             _dbQueries.updateNoteId(0, bid).then((value) {
+  //               _titleController.text = '';
+  //               _contentsController.text = '';
+  //               ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
+  //               backButton(context);
+  //             });
+  //           },
+  //         );
+  //       }
+  //     }, //_deleteWrapper,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: WillPopScope(
           onWillPop: () async {
-            backButton(context);
+            backPopButton(context);
             return false;
           },
           child: Scaffold(
             appBar: AppBar(
               title: Text(noteFunction),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {
-                    deleteWrapper(context);
-                  },
-                )
-              ],
+              // actions: [
+              //   IconButton(
+              //     icon: const Icon(Icons.delete),
+              //     onPressed: () {
+              //       deleteWrapper(context);
+              //     },
+              //   )
+              // ],
             ),
-            body: Padding(
-              padding:
-                  const EdgeInsets.only(top: 30.0, left: 15.0, right: 15.0),
-              child: Column(
+            body: Container(
+              padding: const EdgeInsets.all(20.0),
+              child: ListView(
                 children: [
                   TextFormField(
-                    initialValue: contents,
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                      //prefixIcon: Icon(Icons.verified_user_outlined),
+                      border: OutlineInputBorder(
+                          //borderRadius: BorderRadius.circular(5.0),
+                          ),
+                    ),
+                    maxLength: 35,
+                    maxLines: 1, // auto line break
+                    autofocus: false,
+                    // onChanged: (val) {
+                    //   title = val;
+                    //   handleOnChange();
+                    // },
+                  ),
+                  TextFormField(
+                    controller: _contentsController,
+                    decoration: const InputDecoration(
+                      labelText: 'Text',
+                      //prefixIcon: Icon(Icons.verified_user_outlined),
+                      border: OutlineInputBorder(
+                          //borderRadius: BorderRadius.circular(5.0),
+                          ),
+                    ),
                     maxLength: 256,
                     maxLines: null, // auto line break
                     autofocus: false,
-                    // decoration: InputDecoration(
-                    //   labelText: 'Enter your text',
-                    //   labelStyle: Theme.of(context).textTheme.subtitle1,
-                    //   border: OutlineInputBorder(
-                    //     borderRadius: BorderRadius.circular(5.0),
-                    //   ),
-                    // ),
-                    onChanged: (text) {
-                      contents = text;
-                      handleOnChange();
-                    },
+                    // onChanged: (val) {
+                    //   contents = val;
+                    //   handleOnChange();
+                    // },
                   ),
                 ],
               ),

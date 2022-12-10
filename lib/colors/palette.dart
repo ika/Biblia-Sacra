@@ -19,4 +19,21 @@ class Palette {
       900: Color(0xff3d5c7a), //100%
     },
   );
+
+  // Lime
+    static const MaterialColor p2 = MaterialColor(
+    0xffcddc39, // 0% comes in here, this will be color picked if no shade is selected.
+    <int, Color>{
+      50: Color(0xffe6ee9c), //10%
+      100: Color(0xffe1ea88), //20%
+      200: Color(0xffdce774), //30%
+      300: Color(0xffd7e361), //40%
+      400: Color(0xffd2e04d), //50%
+      500: Color(0xffcddc39), //60%
+      600: Color(0xffb9c633), //70%
+      700: Color(0xffa4b02e), //80%
+      800: Color(0xff909a28), //90%
+      900: Color(0xff7b8422), //100%
+    },
+  );
 }

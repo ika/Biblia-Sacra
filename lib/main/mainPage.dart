@@ -68,9 +68,9 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  FutureOr onReturnSetState() {
-    setState(() {});
-  }
+  // FutureOr onReturnSetState() {
+  //   setState(() {});
+  // }
 
   SnackBar textCopiedSnackBar = const SnackBar(
     content: Text('Text Copied!'),
@@ -84,8 +84,8 @@ class MainPageState extends State<MainPage> {
     content: Text('Book Mark Saved!'),
   );
 
-  SnackBar hiLightExistsSnackBar = const SnackBar(
-    content: Text('Verse is already highlighted!'),
+  SnackBar hiLightDeletedSnackBar = const SnackBar(
+    content: Text('Highlight deleted'),
   );
 
   SnackBar errorSnackBar = const SnackBar(
@@ -129,9 +129,11 @@ class MainPageState extends State<MainPage> {
   }
 
   void exitWrapper(context) {
-    var arr = List.filled(2, '');
+    var arr = List.filled(4, '');
     arr[0] = "Exit";
     arr[1] = "Are you sure you want to exit?";
+    arr[2] = 'YES';
+    arr[3] = 'NO';
 
     _dialogs.confirmDialog(context, arr).then(
       (value) {
@@ -142,7 +144,68 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  saveBookMark() {
+  void deleteHighLightWrapper(BuildContext context, int hid, int bid) {
+    var arr = List.filled(4, '');
+    arr[0] = "Delete";
+    arr[1] = "Do you want to delete this highlight?";
+    arr[2] = 'YES';
+    arr[3] = 'NO';
+
+    _dialogs.confirmDialog(context, arr).then(
+      (value) {
+        if (value == ConfirmAction.accept) {
+          _hlQueries.deleteHighLight(hid).then(
+            (val) {
+              _dbQueries.updateHighlightId(0, bid).then(
+                (val) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(hiLightDeletedSnackBar);
+                  setState(() {});
+                },
+              );
+            },
+          );
+        }
+      }, //_deleteWrapper,
+    );
+  }
+
+  void copyVerseWrapper(context, snapshot, index) {
+    var arr = List.filled(4, '');
+    arr[0] = "Copy";
+    arr[1] = "Do you want to copy this verse?";
+    arr[2] = 'YES';
+    arr[3] = 'NO';
+
+    _dialogs.confirmDialog(context, arr).then(
+      (value) {
+        if (value == ConfirmAction.accept) {
+          final list = <String>[
+            snapshot.data[index].t,
+            ' ',
+            Globals.versionAbbr,
+            ' ',
+            Globals.bookName,
+            ' ',
+            snapshot.data[index].c.toString(),
+            ':',
+            snapshot.data[index].v.toString()
+          ];
+
+          final sb = StringBuffer();
+          sb.writeAll(list);
+
+          Clipboard.setData(
+            ClipboardData(text: sb.toString()),
+          ).then((_) {
+            ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
+          });
+        }
+      }, //_deleteWrapper,
+    );
+  }
+
+  void saveBookMark() {
     List<String> stringTitle = [
       Globals.versionAbbr,
       ' ',
@@ -163,7 +226,7 @@ class MainPageState extends State<MainPage> {
         chapter: Globals.bookChapter,
         verse: Globals.verseNumber,
         name: Globals.bookName);
-    _bmQueries.saveBookMark(model).then(
+    insertBookmark(model).then(
       (value) {
         value != null
             ? ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar)
@@ -172,45 +235,43 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  saveHighLight(int id, int h) {
-    if (h == 0) {
-      // if no hilight alredy exists
-      List<String> stringTitle = [
-        Globals.versionAbbr,
-        ' ',
-        Globals.bookName,
-        ' ',
-        '${Globals.bookChapter}',
-        ':',
-        '${Globals.verseNumber}'
-      ];
+  Future<int> insertBookmark(BmModel model) => _bmQueries.saveBookMark(model);
 
-      final model = HlModel(
-          title: stringTitle.join(),
-          subtitle: Globals.verseText,
-          lang: Globals.bibleLang,
-          version: Globals.bibleVersion,
-          abbr: Globals.versionAbbr,
-          book: Globals.bibleBook,
-          chapter: Globals.bookChapter,
-          verse: Globals.verseNumber,
-          name: Globals.bookName,
-          bid: id);
-      _hlQueries.saveHighLight(model).then(
-        (h) {
-          // h = highlight insert id
-          // id = bible verse id
-          _dbQueries.updateHighlightId(h, id).then((value) {
-            // value = number of affected rows
-            value == 1
-                ? onReturnSetState()
-                : ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
-          });
-        },
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(hiLightExistsSnackBar);
-    }
+  void saveHighLight(int bid) async {
+    List<String> stringTitle = [
+      Globals.versionAbbr,
+      ' ',
+      Globals.bookName,
+      ' ',
+      '${Globals.bookChapter}',
+      ':',
+      '${Globals.verseNumber}'
+    ];
+
+    final model = HlModel(
+        title: stringTitle.join(),
+        subtitle: Globals.verseText,
+        lang: Globals.bibleLang,
+        version: Globals.bibleVersion,
+        abbr: Globals.versionAbbr,
+        book: Globals.bibleBook,
+        chapter: Globals.bookChapter,
+        verse: Globals.verseNumber,
+        name: Globals.bookName,
+        bid: bid);
+    insertHighLight(model, bid);
+  }
+
+  void insertHighLight(HlModel model, int bid) {
+    _hlQueries.saveHighLight(model).then(
+      (hid) {
+        // hid = highlight insert id
+        // bid = bible verse id
+        _dbQueries.updateHighlightId(hid, bid).then((value) {
+          setState(() {}); //onReturnSetState()
+        });
+      },
+    );
   }
 
   saveAndGotoNote(NtModel model) {
@@ -230,14 +291,14 @@ class MainPageState extends State<MainPage> {
 
   gotoEditNote(NtModel model) {
     Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model),
+      builder: (context) => EditNotePage(model: model, back: 'main'),
     );
     Future.delayed(
       const Duration(milliseconds: 200),
       () {
         Navigator.push(context, route).then(
           (value) {
-            onReturnSetState();
+            setState(() {}); //onReturnSetState();
           },
         );
       },
@@ -402,27 +463,7 @@ class MainPageState extends State<MainPage> {
 
                           case 1: // copy
 
-                            final list = <String>[
-                              snapshot.data[index].t,
-                              ' ',
-                              Globals.versionAbbr,
-                              ' ',
-                              Globals.bookName,
-                              ' ',
-                              snapshot.data[index].c.toString(),
-                              ':',
-                              snapshot.data[index].v.toString()
-                            ];
-
-                            final sb = StringBuffer();
-                            sb.writeAll(list);
-
-                            Clipboard.setData(
-                              ClipboardData(text: sb.toString()),
-                            ).then((_) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(textCopiedSnackBar);
-                            });
+                            copyVerseWrapper(context, snapshot, index);
 
                             break;
 
@@ -430,8 +471,14 @@ class MainPageState extends State<MainPage> {
                             saveBookMark();
                             break;
                           case 3: // highlight
-                            saveHighLight(snapshot.data[index].id,
-                                snapshot.data[index].h);
+                            if (snapshot.data[index].h == 0) {
+                              saveHighLight(snapshot.data[index].id);
+                            } else {
+                              deleteHighLightWrapper(
+                                  context,
+                                  snapshot.data[index].h,
+                                  snapshot.data[index].id);
+                            }
                             break;
                           case 4: // notes
 
@@ -565,8 +612,8 @@ class MainPageState extends State<MainPage> {
                         child: Text(
                           "Biblia Sacra",
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
+                              //color: Colors.white,
+                              fontSize: 32.0,
                               fontWeight: FontWeight.w500),
                         ),
                       ),
@@ -574,7 +621,14 @@ class MainPageState extends State<MainPage> {
                   ),
                 ),
                 ListTile(
-                  title: const Text('Bookmarks'),
+                  leading: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Bookmarks',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     Future.delayed(
@@ -591,7 +645,14 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  title: const Text('Highlights'),
+                  leading: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Highlights',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     Route route = MaterialPageRoute(
@@ -602,7 +663,7 @@ class MainPageState extends State<MainPage> {
                       () {
                         Navigator.push(context, route).then(
                           (value) {
-                            onReturnSetState();
+                            setState(() {}); //onReturnSetState();
                           },
                         );
                       },
@@ -610,7 +671,14 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  title: const Text('Notes'),
+                  leading: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Notes',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     Future.delayed(
@@ -622,14 +690,21 @@ class MainPageState extends State<MainPage> {
                             builder: (context) => const NotesPage(),
                           ),
                         ).then((value) {
-                          onReturnSetState();
+                          setState(() {}); //onReturnSetState();
                         });
                       },
                     );
                   },
                 ),
                 ListTile(
-                  title: const Text('Search'),
+                  leading: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Search',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     Future.delayed(
@@ -646,7 +721,14 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  title: const Text('Bible Versions'),
+                  leading: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Bible Versions',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     Future.delayed(

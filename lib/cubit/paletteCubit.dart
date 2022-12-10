@@ -5,11 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PaletteCubit extends Cubit<MaterialColor> {
   //final sharedPrefs = SharedPrefs();
 
-  PaletteCubit() : super(Palette.p1);
+  PaletteCubit() : super(Palette.p2);
 
-//   void getState() => emit(state);
-
-//   void setSearchAreaKey(int a) => emit(a);
-
-  void getPalette() async => emit(Palette.p1);
+  void getPalette() async => emit(Palette.p2);
  }

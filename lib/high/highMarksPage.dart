@@ -7,6 +7,7 @@ import 'package:bibliasacra/high/hlQueries.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
+import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 HlQueries _hlQueries = HlQueries();
 DbQueries _dbQueries = DbQueries();
 Dialogs _dialogs = Dialogs();
+Utilities _utilities = Utilities();
 MaterialColor primarySwatch;
 
 class HighLightsPage extends StatefulWidget {
@@ -65,9 +67,11 @@ class _HighLightsPage extends State<HighLightsPage> {
     final sb = StringBuffer();
     sb.writeAll(buffer);
 
-    var arr = List.filled(2, '');
+    var arr = List.filled(4, '');
     arr[0] = "Delete this Highlight?";
     arr[1] = sb.toString();
+    arr[2] = 'YES';
+    arr[3] = 'NO';
 
     _dialogs.confirmDialog(context, arr).then(
       (value) {
@@ -95,27 +99,34 @@ class _HighLightsPage extends State<HighLightsPage> {
             }
           },
           child: ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: Text(
               list[index].title,
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Row(
-              children: [
-                Icon(Icons.linear_scale, color: primarySwatch[900]),
-                Flexible(
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    strutStyle: const StrutStyle(fontSize: 12.0),
-                    text: TextSpan(
-                        style: const TextStyle(color: Colors.white),
-                        text: ' ${list[index].subtitle}'),
-                  ),
-                ),
-              ],
-            ),
+            subtitle: Text(_utilities.reduceLength(40, list[index].subtitle)),
+            // child: ListTile(
+            //   contentPadding:
+            //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            //   title: Text(
+            //     list[index].title,
+            //     style: const TextStyle(
+            //         fontWeight: FontWeight.bold),
+            //   ),
+            //   subtitle: Row(
+            //     children: [
+            //       Icon(Icons.linear_scale, color: primarySwatch[700]),
+            //       Flexible(
+            //         child: RichText(
+            //           overflow: TextOverflow.ellipsis,
+            //           strutStyle: const StrutStyle(fontSize: 12.0),
+            //           text: TextSpan(
+            //               //style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            //               text: ' ${list[index].subtitle}'),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
             onTap: () {
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
@@ -138,8 +149,7 @@ class _HighLightsPage extends State<HighLightsPage> {
           elevation: 8.0,
           margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
           child: Container(
-            decoration:
-                BoxDecoration(color: primarySwatch[500]),
+            decoration: BoxDecoration(color: primarySwatch[500]),
             child: makeListTile(list, index),
           ),
         );

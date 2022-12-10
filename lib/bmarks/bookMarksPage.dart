@@ -1,9 +1,11 @@
+import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
+import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bmarks/bmModel.dart';
 import 'package:bibliasacra/bmarks/bmQueries.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 BmQueries _bmQueries = BmQueries();
 Dialogs _dialogs = Dialogs();
+Utilities _utilities = Utilities();
 MaterialColor primarySwatch;
 
 class BookMarksPage extends StatefulWidget {
@@ -63,9 +66,11 @@ class _BookMarkState extends State<BookMarksPage> {
     final sb = StringBuffer();
     sb.writeAll(buffer);
 
-    var arr = List.filled(2, '');
+    var arr = List.filled(4, '');
     arr[0] = "Delete this Bookmark?";
     arr[1] = sb.toString();
+    arr[2] = 'YES';
+    arr[3] = 'NO';
 
     _dialogs.confirmDialog(context, arr).then(
       (value) {
@@ -89,27 +94,35 @@ class _BookMarkState extends State<BookMarksPage> {
             }
           },
           child: ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: Text(
               list[index].title,
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Row(
-              children: [
-                Icon(Icons.linear_scale, color: primarySwatch[900]),
-                Flexible(
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    strutStyle: const StrutStyle(fontSize: 12.0),
-                    text: TextSpan(
-                        style: const TextStyle(color: Colors.white),
-                        text: ' ${list[index].subtitle}'),
-                  ),
-                ),
-              ],
-            ),
+            subtitle: Text(_utilities.reduceLength(40, list[index].subtitle)),
+            // child: ListTile(
+            //   contentPadding:
+            //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            //   title: Text(
+            //     list[index].title,
+            //     style: const TextStyle(
+            //         fontWeight: FontWeight.bold),
+            //   ),
+            //   subtitle: Row(
+            //     children: [
+            //       Icon(Icons.linear_scale, color: primarySwatch[700]),
+            //       Flexible(
+            //         child: RichText(
+            //           overflow: TextOverflow.ellipsis,
+            //           strutStyle: const StrutStyle(fontSize: 12.0),
+
+            //           text: TextSpan(
+            //               //style: TextStyle(color: primarySwatch[900]),
+            //               text: ' ${list[index].subtitle}'),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
             onTap: () {
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
@@ -133,8 +146,7 @@ class _BookMarkState extends State<BookMarksPage> {
           elevation: 8.0,
           margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
           child: Container(
-            decoration:
-                BoxDecoration(color: primarySwatch[500]),
+            decoration: BoxDecoration(color: primarySwatch[500]),
             child: makeListTile(list, index),
           ),
         );

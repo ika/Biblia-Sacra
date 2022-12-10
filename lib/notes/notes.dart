@@ -1,19 +1,24 @@
 import 'dart:async';
 
+import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/notes/edit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
+import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
 DbQueries _dbQueries = DbQueries();
 Dialogs _dialogs = Dialogs();
+Utilities _utilities = Utilities();
 
-final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
+//final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
+
+MaterialColor primarySwatch;
 
 class NotesPage extends StatefulWidget {
   const NotesPage({Key key}) : super(key: key);
@@ -23,9 +28,9 @@ class NotesPage extends StatefulWidget {
 }
 
 class NotesPageState extends State<NotesPage> {
-  FutureOr onReturnSetState() {
-    setState(() {});
-  }
+  // FutureOr onReturnSetState() {
+  //   setState(() {});
+  // }
 
   SnackBar noteDeletedSnackBar = const SnackBar(
     content: Text('Note Deleted!'),
@@ -33,19 +38,19 @@ class NotesPageState extends State<NotesPage> {
 
   _addEditPage(NtModel model) async {
     Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model),
+      builder: (context) => EditNotePage(model: model, back: 'notes'),
     );
     Future.delayed(
       const Duration(milliseconds: 200),
       () {
         Navigator.push(context, route).then((value) {
-          onReturnSetState();
+          setState(() {}); //onReturnSetState();
         });
       },
     );
   }
 
-  backButton(BuildContext context) {
+  backPopButton(BuildContext context) {
     Future.delayed(
       const Duration(milliseconds: 200),
       () {
@@ -55,9 +60,11 @@ class NotesPageState extends State<NotesPage> {
   }
 
   deleteWrapper(context, list, index) {
-    var arr = List.filled(2, '');
+    var arr = List.filled(4, '');
     arr[0] = "DELETE?";
-    arr[1] = "Are you sure you want to delete this note?";
+    arr[1] = "Do you want to delete this note?";
+    arr[2] = 'YES';
+    arr[3] = 'NO';
 
     _dialogs.confirmDialog(context, arr).then(
       (value) {
@@ -66,52 +73,79 @@ class NotesPageState extends State<NotesPage> {
             (value) {
               _dbQueries.updateNoteId(0, list[index].bid).then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-                onReturnSetState();
+                setState(() {}); //onReturnSetState();
               });
             },
           );
         }
-      }, //_deleteWrapper,
+      },
+    );
+  }
+
+  noteChoiceWrapper(BuildContext context, list, int index) {
+    var arr = List.filled(4, '');
+    arr[0] = "VIEW OR EDIT?";
+    arr[1] = "Do you want to go to the verse, or edit the note?";
+    arr[2] = 'GOTO';
+    arr[3] = 'EDIT';
+
+    _dialogs.confirmDialog(context, arr).then(
+      (value) {
+        if (value == ConfirmAction.accept) {
+          debugPrint('GOTO');
+        } else {
+          final model = NtModel(
+              id: list[index].id,
+              title: list[index].title,
+              contents: list[index].contents,
+              bid: list[index].bid);
+          _addEditPage(model);
+        }
+      },
     );
   }
 
   Widget notesList(list, context) {
+
     GestureDetector makeListTile(list, int index) => GestureDetector(
           onHorizontalDragEnd: (DragEndDetails details) {
             if (details.primaryVelocity > 0 || details.primaryVelocity < 0) {
               deleteWrapper(context, list, index);
             }
           },
-          child: ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    child: ListTile(
+            leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: Text(
               list[index].title,
-              // formatter.format(
-              //     DateTime.fromMicrosecondsSinceEpoch(list[index].time)),
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Row(
-              children: [
-                const Icon(Icons.linear_scale, color: Colors.amber),
-                Flexible(
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    strutStyle: const StrutStyle(fontSize: 12.0),
-                    text: TextSpan(
-                        style: const TextStyle(color: Colors.white),
-                        text: '${list[index].contents}'),
-                  ),
-                ),
-              ],
-            ),
+            subtitle: Text(_utilities.reduceLength(40, list[index].contents)),
+          // child: ListTile(
+          //   contentPadding:
+          //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          //   title: Text(
+          //     (list[index].title != null)
+          //         ? list[index].title
+          //         : 'Title not given',
+          //     style: const TextStyle(
+          //         color: Colors.white, fontWeight: FontWeight.bold),
+          //   ),
+          //   subtitle: Row(
+          //     children: [
+          //       const Icon(Icons.linear_scale, color: Colors.amber),
+          //       Flexible(
+          //         child: RichText(
+          //           overflow: TextOverflow.ellipsis,
+          //           strutStyle: const StrutStyle(fontSize: 12.0),
+          //           text: TextSpan(
+          //               //style: const TextStyle(color: Colors.white),
+          //               text: '${list[index].contents}'),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
             onTap: () {
-              final model = NtModel(
-                  id: list[index].id,
-                  contents: list[index].contents,
-                  bid: list[index].bid);
-              _addEditPage(model);
+              noteChoiceWrapper(context, list, index);
             },
           ),
         );
@@ -158,10 +192,11 @@ class NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     Globals.scrollToVerse = Globals.initialScroll = true;
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     return WillPopScope(
       onWillPop: () async {
         Globals.scrollToVerse = false;
-        backButton(context);
+        backPopButton(context);
         return false;
       },
       child: FutureBuilder<List<NtModel>>(
