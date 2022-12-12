@@ -237,7 +237,7 @@ class MainPageState extends State<MainPage> {
 
   Future<int> insertBookmark(BmModel model) => _bmQueries.saveBookMark(model);
 
-  void saveHighLight(int bid) async {
+  void insertHighLight(int bid) {
     List<String> stringTitle = [
       Globals.versionAbbr,
       ' ',
@@ -259,10 +259,7 @@ class MainPageState extends State<MainPage> {
         verse: Globals.verseNumber,
         name: Globals.bookName,
         bid: bid);
-    insertHighLight(model, bid);
-  }
 
-  void insertHighLight(HlModel model, int bid) {
     _hlQueries.saveHighLight(model).then(
       (hid) {
         // hid = highlight insert id
@@ -275,18 +272,16 @@ class MainPageState extends State<MainPage> {
   }
 
   saveAndGotoNote(NtModel model) {
-    _ntQueries.insertNote(model).then((noteid) {
-      // returns insert id
-      _dbQueries.updateNoteId(noteid, model.bid).then((value) {
-        final mod = NtModel(
-            id: noteid,
-            title: model.title,
-            contents: model.contents,
-            bid: model.bid);
-        //debugPrint("NOTE ID ${mod.id} BIBLE ID ${mod.bid}");
-        gotoEditNote(mod);
-      });
-    });
+    _ntQueries.insertNote(model).then((noteid) async =>
+        _dbQueries.updateNoteId(noteid, model.bid).then((value) {
+          final mod = NtModel(
+              id: noteid,
+              title: model.title,
+              contents: model.contents,
+              bid: model.bid);
+          //debugPrint("NOTE ID ${mod.id} BIBLE ID ${mod.bid}");
+          gotoEditNote(mod);
+        }));
   }
 
   gotoEditNote(NtModel model) {
@@ -413,7 +408,7 @@ class MainPageState extends State<MainPage> {
       return const SizedBox(
         height: 20,
         width: 20,
-        child: Icon(Icons.note_alt_outlined, size: 18.0),
+        child: Icon(Icons.note_outlined, size: 18.0),
       );
     } else {
       return const SizedBox(height: 20, width: 20);
@@ -472,7 +467,7 @@ class MainPageState extends State<MainPage> {
                             break;
                           case 3: // highlight
                             if (snapshot.data[index].h == 0) {
-                              saveHighLight(snapshot.data[index].id);
+                              insertHighLight(snapshot.data[index].id);
                             } else {
                               deleteHighLightWrapper(
                                   context,
@@ -608,6 +603,17 @@ class MainPageState extends State<MainPage> {
                     children: const [
                       Positioned(
                         bottom: 12.0,
+                        right: 16.0,
+                        child: Text(
+                          "Version 1.0",
+                          style: TextStyle(
+                              //color: Colors.white,
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 12.0,
                         left: 16.0,
                         child: Text(
                           "Biblia Sacra",
@@ -620,13 +626,17 @@ class MainPageState extends State<MainPage> {
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 25,
+                ),
                 ListTile(
-                  leading: const Icon(Icons.arrow_right),
+                  leading: const Icon(Icons.bookmark),
+                  trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Bookmarks',
                     style: TextStyle(
                         //color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
@@ -645,12 +655,13 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.arrow_right),
+                  leading: const Icon(Icons.highlight),
+                  trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Highlights',
                     style: TextStyle(
                         //color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
@@ -671,12 +682,13 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.arrow_right),
+                  leading: const Icon(Icons.note),
+                  trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Notes',
                     style: TextStyle(
                         //color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
@@ -697,12 +709,13 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.arrow_right),
+                  leading: const Icon(Icons.search),
+                  trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Search',
                     style: TextStyle(
                         //color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
@@ -721,12 +734,13 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.arrow_right),
+                  leading: const Icon(Icons.library_books),
+                  trailing: const Icon(Icons.arrow_right),
                   title: const Text(
-                    'Bible Versions',
+                    'Bibles',
                     style: TextStyle(
                         //color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
@@ -753,7 +767,8 @@ class MainPageState extends State<MainPage> {
               Row(
                 children: [
                   ElevatedButton(
-                    //style: raisedButtonStyle,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: primarySwatch[300]),
                     onPressed: () async {
                       vkQueries.getActiveVersionCount().then(
                             (value) => {
@@ -782,7 +797,8 @@ class MainPageState extends State<MainPage> {
                     width: 8,
                   ),
                   ElevatedButton(
-                    //style: raisedButtonStyle,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: primarySwatch[300]),
                     onPressed: () {
                       Future.delayed(
                         const Duration(milliseconds: 200),

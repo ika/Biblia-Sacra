@@ -36,4 +36,20 @@ class Palette {
       900: Color(0xff7b8422), //100%
     },
   );
+
+      static const MaterialColor p3 = MaterialColor(
+    0xffe9967a, // 0% comes in here, this will be color picked if no shade is selected.
+    <int, Color>{
+      50: Color(0xfff4cbbd), //10%
+      100: Color(0xfff2c0af), //20%
+      200: Color(0xfff0b6a2), //30%
+      300: Color(0xffedab95), //40%
+      400: Color(0xffeba187), //50%
+      500: Color(0xffe9967a), //60%
+      600: Color(0xffd2876e), //70%
+      700: Color(0xffba7862), //80%
+      800: Color(0xffa36955), //90%
+      900: Color(0xff8c5a49), //100%
+    },
+  );
 }

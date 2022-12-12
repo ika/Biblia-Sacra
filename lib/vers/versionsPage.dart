@@ -105,7 +105,7 @@ class VersionsPageState extends State<VersionsPage> {
             },
           ),
           elevation: 0.1,
-          title: const Text('Bible Versions'),
+          title: const Text('Bibles'),
         ),
         body: versionsWidget(),
       ),

@@ -3,6 +3,7 @@ class Globals {
   static int bibleVersion = 1; // KJV bible version
   static String bibleLang = 'eng'; // Bible language
   static String versionAbbr = 'KJV'; // version abbreviation KJV
+  //static String versionName = 'King James Version';  // version full name
   static int bibleBook = 43; // Gospel of John
   //static int bookNameIndex = 42; // index is one less that book number
   static int bookChapter = 1; // Chapter
@@ -18,7 +19,7 @@ class Globals {
   static bool initialScroll = false;
 
   // Dialog height
-  static double dialogHeight = 0.0;
+  //static double dialogHeight = 0.0;
 
   // SelectorCubit
   static String selectorText = bookName;

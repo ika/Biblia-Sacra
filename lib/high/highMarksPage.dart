@@ -99,12 +99,14 @@ class _HighLightsPage extends State<HighLightsPage> {
             }
           },
           child: ListTile(
-            leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            //leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             title: Text(
               list[index].title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(_utilities.reduceLength(40, list[index].subtitle)),
+            subtitle: Text(list[index].subtitle),
             // child: ListTile(
             //   contentPadding:
             //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),

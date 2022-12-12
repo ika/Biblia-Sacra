@@ -67,6 +67,19 @@ class AppBarVersions extends StatelessWidget {
     );
   }
 
+  void versionChangeSnackBar(BuildContext context, String snackBarText) {
+    Future.delayed(
+      const Duration(milliseconds: 750),
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(snackBarText),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<VkModel>>(
@@ -99,6 +112,8 @@ class AppBarVersions extends StatelessWidget {
                                     .then(
                                   (value) {
                                     Globals.bookName = value;
+                                    versionChangeSnackBar(
+                                        context, snapshot.data[index].m);
                                   },
                                 );
                               },

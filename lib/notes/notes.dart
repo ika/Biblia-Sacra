@@ -7,14 +7,12 @@ import 'package:bibliasacra/notes/edit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
-import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
 DbQueries _dbQueries = DbQueries();
 Dialogs _dialogs = Dialogs();
-Utilities _utilities = Utilities();
 
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
 
@@ -93,7 +91,7 @@ class NotesPageState extends State<NotesPage> {
       (value) {
         if (value == ConfirmAction.accept) {
           debugPrint('GOTO');
-        } else {
+        } else if (value == ConfirmAction.cancel) {
           final model = NtModel(
               id: list[index].id,
               title: list[index].title,
@@ -106,44 +104,45 @@ class NotesPageState extends State<NotesPage> {
   }
 
   Widget notesList(list, context) {
-
     GestureDetector makeListTile(list, int index) => GestureDetector(
           onHorizontalDragEnd: (DragEndDetails details) {
             if (details.primaryVelocity > 0 || details.primaryVelocity < 0) {
               deleteWrapper(context, list, index);
             }
           },
-                    child: ListTile(
-            leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
+          child: ListTile(
+            //leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             title: Text(
               list[index].title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(_utilities.reduceLength(40, list[index].contents)),
-          // child: ListTile(
-          //   contentPadding:
-          //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          //   title: Text(
-          //     (list[index].title != null)
-          //         ? list[index].title
-          //         : 'Title not given',
-          //     style: const TextStyle(
-          //         color: Colors.white, fontWeight: FontWeight.bold),
-          //   ),
-          //   subtitle: Row(
-          //     children: [
-          //       const Icon(Icons.linear_scale, color: Colors.amber),
-          //       Flexible(
-          //         child: RichText(
-          //           overflow: TextOverflow.ellipsis,
-          //           strutStyle: const StrutStyle(fontSize: 12.0),
-          //           text: TextSpan(
-          //               //style: const TextStyle(color: Colors.white),
-          //               text: '${list[index].contents}'),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
+            subtitle: Text(list[index].contents),
+            // child: ListTile(
+            //   contentPadding:
+            //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            //   title: Text(
+            //     (list[index].title != null)
+            //         ? list[index].title
+            //         : 'Title not given',
+            //     style: const TextStyle(
+            //         color: Colors.white, fontWeight: FontWeight.bold),
+            //   ),
+            //   subtitle: Row(
+            //     children: [
+            //       const Icon(Icons.linear_scale, color: Colors.amber),
+            //       Flexible(
+            //         child: RichText(
+            //           overflow: TextOverflow.ellipsis,
+            //           strutStyle: const StrutStyle(fontSize: 12.0),
+            //           text: TextSpan(
+            //               //style: const TextStyle(color: Colors.white),
+            //               text: '${list[index].contents}'),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
             onTap: () {
               noteChoiceWrapper(context, list, index);
             },

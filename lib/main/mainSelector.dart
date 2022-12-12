@@ -1,4 +1,5 @@
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
+import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 DbQueries dbQueries = DbQueries();
 SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
+//MaterialColor primarySwatch;
 
 var allBooks = {};
 var filteredBooks = {};
@@ -144,7 +146,7 @@ class _MainSelectorState extends State<MainSelector>
                       },
                       // child: Text('$chap',
                       child: SizedBox(
-                        //color: ThemeData(primarySwatch:ColorSwatch.s),
+                        //color: primarySwatch[50],
                         width: 40.0,
                         height: 40.0,
                         child: FittedBox(
@@ -232,6 +234,7 @@ class _MainSelectorState extends State<MainSelector>
     Globals.scrollToVerse = Globals.initialScroll = true;
     Globals.chapterVerse = 0;
     Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
+   // primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     return WillPopScope(
       onWillPop: () async {
         Globals.scrollToVerse = false;

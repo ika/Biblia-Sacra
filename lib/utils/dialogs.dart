@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 enum ConfirmAction { cancel, accept }
 
 class Dialogs {
-  Future<dynamic> confirmDialog(BuildContext context, arr) async {
-
+  confirmDialog(BuildContext context, arr) {
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
