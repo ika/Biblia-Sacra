@@ -237,7 +237,7 @@ class MainPageState extends State<MainPage> {
 
   Future<int> insertBookmark(BmModel model) => _bmQueries.saveBookMark(model);
 
-  void insertHighLight(int bid) {
+  void insertHighLight(int bid) async {
     List<String> stringTitle = [
       Globals.versionAbbr,
       ' ',
@@ -260,42 +260,66 @@ class MainPageState extends State<MainPage> {
         name: Globals.bookName,
         bid: bid);
 
-    _hlQueries.saveHighLight(model).then(
-      (hid) {
-        // hid = highlight insert id
-        // bid = bible verse id
-        _dbQueries.updateHighlightId(hid, bid).then((value) {
-          setState(() {}); //onReturnSetState()
-        });
+    // hid = highlight insert id
+    // bid = bible verse id
+    _dbQueries
+        .updateHighlightId(await _hlQueries.saveHighLight(model), bid)
+        .then(
+      (val) {
+        (val == 1)
+            ? delayedsetState()
+            : ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
       },
     );
+
+    // _hlQueries.saveHighLight(model).then(
+    //   (hid) {
+    //     // hid = highlight insert id
+    //     // bid = bible verse id
+    //     _dbQueries.updateHighlightId(hid, bid).then((value) {
+    //       setState(() {}); //onReturnSetState()
+    //     });
+    //   },
+    // );
   }
 
   saveAndGotoNote(NtModel model) {
-    _ntQueries.insertNote(model).then((noteid) async =>
-        _dbQueries.updateNoteId(noteid, model.bid).then((value) {
-          final mod = NtModel(
-              id: noteid,
-              title: model.title,
-              contents: model.contents,
-              bid: model.bid);
-          //debugPrint("NOTE ID ${mod.id} BIBLE ID ${mod.bid}");
-          gotoEditNote(mod);
-        }));
+    _ntQueries.insertNote(model).then(
+          (noteid) async => _dbQueries.updateNoteId(noteid, model.bid).then(
+            (value) {
+              final mod = NtModel(
+                  id: noteid,
+                  title: model.title,
+                  contents: model.contents,
+                  bid: model.bid);
+              //debugPrint("NOTE ID ${mod.id} BIBLE ID ${mod.bid}");
+              gotoEditNote(mod);
+            },
+          ),
+        );
   }
 
   gotoEditNote(NtModel model) {
     Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model, back: 'main'),
+      builder: (context) => EditNotePage(model: model),
     );
     Future.delayed(
       const Duration(milliseconds: 200),
       () {
         Navigator.push(context, route).then(
           (value) {
-            setState(() {}); //onReturnSetState();
+            delayedsetState();
           },
         );
+      },
+    );
+  }
+
+  void delayedsetState() {
+    Future.delayed(
+      const Duration(milliseconds: 50),
+      () {
+        setState(() {});
       },
     );
   }

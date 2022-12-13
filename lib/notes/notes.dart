@@ -36,7 +36,7 @@ class NotesPageState extends State<NotesPage> {
 
   _addEditPage(NtModel model) async {
     Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model, back: 'notes'),
+      builder: (context) => EditNotePage(model: model),
     );
     Future.delayed(
       const Duration(milliseconds: 200),

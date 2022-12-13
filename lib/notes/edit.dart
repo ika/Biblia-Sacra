@@ -1,28 +1,20 @@
-import 'package:bibliasacra/main/dbQueries.dart';
-import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
-import 'package:bibliasacra/notes/notes.dart';
 import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/dialogs.dart';
 
 NtQueries _ntQueries = NtQueries();
 Utilities _utilities = Utilities();
-DbQueries _dbQueries = DbQueries();
-Dialogs _dialogs = Dialogs();
 
 int id;
 int bid;
 String noteFunction;
-String back;
 
 class EditNotePage extends StatefulWidget {
-  const EditNotePage({Key key, this.model, this.back}) : super(key: key);
+  const EditNotePage({Key key, this.model}) : super(key: key);
 
   final NtModel model;
-  final String back;
 
   @override
   State<EditNotePage> createState() => _EditNotePageState();
@@ -38,7 +30,6 @@ class _EditNotePageState extends State<EditNotePage> {
 
     id = widget.model.id;
     bid = widget.model.bid;
-    back = widget.back;
 
     _titleController.text = widget.model.title;
     _contentsController.text = widget.model.contents;
@@ -83,20 +74,20 @@ class _EditNotePageState extends State<EditNotePage> {
     content: Text('Note Deleted!'),
   );
 
-  backButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                (back == 'main') ? const MainPage() : const NotesPage(),
-          ),
-        );
-      },
-    );
-  }
+  // backButton(BuildContext context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 200),
+  //     () {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) =>
+  //               (back == 'main') ? const MainPage() : const NotesPage(),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   backPopButton(BuildContext context) {
     Future.delayed(
