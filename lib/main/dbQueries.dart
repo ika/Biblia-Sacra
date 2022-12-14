@@ -32,8 +32,8 @@ class DbQueries {
     final db = await _dbProvider.database;
 
     List<Bible> returnList = [];
-    final defList =
-        Bible(id: 0, b: 0, c: chap, v: verse, t: 'Verse not found', h: 0, n: 0, m: 0);
+    final defList = Bible(
+        id: 0, b: 0, c: chap, v: verse, t: 'Verse not found', h: 0, n: 0, m: 0);
     returnList.add(defList);
 
     var res = await db.rawQuery(
@@ -48,16 +48,22 @@ class DbQueries {
   }
 
   Future<List<Bible>> getSearchedValues(String s, String l, String h) async {
-    // text, low, high
+    
     final db = await _dbProvider.database;
+
+    List<Bible> returnList = [];
+    final mod = Bible(
+        id: 0, b: 0, c: 0, v: 0, t: 'Search returned no results.', 
+        h: 0, n: 0, m: 0);
+    returnList.add(mod);
 
     var res = await db.rawQuery(
         '''SELECT * FROM $tableName WHERE t LIKE ? AND b BETWEEN ? AND ?''',
-        ['%$s%', l, h]);
+        ['%$s%', l, h]); // text, low, high
 
     List<Bible> list = res.isNotEmpty
         ? res.map((tableName) => Bible.fromJson(tableName)).toList()
-        : [];
+        : returnList;
 
     return list;
   }

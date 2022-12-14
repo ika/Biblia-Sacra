@@ -35,7 +35,7 @@ class DictQueries {
   Future<List<DicModel>> getSearchedValues(String s) async {
 
     List<DicModel> emptyList = [];
-    final mod = DicModel(id: 0, word: 'Search returned no results!', trans: '');
+    final mod = DicModel(id: 0, word: 'Search returned no results.', trans: '');
     emptyList.add(mod);
 
     final db = await dicProvider.db;
