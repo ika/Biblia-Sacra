@@ -72,6 +72,7 @@ flutter:
     - assets/ndba_nvul.db
     - assets/ndba_ukjv.db
     - assets/ndba_webbe.db
+    - assets/ndba_dict.db
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

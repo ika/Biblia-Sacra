@@ -27,4 +27,7 @@ class Constants {
 
   // Notes
   static const String notesDbname = "ndba_notes.db";
+
+  // Dictionary
+  static const String dictDbname = "ndba_dict.db";
 }

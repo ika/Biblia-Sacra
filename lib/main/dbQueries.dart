@@ -33,7 +33,7 @@ class DbQueries {
 
     List<Bible> returnList = [];
     final defList =
-        Bible(id: 0, b: 0, c: chap, v: verse, t: 'Unknown', h: 0, n: 0, m: 0);
+        Bible(id: 0, b: 0, c: chap, v: verse, t: 'Verse not found', h: 0, n: 0, m: 0);
     returnList.add(defList);
 
     var res = await db.rawQuery(

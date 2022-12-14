@@ -5,6 +5,7 @@ import 'package:bibliasacra/bmarks/bmQueries.dart';
 import 'package:bibliasacra/bmarks/bookMarksPage.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/dict/dict.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/high/highMarksPage.dart';
 import 'package:bibliasacra/high/hlModel.dart';
@@ -728,6 +729,31 @@ class MainPageState extends State<MainPage> {
                         ).then((value) {
                           setState(() {}); //onReturnSetState();
                         });
+                      },
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.note),
+                  trailing: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Dictionary',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Future.delayed(
+                      const Duration(milliseconds: 200),
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DictSearch(),
+                          ),
+                        );
                       },
                     );
                   },
