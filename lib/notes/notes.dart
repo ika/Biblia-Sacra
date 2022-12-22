@@ -178,6 +178,7 @@ class NotesPageState extends State<NotesPage> {
 
     final topAppBar = AppBar(
       elevation: 0.1,
+      backgroundColor: primarySwatch[700],
       title: const Text('Notes'),
     );
 

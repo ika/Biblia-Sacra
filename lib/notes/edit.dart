@@ -1,7 +1,9 @@
+import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
 import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 NtQueries _ntQueries = NtQueries();
@@ -10,6 +12,7 @@ Utilities _utilities = Utilities();
 int id;
 int bid;
 String noteFunction;
+MaterialColor primarySwatch;
 
 class EditNotePage extends StatefulWidget {
   const EditNotePage({Key key, this.model}) : super(key: key);
@@ -26,7 +29,7 @@ class _EditNotePageState extends State<EditNotePage> {
 
   @override
   initState() {
-    super.initState();
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
 
     id = widget.model.id;
     bid = widget.model.bid;
@@ -38,6 +41,7 @@ class _EditNotePageState extends State<EditNotePage> {
 
     _titleController.addListener(handleOnChange);
     _contentsController.addListener(handleOnChange);
+        super.initState();
   }
 
   @override
@@ -129,6 +133,7 @@ class _EditNotePageState extends State<EditNotePage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: primarySwatch[700],
             title: Text(noteFunction),
             // actions: [
             //   IconButton(

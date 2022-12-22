@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/dict/dicQueries.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 DictQueries _dictQueries = DictQueries();
 
@@ -10,6 +12,8 @@ Future<List<DicModel>> filteredSearch;
 Future<List<DicModel>> results;
 
 String _contents = '';
+
+MaterialColor primarySwatch;
 
 class DictSearch extends StatefulWidget {
   const DictSearch({Key key}) : super(key: key);
@@ -25,6 +29,7 @@ class _DicSearchState extends State<DictSearch> {
     Globals.initialScroll = false;
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     super.initState();
   }
 
@@ -148,6 +153,7 @@ class _DicSearchState extends State<DictSearch> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: primarySwatch[700],
             title: const Text(
               'Latin Word List',
               style: TextStyle(fontSize: 16),

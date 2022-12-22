@@ -610,7 +610,7 @@ class MainPageState extends State<MainPage> {
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: primarySwatch[700],
                     // image: DecorationImage(
                     //   fit: BoxFit.fill,
                     //   image: AssetImage('path/to/header_background.png'),
@@ -849,6 +849,7 @@ class MainPageState extends State<MainPage> {
           ),
           appBar: AppBar(
             elevation: 16,
+            backgroundColor: primarySwatch[700],
             actions: [
               Row(
                 children: [

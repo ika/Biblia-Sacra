@@ -35,13 +35,12 @@ class MainSearch extends StatefulWidget {
 }
 
 class _MainSearchState extends State<MainSearch> {
-//primarySwatch = getMaterialColor(Theme.of(context).primaryColor);
-
   @override
   initState() {
     Globals.scrollToVerse = false;
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     super.initState();
   }
 
@@ -118,7 +117,6 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   Widget searchWidget() {
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -263,6 +261,7 @@ class _MainSearchState extends State<MainSearch> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: primarySwatch[700],
             // centerTitle: true,
             // elevation: 16,
             actions: [

@@ -1,9 +1,11 @@
+import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/utils/utilities.dart';
 import 'package:bibliasacra/vers/vkModel.dart';
 import 'package:bibliasacra/vers/vkQueries.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Versions
 
@@ -13,6 +15,8 @@ DbQueries dbQueries = DbQueries();
 
 int counter;
 
+MaterialColor primarySwatch;
+
 class VersionsPage extends StatefulWidget {
   const VersionsPage({Key key}) : super(key: key);
 
@@ -21,11 +25,13 @@ class VersionsPage extends StatefulWidget {
 }
 
 class VersionsPageState extends State<VersionsPage> {
+  
   @override
   void initState() {
     Globals.scrollToVerse = false;
     Globals.initialScroll = false;
     counter = 0;
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     super.initState();
   }
 
@@ -89,6 +95,7 @@ class VersionsPageState extends State<VersionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: primarySwatch[700],
         flexibleSpace: GestureDetector(
           onTap: () {
             counter++;
