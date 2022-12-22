@@ -45,6 +45,8 @@ class ContextDialogList extends StatelessWidget {
       itemCount: contextMenu.length,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
+          //leading: const Icon(Icons.linear_scale),
+          trailing: const Icon(Icons.arrow_right),
           title: Text(
             contextMenu[index],
           ),

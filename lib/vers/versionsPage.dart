@@ -23,24 +23,26 @@ class VersionsPage extends StatefulWidget {
 class VersionsPageState extends State<VersionsPage> {
   @override
   void initState() {
-    super.initState();
+    Globals.scrollToVerse = false;
+    Globals.initialScroll = false;
     counter = 0;
+    super.initState();
   }
 
-  backButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 300),
-      () {
-        Navigator.pop(context);
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const MainPage(),
-        //   ),
-        // );
-      },
-    );
-  }
+  // backButton(BuildContext context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 300),
+  //     () {
+  //       Navigator.pop(context);
+  //       // Navigator.push(
+  //       //   context,
+  //       //   MaterialPageRoute(
+  //       //     builder: (context) => const MainPage(),
+  //       //   ),
+  //       // );
+  //     },
+  //   );
+  // }
 
   Widget versionsWidget() {
     return Container(
@@ -85,30 +87,23 @@ class VersionsPageState extends State<VersionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Globals.scrollToVerse = false;
-        backButton(context);
-        return false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          flexibleSpace: GestureDetector(
-            onTap: () {
-              counter++;
-              if (counter > 4) {
-                counter = 0;
-                vkQueries.updateHiddenState().then((value) {
-                  setState(() {});
-                });
-              }
-            },
-          ),
-          elevation: 0.1,
-          title: const Text('Bibles'),
+    return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: GestureDetector(
+          onTap: () {
+            counter++;
+            if (counter > 4) {
+              counter = 0;
+              vkQueries.updateHiddenState().then((value) {
+                setState(() {});
+              });
+            }
+          },
         ),
-        body: versionsWidget(),
+        elevation: 0.1,
+        title: const Text('Bibles'),
       ),
+      body: versionsWidget(),
     );
   }
 }

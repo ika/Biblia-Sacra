@@ -89,14 +89,14 @@ class _EditNotePageState extends State<EditNotePage> {
   //   );
   // }
 
-  backPopButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.pop(context);
-      },
-    );
-  }
+  // backPopButton(BuildContext context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 200),
+  //     () {
+  //       Navigator.pop(context);
+  //     },
+  //   );
+  // }
 
   // deleteWrapper(BuildContext context) {
   //   var arr = List.filled(4, '');
@@ -127,63 +127,57 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: WillPopScope(
-          onWillPop: () async {
-            backPopButton(context);
-            return false;
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(noteFunction),
-              // actions: [
-              //   IconButton(
-              //     icon: const Icon(Icons.delete),
-              //     onPressed: () {
-              //       deleteWrapper(context);
-              //     },
-              //   )
-              // ],
-            ),
-            body: Container(
-              padding: const EdgeInsets.all(20.0),
-              child: ListView(
-                children: [
-                  TextFormField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Title',
-                      //prefixIcon: Icon(Icons.verified_user_outlined),
-                      border: OutlineInputBorder(
-                          //borderRadius: BorderRadius.circular(5.0),
-                          ),
-                    ),
-                    maxLength: 35,
-                    maxLines: 1, // auto line break
-                    autofocus: false,
-                    // onChanged: (val) {
-                    //   title = val;
-                    //   handleOnChange();
-                    // },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(noteFunction),
+            // actions: [
+            //   IconButton(
+            //     icon: const Icon(Icons.delete),
+            //     onPressed: () {
+            //       deleteWrapper(context);
+            //     },
+            //   )
+            // ],
+          ),
+          body: Container(
+            padding: const EdgeInsets.all(20.0),
+            child: ListView(
+              children: [
+                TextFormField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(
+                    labelText: 'Title',
+                    //prefixIcon: Icon(Icons.verified_user_outlined),
+                    border: OutlineInputBorder(
+                        //borderRadius: BorderRadius.circular(5.0),
+                        ),
                   ),
-                  TextFormField(
-                    controller: _contentsController,
-                    decoration: const InputDecoration(
-                      labelText: 'Text',
-                      //prefixIcon: Icon(Icons.verified_user_outlined),
-                      border: OutlineInputBorder(
-                          //borderRadius: BorderRadius.circular(5.0),
-                          ),
-                    ),
-                    maxLength: 256,
-                    maxLines: null, // auto line break
-                    autofocus: false,
-                    // onChanged: (val) {
-                    //   contents = val;
-                    //   handleOnChange();
-                    // },
+                  maxLength: 35,
+                  maxLines: 1, // auto line break
+                  autofocus: false,
+                  // onChanged: (val) {
+                  //   title = val;
+                  //   handleOnChange();
+                  // },
+                ),
+                TextFormField(
+                  controller: _contentsController,
+                  decoration: const InputDecoration(
+                    labelText: 'Text',
+                    //prefixIcon: Icon(Icons.verified_user_outlined),
+                    border: OutlineInputBorder(
+                        //borderRadius: BorderRadius.circular(5.0),
+                        ),
                   ),
-                ],
-              ),
+                  maxLength: 256,
+                  maxLines: null, // auto line break
+                  autofocus: false,
+                  // onChanged: (val) {
+                  //   contents = val;
+                  //   handleOnChange();
+                  // },
+                ),
+              ],
             ),
           ),
         ),

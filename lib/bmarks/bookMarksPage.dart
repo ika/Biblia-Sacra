@@ -4,7 +4,6 @@ import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
-import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bmarks/bmModel.dart';
 import 'package:bibliasacra/bmarks/bmQueries.dart';
@@ -14,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 BmQueries _bmQueries = BmQueries();
 Dialogs _dialogs = Dialogs();
-Utilities _utilities = Utilities();
 MaterialColor primarySwatch;
 
 class BookMarksPage extends StatefulWidget {
@@ -27,18 +25,25 @@ class BookMarksPage extends StatefulWidget {
 class _BookMarkState extends State<BookMarksPage> {
   List<BmModel> list = List<BmModel>.empty();
 
+  @override
+  void initState() {
+    Globals.scrollToVerse = false;
+    Globals.initialScroll = false;
+    super.initState();
+  }
+
   SnackBar bmDeletedSnackBar = const SnackBar(
     content: Text('Book Mark Deleted!'),
   );
 
-  backPopButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.pop(context);
-      },
-    );
-  }
+  // backPopButton(BuildContext context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 200),
+  //     () {
+  //       Navigator.pop(context);
+  //     },
+  //   );
+  // }
 
   backButton(BuildContext context) {
     Future.delayed(
@@ -55,6 +60,8 @@ class _BookMarkState extends State<BookMarksPage> {
   }
 
   onBookMarkTap(WriteVarsModel model) {
+    Globals.scrollToVerse = true;
+    Globals.initialScroll = true;
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -162,7 +169,7 @@ class _BookMarkState extends State<BookMarksPage> {
     );
 
     final topAppBar = AppBar(
-      backgroundColor: primarySwatch[500],
+      //backgroundColor: primarySwatch[500],
       elevation: 0.1,
       title: const Text('Bookmarks'),
     );
@@ -178,24 +185,17 @@ class _BookMarkState extends State<BookMarksPage> {
   Widget build(BuildContext context) {
     Globals.scrollToVerse = Globals.initialScroll = true;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
-    return WillPopScope(
-      onWillPop: () async {
-        Globals.scrollToVerse = false;
-        backPopButton(context);
-        return false;
+    return FutureBuilder<List<BmModel>>(
+      future: _bmQueries.getBookMarkList(),
+      builder: (context, AsyncSnapshot<List<BmModel>> snapshot) {
+        if (snapshot.hasData) {
+          list = snapshot.data;
+          return bookMarksList(list, context);
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
-      child: FutureBuilder<List<BmModel>>(
-        future: _bmQueries.getBookMarkList(),
-        builder: (context, AsyncSnapshot<List<BmModel>> snapshot) {
-          if (snapshot.hasData) {
-            list = snapshot.data;
-            return bookMarksList(list, context);
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
     );
   }
 }

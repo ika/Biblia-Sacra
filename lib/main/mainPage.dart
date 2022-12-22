@@ -206,7 +206,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void saveBookMark() {
+  void insertBookMark() {
     List<String> stringTitle = [
       Globals.versionAbbr,
       ' ',
@@ -227,16 +227,12 @@ class MainPageState extends State<MainPage> {
         chapter: Globals.bookChapter,
         verse: Globals.verseNumber,
         name: Globals.bookName);
-    insertBookmark(model).then(
+    _bmQueries.saveBookMark(model).then(
       (value) {
-        value != null
-            ? ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar)
-            : ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
+        ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
       },
     );
   }
-
-  Future<int> insertBookmark(BmModel model) => _bmQueries.saveBookMark(model);
 
   void insertHighLight(int bid) async {
     List<String> stringTitle = [
@@ -265,13 +261,9 @@ class MainPageState extends State<MainPage> {
     // bid = bible verse id
     _dbQueries
         .updateHighlightId(await _hlQueries.saveHighLight(model), bid)
-        .then(
-      (val) {
-        (val == 1)
-            ? delayedsetState()
-            : ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
-      },
-    );
+        .then((val) {
+      setState(() {});
+    });
 
     // _hlQueries.saveHighLight(model).then(
     //   (hid) {
@@ -294,7 +286,14 @@ class MainPageState extends State<MainPage> {
                   contents: model.contents,
                   bid: model.bid);
               //debugPrint("NOTE ID ${mod.id} BIBLE ID ${mod.bid}");
-              gotoEditNote(mod);
+              Route route = MaterialPageRoute(
+                builder: (context) => EditNotePage(model: mod),
+              );
+              Navigator.push(context, route).then(
+                (value) {
+                  setState(() {});
+                },
+              );
             },
           ),
         );
@@ -304,26 +303,17 @@ class MainPageState extends State<MainPage> {
     Route route = MaterialPageRoute(
       builder: (context) => EditNotePage(model: model),
     );
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.push(context, route).then(
-          (value) {
-            delayedsetState();
-          },
-        );
-      },
-    );
+    Navigator.push(context, route);
   }
 
-  void delayedsetState() {
-    Future.delayed(
-      const Duration(milliseconds: 50),
-      () {
-        setState(() {});
-      },
-    );
-  }
+  // void delayedsetState() {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 50),
+  //     () {
+  //       setState(() {});
+  //     },
+  //   );
+  // }
 
   Future<NtModel> getNote(int id) async {
     NtModel model = await _ntQueries.getNoteById(id).then((vars) {
@@ -342,12 +332,7 @@ class MainPageState extends State<MainPage> {
     Route route = MaterialPageRoute(
       builder: (context) => ComparePage(model: model),
     );
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.push(context, route);
-      },
-    );
+    Navigator.push(context, route);
   }
 
   //   BlocBuilder<PaletteCubit, MaterialColor>(
@@ -469,15 +454,14 @@ class MainPageState extends State<MainPage> {
                                 n: 0,
                                 m: 0);
 
-                            vkQueries.getActiveVersionCount().then((value) => {
-                                  if (value > 1)
-                                    {gotoCompare(model)}
-                                  else
-                                    {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(moreVersionsSnackBar)
-                                    }
-                                });
+                            vkQueries.getActiveVersionCount().then(
+                                  (value) => {
+                                    (value > 1)
+                                        ? gotoCompare(model)
+                                        : ScaffoldMessenger.of(context)
+                                            .showSnackBar(moreVersionsSnackBar)
+                                  },
+                                );
 
                             break;
 
@@ -488,9 +472,13 @@ class MainPageState extends State<MainPage> {
                             break;
 
                           case 2: // bookmarks
-                            saveBookMark();
+
+                            insertBookMark();
+
                             break;
+
                           case 3: // highlight
+
                             if (snapshot.data[index].h == 0) {
                               insertHighLight(snapshot.data[index].id);
                             } else {
@@ -499,7 +487,9 @@ class MainPageState extends State<MainPage> {
                                   snapshot.data[index].h,
                                   snapshot.data[index].id);
                             }
+
                             break;
+
                           case 4: // notes
 
                             if (snapshot.data[index].n == 0) {
@@ -528,7 +518,9 @@ class MainPageState extends State<MainPage> {
                                 gotoEditNote(model);
                               });
                             }
+
                             break;
+
                           default:
                             break;
                         }
@@ -697,11 +689,7 @@ class MainPageState extends State<MainPage> {
                     Future.delayed(
                       const Duration(milliseconds: 200),
                       () {
-                        Navigator.push(context, route).then(
-                          (value) {
-                            setState(() {}); //onReturnSetState();
-                          },
-                        );
+                        Navigator.push(context, route);
                       },
                     );
                   },
@@ -718,20 +706,32 @@ class MainPageState extends State<MainPage> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
+                    Route route = MaterialPageRoute(
+                      builder: (context) => const NotesPage(),
+                    );
                     Future.delayed(
                       const Duration(milliseconds: 200),
                       () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NotesPage(),
-                          ),
-                        ).then((value) {
-                          setState(() {}); //onReturnSetState();
-                        });
+                        Navigator.push(context, route);
                       },
                     );
                   },
+                  // onTap: () {
+                  //   Navigator.pop(context);
+                  //   Future.delayed(
+                  //     const Duration(milliseconds: 200),
+                  //     () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const NotesPage(),
+                  //         ),
+                  //       ).then((value) {
+                  //         setState(() {}); //onReturnSetState();
+                  //       });
+                  //     },
+                  //   );
+                  // },
                 ),
                 ListTile(
                   leading: const Icon(Icons.note),
@@ -745,18 +745,30 @@ class MainPageState extends State<MainPage> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
+                    Route route = MaterialPageRoute(
+                      builder: (context) => const DictSearch(),
+                    );
                     Future.delayed(
                       const Duration(milliseconds: 200),
                       () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DictSearch(),
-                          ),
-                        );
+                        Navigator.push(context, route);
                       },
                     );
                   },
+                  // onTap: () {
+                  //   Navigator.pop(context);
+                  //   Future.delayed(
+                  //     const Duration(milliseconds: 200),
+                  //     () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const DictSearch(),
+                  //         ),
+                  //       );
+                  //     },
+                  //   );
+                  // },
                 ),
                 ListTile(
                   leading: const Icon(Icons.search),
@@ -770,18 +782,30 @@ class MainPageState extends State<MainPage> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
+                    Route route = MaterialPageRoute(
+                      builder: (context) => const MainSearch(),
+                    );
                     Future.delayed(
                       const Duration(milliseconds: 200),
                       () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainSearch(),
-                          ),
-                        );
+                        Navigator.push(context, route);
                       },
                     );
                   },
+                  // onTap: () {
+                  //   Navigator.pop(context);
+                  //   Future.delayed(
+                  //     const Duration(milliseconds: 200),
+                  //     () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const MainSearch(),
+                  //         ),
+                  //       );
+                  //     },
+                  //   );
+                  // },
                 ),
                 ListTile(
                   leading: const Icon(Icons.library_books),
@@ -795,18 +819,30 @@ class MainPageState extends State<MainPage> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
+                    Route route = MaterialPageRoute(
+                      builder: (context) => const VersionsPage(),
+                    );
                     Future.delayed(
                       const Duration(milliseconds: 200),
                       () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const VersionsPage(),
-                          ),
-                        );
+                        Navigator.push(context, route);
                       },
                     );
                   },
+                  // onTap: () {
+                  //   Navigator.pop(context);
+                  //   Future.delayed(
+                  //     const Duration(milliseconds: 200),
+                  //     () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const VersionsPage(),
+                  //         ),
+                  //       );
+                  //     },
+                  //   );
+                  // },
                 ),
               ],
             ),

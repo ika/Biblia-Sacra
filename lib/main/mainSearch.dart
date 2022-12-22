@@ -39,9 +39,10 @@ class _MainSearchState extends State<MainSearch> {
 
   @override
   initState() {
-    super.initState();
+    Globals.scrollToVerse = false;
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
+    super.initState();
   }
 
   void runFilter(String enterdKeyWord) {
@@ -81,19 +82,21 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   onSearchTap(WriteVarsModel model) {
+    Globals.scrollToVerse = true;
+    Globals.initialScroll = true;
     writeVars(model).then((value) {
       backButton(context);
     });
   }
 
-  backPop(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 300),
-      () {
-        Navigator.pop(context);
-      },
-    );
-  }
+  // backPopButton(BuildContext context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 300),
+  //     () {
+  //       Navigator.pop(context);
+  //     },
+  //   );
+  // }
 
   Future emptyInputDialog(context) async {
     return showDialog<void>(
@@ -149,9 +152,9 @@ class _MainSearchState extends State<MainSearch> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
           Expanded(
             child: FutureBuilder<List<Bible>>(
               future: filteredSearch,
@@ -236,7 +239,7 @@ class _MainSearchState extends State<MainSearch> {
       ),
       subtitle: highLiteSearchWord(snapshot.data[index].t, _contents),
       onTap: () {
-        Globals.scrollToVerse = Globals.initialScroll = true;
+        //Globals.scrollToVerse = Globals.initialScroll = true;
 
         BlocProvider.of<ChapterCubit>(context)
             .setChapter(snapshot.data[index].c);
@@ -258,43 +261,35 @@ class _MainSearchState extends State<MainSearch> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: WillPopScope(
-          onWillPop: () async {
-            Globals.scrollToVerse = false;
-            FocusScope.of(context).unfocus();
-            backPop(context);
-            return false;
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              // centerTitle: true,
-              // elevation: 16,
-              actions: [
-                Row(
-                  children: [
-                    BlocBuilder<SearchCubit, int>(
-                      builder: (context, area) {
-                        return Text(
-                          ereasList[area],
-                          style: const TextStyle(fontSize: 16),
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: 56,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.settings),
-                      onPressed: () {
-                        searchAreasDialog(context);
-                      },
-                    )
-                  ],
-                )
-              ],
-            ),
-            body: searchWidget(),
+        child: Scaffold(
+          appBar: AppBar(
+            // centerTitle: true,
+            // elevation: 16,
+            actions: [
+              Row(
+                children: [
+                  BlocBuilder<SearchCubit, int>(
+                    builder: (context, area) {
+                      return Text(
+                        ereasList[area],
+                        style: const TextStyle(fontSize: 16),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    width: 56,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.settings),
+                    onPressed: () {
+                      searchAreasDialog(context);
+                    },
+                  )
+                ],
+              )
+            ],
           ),
+          body: searchWidget(),
         ),
       );
 }

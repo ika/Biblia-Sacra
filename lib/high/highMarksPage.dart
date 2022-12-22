@@ -7,7 +7,6 @@ import 'package:bibliasacra/high/hlQueries.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
-import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 HlQueries _hlQueries = HlQueries();
 DbQueries _dbQueries = DbQueries();
 Dialogs _dialogs = Dialogs();
-Utilities _utilities = Utilities();
 MaterialColor primarySwatch;
 
 class HighLightsPage extends StatefulWidget {
@@ -29,18 +27,26 @@ class HighLightsPage extends StatefulWidget {
 class _HighLightsPage extends State<HighLightsPage> {
   List<HlModel> list = List<HlModel>.empty();
 
+  @override
+  void initState() {
+    Globals.scrollToVerse = false;
+    Globals.initialScroll = false;
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    super.initState();
+  }
+
   SnackBar hlDeletedSnackBar = const SnackBar(
     content: Text('HighLight Deleted!'),
   );
 
-  backPopButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.pop(context);
-      },
-    );
-  }
+  // backPopButton(BuildContext context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 200),
+  //     () {
+  //       Navigator.pop(context);
+  //     },
+  //   );
+  // }
 
   backButton(BuildContext context) {
     Future.delayed(
@@ -57,6 +63,8 @@ class _HighLightsPage extends State<HighLightsPage> {
   }
 
   onHilightTap(WriteVarsModel model) {
+    Globals.scrollToVerse = true;
+    Globals.initialScroll = true;
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -166,7 +174,7 @@ class _HighLightsPage extends State<HighLightsPage> {
     );
 
     final topAppBar = AppBar(
-      backgroundColor: primarySwatch[500],
+      // backgroundColor: primarySwatch[500],
       elevation: 0.1,
       title: const Text('Highlights'),
     );
@@ -180,26 +188,17 @@ class _HighLightsPage extends State<HighLightsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Globals.scrollToVerse = Globals.initialScroll = true;
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
-    return WillPopScope(
-      onWillPop: () async {
-        Globals.scrollToVerse = false;
-        backPopButton(context);
-        return false;
+    return FutureBuilder<List<HlModel>>(
+      future: _hlQueries.getHighLightList(),
+      builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
+        if (snapshot.hasData) {
+          list = snapshot.data;
+          return highLightList(list, context);
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
-      child: FutureBuilder<List<HlModel>>(
-        future: _hlQueries.getHighLightList(),
-        builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
-          if (snapshot.hasData) {
-            list = snapshot.data;
-            return highLightList(list, context);
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
     );
   }
 }

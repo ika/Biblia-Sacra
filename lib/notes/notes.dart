@@ -30,6 +30,14 @@ class NotesPageState extends State<NotesPage> {
   //   setState(() {});
   // }
 
+  @override
+  void initState() {
+    Globals.scrollToVerse = false;
+    Globals.initialScroll = false;
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    super.initState();
+  }
+
   SnackBar noteDeletedSnackBar = const SnackBar(
     content: Text('Note Deleted!'),
   );
@@ -42,20 +50,20 @@ class NotesPageState extends State<NotesPage> {
       const Duration(milliseconds: 200),
       () {
         Navigator.push(context, route).then((value) {
-          setState(() {}); //onReturnSetState();
+          setState(() {});
         });
       },
     );
   }
 
-  backPopButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.pop(context);
-      },
-    );
-  }
+  // backPopButton(BuildContext context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 200),
+  //     () {
+  //       Navigator.pop(context);
+  //     },
+  //   );
+  // }
 
   deleteWrapper(context, list, index) {
     var arr = List.filled(4, '');
@@ -190,27 +198,18 @@ class NotesPageState extends State<NotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    Globals.scrollToVerse = Globals.initialScroll = true;
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
-    return WillPopScope(
-      onWillPop: () async {
-        Globals.scrollToVerse = false;
-        backPopButton(context);
-        return false;
+    return FutureBuilder<List<NtModel>>(
+      future: _ntQueries.getAllNotes(),
+      builder: (context, AsyncSnapshot<List<NtModel>> snapshot) {
+        if (snapshot.hasData) {
+          // List<NtModel> dialogList = [];
+          // dialogList['contents'] = snapshot.data;
+          return notesList(snapshot.data, context);
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
-      child: FutureBuilder<List<NtModel>>(
-        future: _ntQueries.getAllNotes(),
-        builder: (context, AsyncSnapshot<List<NtModel>> snapshot) {
-          if (snapshot.hasData) {
-            // List<NtModel> dialogList = [];
-            // dialogList['contents'] = snapshot.data;
-            return notesList(snapshot.data, context);
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
     );
   }
 }

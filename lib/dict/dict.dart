@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bibliasacra/dict/dicQueries.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 
 DictQueries _dictQueries = DictQueries();
@@ -20,9 +21,11 @@ class DictSearch extends StatefulWidget {
 class _DicSearchState extends State<DictSearch> {
   @override
   initState() {
-    super.initState();
+    Globals.scrollToVerse = false;
+    Globals.initialScroll = false;
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
+    super.initState();
   }
 
   void runFilter(String enterdKeyWord) {
@@ -37,14 +40,14 @@ class _DicSearchState extends State<DictSearch> {
     );
   }
 
-  backPopButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 300),
-      () {
-        Navigator.pop(context);
-      },
-    );
-  }
+  // backPopButton(BuildContext context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 300),
+  //     () {
+  //       Navigator.pop(context);
+  //     },
+  //   );
+  // }
 
   Future emptyInputDialog(context) async {
     return showDialog<void>(
@@ -143,21 +146,14 @@ class _DicSearchState extends State<DictSearch> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: WillPopScope(
-          onWillPop: () async {
-            FocusScope.of(context).unfocus();
-            backPopButton(context);
-            return false;
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text(
-                'Latin Word List',
-                style: TextStyle(fontSize: 16),
-              ),
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Latin Word List',
+              style: TextStyle(fontSize: 16),
             ),
-            body: searchWidget(),
           ),
+          body: searchWidget(),
         ),
       );
 }
