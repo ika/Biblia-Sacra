@@ -32,7 +32,7 @@ Future<void> main() async {
                 (d) {
                   Globals.bibleBook = d;
                   // Chapter
-                      _sharedPrefs.readChapter().then(
+                  _sharedPrefs.readChapter().then(
                     (e) {
                       Globals.bookChapter = e;
                       // Verse

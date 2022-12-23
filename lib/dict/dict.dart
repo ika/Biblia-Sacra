@@ -118,9 +118,7 @@ class _DicSearchState extends State<DictSearch> {
                       return listTileMethod(snapshot, index);
                     },
                     separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(
-                      height: 2.0,
-                    ),
+                        const Divider(),
                   );
                 }
                 return const Center(

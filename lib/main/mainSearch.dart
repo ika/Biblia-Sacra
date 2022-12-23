@@ -156,7 +156,7 @@ class _MainSearchState extends State<MainSearch> {
           Expanded(
             child: FutureBuilder<List<Bible>>(
               future: filteredSearch,
-              builder: (context, snapshot) {
+              builder: (BuildContext context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.separated(
                     itemCount: snapshot.data.length,

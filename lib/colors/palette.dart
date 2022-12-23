@@ -3,69 +3,71 @@ import 'package:flutter/material.dart';
 // https://maketintsandshades.com/
 
 class Palette {
-// blueGray
+// Blue
   static const MaterialColor p1 = MaterialColor(
-    0xff6699CC, // 0% comes in here, this will be color picked if no shade is selected.
+    0xff61afef, // 0% comes in here, this will be color picked if no shade is selected.
     <int, Color>{
-      50: Color(0xffb3cce6), //10%
-      100: Color(0xffa3c2e0), //20%
-      200: Color(0xff94b8db), //30%
-      300: Color(0xff85add6), //40%
-      400: Color(0xff75a3d1), //50%
-      500: Color(0xff6699CC), //60%
-      600: Color(0xff5c8ab8), //70%
-      700: Color(0xff527aa3), //80%
-      800: Color(0xff476b8f), //90%
-      900: Color(0xff3d5c7a), //100%
+      50: Color(0xffb0d7f7), //10%
+      100: Color(0xffa0cff5), //20%
+      200: Color(0xff90c7f4), //30%
+      300: Color(0xff81bff2), //40%
+      400: Color(0xff71b7f1), //50%
+      500: Color(0xff61afef), //60%
+      600: Color(0xff579ed7), //70%
+      700: Color(0xff4e8cbf), //80%
+      800: Color(0xff447aa7), //90%
+      900: Color(0xff3a698f), //100%
     },
   );
 
-  // Lime
+  // Cyan
   static const MaterialColor p2 = MaterialColor(
-    0xffcddc39, // 0% comes in here, this will be color picked if no shade is selected.
+    0xff56b6c2, // 0% comes in here, this will be color picked if no shade is selected.
     <int, Color>{
-      50: Color(0xffe6ee9c), //10%
-      100: Color(0xffe1ea88), //20%
-      200: Color(0xffdce774), //30%
-      300: Color(0xffd7e361), //40%
-      400: Color(0xffd2e04d), //50%
-      500: Color(0xffcddc39), //60%
-      600: Color(0xffb9c633), //70%
-      700: Color(0xffa4b02e), //80%
-      800: Color(0xff909a28), //90%
-      900: Color(0xff7b8422), //100%
+      50: Color(0xffabdbe1), //10%
+      100: Color(0xff9ad3da), //20%
+      200: Color(0xff89ccd4), //30%
+      300: Color(0xff78c5ce), //40%
+      400: Color(0xff67bdc8), //50%
+      500: Color(0xff56b6c2), //60%
+      600: Color(0xff4da4af), //70%
+      700: Color(0xff45929b), //80%
+      800: Color(0xff3c7f88), //90%
+      900: Color(0xff346d74), //100%
     },
   );
 
+  // Green
   static const MaterialColor p3 = MaterialColor(
-    0xffe9967a, // 0% comes in here, this will be color picked if no shade is selected.
+    0xff98C379, // 0% comes in here, this will be color picked if no shade is selected.
     <int, Color>{
-      50: Color(0xfff4cbbd), //10%
-      100: Color(0xfff2c0af), //20%
-      200: Color(0xfff0b6a2), //30%
-      300: Color(0xffedab95), //40%
-      400: Color(0xffeba187), //50%
-      500: Color(0xffe9967a), //60%
-      600: Color(0xffd2876e), //70%
-      700: Color(0xffba7862), //80%
-      800: Color(0xffa36955), //90%
-      900: Color(0xff8c5a49), //100%
+      50: Color(0xffcce1bc), //10%
+      100: Color(0xffc1dbaf), //20%
+      200: Color(0xffb7d5a1), //30%
+      300: Color(0xffadcf94), //40%
+      400: Color(0xffa2c986), //50%
+      500: Color(0xff98C379), //60%
+      600: Color(0xff89b06d), //70%
+      700: Color(0xff7a9c61), //80%
+      800: Color(0xff6a8955), //90%
+      900: Color(0xff5b7549), //100%
     },
   );
 
+  // Grey
   static const MaterialColor p4 = MaterialColor(
-    0xff95e595, // 0% comes in here, this will be color picked if no shade is selected.
+    0xff3e4451, // 0% comes in here, this will be color picked if no shade is selected.
     <int, Color>{
-      50: Color(0xffcaf2ca), //10%
-      100: Color(0xffbfefbf), //20%
-      200: Color(0xffb5edb5), //30%
-      300: Color(0xffaaeaaa), //40%
-      400: Color(0xffa0e8a0), //50%
-      500: Color(0xff95e595), //60%
-      600: Color(0xff86ce86), //70%
-      700: Color(0xff77b777), //80%
-      800: Color(0xff68a068), //90%
-      900: Color(0xff598959), //100%
+      50: Color(0xff9fa2a8), //10%
+      100: Color(0xff8b8f97), //20%
+      200: Color(0xff787c85), //30%
+      300: Color(0xff656974), //40%
+      400: Color(0xff515762), //50%
+      500: Color(0xff3e4451), //60%
+      600: Color(0xff383d49), //70%
+      700: Color(0xff323641), //80%
+      800: Color(0xff2b3039), //90%
+      900: Color(0xff252931), //100%
     },
   );
 }

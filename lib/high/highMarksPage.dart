@@ -102,36 +102,12 @@ class _HighLightsPage extends State<HighLightsPage> {
             }
           },
           child: ListTile(
-            //leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             title: Text(
               list[index].title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(list[index].subtitle),
-            // child: ListTile(
-            //   contentPadding:
-            //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            //   title: Text(
-            //     list[index].title,
-            //     style: const TextStyle(
-            //         fontWeight: FontWeight.bold),
-            //   ),
-            //   subtitle: Row(
-            //     children: [
-            //       Icon(Icons.linear_scale, color: primarySwatch[700]),
-            //       Flexible(
-            //         child: RichText(
-            //           overflow: TextOverflow.ellipsis,
-            //           strutStyle: const StrutStyle(fontSize: 12.0),
-            //           text: TextSpan(
-            //               //style: TextStyle(color: Theme.of(context).colorScheme.primary),
-            //               text: ' ${list[index].subtitle}'),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
+            subtitle: Text(list[index]
+                .subtitle), //, style: const TextStyle(color: Colors.white)),
             onTap: () {
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
@@ -150,22 +126,23 @@ class _HighLightsPage extends State<HighLightsPage> {
           ),
         );
 
-    Card makeCard(list, int index) => Card(
-          elevation: 8.0,
-          margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-          child: Container(
-            decoration: BoxDecoration(color: primarySwatch[500]),
-            child: makeListTile(list, index),
-          ),
-        );
+    // Card makeCard(list, int index) => Card(
+    //       elevation: 8.0,
+    //       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+    //       child: Container(
+    //         decoration: BoxDecoration(color: primarySwatch[500]),
+    //         child: makeListTile(list, index),
+    //       ),
+    //     );
 
-    final makeBody = ListView.builder(
+    final makeBody = ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: list == null ? 0 : list.length,
       itemBuilder: (BuildContext context, int index) {
-        return makeCard(list, index);
+        return makeListTile(list, index);
       },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
 
     final topAppBar = AppBar(
@@ -175,7 +152,7 @@ class _HighLightsPage extends State<HighLightsPage> {
     );
 
     return Scaffold(
-      backgroundColor: primarySwatch[50],
+      //backgroundColor: primarySwatch[50],
       appBar: topAppBar,
       body: makeBody,
     );

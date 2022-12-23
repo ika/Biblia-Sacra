@@ -118,8 +118,8 @@ class NotesPageState extends State<NotesPage> {
           },
           child: ListTile(
             //leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            // contentPadding:
+            //     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             title: Text(
               list[index].title,
               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -131,23 +131,24 @@ class NotesPageState extends State<NotesPage> {
           ),
         );
 
-    Card makeCard(list, int index) => Card(
-          elevation: 8.0,
-          margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-          child: Container(
-            decoration:
-                BoxDecoration(color: Theme.of(context).colorScheme.primary),
-            child: makeListTile(list, index),
-          ),
-        );
+    // Card makeCard(list, int index) => Card(
+    //       elevation: 8.0,
+    //       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+    //       child: Container(
+    //         decoration:
+    //             BoxDecoration(color: Theme.of(context).colorScheme.primary),
+    //         child: makeListTile(list, index),
+    //       ),
+    //     );
 
-    final makeBody = ListView.builder(
+    final makeBody = ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: list == null ? 0 : list.length,
       itemBuilder: (BuildContext context, int index) {
-        return makeCard(list, index);
+        return makeListTile(list, index);
       },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
 
     final topAppBar = AppBar(
@@ -157,7 +158,7 @@ class NotesPageState extends State<NotesPage> {
     );
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: topAppBar,
       body: makeBody,
       floatingActionButton: FloatingActionButton(
