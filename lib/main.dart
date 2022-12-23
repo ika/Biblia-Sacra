@@ -32,7 +32,7 @@ Future<void> main() async {
                 (d) {
                   Globals.bibleBook = d;
                   // Chapter
-                  _sharedPrefs.readChapter().then(
+                      _sharedPrefs.readChapter().then(
                     (e) {
                       Globals.bookChapter = e;
                       // Verse
@@ -79,16 +79,8 @@ class BibleApp extends StatelessWidget {
           create: (context) => PaletteCubit()..getPalette(),
         ),
       ],
-      // child: MaterialApp(
-      //   title: 'Bible App',
-      //   theme: ThemeData(
-      //     primarySwatch: Palette.p1,
-      //   ),
-      //   home: const MainPage(),
-      // ),
       child: BlocBuilder<PaletteCubit, MaterialColor>(
         builder: ((context, palette) {
-          //return _buildWithBlocPalette(context, palette);
           return MaterialApp(
             title: 'Bible App',
             theme: ThemeData(
@@ -101,13 +93,3 @@ class BibleApp extends StatelessWidget {
     );
   }
 }
-
-// Widget _buildWithBlocPalette(BuildContext context, MaterialColor palette) {
-//   return MaterialApp(
-//     title: 'Bible App',
-//     theme: ThemeData(
-//       primarySwatch: palette,
-//     ),
-//     home: const MainPage(),
-//   );
-// }

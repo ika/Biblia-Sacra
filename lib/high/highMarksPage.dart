@@ -49,16 +49,11 @@ class _HighLightsPage extends State<HighLightsPage> {
   // }
 
   backButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MainPage(),
+      ),
     );
   }
 
@@ -188,17 +183,23 @@ class _HighLightsPage extends State<HighLightsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<HlModel>>(
-      future: _hlQueries.getHighLightList(),
-      builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
-        if (snapshot.hasData) {
-          list = snapshot.data;
-          return highLightList(list, context);
-        }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+    return WillPopScope(
+      onWillPop: () async {
+        backButton(context);
+        return false;
       },
+      child: FutureBuilder<List<HlModel>>(
+        future: _hlQueries.getHighLightList(),
+        builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
+          if (snapshot.hasData) {
+            list = snapshot.data;
+            return highLightList(list, context);
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 }

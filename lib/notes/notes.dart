@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
+import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/notes/edit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
@@ -46,24 +47,21 @@ class NotesPageState extends State<NotesPage> {
     Route route = MaterialPageRoute(
       builder: (context) => EditNotePage(model: model),
     );
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.push(context, route).then((value) {
-          setState(() {});
-        });
+    Navigator.push(context, route).then(
+      (value) {
+        setState(() {});
       },
     );
   }
 
-  // backPopButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 200),
-  //     () {
-  //       Navigator.pop(context);
-  //     },
-  //   );
-  // }
+  backButton(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MainPage(),
+      ),
+    );
+  }
 
   deleteWrapper(context, list, index) {
     var arr = List.filled(4, '');
@@ -127,30 +125,6 @@ class NotesPageState extends State<NotesPage> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text(list[index].contents),
-            // child: ListTile(
-            //   contentPadding:
-            //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            //   title: Text(
-            //     (list[index].title != null)
-            //         ? list[index].title
-            //         : 'Title not given',
-            //     style: const TextStyle(
-            //         color: Colors.white, fontWeight: FontWeight.bold),
-            //   ),
-            //   subtitle: Row(
-            //     children: [
-            //       const Icon(Icons.linear_scale, color: Colors.amber),
-            //       Flexible(
-            //         child: RichText(
-            //           overflow: TextOverflow.ellipsis,
-            //           strutStyle: const StrutStyle(fontSize: 12.0),
-            //           text: TextSpan(
-            //               //style: const TextStyle(color: Colors.white),
-            //               text: '${list[index].contents}'),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
             onTap: () {
               noteChoiceWrapper(context, list, index);
             },
@@ -187,7 +161,6 @@ class NotesPageState extends State<NotesPage> {
       appBar: topAppBar,
       body: makeBody,
       floatingActionButton: FloatingActionButton(
-        //backgroundColor: Colors.amber,
         onPressed: () {
           final model = NtModel(id: null, title: '', contents: '', bid: 0);
           _addEditPage(model);
@@ -199,18 +172,22 @@ class NotesPageState extends State<NotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<NtModel>>(
-      future: _ntQueries.getAllNotes(),
-      builder: (context, AsyncSnapshot<List<NtModel>> snapshot) {
-        if (snapshot.hasData) {
-          // List<NtModel> dialogList = [];
-          // dialogList['contents'] = snapshot.data;
-          return notesList(snapshot.data, context);
-        }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+    return WillPopScope(
+      onWillPop: () async {
+        backButton(context);
+        return false;
       },
+      child: FutureBuilder<List<NtModel>>(
+        future: _ntQueries.getAllNotes(),
+        builder: (context, AsyncSnapshot<List<NtModel>> snapshot) {
+          if (snapshot.hasData) {
+            return notesList(snapshot.data, context);
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 }

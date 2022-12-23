@@ -56,6 +56,7 @@ class MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     initialScrollController = ItemScrollController();
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     if (Globals.scrollToVerse) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
@@ -587,7 +588,6 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     pageController = PageController(initialPage: Globals.bookChapter - 1);
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     _dbQueries = DbQueries();
     return WillPopScope(
       onWillPop: () async {
@@ -658,16 +658,22 @@ class MainPageState extends State<MainPage> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    Future.delayed(
-                      const Duration(milliseconds: 200),
-                      () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const BookMarksPage(),
-                          ),
-                        );
-                      },
+                    // Future.delayed(
+                    //   const Duration(milliseconds: 200),
+                    //   () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => const BookMarksPage(),
+                    //       ),
+                    //     );
+                    //   },
+                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BookMarksPage(),
+                      ),
                     );
                   },
                 ),
@@ -686,12 +692,13 @@ class MainPageState extends State<MainPage> {
                     Route route = MaterialPageRoute(
                       builder: (context) => const HighLightsPage(),
                     );
-                    Future.delayed(
-                      const Duration(milliseconds: 200),
-                      () {
-                        Navigator.push(context, route);
-                      },
-                    );
+                    Navigator.push(context, route);
+                    // Future.delayed(
+                    //   const Duration(milliseconds: 200),
+                    //   () {
+                    //     Navigator.push(context, route);
+                    //   },
+                    // );
                   },
                 ),
                 ListTile(
@@ -709,12 +716,13 @@ class MainPageState extends State<MainPage> {
                     Route route = MaterialPageRoute(
                       builder: (context) => const NotesPage(),
                     );
-                    Future.delayed(
-                      const Duration(milliseconds: 200),
-                      () {
-                        Navigator.push(context, route);
-                      },
-                    );
+                    Navigator.push(context, route);
+                    // Future.delayed(
+                    //   const Duration(milliseconds: 200),
+                    //   () {
+                    //     Navigator.push(context, route);
+                    //   },
+                    // );
                   },
                   // onTap: () {
                   //   Navigator.pop(context);
@@ -748,12 +756,13 @@ class MainPageState extends State<MainPage> {
                     Route route = MaterialPageRoute(
                       builder: (context) => const DictSearch(),
                     );
-                    Future.delayed(
-                      const Duration(milliseconds: 200),
-                      () {
-                        Navigator.push(context, route);
-                      },
-                    );
+                    Navigator.push(context, route);
+                    // Future.delayed(
+                    //   const Duration(milliseconds: 200),
+                    //   () {
+                    //     Navigator.push(context, route);
+                    //   },
+                    // );
                   },
                   // onTap: () {
                   //   Navigator.pop(context);
@@ -785,12 +794,13 @@ class MainPageState extends State<MainPage> {
                     Route route = MaterialPageRoute(
                       builder: (context) => const MainSearch(),
                     );
-                    Future.delayed(
-                      const Duration(milliseconds: 200),
-                      () {
-                        Navigator.push(context, route);
-                      },
-                    );
+                    Navigator.push(context, route);
+                    // Future.delayed(
+                    //   const Duration(milliseconds: 200),
+                    //   () {
+                    //     Navigator.push(context, route);
+                    //   },
+                    // );
                   },
                   // onTap: () {
                   //   Navigator.pop(context);
@@ -822,12 +832,13 @@ class MainPageState extends State<MainPage> {
                     Route route = MaterialPageRoute(
                       builder: (context) => const VersionsPage(),
                     );
-                    Future.delayed(
-                      const Duration(milliseconds: 200),
-                      () {
-                        Navigator.push(context, route);
-                      },
-                    );
+                    Navigator.push(context, route);
+                    // Future.delayed(
+                    //   const Duration(milliseconds: 200),
+                    //   () {
+                    //     Navigator.push(context, route);
+                    //   },
+                    // );
                   },
                   // onTap: () {
                   //   Navigator.pop(context);
@@ -887,16 +898,22 @@ class MainPageState extends State<MainPage> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: primarySwatch[300]),
                     onPressed: () {
-                      Future.delayed(
-                        const Duration(milliseconds: 200),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainSelector(),
-                            ),
-                          );
-                        },
+                      // Future.delayed(
+                      //   const Duration(milliseconds: 200),
+                      //   () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => const MainSelector(),
+                      //       ),
+                      //     );
+                      //   },
+                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainSelector(),
+                        ),
                       );
                     },
                     child: Row(

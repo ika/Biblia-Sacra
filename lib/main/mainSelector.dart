@@ -1,5 +1,4 @@
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
-import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
@@ -59,16 +58,11 @@ class _MainSelectorState extends State<MainSelector>
   }
 
   backButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MainPage(),
+      ),
     );
   }
 
@@ -234,7 +228,7 @@ class _MainSelectorState extends State<MainSelector>
     Globals.scrollToVerse = Globals.initialScroll = true;
     Globals.chapterVerse = 0;
     Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
-   // primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    // primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     return WillPopScope(
       onWillPop: () async {
         Globals.scrollToVerse = false;
