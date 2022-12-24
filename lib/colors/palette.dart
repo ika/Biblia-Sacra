@@ -70,4 +70,89 @@ class Palette {
       900: Color(0xff252931), //100%
     },
   );
+
+// Magneta
+  static const MaterialColor p5 = MaterialColor(
+    0xffc678dd, // 0% comes in here, this will be color picked if no shade is selected.
+    <int, Color>{
+      50: Color(0xffe3bcee), //10%
+      100: Color(0xffddaeeb), //20%
+      200: Color(0xffd7a1e7), //30%
+      300: Color(0xffd193e4), //40%
+      400: Color(0xffcc86e0), //50%
+      500: Color(0xffc678dd), //60%
+      600: Color(0xffb26cc7), //70%
+      700: Color(0xff9e60b1), //80%
+      800: Color(0xff8b549b), //90%
+      900: Color(0xff774885), //100%
+    },
+  );
+
+// Orange
+  static const MaterialColor p6 = MaterialColor(
+    0xffd19a66, // 0% comes in here, this will be color picked if no shade is selected.
+    <int, Color>{
+      50: Color(0xffe8cdb3), //10%
+      100: Color(0xffe3c2a3), //20%
+      200: Color(0xffdfb894), //30%
+      300: Color(0xffdaae85), //40%
+      400: Color(0xffd6a475), //50%
+      500: Color(0xffd19a66), //60%
+      600: Color(0xffbc8b5c), //70%
+      700: Color(0xffa77b52), //80%
+      800: Color(0xff926c47), //90%
+      900: Color(0xff7d5c3d), //100%
+    },
+  );
+
+// Purple
+  // static const MaterialColor p7 = MaterialColor(
+  //   0xffc678dd, // 0% comes in here, this will be color picked if no shade is selected.
+  //   <int, Color>{
+  //     50: Color(0xffe3bcee), //10%
+  //     100: Color(0xffddaeeb), //20%
+  //     200: Color(0xffd7a1e7), //30%
+  //     300: Color(0xffd193e4), //40%
+  //     400: Color(0xffcc86e0), //50%
+  //     500: Color(0xffc678dd), //60%
+  //     600: Color(0xffb26cc7), //70%
+  //     700: Color(0xff9e60b1), //80%
+  //     800: Color(0xff8b549b), //90%
+  //     900: Color(0xff774885), //100%
+  //   },
+  // );
+
+// Red
+  static const MaterialColor p8 = MaterialColor(
+    0xffe06c75, // 0% comes in here, this will be color picked if no shade is selected.
+    <int, Color>{
+      50: Color(0xfff0b6ba), //10%
+      100: Color(0xffeca7ac), //20%
+      200: Color(0xffe9989e), //30%
+      300: Color(0xffe68991), //40%
+      400: Color(0xffe37b83), //50%
+      500: Color(0xffe06c75), //60%
+      600: Color(0xffca6169), //70%
+      700: Color(0xffb3565e), //80%
+      800: Color(0xff9d4c52), //90%
+      900: Color(0xff864146), //100%
+    },
+  );
+
+// Yellow
+  static const MaterialColor p9 = MaterialColor(
+    0xffe5c07b, // 0% comes in here, this will be color picked if no shade is selected.
+    <int, Color>{
+      50: Color(0xfff2e0bd), //10%
+      100: Color(0xffefd9b0), //20%
+      200: Color(0xffedd3a3), //30%
+      300: Color(0xffeacd95), //40%
+      400: Color(0xffe8c688), //50%
+      500: Color(0xffe5c07b), //60%
+      600: Color(0xffcead6f), //70%
+      700: Color(0xffb79a62), //80%
+      800: Color(0xffa08656), //90%
+      900: Color(0xff89734a), //100%
+    },
+  );
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bibliasacra/bmarks/bmModel.dart';
 import 'package:bibliasacra/bmarks/bmQueries.dart';
 import 'package:bibliasacra/bmarks/bookMarksPage.dart';
+import 'package:bibliasacra/colors/colors.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/dict/dict.dart';
@@ -816,6 +817,24 @@ class MainPageState extends State<MainPage> {
                   //     },
                   //   );
                   // },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.colorize_sharp),
+                  trailing: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Colors',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Route route = MaterialPageRoute(
+                      builder: (context) => ColorsPage(),
+                    );
+                    Navigator.push(context, route);
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.library_books),

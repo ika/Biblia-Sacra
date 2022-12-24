@@ -47,14 +47,32 @@ class DbQueries {
     return list;
   }
 
+  int id; // id
+  int b; // book
+  int c; // chapter
+  int v; // verse
+  String t; // text
+  int h; // highlight
+  int n; // note
+  int m; // bookmark
+
   Future<List<Bible>> getSearchedValues(String s, String l, String h) async {
-    
+    debugPrint('LOW $l HIGH $h');
+
     final db = await _dbProvider.database;
 
     List<Bible> returnList = [];
+
     final mod = Bible(
-        id: 0, b: 0, c: 0, v: 0, t: 'Search returned no results.', 
-        h: 0, n: 0, m: 0);
+        id: 0,
+        b: 0,
+        c: 0,
+        v: 0,
+        t: 'Search returned no results.',
+        h: 0,
+        n: 0,
+        m: 0);
+
     returnList.add(mod);
 
     var res = await db.rawQuery(

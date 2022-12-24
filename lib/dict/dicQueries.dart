@@ -35,14 +35,16 @@ class DictQueries {
   Future<List<DicModel>> getSearchedValues(String s) async {
 
     List<DicModel> emptyList = [];
+
     final mod = DicModel(id: 0, word: 'Search returned no results.', trans: '');
+
     emptyList.add(mod);
 
     final db = await dicProvider.db;
 
     var res = await db.rawQuery(
         '''SELECT * FROM $_tableName WHERE word LIKE ? ORDER BY word''',
-        ['%$s%']);
+        ['$s%']);
 
     List<DicModel> list = res.isNotEmpty
         ? res.map((tableName) => DicModel.fromMap(tableName)).toList()
