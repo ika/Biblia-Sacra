@@ -18,6 +18,16 @@ class ColorsPage extends StatelessWidget {
     'Yellow': 0xffe5c07b
   };
 
+  Widget makeContainers() {
+    return Expanded(
+      child: Container(
+          height: 100,
+          width: 100,
+          color: Colors.green //colorsList.values.elementAt(1),
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
@@ -28,33 +38,29 @@ class ColorsPage extends StatelessWidget {
         backgroundColor: primarySwatch[700],
         title: const Text('Color Selector'),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: colorsList.length,
-            itemBuilder: (BuildContext context, index) {
-              return Expanded(
+      body: Center(
+        child: ListView(
+          //mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            for (int i = 0; i < colorsList.length; i++)
+              InkWell(
+                onTap: () {
+                  debugPrint('onTap');
+                },
                 child: Container(
-                  margin: const EdgeInsets.only(top: 5, left: 20, right: 20),
-                  color: Color(colorsList.values.elementAt(index)),
-                  child: ListTile(
-                    title: Center(
-                      child: Text(colorsList.keys.elementAt(index),
-                          style: const TextStyle(color: Colors.white)),
-                    ),
-                    onTap: () {
-                      debugPrint(colorsList.keys.elementAt(index));
-                    },
-                  ),
+                  margin: const EdgeInsets.only(bottom: 8,left: 20,right: 20),
+                  height: 55,
+                  color: Color(colorsList.values.elementAt(i)),
+                  child: Center(child: Text(colorsList.keys.elementAt(i))),
                 ),
-              );
-            },
-          )
-        ],
+              )
+
+            //makeContainers()
+          ],
+        ),
       ),
     );
   }

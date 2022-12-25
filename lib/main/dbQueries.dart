@@ -57,7 +57,7 @@ class DbQueries {
   int m; // bookmark
 
   Future<List<Bible>> getSearchedValues(String s, String l, String h) async {
-    debugPrint('LOW $l HIGH $h');
+    //debugPrint('LOW $l HIGH $h');
 
     final db = await _dbProvider.database;
 
