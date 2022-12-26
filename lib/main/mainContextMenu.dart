@@ -8,7 +8,7 @@ Future<dynamic> contextMenuDialog(BuildContext context) {
       return SimpleDialog(
         children: [
           SizedBox(
-            height: 300.0,
+            height: 360.0,
             width: MediaQuery.of(context).size.width,
             child: Padding(
               padding: const EdgeInsets.all(8.0),

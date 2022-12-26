@@ -19,7 +19,7 @@ class Globals {
   static bool initialScroll = false;
 
   // Dialog height
-  //static double dialogHeight = 0.0;
+  static double dialogHeight = 0.0;
 
   // SelectorCubit
   static String selectorText = bookName;

@@ -149,7 +149,7 @@ class _HighLightsPage extends State<HighLightsPage> {
     );
 
     final topAppBar = AppBar(
-      backgroundColor: primarySwatch[700],
+      //backgroundColor: primarySwatch[700],
       elevation: 0.1,
       title: const Text('Highlights'),
     );

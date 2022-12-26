@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/vers/vkModel.dart';
@@ -16,7 +18,7 @@ Future<dynamic> versionsDialog(BuildContext context) {
       return SimpleDialog(
         children: [
           SizedBox(
-            height: 300.0,
+            height: Globals.dialogHeight,
             width: MediaQuery.of(context).size.width,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -54,16 +56,11 @@ class AppBarVersions extends StatelessWidget {
   }
 
   backButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MainPage(),
+      ),
     );
   }
 
@@ -90,6 +87,7 @@ class AppBarVersions extends StatelessWidget {
           itemCount: l,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
+              trailing: const Icon(Icons.arrow_right),
               title: Text(
                 snapshot.data[index].m,
               ),
@@ -129,7 +127,7 @@ class AppBarVersions extends StatelessWidget {
             );
           },
           separatorBuilder: (BuildContext context, int index) =>
-              const Divider(height: 2.0),
+              const Divider(height: 2.0,),
         );
       },
     );

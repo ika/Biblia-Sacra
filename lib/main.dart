@@ -1,3 +1,4 @@
+import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/searchCubit.dart';
@@ -14,7 +15,7 @@ Utilities utilities = Utilities();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //utilities.getDialogeHeight();
+  utilities.getDialogeHeight();
 
   _sharedPrefs.readVersion().then(
     (a) {

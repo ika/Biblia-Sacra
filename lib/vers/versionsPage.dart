@@ -74,7 +74,7 @@ class VersionsPageState extends State<VersionsPage> {
                         .updateActiveState(active, snapshot.data[index].n)
                         .then(
                       (value) async {
-                        //utilities.getDialogeHeight();
+                        utilities.getDialogeHeight();
                         setState(() {});
                       },
                     );
@@ -95,7 +95,7 @@ class VersionsPageState extends State<VersionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primarySwatch[700],
+        //backgroundColor: primarySwatch[700],
         flexibleSpace: GestureDetector(
           onTap: () {
             counter++;

@@ -142,7 +142,7 @@ class _BookMarkState extends State<BookMarksPage> {
     );
 
     final topAppBar = AppBar(
-      backgroundColor: primarySwatch[700],
+      //backgroundColor: primarySwatch[700],
       elevation: 0.1,
       title: const Text('Bookmarks'),
     );

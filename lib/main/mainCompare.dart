@@ -19,6 +19,13 @@ class ComparePage extends StatefulWidget {
 class _ComparePage extends State<ComparePage> {
   List<CompareModel> list = List<CompareModel>.empty();
 
+  @override
+  void initState() {
+    Globals.scrollToVerse = false;
+    Globals.initialScroll = false;
+    super.initState();
+  }
+
   Widget compareList(list, context) {
     makeListTile(list, int index) {
       return ListTile(
@@ -88,26 +95,17 @@ class _ComparePage extends State<ComparePage> {
 
   @override
   Widget build(BuildContext context) {
-    //_compare.activeVersions(widget.model);
-    return WillPopScope(
-      onWillPop: () async {
-        Globals.scrollToVerse = false;
-        //backButton(context);
-        Navigator.pop(context);
-        return false;
+    return FutureBuilder<List<CompareModel>>(
+      future: _compare.activeVersions(widget.model),
+      builder: (context, AsyncSnapshot<List<CompareModel>> snapshot) {
+        if (snapshot.hasData) {
+          list = snapshot.data;
+          return compareList(list, context);
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
-      child: FutureBuilder<List<CompareModel>>(
-        future: _compare.activeVersions(widget.model),
-        builder: (context, AsyncSnapshot<List<CompareModel>> snapshot) {
-          if (snapshot.hasData) {
-            list = snapshot.data;
-            return compareList(list, context);
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
     );
   }
 }

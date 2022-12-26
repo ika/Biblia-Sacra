@@ -261,7 +261,7 @@ class _MainSearchState extends State<MainSearch> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: primarySwatch[700],
+            //backgroundColor: primarySwatch[700],
             // centerTitle: true,
             // elevation: 16,
             actions: [

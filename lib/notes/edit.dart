@@ -133,7 +133,7 @@ class _EditNotePageState extends State<EditNotePage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: primarySwatch[700],
+            //backgroundColor: primarySwatch[700],
             title: Text(noteFunction),
             // actions: [
             //   IconButton(
