@@ -467,19 +467,13 @@ class MainPageState extends State<MainPage> {
 
                             break;
 
-                          case 1: // copy
-
-                            copyVerseWrapper(context, snapshot, index);
-
-                            break;
-
-                          case 2: // bookmarks
+                          case 1: // bookmarks
 
                             insertBookMark();
 
                             break;
 
-                          case 3: // highlight
+                          case 2: // highlight
 
                             if (snapshot.data[index].h == 0) {
                               insertHighLight(snapshot.data[index].id);
@@ -492,7 +486,7 @@ class MainPageState extends State<MainPage> {
 
                             break;
 
-                          case 4: // notes
+                          case 3: // notes
 
                             if (snapshot.data[index].n == 0) {
                               final buffer = <String>[
@@ -520,6 +514,12 @@ class MainPageState extends State<MainPage> {
                                 gotoEditNote(model);
                               });
                             }
+
+                            break;
+
+                          case 4: // copy
+
+                            copyVerseWrapper(context, snapshot, index);
 
                             break;
 
@@ -611,32 +611,32 @@ class MainPageState extends State<MainPage> {
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
                   decoration: BoxDecoration(
-                    color: primarySwatch[700],
+                    color: primarySwatch[900],
                     // image: DecorationImage(
                     //   fit: BoxFit.fill,
                     //   image: AssetImage('path/to/header_background.png'),
                     // ),
                   ),
                   child: Stack(
-                    children: const [
+                    children: [
                       Positioned(
                         bottom: 12.0,
                         right: 16.0,
                         child: Text(
                           "Version 1.0",
                           style: TextStyle(
-                              //color: Colors.white,
+                              color: primarySwatch[50],
                               fontSize: 10.0,
                               fontWeight: FontWeight.w500),
                         ),
                       ),
                       Positioned(
-                        bottom: 12.0,
+                        bottom: 20.0,
                         left: 16.0,
                         child: Text(
                           "Biblia Sacra",
                           style: TextStyle(
-                              //color: Colors.white,
+                              color: primarySwatch[50],
                               fontSize: 32.0,
                               fontWeight: FontWeight.w500),
                         ),
@@ -648,7 +648,7 @@ class MainPageState extends State<MainPage> {
                   height: 25,
                 ),
                 ListTile(
-                  leading: const Icon(Icons.bookmark),
+                  //leading: const Icon(Icons.bookmark),
                   trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Bookmarks',
@@ -679,7 +679,7 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.highlight),
+                  //leading: const Icon(Icons.highlight),
                   trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Highlights',
@@ -703,7 +703,7 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.note),
+                  //leading: const Icon(Icons.note),
                   trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Notes',
@@ -743,7 +743,7 @@ class MainPageState extends State<MainPage> {
                   // },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.note),
+                  //leading: const Icon(Icons.note),
                   trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Dictionary',
@@ -781,7 +781,7 @@ class MainPageState extends State<MainPage> {
                   // },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.search),
+                  //leading: const Icon(Icons.search),
                   trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Search',
@@ -819,7 +819,7 @@ class MainPageState extends State<MainPage> {
                   // },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.colorize_sharp),
+                  //leading: const Icon(Icons.colorize_sharp),
                   trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Colors',
@@ -837,7 +837,7 @@ class MainPageState extends State<MainPage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.library_books),
+                  //leading: const Icon(Icons.library_books),
                   trailing: const Icon(Icons.arrow_right),
                   title: const Text(
                     'Bibles',

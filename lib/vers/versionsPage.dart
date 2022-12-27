@@ -13,7 +13,7 @@ VkQueries vkQueries = VkQueries();
 Utilities utilities = Utilities();
 DbQueries dbQueries = DbQueries();
 
-int counter;
+int counter =0;
 
 MaterialColor primarySwatch;
 
@@ -25,7 +25,6 @@ class VersionsPage extends StatefulWidget {
 }
 
 class VersionsPageState extends State<VersionsPage> {
-  
   @override
   void initState() {
     Globals.scrollToVerse = false;
@@ -58,12 +57,10 @@ class VersionsPageState extends State<VersionsPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 return CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.trailing,
+                  //controlAffinity: ListTileControlAffinity.trailing,
                   title: Text(
                     snapshot.data[index].m,
                   ),
@@ -81,6 +78,8 @@ class VersionsPageState extends State<VersionsPage> {
                   },
                 );
               },
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
             );
           }
           return const Center(

@@ -8,7 +8,7 @@ Future<dynamic> contextMenuDialog(BuildContext context) {
       return SimpleDialog(
         children: [
           SizedBox(
-            height: 360.0,
+            height: 300.0,
             width: MediaQuery.of(context).size.width,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -33,10 +33,10 @@ class ContextDialogList extends StatelessWidget {
 
   final List<String> contextMenu = [
     'Compare',
-    'Copy',
     'Bookmark',
     'Highlight',
-    'Notes'
+    'Notes',
+    'Copy'
   ];
 
   @override
@@ -56,7 +56,7 @@ class ContextDialogList extends StatelessWidget {
         );
       },
       separatorBuilder: (BuildContext context, int index) =>
-          const Divider(),
+          const Divider(height: 2.0),
     );
   }
 }

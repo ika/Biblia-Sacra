@@ -32,7 +32,7 @@ class VkQueries {
   Future<void> updateHiddenState() async {
     final db = await _vkProvider.database;
     await db.rawUpdate(
-        '''UPDATE $tableName SET hidden=?''', ['0']);
+        '''UPDATE $tableName SET hidden=? AND active=?''', ['0', '0']);
   }
 
   Future<List<VkModel>> getAllVersions() async {

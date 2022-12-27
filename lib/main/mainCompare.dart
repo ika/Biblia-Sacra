@@ -30,55 +30,34 @@ class _ComparePage extends State<ComparePage> {
     makeListTile(list, int index) {
       return ListTile(
         //leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        // contentPadding:
+        //     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         title: Text(
           "${list[index].a} - ${list[index].b} ${list[index].c}:${list[index].v}",
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Text(list[index].t),
-        // return ListTile(
-        //   contentPadding:
-        //       const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        //   title: Text(
-        //     "${list[index].a} - ${list[index].b} ${list[index].c}:${list[index].v}",
-        //     style:
-        //         const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        //   ),
-        //   subtitle: Row(
-        //     children: [
-        //       Flexible(
-        //         child: RichText(
-        //           //overflow: TextOverflow.ellipsis,
-        //           strutStyle: const StrutStyle(fontSize: 16.0),
-        //           text: TextSpan(
-        //               style: const TextStyle(color: Colors.white),
-        //               text: '${list[index].t}'),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // );
       );
     }
 
-    Card makeCard(list, int index) => Card(
-          elevation: 8.0,
-          margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-          child: Container(
-            decoration:
-                BoxDecoration(color: Theme.of(context).colorScheme.primary),
-            child: makeListTile(list, index),
-          ),
-        );
+    // Card makeCard(list, int index) => Card(
+    //       elevation: 8.0,
+    //       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+    //       child: Container(
+    //         decoration:
+    //             BoxDecoration(color: Theme.of(context).colorScheme.primary),
+    //         child: makeListTile(list, index),
+    //       ),
+    //     );
 
-    final makeBody = ListView.builder(
+    final makeBody = ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: list == null ? 0 : list.length,
       itemBuilder: (BuildContext context, int index) {
-        return makeCard(list, index);
+        return makeListTile(list, index);
       },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
 
     final topAppBar = AppBar(
@@ -87,7 +66,7 @@ class _ComparePage extends State<ComparePage> {
     );
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: topAppBar,
       body: makeBody,
     );
