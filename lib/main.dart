@@ -2,6 +2,7 @@ import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/searchCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
@@ -79,6 +80,9 @@ class BibleApp extends StatelessWidget {
         BlocProvider<PaletteCubit>(
           create: (context) => PaletteCubit()..getPalette(),
         ),
+        BlocProvider<TextSizeCubit>(
+          create: (context) => TextSizeCubit()..getSize(),
+        )
       ],
       child: BlocBuilder<PaletteCubit, MaterialColor>(
         builder: ((context, palette) {

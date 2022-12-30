@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bibliasacra">
    <application
-        android:label="bibliasacra"
+        android:label="Biblia Sacra"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

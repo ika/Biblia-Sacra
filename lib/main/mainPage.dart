@@ -6,6 +6,7 @@ import 'package:bibliasacra/bmarks/bookMarksPage.dart';
 import 'package:bibliasacra/colors/colors.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/dict/dict.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/high/highMarksPage.dart';
@@ -17,6 +18,7 @@ import 'package:bibliasacra/main/mainContextMenu.dart';
 import 'package:bibliasacra/main/mainVersMenu.dart';
 import 'package:bibliasacra/main/mainSearch.dart';
 import 'package:bibliasacra/main/mainSelector.dart';
+import 'package:bibliasacra/main/textsize/textsize.dart';
 import 'package:bibliasacra/notes/edit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
@@ -35,6 +37,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 PageController pageController;
 ItemScrollController initialScrollController;
 MaterialColor primarySwatch;
+double primaryTextSize;
 
 DbQueries _dbQueries; // Bible
 SharedPrefs _sharedPrefs = SharedPrefs();
@@ -58,6 +61,7 @@ class MainPageState extends State<MainPage> {
     super.initState();
     initialScrollController = ItemScrollController();
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     if (Globals.scrollToVerse) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
@@ -365,14 +369,14 @@ class MainPageState extends State<MainPage> {
       return Text(
         "${snapshot.data[index].t}",
         style: TextStyle(
-          fontSize: 16,
+          fontSize: primaryTextSize,
           backgroundColor: primarySwatch[50],
         ),
       );
     } else {
       return Text(
         "${snapshot.data[index].t}",
-        style: const TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: primaryTextSize),
       );
     }
   }
@@ -819,24 +823,6 @@ class MainPageState extends State<MainPage> {
                   // },
                 ),
                 ListTile(
-                  //leading: const Icon(Icons.colorize_sharp),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Colors',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(
-                      builder: (context) => ColorsPage(),
-                    );
-                    Navigator.push(context, route);
-                  },
-                ),
-                ListTile(
                   //leading: const Icon(Icons.library_books),
                   trailing: const Icon(Icons.arrow_right),
                   title: const Text(
@@ -873,6 +859,42 @@ class MainPageState extends State<MainPage> {
                   //     },
                   //   );
                   // },
+                ),
+                ListTile(
+                  //leading: const Icon(Icons.colorize_sharp),
+                  trailing: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Colors',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Route route = MaterialPageRoute(
+                      builder: (context) => ColorsPage(),
+                    );
+                    Navigator.push(context, route);
+                  },
+                ),
+                ListTile(
+                  //leading: const Icon(Icons.colorize_sharp),
+                  trailing: const Icon(Icons.arrow_right),
+                  title: const Text(
+                    'Text Size',
+                    style: TextStyle(
+                        //color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Route route = MaterialPageRoute(
+                      builder: (context) => const TextSizePage(),
+                    );
+                    Navigator.push(context, route);
+                  },
                 ),
               ],
             ),

@@ -50,14 +50,17 @@ class _ComparePage extends State<ComparePage> {
     //       ),
     //     );
 
-    final makeBody = ListView.separated(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: list == null ? 0 : list.length,
-      itemBuilder: (BuildContext context, int index) {
-        return makeListTile(list, index);
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    final makeBody = Padding(
+      padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
+      child: ListView.separated(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: list == null ? 0 : list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return makeListTile(list, index);
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+      ),
     );
 
     final topAppBar = AppBar(
