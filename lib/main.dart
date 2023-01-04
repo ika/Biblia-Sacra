@@ -1,3 +1,4 @@
+import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/searchCubit.dart';
@@ -68,6 +69,12 @@ class BibleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // _sharedPrefs.readColorsListNumber().then(
+    //   (value) {
+    //     BlocProvider.of<PaletteCubit>(context)
+    //         .setPalette(Palette.colorsList.values.elementAt(value));
+    //   },
+    // );
     return MultiBlocProvider(
       providers: [
         BlocProvider<ChapterCubit>(

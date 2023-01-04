@@ -30,27 +30,27 @@ class _ColorsPageState extends State<ColorsPage> {
     );
   }
 
-  final Map colorsList = {
-    'Pink': Palette.pinkPrimaryValue,
-    'Red': Palette.redPrimaryValue,
-    'DeepOrange': Palette.deepOrangePrimaryValue,
-    'Orange': Palette.orangePrimaryValue,
-    'Amber': Palette.amberPrimaryValue,
-    'Yellow': Palette.yellowPrimaryValue,
-    'Lime': Palette.limePrimaryValue,
-    'LightGreen': Palette.lightGreenPrimaryValue,
-    'Green': Palette.greenPrimaryValue,
-    'Teal': Palette.tealPrimaryValue,
-    'Cyan': Palette.cyanPrimaryValue,
-    'LightBlue': Palette.lightBluePrimaryValue,
-    'Blue': Palette.bluePrimaryValue,
-    'Indego': Palette.indegoPrimaryValue,
-    'Purple': Palette.purplePrimaryValue,
-    'DeepPurple': Palette.deepPurplePrimaryValue,
-    'BlueGrey': Palette.blueGreyPrimaryValue,
-    'Brown': Palette.brownPrimaryValue,
-    'Grey': Palette.greyPrimaryValue
-  };
+  // static const Map colorsList = {
+  //   'Pink': Palette.pinkPrimaryValue,
+  //   'Red': Palette.redPrimaryValue,
+  //   'DeepOrange': Palette.deepOrangePrimaryValue,
+  //   'Orange': Palette.orangePrimaryValue,
+  //   'Amber': Palette.amberPrimaryValue,
+  //   'Yellow': Palette.yellowPrimaryValue,
+  //   'Lime': Palette.limePrimaryValue,
+  //   'LightGreen': Palette.lightGreenPrimaryValue,
+  //   'Green': Palette.greenPrimaryValue,
+  //   'Teal': Palette.tealPrimaryValue,
+  //   'Cyan': Palette.cyanPrimaryValue,
+  //   'LightBlue': Palette.lightBluePrimaryValue,
+  //   'Blue': Palette.bluePrimaryValue,
+  //   'Indego': Palette.indegoPrimaryValue,
+  //   'Purple': Palette.purplePrimaryValue,
+  //   'DeepPurple': Palette.deepPurplePrimaryValue,
+  //   'BlueGrey': Palette.blueGreyPrimaryValue,
+  //   'Brown': Palette.brownPrimaryValue,
+  //   'Grey': Palette.greyPrimaryValue
+  // };
 
   @override
   Widget build(BuildContext context) {
@@ -71,19 +71,18 @@ class _ColorsPageState extends State<ColorsPage> {
               const SizedBox(
                 height: 20,
               ),
-              for (int i = 0; i < colorsList.length; i++)
+              for (int i = 0; i < Palette.colorsList.length; i++)
                 InkWell(
                   onTap: () {
                     BlocProvider.of<PaletteCubit>(context)
-                        .setPalette(colorsList.values.elementAt(i));
-                    //debugPrint(colorsList.keys.elementAt(i));
+                        .setPalette(Palette.colorsList.values.elementAt(i));
                   },
                   child: Container(
                     margin:
                         const EdgeInsets.only(bottom: 8, left: 20, right: 20),
                     height: 55,
-                    color: colorsList.values.elementAt(i),
-                    child: Center(child: Text(colorsList.keys.elementAt(i),style: const TextStyle(fontSize: 18),)),
+                    color: Palette.colorsList.values.elementAt(i),
+                    child: Center(child: Text(Palette.colorsList.keys.elementAt(i),style: const TextStyle(fontSize: 18),)),
                   ),
                 )
             ],

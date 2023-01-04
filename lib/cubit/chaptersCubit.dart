@@ -2,7 +2,6 @@ import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChapterCubit extends Cubit<int> {
-  //final _sharedPrefs = SharedPrefs();
 
   ChapterCubit() : super(1);
 

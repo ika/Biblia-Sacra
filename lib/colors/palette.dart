@@ -22,5 +22,26 @@ class Palette {
   static const MaterialColor blueGreyPrimaryValue = Colors.blueGrey;
   static const MaterialColor brownPrimaryValue = Colors.brown;
   static const MaterialColor greyPrimaryValue = Colors.grey;
-}
 
+  static const Map colorsList = {
+    'Pink': pinkPrimaryValue,
+    'Red': redPrimaryValue,
+    'DeepOrange': deepOrangePrimaryValue,
+    'Orange': orangePrimaryValue,
+    'Amber': amberPrimaryValue,
+    'Yellow': yellowPrimaryValue,
+    'Lime': limePrimaryValue,
+    'LightGreen': lightGreenPrimaryValue,
+    'Green': greenPrimaryValue,
+    'Teal': tealPrimaryValue,
+    'Cyan': cyanPrimaryValue,
+    'LightBlue': lightBluePrimaryValue,
+    'Blue': bluePrimaryValue,
+    'Indego': indegoPrimaryValue,
+    'Purple': purplePrimaryValue,
+    'DeepPurple': deepPurplePrimaryValue,
+    'BlueGrey': blueGreyPrimaryValue,
+    'Brown': brownPrimaryValue,
+    'Grey': greyPrimaryValue
+  };
+}

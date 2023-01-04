@@ -1,5 +1,7 @@
+import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 BookLists bookLists = BookLists();
@@ -80,7 +82,20 @@ class SharedPrefs {
     prefs.setInt(key, value);
   }
 
+  Future<void> saveColorListNumber(int p) async {
+    final prefs = await initInstance();
+    const key = 'colorsList';
+    final value = p;
+    prefs.setInt(key, value);
+  }
+
   // ==================READ=====================
+
+  Future<int> readColorsListNumber() async {
+    final prefs = await initInstance();
+    const key = 'colorsList';
+    return prefs.getInt(key) ?? 12;
+  }
 
   Future<int> readSearchAreaKey() async {
     final prefs = await initInstance();
@@ -143,5 +158,4 @@ class SharedPrefs {
       },
     );
   }
-
 }
