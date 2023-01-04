@@ -25,7 +25,6 @@ import 'package:bibliasacra/notes/nQueries.dart';
 import 'package:bibliasacra/notes/notes.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
-import 'package:bibliasacra/utils/utilities.dart';
 import 'package:bibliasacra/vers/versionsPage.dart';
 import 'package:bibliasacra/main/mainCompare.dart';
 import 'package:bibliasacra/vers/vkQueries.dart';
@@ -39,13 +38,14 @@ ItemScrollController initialScrollController;
 MaterialColor primarySwatch;
 double primaryTextSize;
 
-DbQueries _dbQueries; // Bible
+int activeVersionsCount = 0;
+
+DbQueries _dbQueries = DbQueries();
 SharedPrefs _sharedPrefs = SharedPrefs();
 BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
 NtQueries _ntQueries = NtQueries();
-Utilities utilities = Utilities();
-VkQueries vkQueries = VkQueries();
+VkQueries _vkQueries = VkQueries();
 Dialogs _dialogs = Dialogs();
 
 class MainPage extends StatefulWidget {
@@ -59,9 +59,14 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+
     initialScrollController = ItemScrollController();
+    pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+
+    getActiveVersionsCount();
+
     if (Globals.scrollToVerse) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
@@ -75,16 +80,12 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  // FutureOr onReturnSetState() {
-  //   setState(() {});
-  // }
-
   SnackBar textCopiedSnackBar = const SnackBar(
     content: Text('Text Copied!'),
   );
 
   SnackBar moreVersionsSnackBar = const SnackBar(
-    content: Text('Activate more versions!'),
+    content: Text('Activate more Bible versions!'),
   );
 
   SnackBar bookMarkSnackBar = const SnackBar(
@@ -382,9 +383,6 @@ class MainPageState extends State<MainPage> {
   }
 
   showVerse(snapshot, index) {
-    // if (snapshot.data[index].n) {
-    //   iconNote = const Icon(Icons.note_alt_outlined);
-    // }
     return Container(
       margin: const EdgeInsets.only(bottom: 6.0),
       child: IntrinsicHeight(
@@ -460,14 +458,10 @@ class MainPageState extends State<MainPage> {
                                 n: 0,
                                 m: 0);
 
-                            vkQueries.getActiveVersionCount().then(
-                                  (value) => {
-                                    (value > 1)
-                                        ? gotoCompare(model)
-                                        : ScaffoldMessenger.of(context)
-                                            .showSnackBar(moreVersionsSnackBar)
-                                  },
-                                );
+                            (activeVersionsCount > 1)
+                                ? gotoCompare(model)
+                                : ScaffoldMessenger.of(context)
+                                    .showSnackBar(moreVersionsSnackBar);
 
                             break;
 
@@ -514,9 +508,11 @@ class MainPageState extends State<MainPage> {
                                   );
                               saveAndGotoNote(model);
                             } else {
-                              getNote(snapshot.data[index].n).then((model) {
-                                gotoEditNote(model);
-                              });
+                              getNote(snapshot.data[index].n).then(
+                                (model) {
+                                  gotoEditNote(model);
+                                },
+                              );
                             }
 
                             break;
@@ -590,342 +586,230 @@ class MainPageState extends State<MainPage> {
     );
   }
 
+  void getActiveVersionsCount() async {
+    activeVersionsCount = await _vkQueries.getActiveVersionCount();
+  }
+
+  void showVersionsDialog(BuildContext context) {
+    (activeVersionsCount > 1)
+        ? versionsDialog(context)
+        : ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
+  }
+
+  Widget showDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: primarySwatch[500],
+              // image: DecorationImage(
+              //   fit: BoxFit.fill,
+              //   image: AssetImage('path/to/header_background.png'),
+              // ),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  bottom: 12.0,
+                  right: 16.0,
+                  child: Text(
+                    "Version 1.0",
+                    style: TextStyle(
+                        color: primarySwatch[50],
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Positioned(
+                  bottom: 20.0,
+                  left: 16.0,
+                  child: Text(
+                    "Biblia Sacra",
+                    style: TextStyle(
+                        color: primarySwatch[50],
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          ListTile(
+            //leading: const Icon(Icons.bookmark),
+            trailing: const Icon(Icons.arrow_right),
+            title: const Text(
+              'Bookmarks',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BookMarksPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            //leading: const Icon(Icons.highlight),
+            trailing: const Icon(Icons.arrow_right),
+            title: const Text(
+              'Highlights',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Route route = MaterialPageRoute(
+                builder: (context) => const HighLightsPage(),
+              );
+              Navigator.push(context, route);
+            },
+          ),
+          ListTile(
+            //leading: const Icon(Icons.note),
+            trailing: const Icon(Icons.arrow_right),
+            title: const Text(
+              'Notes',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Route route = MaterialPageRoute(
+                builder: (context) => const NotesPage(),
+              );
+              Navigator.push(context, route);
+            },
+          ),
+          ListTile(
+            //leading: const Icon(Icons.note),
+            trailing: const Icon(Icons.arrow_right),
+            title: const Text(
+              'Dictionary',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Route route = MaterialPageRoute(
+                builder: (context) => const DictSearch(),
+              );
+              Navigator.push(context, route);
+            },
+          ),
+          ListTile(
+            //leading: const Icon(Icons.search),
+            trailing: const Icon(Icons.arrow_right),
+            title: const Text(
+              'Search',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Route route = MaterialPageRoute(
+                builder: (context) => const MainSearch(),
+              );
+              Navigator.push(context, route);
+            },
+          ),
+          ListTile(
+            //leading: const Icon(Icons.library_books),
+            trailing: const Icon(Icons.arrow_right),
+            title: const Text(
+              'Bibles',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Route route = MaterialPageRoute(
+                builder: (context) => const VersionsPage(),
+              );
+              Navigator.push(context, route);
+            },
+          ),
+          ListTile(
+            //leading: const Icon(Icons.colorize_sharp),
+            trailing: const Icon(Icons.arrow_right),
+            title: const Text(
+              'Colors',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Route route = MaterialPageRoute(
+                builder: (context) => ColorsPage(),
+              );
+              Navigator.push(context, route);
+            },
+          ),
+          ListTile(
+            //leading: const Icon(Icons.colorize_sharp),
+            trailing: const Icon(Icons.arrow_right),
+            title: const Text(
+              'Text Size',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Route route = MaterialPageRoute(
+                builder: (context) => const TextSizePage(),
+              );
+              Navigator.push(context, route);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    pageController = PageController(initialPage: Globals.bookChapter - 1);
-    _dbQueries = DbQueries();
     return WillPopScope(
       onWillPop: () async {
         exitWrapper(context);
         return false;
       },
       child: Scaffold(
-          drawer: Drawer(
-            child: ListView(
-              // Important: Remove any padding from the ListView.
-              padding: EdgeInsets.zero,
-              children: [
-                // DrawerHeader(
-                //   decoration: BoxDecoration(
-                //     color: Theme.of(context).colorScheme.primary,
-                //   ),
-                //   child: const Text('Drawer Header'),
-                // ),
-                DrawerHeader(
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.zero,
-                  decoration: BoxDecoration(
-                    color: primarySwatch[900],
-                    // image: DecorationImage(
-                    //   fit: BoxFit.fill,
-                    //   image: AssetImage('path/to/header_background.png'),
-                    // ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        bottom: 12.0,
-                        right: 16.0,
-                        child: Text(
-                          "Version 1.0",
-                          style: TextStyle(
-                              color: primarySwatch[50],
-                              fontSize: 10.0,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 20.0,
-                        left: 16.0,
-                        child: Text(
-                          "Biblia Sacra",
-                          style: TextStyle(
-                              color: primarySwatch[50],
-                              fontSize: 32.0,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                ListTile(
-                  //leading: const Icon(Icons.bookmark),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Bookmarks',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    // Future.delayed(
-                    //   const Duration(milliseconds: 200),
-                    //   () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => const BookMarksPage(),
-                    //       ),
-                    //     );
-                    //   },
-                    // );
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const BookMarksPage(),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  //leading: const Icon(Icons.highlight),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Highlights',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(
-                      builder: (context) => const HighLightsPage(),
-                    );
-                    Navigator.push(context, route);
-                    // Future.delayed(
-                    //   const Duration(milliseconds: 200),
-                    //   () {
-                    //     Navigator.push(context, route);
-                    //   },
-                    // );
-                  },
-                ),
-                ListTile(
-                  //leading: const Icon(Icons.note),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Notes',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(
-                      builder: (context) => const NotesPage(),
-                    );
-                    Navigator.push(context, route);
-                    // Future.delayed(
-                    //   const Duration(milliseconds: 200),
-                    //   () {
-                    //     Navigator.push(context, route);
-                    //   },
-                    // );
-                  },
-                  // onTap: () {
-                  //   Navigator.pop(context);
-                  //   Future.delayed(
-                  //     const Duration(milliseconds: 200),
-                  //     () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => const NotesPage(),
-                  //         ),
-                  //       ).then((value) {
-                  //         setState(() {}); //onReturnSetState();
-                  //       });
-                  //     },
-                  //   );
-                  // },
-                ),
-                ListTile(
-                  //leading: const Icon(Icons.note),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Dictionary',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(
-                      builder: (context) => const DictSearch(),
-                    );
-                    Navigator.push(context, route);
-                    // Future.delayed(
-                    //   const Duration(milliseconds: 200),
-                    //   () {
-                    //     Navigator.push(context, route);
-                    //   },
-                    // );
-                  },
-                  // onTap: () {
-                  //   Navigator.pop(context);
-                  //   Future.delayed(
-                  //     const Duration(milliseconds: 200),
-                  //     () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => const DictSearch(),
-                  //         ),
-                  //       );
-                  //     },
-                  //   );
-                  // },
-                ),
-                ListTile(
-                  //leading: const Icon(Icons.search),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Search',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(
-                      builder: (context) => const MainSearch(),
-                    );
-                    Navigator.push(context, route);
-                    // Future.delayed(
-                    //   const Duration(milliseconds: 200),
-                    //   () {
-                    //     Navigator.push(context, route);
-                    //   },
-                    // );
-                  },
-                  // onTap: () {
-                  //   Navigator.pop(context);
-                  //   Future.delayed(
-                  //     const Duration(milliseconds: 200),
-                  //     () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => const MainSearch(),
-                  //         ),
-                  //       );
-                  //     },
-                  //   );
-                  // },
-                ),
-                ListTile(
-                  //leading: const Icon(Icons.library_books),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Bibles',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(
-                      builder: (context) => const VersionsPage(),
-                    );
-                    Navigator.push(context, route);
-                    // Future.delayed(
-                    //   const Duration(milliseconds: 200),
-                    //   () {
-                    //     Navigator.push(context, route);
-                    //   },
-                    // );
-                  },
-                  // onTap: () {
-                  //   Navigator.pop(context);
-                  //   Future.delayed(
-                  //     const Duration(milliseconds: 200),
-                  //     () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => const VersionsPage(),
-                  //         ),
-                  //       );
-                  //     },
-                  //   );
-                  // },
-                ),
-                ListTile(
-                  //leading: const Icon(Icons.colorize_sharp),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Colors',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(
-                      builder: (context) => ColorsPage(),
-                    );
-                    Navigator.push(context, route);
-                  },
-                ),
-                ListTile(
-                  //leading: const Icon(Icons.colorize_sharp),
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text(
-                    'Text Size',
-                    style: TextStyle(
-                        //color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Route route = MaterialPageRoute(
-                      builder: (context) => const TextSizePage(),
-                    );
-                    Navigator.push(context, route);
-                  },
-                ),
-              ],
-            ),
-          ),
+          drawer: showDrawer(context),
           appBar: AppBar(
             elevation: 16,
-            backgroundColor: primarySwatch[700],
+            //backgroundColor: primarySwatch[700],
             actions: [
               Row(
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: primarySwatch[300]),
-                    onPressed: () async {
-                      vkQueries.getActiveVersionCount().then(
-                            (value) => {
-                              if (value > 1)
-                                {
-                                  versionsDialog(context).then((value) {
-                                    // doesn't work
-                                    // ScaffoldMessenger.of(context)
-                                    //     .showSnackBar(moreVersionsSnackBar);
-                                  })
-                                }
-                              else
-                                {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(moreVersionsSnackBar)
-                                }
-                            },
-                          );
+                    onPressed: () {
+                      showVersionsDialog(context);
                     },
                     child: Text(
                       Globals.versionAbbr,
@@ -939,17 +823,6 @@ class MainPageState extends State<MainPage> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: primarySwatch[300]),
                     onPressed: () {
-                      // Future.delayed(
-                      //   const Duration(milliseconds: 200),
-                      //   () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (context) => const MainSelector(),
-                      //       ),
-                      //     );
-                      //   },
-                      // );
                       Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -31,35 +31,36 @@ class _TextSizePageState extends State<TextSizePage> {
 
   List<double> sizesList = [14, 16, 18, 20, 22, 24, 26, 28];
 
-  void setTextSize(BuildContext context, int size) {
-    switch (size) {
-      case 14:
-        BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-        break;
-      case 16:
-        BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-        break;
-      case 18:
-        BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-        break;
-      case 20:
-        BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-        break;
-      case 22:
-        BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-        break;
-      case 24:
-        BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-        break;
-      case 26:
-        BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-        break;
-      case 28:
-        BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-        break;
-    }
-    backButton(context);
-  }
+  //void setTextSize(BuildContext context, int size) {
+  // switch (size) {
+  //   case 14:
+  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  //     break;
+  //   case 16:
+  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  //     break;
+  //   case 18:
+  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  //     break;
+  //   case 20:
+  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  //     break;
+  //   case 22:
+  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  //     break;
+  //   case 24:
+  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  //     break;
+  //   case 26:
+  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  //     break;
+  //   case 28:
+  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  //     break;
+  // }
+  // BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
+  // backButton(context);
+  //}
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,10 @@ class _TextSizePageState extends State<TextSizePage> {
                 InkWell(
                   onTap: () {
                     // debugPrint('text size ${sizesList[i]}');
-                    setTextSize(context, sizesList[i].toInt());
+                    //setTextSize(context, sizesList[i].toInt());
+                    BlocProvider.of<TextSizeCubit>(context)
+                        .setSize(sizesList[i].toDouble());
+                    backButton(context);
                   },
                   child: Container(
                     margin:

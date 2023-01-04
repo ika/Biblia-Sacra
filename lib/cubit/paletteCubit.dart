@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PaletteCubit extends Cubit<MaterialColor> {
   //final sharedPrefs = SharedPrefs();
 
-  //Palette palette = Palette();
+  static const MaterialColor initialColor = Palette.bluePrimaryValue;
 
-  PaletteCubit() : super(Palette.p1);
+  PaletteCubit() : super(initialColor);
 
   void setPalette(MaterialColor p) => emit(p);
 
-  void getPalette() async => emit(Palette.p1);
+  void getPalette() async => emit(initialColor);
 }

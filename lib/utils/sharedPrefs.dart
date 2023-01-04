@@ -143,4 +143,5 @@ class SharedPrefs {
       },
     );
   }
+
 }

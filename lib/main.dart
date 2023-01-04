@@ -1,4 +1,3 @@
-import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/searchCubit.dart';
