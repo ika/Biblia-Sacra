@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bibliasacra/bmarks/bmModel.dart';
 import 'package:bibliasacra/bmarks/bmQueries.dart';
 import 'package:bibliasacra/bmarks/bookMarksPage.dart';
@@ -40,7 +39,7 @@ double primaryTextSize;
 
 int activeVersionsCount = 0;
 
-DbQueries _dbQueries = DbQueries();
+DbQueries _dbQueries;
 SharedPrefs _sharedPrefs = SharedPrefs();
 BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
@@ -268,42 +267,33 @@ class MainPageState extends State<MainPage> {
     // bid = bible verse id
     _dbQueries
         .updateHighlightId(await _hlQueries.saveHighLight(model), bid)
-        .then((val) {
-      setState(() {});
-    });
-
-    // _hlQueries.saveHighLight(model).then(
-    //   (hid) {
-    //     // hid = highlight insert id
-    //     // bid = bible verse id
-    //     _dbQueries.updateHighlightId(hid, bid).then((value) {
-    //       setState(() {}); //onReturnSetState()
-    //     });
-    //   },
-    // );
+        .then(
+      (val) {
+        setState(() {});
+      },
+    );
   }
 
-  saveAndGotoNote(NtModel model) {
-    _ntQueries.insertNote(model).then(
-          (noteid) async => _dbQueries.updateNoteId(noteid, model.bid).then(
-            (value) {
-              final mod = NtModel(
-                  id: noteid,
-                  title: model.title,
-                  contents: model.contents,
-                  bid: model.bid);
-              //debugPrint("NOTE ID ${mod.id} BIBLE ID ${mod.bid}");
-              Route route = MaterialPageRoute(
-                builder: (context) => EditNotePage(model: mod),
-              );
-              Navigator.push(context, route).then(
-                (value) {
-                  setState(() {});
-                },
-              );
-            },
-          ),
-        );
+  saveAndGotoNote(NtModel model) async {
+    int noteid;
+    _dbQueries
+        .updateNoteId(noteid = await _ntQueries.insertNote(model), model.bid)
+        .then((value) {
+      final mod = NtModel(
+        id: noteid,
+        title: model.title,
+        contents: model.contents,
+        bid: model.bid,
+      );
+      Route route = MaterialPageRoute(
+        builder: (context) => EditNotePage(model: mod),
+      );
+      Navigator.push(context, route).then(
+        (value) {
+          setState(() {});
+        },
+      );
+    });
   }
 
   gotoEditNote(NtModel model) {
@@ -342,36 +332,13 @@ class MainPageState extends State<MainPage> {
     Navigator.push(context, route);
   }
 
-  //   BlocBuilder<PaletteCubit, MaterialColor>(
-  //   builder: ((context, palette) {
-  // return Text(
-  //   "${snapshot.data[index].t}",
-  //   style: TextStyle(
-  //     fontSize: 16,
-  //     backgroundColor: palette[50],
-  //   ),
-  // );
-  //   }),
-  // );
-
   selectBackground(snapshot, index) {
     if (snapshot.data[index].h != 0) {
-      // BlocBuilder<PaletteCubit, MaterialColor>(
-      //   builder: ((context, palette) {
-      //     return Text(
-      //       "${snapshot.data[index].t}",
-      //       style: TextStyle(
-      //         fontSize: 16,
-      //         backgroundColor: primarySwatch[50],
-      //       ),
-      //     );
-      //   }),
-      // );
       return Text(
         "${snapshot.data[index].t}",
         style: TextStyle(
           fontSize: primaryTextSize,
-          backgroundColor: primarySwatch[50],
+          backgroundColor: primarySwatch[100],
         ),
       );
     } else {
@@ -762,9 +729,13 @@ class MainPageState extends State<MainPage> {
             onTap: () {
               Navigator.pop(context);
               Route route = MaterialPageRoute(
-                builder: (context) => ColorsPage(),
+                builder: (context) => const ColorsPage(),
               );
-              Navigator.push(context, route);
+              Navigator.push(context, route).then((value) {
+                setState(() {
+                  primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+                });
+              });
             },
           ),
           ListTile(
@@ -792,6 +763,7 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    _dbQueries = DbQueries();
     return WillPopScope(
       onWillPop: () async {
         exitWrapper(context);
@@ -807,7 +779,7 @@ class MainPageState extends State<MainPage> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: primarySwatch[300]),
+                        backgroundColor: primarySwatch[700]),
                     onPressed: () {
                       showVersionsDialog(context);
                     },
@@ -821,7 +793,7 @@ class MainPageState extends State<MainPage> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: primarySwatch[300]),
+                        backgroundColor: primarySwatch[700]),
                     onPressed: () {
                       Navigator.push(
                         context,

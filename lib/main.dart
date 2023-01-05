@@ -18,50 +18,53 @@ Future<void> main() async {
 
   utilities.getDialogeHeight();
 
-  _sharedPrefs.readVersion().then(
-    (a) {
-      Globals.bibleVersion = a;
-      // language
-      _sharedPrefs.readLang().then(
-        (b) {
-          Globals.bibleLang = b;
-          // version abbreviation
-          _sharedPrefs.readVerAbbr().then(
-            (c) {
-              Globals.versionAbbr = c;
-              // Book
-              _sharedPrefs.readBook().then(
-                (d) {
-                  Globals.bibleBook = d;
-                  // Chapter
-                  _sharedPrefs.readChapter().then(
-                    (e) {
-                      Globals.bookChapter = e;
-                      // Verse
-                      _sharedPrefs.readVerse().then(
-                        (f) {
-                          Globals.chapterVerse = f;
-                          // Book Name
-                          _sharedPrefs.readBookName(Globals.bibleBook).then(
-                            (g) {
-                              Globals.bookName = g;
-                              runApp(
-                                const BibleApp(),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              );
-            },
-          );
-        },
-      );
-    },
-  );
+  _sharedPrefs.readColorsListNumber().then((p) {
+    Globals.colorListNumber = p;
+    _sharedPrefs.readVersion().then(
+      (a) {
+        Globals.bibleVersion = a;
+        // language
+        _sharedPrefs.readLang().then(
+          (b) {
+            Globals.bibleLang = b;
+            // version abbreviation
+            _sharedPrefs.readVerAbbr().then(
+              (c) {
+                Globals.versionAbbr = c;
+                // Book
+                _sharedPrefs.readBook().then(
+                  (d) {
+                    Globals.bibleBook = d;
+                    // Chapter
+                    _sharedPrefs.readChapter().then(
+                      (e) {
+                        Globals.bookChapter = e;
+                        // Verse
+                        _sharedPrefs.readVerse().then(
+                          (f) {
+                            Globals.chapterVerse = f;
+                            // Book Name
+                            _sharedPrefs.readBookName(Globals.bibleBook).then(
+                              (g) {
+                                Globals.bookName = g;
+                                runApp(
+                                  const BibleApp(),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  });
 }
 
 class BibleApp extends StatelessWidget {
@@ -69,12 +72,6 @@ class BibleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // _sharedPrefs.readColorsListNumber().then(
-    //   (value) {
-    //     BlocProvider.of<PaletteCubit>(context)
-    //         .setPalette(Palette.colorsList.values.elementAt(value));
-    //   },
-    // );
     return MultiBlocProvider(
       providers: [
         BlocProvider<ChapterCubit>(

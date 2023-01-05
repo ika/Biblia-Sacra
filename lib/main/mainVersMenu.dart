@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/vers/vkModel.dart';
@@ -41,20 +39,6 @@ Future<dynamic> versionsDialog(BuildContext context) {
 class AppBarVersions extends StatelessWidget {
   const AppBarVersions({Key key}) : super(key: key);
 
-  Future<String> readVersionKey(int v) async {
-    List<VkModel> value = List<VkModel>.empty();
-    value = await _vkQueries.getVersionKey(v);
-    String r = value.first.r; // abbreviation
-    return r;
-  }
-
-  Future<String> readVersionAbbr(int v) async {
-    String verKeys = await readVersionKey(v);
-    var vKeys = verKeys.split('|');
-    String r = vKeys[0];
-    return r;
-  }
-
   backButton(BuildContext context) {
     Navigator.push(
       context,
@@ -66,7 +50,7 @@ class AppBarVersions extends StatelessWidget {
 
   void versionChangeSnackBar(BuildContext context, String snackBarText) {
     Future.delayed(
-      const Duration(milliseconds: 750),
+      const Duration(milliseconds: 800),
       () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -92,37 +76,23 @@ class AppBarVersions extends StatelessWidget {
                 snapshot.data[index].m,
               ),
               onTap: () {
-                int v = snapshot.data[index].n; // version
-                String l = snapshot.data[index].l; // language
-                sharedPrefs.saveLang(l).then(
+                Globals.bibleLang = snapshot.data[index].l;
+                Globals.bibleVersion = snapshot.data[index].n;
+                Globals.versionAbbr = snapshot.data[index].r;
+
+                sharedPrefs.saveLang(Globals.bibleLang);
+                sharedPrefs.saveVersion(Globals.bibleVersion);
+                sharedPrefs.saveVerAbbr(Globals.versionAbbr);
+
+                sharedPrefs.readBookName(Globals.bibleBook).then(
                   (value) {
-                    Globals.bibleLang = l;
-                    sharedPrefs.saveVersion(v).then(
-                      (value) async {
-                        Globals.bibleVersion = v;
-                        readVersionAbbr(v).then(
-                          (r) {
-                            sharedPrefs.saveVerAbbr(r).then(
-                              (value) {
-                                Globals.versionAbbr = r;
-                                sharedPrefs
-                                    .readBookName(Globals.bibleBook)
-                                    .then(
-                                  (value) {
-                                    Globals.bookName = value;
-                                    versionChangeSnackBar(
-                                        context, snapshot.data[index].m);
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        );
-                        backButton(context);
-                      },
-                    );
+                    Globals.bookName = value;
+                    //Navigator.of(context).pop();
+                    versionChangeSnackBar(context, snapshot.data[index].m);
                   },
                 );
+                
+                backButton(context);
               },
             );
           },

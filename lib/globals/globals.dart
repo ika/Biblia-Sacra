@@ -24,6 +24,9 @@ class Globals {
   // SelectorCubit
   static String selectorText = bookName;
 
+  // colorListNumber
+  static int colorListNumber = 12; //Blue
+
   // Search
   // static int elementKey = 0;
 }

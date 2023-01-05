@@ -44,7 +44,7 @@ class DictQueries {
 
     var res = await db.rawQuery(
         '''SELECT * FROM $_tableName WHERE word LIKE ? ORDER BY word''',
-        ['$s%']);
+        ['%$s%']);
 
     List<DicModel> list = res.isNotEmpty
         ? res.map((tableName) => DicModel.fromMap(tableName)).toList()

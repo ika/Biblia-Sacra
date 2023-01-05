@@ -1,7 +1,6 @@
 import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 BookLists bookLists = BookLists();

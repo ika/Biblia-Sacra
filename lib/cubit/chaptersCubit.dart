@@ -7,7 +7,6 @@ class ChapterCubit extends Cubit<int> {
 
   void setChapter(int c) => emit(c);
 
-  //void getChapter() async => emit(await _sharedPrefs.readChapter());
   void getChapter() {
     emit(Globals.bookChapter);
   }
