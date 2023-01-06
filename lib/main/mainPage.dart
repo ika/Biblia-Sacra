@@ -31,6 +31,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:word_selectable_text/word_selectable_text.dart';
 
 PageController pageController;
 ItemScrollController initialScrollController;
@@ -39,7 +40,7 @@ double primaryTextSize;
 
 int activeVersionsCount = 0;
 
-DbQueries _dbQueries;
+DbQueries _dbQueries = DbQueries();
 SharedPrefs _sharedPrefs = SharedPrefs();
 BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
@@ -267,11 +268,9 @@ class MainPageState extends State<MainPage> {
     // bid = bible verse id
     _dbQueries
         .updateHighlightId(await _hlQueries.saveHighLight(model), bid)
-        .then(
-      (val) {
-        setState(() {});
-      },
-    );
+        .then((val) {
+      setState(() {});
+    });
   }
 
   saveAndGotoNote(NtModel model) async {
@@ -332,14 +331,32 @@ class MainPageState extends State<MainPage> {
     Navigator.push(context, route);
   }
 
-  selectBackground(snapshot, index) {
+  Text selectBackground(snapshot, index) {
+    // if (snapshot.data[index].h != 0) {
+    //   return WordSelectableText(
+    //       selectable: false,
+    //       highlight: true,
+    //       text: "${snapshot.data[index].t}",
+    //       style: TextStyle(
+    //           fontSize: primaryTextSize, backgroundColor: primarySwatch[100]),
+    //       onWordTapped: (word, index) {
+    //         debugPrint(word);
+    //       });
+    // } else {
+    //   return WordSelectableText(
+    //       selectable: false,
+    //       highlight: false,
+    //       text: "${snapshot.data[index].t}",
+    //       style: TextStyle(fontSize: primaryTextSize),
+    //       onWordTapped: (word, index) {
+    //         debugPrint(word);
+    //       });
+    // }
     if (snapshot.data[index].h != 0) {
       return Text(
         "${snapshot.data[index].t}",
         style: TextStyle(
-          fontSize: primaryTextSize,
-          backgroundColor: primarySwatch[100],
-        ),
+            fontSize: primaryTextSize, backgroundColor: primarySwatch[100]),
       );
     } else {
       return Text(
@@ -386,13 +403,18 @@ class MainPageState extends State<MainPage> {
 
   showNoteIcon(snapshot, index) {
     if (snapshot.data[index].n != 0) {
-      return const SizedBox(
-        height: 20,
+      return SizedBox(
+        height: 30,
         width: 20,
-        child: Icon(Icons.note_outlined, size: 18.0),
+        child: IconButton(
+          icon: Icon(Icons.notes, color: primarySwatch[700]),
+          onPressed: () {
+            debugPrint('Icon pressed');
+          },
+        ),
       );
     } else {
-      return const SizedBox(height: 20, width: 20);
+      return const SizedBox(height: 0, width: 0);
     }
   }
 
@@ -584,7 +606,7 @@ class MainPageState extends State<MainPage> {
                   child: Text(
                     "Version 1.0",
                     style: TextStyle(
-                        color: primarySwatch[50],
+                        color: primarySwatch[900],
                         fontSize: 10.0,
                         fontWeight: FontWeight.w500),
                   ),
@@ -595,7 +617,7 @@ class MainPageState extends State<MainPage> {
                   child: Text(
                     "Biblia Sacra",
                     style: TextStyle(
-                        color: primarySwatch[50],
+                        color: primarySwatch[900],
                         fontSize: 32.0,
                         fontWeight: FontWeight.w500),
                   ),
@@ -607,8 +629,7 @@ class MainPageState extends State<MainPage> {
             height: 10,
           ),
           ListTile(
-            //leading: const Icon(Icons.bookmark),
-            trailing: const Icon(Icons.arrow_right),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: const Text(
               'Bookmarks',
               style: TextStyle(
@@ -627,8 +648,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            //leading: const Icon(Icons.highlight),
-            trailing: const Icon(Icons.arrow_right),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: const Text(
               'Highlights',
               style: TextStyle(
@@ -645,8 +665,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            //leading: const Icon(Icons.note),
-            trailing: const Icon(Icons.arrow_right),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: const Text(
               'Notes',
               style: TextStyle(
@@ -663,8 +682,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            //leading: const Icon(Icons.note),
-            trailing: const Icon(Icons.arrow_right),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: const Text(
               'Dictionary',
               style: TextStyle(
@@ -681,8 +699,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            //leading: const Icon(Icons.search),
-            trailing: const Icon(Icons.arrow_right),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: const Text(
               'Search',
               style: TextStyle(
@@ -699,8 +716,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            //leading: const Icon(Icons.library_books),
-            trailing: const Icon(Icons.arrow_right),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: const Text(
               'Bibles',
               style: TextStyle(
@@ -717,8 +733,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            //leading: const Icon(Icons.colorize_sharp),
-            trailing: const Icon(Icons.arrow_right),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: const Text(
               'Colors',
               style: TextStyle(
@@ -739,8 +754,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            //leading: const Icon(Icons.colorize_sharp),
-            trailing: const Icon(Icons.arrow_right),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: const Text(
               'Text Size',
               style: TextStyle(

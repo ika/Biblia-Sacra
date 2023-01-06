@@ -102,6 +102,7 @@ class _HighLightsPage extends State<HighLightsPage> {
             }
           },
           child: ListTile(
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: Text(
               list[index].title,
               style: const TextStyle(fontWeight: FontWeight.bold),

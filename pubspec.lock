@@ -343,6 +343,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.3"
+  word_selectable_text:
+    dependency: "direct main"
+    description:
+      name: word_selectable_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   xdg_directories:
     dependency: transitive
     description:

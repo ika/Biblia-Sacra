@@ -86,28 +86,28 @@ class NotesPageState extends State<NotesPage> {
     );
   }
 
-  noteChoiceWrapper(BuildContext context, list, int index) {
-    var arr = List.filled(4, '');
-    arr[0] = "VIEW OR EDIT?";
-    arr[1] = "Do you want to go to the verse, or edit the note?";
-    arr[2] = 'GOTO';
-    arr[3] = 'EDIT';
+  // noteChoiceWrapper(BuildContext context, list, int index) {
+  //   var arr = List.filled(4, '');
+  //   arr[0] = "VIEW OR EDIT?";
+  //   arr[1] = "Do you want to go to the verse, or edit the note?";
+  //   arr[2] = 'GOTO';
+  //   arr[3] = 'EDIT';
 
-    _dialogs.confirmDialog(context, arr).then(
-      (value) {
-        if (value == ConfirmAction.accept) {
-          debugPrint('GOTO');
-        } else if (value == ConfirmAction.cancel) {
-          final model = NtModel(
-              id: list[index].id,
-              title: list[index].title,
-              contents: list[index].contents,
-              bid: list[index].bid);
-          _addEditPage(model);
-        }
-      },
-    );
-  }
+  //   _dialogs.confirmDialog(context, arr).then(
+  //     (value) {
+  //       if (value == ConfirmAction.accept) {
+  //         debugPrint('GOTO');
+  //       } else if (value == ConfirmAction.cancel) {
+  //         final model = NtModel(
+  //             id: list[index].id,
+  //             title: list[index].title,
+  //             contents: list[index].contents,
+  //             bid: list[index].bid);
+  //         _addEditPage(model);
+  //       }
+  //     },
+  //   );
+  // }
 
   Widget notesList(list, context) {
     GestureDetector makeListTile(list, int index) => GestureDetector(
@@ -117,7 +117,16 @@ class NotesPageState extends State<NotesPage> {
             }
           },
           child: ListTile(
-            //leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: SizedBox(
+              height: 30,
+              width: 20,
+              child: IconButton(
+                icon: Icon(Icons.arrow_right, color: primarySwatch[700]),
+                onPressed: () {
+                  debugPrint('Icon pressed');
+                },
+              ),
+            ),
             // contentPadding:
             //     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             title: Text(
@@ -126,20 +135,21 @@ class NotesPageState extends State<NotesPage> {
             ),
             subtitle: Text(list[index].contents),
             onTap: () {
-              noteChoiceWrapper(context, list, index);
+              //noteChoiceWrapper(context, list, index);
+              final model = NtModel(
+                  id: list[index].id,
+                  title: list[index].title,
+                  contents: list[index].contents,
+                  bid: list[index].bid);
+              _addEditPage(model);
             },
+            //       const SizedBox(
+            //   height: 20,
+            //   width: 20,
+            //   child: Icon(Icons.notes, size: 18.0),
+            // );
           ),
         );
-
-    // Card makeCard(list, int index) => Card(
-    //       elevation: 8.0,
-    //       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-    //       child: Container(
-    //         decoration:
-    //             BoxDecoration(color: Theme.of(context).colorScheme.primary),
-    //         child: makeListTile(list, index),
-    //       ),
-    //     );
 
     final makeBody = Padding(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
