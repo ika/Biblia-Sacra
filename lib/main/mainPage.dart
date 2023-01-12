@@ -48,6 +48,8 @@ NtQueries _ntQueries = NtQueries();
 VkQueries _vkQueries = VkQueries();
 Dialogs _dialogs = Dialogs();
 
+List<HlModel> highLightList = [];
+
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
 
@@ -64,6 +66,8 @@ class MainPageState extends State<MainPage> {
     pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+
+    getActiveHighLightList();
 
     getActiveVersionsCount();
 
@@ -152,7 +156,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void deleteHighLightWrapper(BuildContext context, int hid, int bid) {
+  void deleteHighLightWrapper(BuildContext context, int bid) {
     var arr = List.filled(4, '');
     arr[0] = "Delete";
     arr[1] = "Do you want to delete this highlight?";
@@ -162,17 +166,12 @@ class MainPageState extends State<MainPage> {
     _dialogs.confirmDialog(context, arr).then(
       (value) {
         if (value == ConfirmAction.accept) {
-          _hlQueries.deleteHighLight(hid).then(
-            (val) {
-              _dbQueries.updateHighlightId(0, bid).then(
-                (val) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(hiLightDeletedSnackBar);
-                  setState(() {});
-                },
-              );
-            },
-          );
+          _hlQueries.deleteHighLight(bid).then((value) {
+            ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
+            setState(() {
+              getActiveHighLightList();
+            });
+          });
         }
       }, //_deleteWrapper,
     );
@@ -266,10 +265,17 @@ class MainPageState extends State<MainPage> {
 
     // hid = highlight insert id
     // bid = bible verse id
-    _dbQueries
-        .updateHighlightId(await _hlQueries.saveHighLight(model), bid)
-        .then((val) {
-      setState(() {});
+    // _dbQueries
+    //     .updateHighlightId(await _hlQueries.saveHighLight(model), bid)
+    //     .then(
+    //   (val) {
+    //     setState(() {});
+    //   },
+    // );
+    _hlQueries.saveHighLight(model).then((value) {
+      setState(() {
+        getActiveHighLightList();
+      });
     });
   }
 
@@ -331,28 +337,22 @@ class MainPageState extends State<MainPage> {
     Navigator.push(context, route);
   }
 
+  bool getHighLightMatch(int bid) {
+    bool match = false;
+    if (highLightList.isNotEmpty) {
+      for (int h = 0; h <= highLightList.length; h++) {
+        if (highLightList.first.bid == bid) {
+          match = true;
+        }
+      }
+    }
+    return match;
+  }
+
   Text selectBackground(snapshot, index) {
-    // if (snapshot.data[index].h != 0) {
-    //   return WordSelectableText(
-    //       selectable: false,
-    //       highlight: true,
-    //       text: "${snapshot.data[index].t}",
-    //       style: TextStyle(
-    //           fontSize: primaryTextSize, backgroundColor: primarySwatch[100]),
-    //       onWordTapped: (word, index) {
-    //         debugPrint(word);
-    //       });
-    // } else {
-    //   return WordSelectableText(
-    //       selectable: false,
-    //       highlight: false,
-    //       text: "${snapshot.data[index].t}",
-    //       style: TextStyle(fontSize: primaryTextSize),
-    //       onWordTapped: (word, index) {
-    //         debugPrint(word);
-    //       });
-    // }
-    if (snapshot.data[index].h != 0) {
+    bool match = getHighLightMatch(snapshot.data[index].id);
+
+    if (match) {
       return Text(
         "${snapshot.data[index].t}",
         style: TextStyle(
@@ -378,7 +378,9 @@ class MainPageState extends State<MainPage> {
               child: Column(
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${snapshot.data[index].v}: '),
+                  (snapshot.data[index].v != 0)
+                      ? Text('${snapshot.data[index].v}: ')
+                      : const Text(' '),
                 ],
               ),
             ),
@@ -443,7 +445,6 @@ class MainPageState extends State<MainPage> {
                                 c: snapshot.data[index].c,
                                 v: snapshot.data[index].v,
                                 t: '',
-                                h: 0,
                                 n: 0,
                                 m: 0);
 
@@ -462,13 +463,12 @@ class MainPageState extends State<MainPage> {
 
                           case 2: // highlight
 
-                            if (snapshot.data[index].h == 0) {
-                              insertHighLight(snapshot.data[index].id);
+                            int bid = snapshot.data[index].id;
+
+                            if (!getHighLightMatch(bid)) {
+                              insertHighLight(bid);
                             } else {
-                              deleteHighLightWrapper(
-                                  context,
-                                  snapshot.data[index].h,
-                                  snapshot.data[index].id);
+                              deleteHighLightWrapper(context, bid);
                             }
 
                             break;
@@ -573,6 +573,10 @@ class MainPageState extends State<MainPage> {
         return const Center(child: CircularProgressIndicator());
       },
     );
+  }
+
+  void getActiveHighLightList() async {
+    highLightList = await _hlQueries.getHighLightList();
   }
 
   void getActiveVersionsCount() async {

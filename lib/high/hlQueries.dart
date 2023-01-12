@@ -28,9 +28,9 @@ class HlQueries {
     );
   }
 
-  Future<int> deleteHighLight(int id) async {
+  Future<int> deleteHighLight(int bid) async {
     final db = await _hlProvider.database;
-    return await db.rawDelete('''DELETE FROM $tableName WHERE id=?''', [id]);
+    return await db.rawDelete('''DELETE FROM $tableName WHERE bid=?''', [bid]);
   }
 
   Future<List<HlModel>> getHighLightList() async {
