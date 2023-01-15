@@ -36,11 +36,11 @@ class NtQueries {
     return list;
   }
 
-  Future<List<NtModel>> getNoteById(int id) async {
+  Future<List<NtModel>> getNoteByBid(int bid) async {
     final db = await _ntProvider.database;
 
     var res =
-        await db.rawQuery('''SELECT * FROM $tableName WHERE id=?''', [id]);
+        await db.rawQuery('''SELECT * FROM $tableName WHERE bid=?''', [bid]);
 
     List<NtModel> list = res.isNotEmpty
         ? res.map((tableName) => NtModel.fromJson(tableName)).toList()

@@ -21,6 +21,7 @@ import 'package:bibliasacra/main/textsize/textsize.dart';
 import 'package:bibliasacra/notes/edit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
+import 'package:bibliasacra/notes/nlist.dart';
 import 'package:bibliasacra/notes/notes.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
@@ -31,7 +32,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:word_selectable_text/word_selectable_text.dart';
+//import 'package:word_selectable_text/word_selectable_text.dart';
 
 PageController pageController;
 ItemScrollController initialScrollController;
@@ -46,9 +47,11 @@ BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
 NtQueries _ntQueries = NtQueries();
 VkQueries _vkQueries = VkQueries();
+NotesList _notesList = NotesList();
 Dialogs _dialogs = Dialogs();
 
 List<HlModel> highLightList = [];
+//List<NtModel> notesList = [];
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
@@ -69,6 +72,8 @@ class MainPageState extends State<MainPage> {
 
     getActiveHighLightList();
 
+    //getActiveNotesList();
+
     getActiveVersionsCount();
 
     if (Globals.scrollToVerse) {
@@ -85,7 +90,7 @@ class MainPageState extends State<MainPage> {
   }
 
   SnackBar textCopiedSnackBar = const SnackBar(
-    content: Text('Text Copied!'),
+    content: Text('Text Copied'),
   );
 
   SnackBar moreVersionsSnackBar = const SnackBar(
@@ -93,7 +98,7 @@ class MainPageState extends State<MainPage> {
   );
 
   SnackBar bookMarkSnackBar = const SnackBar(
-    content: Text('Book Mark Saved!'),
+    content: Text('Book Mark Saved'),
   );
 
   SnackBar hiLightDeletedSnackBar = const SnackBar(
@@ -102,6 +107,10 @@ class MainPageState extends State<MainPage> {
 
   SnackBar errorSnackBar = const SnackBar(
     content: Text('Error occured!'),
+  );
+
+  SnackBar noteEditSnackBar = const SnackBar(
+    content: Text('Tap the Icon to Edit the Note!'),
   );
 
   Future<void> scrollToIndex() async {
@@ -279,33 +288,73 @@ class MainPageState extends State<MainPage> {
     });
   }
 
-  saveAndGotoNote(NtModel model) async {
-    int noteid;
-    _dbQueries
-        .updateNoteId(noteid = await _ntQueries.insertNote(model), model.bid)
-        .then((value) {
-      final mod = NtModel(
-        id: noteid,
-        title: model.title,
-        contents: model.contents,
-        bid: model.bid,
-      );
-      Route route = MaterialPageRoute(
-        builder: (context) => EditNotePage(model: mod),
-      );
-      Navigator.push(context, route).then(
-        (value) {
-          setState(() {});
-        },
-      );
+  // saveAndGotoNote(NtModel model) async {
+  //   int noteid;
+  //   _dbQueries
+  //       .updateNoteId(noteid = await _ntQueries.insertNote(model), model.bid)
+  //       .then((value) {
+  //     final mod = NtModel(
+  //       id: noteid,
+  //       title: model.title,
+  //       contents: model.contents,
+  //       bid: model.bid,
+  //     );
+  //     Route route = MaterialPageRoute(
+  //       builder: (context) => EditNotePage(model: mod),
+  //     );
+  //     Navigator.push(context, route).then(
+  //       (value) {
+  //         setState(() {});
+  //       },
+  //     );
+  //   });
+  // }
+
+  // void saveNote(NtModel model) async {
+  //   _ntQueries.insertNote(model).then((noteid) {
+  //     setState(() {
+  //       getActiveNotesList();
+  //     });
+  //   });
+  // }
+
+  void saveNote(int bid) {
+    List<String> stringTitle = [
+      Globals.versionAbbr,
+      ' ',
+      Globals.bookName,
+      ' ',
+      '${Globals.bookChapter}',
+      ':',
+      '${Globals.verseNumber}'
+    ];
+
+    final model = NtModel(
+        title: stringTitle.join(),
+        contents: Globals.verseText,
+        lang: Globals.bibleLang,
+        version: Globals.bibleVersion,
+        abbr: Globals.versionAbbr,
+        book: Globals.bibleBook,
+        chapter: Globals.bookChapter,
+        verse: Globals.verseNumber,
+        name: Globals.bookName,
+        bid: bid);
+    _ntQueries.insertNote(model).then((noteid) {
+      setState(() {
+        _notesList.updateActiveNotesList();
+      });
     });
   }
 
-  gotoEditNote(NtModel model) {
+  void gotoEditNote(NtModel model) {
     Route route = MaterialPageRoute(
       builder: (context) => EditNotePage(model: model),
     );
-    Navigator.push(context, route);
+    Navigator.push(context, route).then((value) {
+      setState(() {
+      });
+    });
   }
 
   // void delayedsetState() {
@@ -317,17 +366,20 @@ class MainPageState extends State<MainPage> {
   //   );
   // }
 
-  Future<NtModel> getNote(int id) async {
-    NtModel model = await _ntQueries.getNoteById(id).then((vars) {
-      final model = NtModel(
-        id: vars[0].id, // notes id
-        title: vars[0].title,
-        contents: vars[0].contents,
-        bid: vars[0].bid, // bible id
-      );
+  Future<NtModel> getNoteModel(int bid) async {
+    NtModel model =
+        NtModel(id: 0, title: 'no title', contents: 'not contents', bid: bid);
+    List<NtModel> vars = await _ntQueries.getNoteByBid(bid);
+    if ((vars.isNotEmpty)) {
+      return NtModel(
+          id: vars[0].id, // notes id
+          title: vars[0].title,
+          contents: vars[0].contents,
+          bid: vars[0].bid // bible id
+          );
+    } else {
       return model;
-    });
-    return model;
+    }
   }
 
   gotoCompare(Bible model) async {
@@ -337,11 +389,11 @@ class MainPageState extends State<MainPage> {
     Navigator.push(context, route);
   }
 
-  bool getHighLightMatch(int bid) {
+  bool getNotesMatch(int bid) {
     bool match = false;
-    if (highLightList.isNotEmpty) {
-      for (int h = 0; h <= highLightList.length; h++) {
-        if (highLightList.first.bid == bid) {
+    if (NotesList.notesList.isNotEmpty) {
+      for (int n = 0; n < NotesList.notesList.length; n++) {
+        if (NotesList.notesList[n].bid == bid) {
           match = true;
         }
       }
@@ -349,24 +401,19 @@ class MainPageState extends State<MainPage> {
     return match;
   }
 
-  Text selectBackground(snapshot, index) {
-    bool match = getHighLightMatch(snapshot.data[index].id);
-
-    if (match) {
-      return Text(
-        "${snapshot.data[index].t}",
-        style: TextStyle(
-            fontSize: primaryTextSize, backgroundColor: primarySwatch[100]),
-      );
-    } else {
-      return Text(
-        "${snapshot.data[index].t}",
-        style: TextStyle(fontSize: primaryTextSize),
-      );
+  bool getHighLightMatch(int bid) {
+    bool match = false;
+    if (highLightList.isNotEmpty) {
+      for (int h = 0; h < highLightList.length; h++) {
+        if (highLightList[h].bid == bid) {
+          match = true;
+        }
+      }
     }
+    return match;
   }
 
-  showVerse(snapshot, index) {
+  Container showVerse(snapshot, index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 6.0),
       child: IntrinsicHeight(
@@ -390,7 +437,17 @@ class MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Wrap(
-                    children: [selectBackground(snapshot, index)],
+                    children: [
+                      Text(
+                        "${snapshot.data[index].t}",
+                        style: TextStyle(
+                            fontSize: primaryTextSize,
+                            backgroundColor:
+                                (getHighLightMatch(snapshot.data[index].id))
+                                    ? primarySwatch[100]
+                                    : null),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -403,20 +460,23 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  showNoteIcon(snapshot, index) {
-    if (snapshot.data[index].n != 0) {
+  SizedBox showNoteIcon(snapshot, index) {
+    if (getNotesMatch(snapshot.data[index].id)) {
+      // bid
       return SizedBox(
         height: 30,
         width: 20,
         child: IconButton(
           icon: Icon(Icons.notes, color: primarySwatch[700]),
-          onPressed: () {
-            debugPrint('Icon pressed');
-          },
+          onPressed: () => getNoteModel(snapshot.data[index].id).then(
+            (model) {
+              gotoEditNote(model);
+            },
+          ),
         ),
       );
     } else {
-      return const SizedBox(height: 0, width: 0);
+      return const SizedBox(height: 10, width: 10);
     }
   }
 
@@ -465,43 +525,42 @@ class MainPageState extends State<MainPage> {
 
                             int bid = snapshot.data[index].id;
 
-                            if (!getHighLightMatch(bid)) {
-                              insertHighLight(bid);
-                            } else {
-                              deleteHighLightWrapper(context, bid);
-                            }
+                            (!getHighLightMatch(bid))
+                                ? insertHighLight(bid)
+                                : deleteHighLightWrapper(context, bid);
 
                             break;
 
                           case 3: // notes
 
-                            if (snapshot.data[index].n == 0) {
-                              final buffer = <String>[
-                                Globals.versionAbbr,
-                                ' ',
-                                Globals.bookName,
-                                ' ',
-                                snapshot.data[index].c.toString(),
-                                ':',
-                                snapshot.data[index].v.toString()
-                              ];
+                            int bid = snapshot.data[index].id;
 
-                              final sb = StringBuffer();
-                              sb.writeAll(buffer);
+                            if (!getNotesMatch(bid)) {
+                              // final buffer = <String>[
+                              //   Globals.versionAbbr,
+                              //   ' ',
+                              //   Globals.bookName,
+                              //   ' ',
+                              //   snapshot.data[index].c.toString(),
+                              //   ':',
+                              //   snapshot.data[index].v.toString()
+                              // ];
 
-                              final model = NtModel(
-                                  id: null,
-                                  title: sb.toString(),
-                                  contents: snapshot.data[index].t,
-                                  bid: snapshot.data[index].id // bible id
-                                  );
-                              saveAndGotoNote(model);
+                              // final sb = StringBuffer();
+                              // sb.writeAll(buffer);
+
+                              // final model = NtModel(
+                              //     id: null,
+                              //     version: Globals.bibleVersion,
+                              //     lang: Globals.bibleLang,
+                              //     title: sb.toString(),
+                              //     contents: snapshot.data[index].t,
+                              //     bid: bid // bible id
+                              //     );
+                              saveNote(bid);
                             } else {
-                              getNote(snapshot.data[index].n).then(
-                                (model) {
-                                  gotoEditNote(model);
-                                },
-                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(noteEditSnackBar);
                             }
 
                             break;
@@ -539,11 +598,9 @@ class MainPageState extends State<MainPage> {
 
   List<Widget> chapterCountFunc(int book, int chapterCount) {
     List<Widget> pagesList = [];
-
     for (int ch = 1; ch <= chapterCount; ch++) {
       pagesList.add(showListView(book, ch));
     }
-
     return pagesList;
   }
 
@@ -578,6 +635,10 @@ class MainPageState extends State<MainPage> {
   void getActiveHighLightList() async {
     highLightList = await _hlQueries.getHighLightList();
   }
+
+  // void getActiveNotesList() async {
+  //   notesList = await _ntQueries.getAllNotes();
+  // }
 
   void getActiveVersionsCount() async {
     activeVersionsCount = await _vkQueries.getActiveVersionCount();

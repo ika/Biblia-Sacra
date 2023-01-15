@@ -111,18 +111,18 @@ class DbQueries {
   }
 
 // returns number of affected rows
-  Future<int> updateHighlightId(int h, int id) async {
-    final db = await _dbProvider.database;
+  // Future<int> updateHighlightId(int h, int id) async {
+  //   final db = await _dbProvider.database;
 
-    return await db.rawUpdate('''UPDATE $tableName SET h=? WHERE id=?''',
-        [h, id]); // highlight id and bible verse id
-  }
+  //   return await db.rawUpdate('''UPDATE $tableName SET h=? WHERE id=?''',
+  //       [h, id]); // highlight id and bible verse id
+  // }
 
   // returns number of affected rows
-  Future<int> updateNoteId(int n, int id) async {
-    final db = await _dbProvider.database;
+  // Future<int> updateNoteId(int n, int id) async {
+  //   final db = await _dbProvider.database;
 
-    return await db.rawUpdate('''UPDATE $tableName SET n=? WHERE id=?''',
-        [n, id]); // note id and bible verse id
-  }
+  //   return await db.rawUpdate('''UPDATE $tableName SET n=? WHERE id=?''',
+  //       [n, id]); // note id and bible verse id
+  // }
 }

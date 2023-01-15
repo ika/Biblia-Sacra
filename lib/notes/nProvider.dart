@@ -31,11 +31,18 @@ class NtProvider {
       onOpen: (db) async {},
       onCreate: (Database db, int version) async {
         // Create the note table
-        await db.execute('''
-                CREATE TABLE $_tableName(
+         await db.execute('''
+                CREATE TABLE IF NOT EXISTS $_tableName (
                     id INTEGER PRIMARY KEY,
                     title TEXT DEFAULT '',
                     contents TEXT DEFAULT '',
+                    lang TEXT DEFAULT '',
+                    version INTEGER DEFAULT 0,
+                    abbr TEXT DEFAULT '',
+                    book INTEGER DEFAULT 0,
+                    chapter INTEGER DEFAULT 0,
+                    verse INTEGER DEFAULT 0,
+                    name TEXT DEFAULT '',
                     bid INTEGER DEFAULT 0
                 )
             ''');

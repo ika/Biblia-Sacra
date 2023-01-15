@@ -1,13 +1,17 @@
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
+import 'package:bibliasacra/notes/nlist.dart';
+import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 NtQueries _ntQueries = NtQueries();
 Utilities _utilities = Utilities();
+Dialogs _dialogs = Dialogs();
+NotesList _notesList = NotesList();
 
 int id;
 int bid;
@@ -41,7 +45,7 @@ class _EditNotePageState extends State<EditNotePage> {
 
     _titleController.addListener(handleOnChange);
     _contentsController.addListener(handleOnChange);
-        super.initState();
+    super.initState();
   }
 
   @override
@@ -93,40 +97,47 @@ class _EditNotePageState extends State<EditNotePage> {
   //   );
   // }
 
-  // backPopButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 200),
-  //     () {
-  //       Navigator.pop(context);
-  //     },
+  delayedSnackbar() {
+    Future.delayed(
+      const Duration(milliseconds: 400),
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
+      },
+    );
+  }
+
+  // backButton(BuildContext context) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => const MainPage(),
+  //     ),
   //   );
   // }
 
-  // deleteWrapper(BuildContext context) {
-  //   var arr = List.filled(4, '');
-  //   arr[0] = "DELETE?";
-  //   arr[1] = "Do you want to delete this note?";
-  //   arr[2] = 'YES';
-  //   arr[3] = 'NO';
+  deleteWrapper(BuildContext context) {
+    var arr = List.filled(4, '');
+    arr[0] = "DELETE?";
+    arr[1] = "Do you want to delete this note?";
+    arr[2] = 'YES';
+    arr[3] = 'NO';
 
-  //   _dialogs.confirmDialog(context, arr).then(
-  //     (value) {
-  //       if (value == ConfirmAction.accept) {
-  //         //debugPrint("PRESSES $value NOTEID $id BID $bid");
-  //         _ntQueries.deleteNote(id).then(
-  //           (value) {
-  //             _dbQueries.updateNoteId(0, bid).then((value) {
-  //               _titleController.text = '';
-  //               _contentsController.text = '';
-  //               ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-  //               backButton(context);
-  //             });
-  //           },
-  //         );
-  //       }
-  //     }, //_deleteWrapper,
-  //   );
-  // }
+    _dialogs.confirmDialog(context, arr).then(
+      (value) {
+        if (value == ConfirmAction.accept) {
+          //debugPrint("PRESSES $value NOTEID $id BID $bid");
+          _ntQueries.deleteNote(id).then(
+            (value) {
+              //backButton(context);
+              _notesList.updateActiveNotesList();
+              Navigator.pop(context);
+              //delayedSnackbar();
+            },
+          );
+        }
+      }, //_deleteWrapper,
+    );
+  }
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -135,14 +146,14 @@ class _EditNotePageState extends State<EditNotePage> {
           appBar: AppBar(
             //backgroundColor: primarySwatch[700],
             title: Text(noteFunction),
-            // actions: [
-            //   IconButton(
-            //     icon: const Icon(Icons.delete),
-            //     onPressed: () {
-            //       deleteWrapper(context);
-            //     },
-            //   )
-            // ],
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  deleteWrapper(context);
+                },
+              )
+            ],
           ),
           body: Container(
             padding: const EdgeInsets.all(20.0),

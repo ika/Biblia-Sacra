@@ -79,14 +79,10 @@ class _HighLightsPage extends State<HighLightsPage> {
     _dialogs.confirmDialog(context, arr).then(
       (value) {
         if (value == ConfirmAction.accept) {
-          _hlQueries.deleteHighLight(list[index].id).then(
-            (val) {
-              _dbQueries.updateHighlightId(0, list[index].bid).then(
-                (val) {
-                  ScaffoldMessenger.of(context).showSnackBar(hlDeletedSnackBar);
-                  setState(() {});
-                },
-              );
+          _hlQueries.deleteHighLight(list[index].bid).then(
+            (value) {
+              ScaffoldMessenger.of(context).showSnackBar(hlDeletedSnackBar);
+              setState(() {});
             },
           );
         }
