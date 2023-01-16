@@ -1,8 +1,8 @@
 import 'package:bibliasacra/cubit/paletteCubit.dart';
-import 'package:bibliasacra/main/mainPage.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
-import 'package:bibliasacra/notes/nlist.dart';
+import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 NtQueries _ntQueries = NtQueries();
 Utilities _utilities = Utilities();
 Dialogs _dialogs = Dialogs();
-NotesList _notesList = NotesList();
+GetLists _lists = GetLists();
 
 int id;
 int bid;
@@ -59,7 +59,7 @@ class _EditNotePageState extends State<EditNotePage> {
     (id == null) ? saveEdit() : updateEdit();
   }
 
-  saveEdit() async {
+  void saveEdit() async {
     id = await _ntQueries.insertNote(
       NtModel(
           title: _utilities.reduceLength(35, _titleController.text),
@@ -68,7 +68,7 @@ class _EditNotePageState extends State<EditNotePage> {
     ); // populate 'id' so that it is not saved more than once
   }
 
-  updateEdit() async {
+  void updateEdit() async {
     await _ntQueries.updateNote(
       NtModel(
           id: id,
@@ -129,7 +129,7 @@ class _EditNotePageState extends State<EditNotePage> {
           _ntQueries.deleteNote(id).then(
             (value) {
               //backButton(context);
-              _notesList.updateActiveNotesList();
+              _lists.updateActiveLists('notes',Globals.bibleVersion);
               Navigator.pop(context);
               //delayedSnackbar();
             },

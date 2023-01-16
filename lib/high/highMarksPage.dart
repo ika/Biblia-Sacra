@@ -4,17 +4,17 @@ import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/high/hlModel.dart';
 import 'package:bibliasacra/high/hlQueries.dart';
-import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
+import 'package:bibliasacra/utils/getlists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Highlights
 
 HlQueries _hlQueries = HlQueries();
-DbQueries _dbQueries = DbQueries();
 Dialogs _dialogs = Dialogs();
+GetLists _lists = GetLists();
 MaterialColor primarySwatch;
 
 class HighLightsPage extends StatefulWidget {
@@ -60,6 +60,7 @@ class _HighLightsPage extends State<HighLightsPage> {
   onHilightTap(WriteVarsModel model) {
     Globals.scrollToVerse = true;
     Globals.initialScroll = true;
+    _lists.updateActiveLists('highs',model.version);
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -82,6 +83,7 @@ class _HighLightsPage extends State<HighLightsPage> {
           _hlQueries.deleteHighLight(list[index].bid).then(
             (value) {
               ScaffoldMessenger.of(context).showSnackBar(hlDeletedSnackBar);
+              _lists.updateActiveLists('highs',list[index].version);
               setState(() {});
             },
           );

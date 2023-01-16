@@ -45,4 +45,17 @@ class HlQueries {
 
     return list;
   }
+
+    Future<List<HlModel>> getHighVersionList(int v) async {
+    final db = await _hlProvider.database;
+
+    var res =
+        await db.rawQuery('''SELECT * FROM $tableName WHERE version=?''', [v]);
+
+    List<HlModel> list = res.isNotEmpty
+        ? res.map((tableName) => HlModel.fromJson(tableName)).toList()
+        : [];
+
+    return list;
+  }
 }

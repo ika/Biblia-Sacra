@@ -1,10 +1,10 @@
-import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/searchCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
+import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 SharedPrefs _sharedPrefs = SharedPrefs();
 Utilities utilities = Utilities();
+GetLists _lists = GetLists();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,7 @@ Future<void> main() async {
     _sharedPrefs.readVersion().then(
       (a) {
         Globals.bibleVersion = a;
+        _lists.updateActiveLists('all', a);
         // language
         _sharedPrefs.readLang().then(
           (b) {

@@ -23,7 +23,20 @@ class NtQueries {
         where: 'id=?', whereArgs: [model.id]);
   }
 
-  Future<List<NtModel>> getAllNotes() async {
+  Future<List<NtModel>> getAllVersionNotes(int v) async {
+    final db = await _ntProvider.database;
+
+    var res =
+        await db.rawQuery('''SELECT * FROM $tableName WHERE version=?''', [v]);
+
+    List<NtModel> list = res.isNotEmpty
+        ? res.map((tableName) => NtModel.fromJson(tableName)).toList()
+        : [];
+
+    return list;
+  }
+
+    Future<List<NtModel>> getAllNotes() async {
     final db = await _ntProvider.database;
 
     var res =

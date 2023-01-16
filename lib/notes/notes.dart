@@ -3,19 +3,18 @@ import 'dart:async';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/globals/write.dart';
-import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/notes/edit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
-import 'package:bibliasacra/notes/nlist.dart';
+import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
-DbQueries _dbQueries = DbQueries();
-NotesList _notesList = NotesList();
+//DbQueries _dbQueries = DbQueries();
+GetLists _lists = GetLists();
 Dialogs _dialogs = Dialogs();
 
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
@@ -69,6 +68,7 @@ class NotesPageState extends State<NotesPage> {
   onIconButtonPress(WriteVarsModel model) {
     Globals.scrollToVerse = true;
     Globals.initialScroll = true;
+    _lists.updateActiveLists('notes',model.version);
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -85,7 +85,7 @@ class NotesPageState extends State<NotesPage> {
       if (value == ConfirmAction.accept) {
         _ntQueries.deleteNote(list[index].id).then((value) {
           //ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-          _notesList.updateActiveNotesList();
+          _lists.updateActiveLists('notes',Globals.bibleVersion);
           setState(() {});
         });
       }

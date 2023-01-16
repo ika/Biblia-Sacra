@@ -12,7 +12,7 @@ class DbQueries {
   final String tableName = 'bible';
 
   DbQueries() {
-    final mod = Bible(id: 0, b: 0, c: 0, v: 0, t: ' ', n: 0, m: 0);
+    final mod = Bible(id: 0, b: 0, c: 0, v: 0, t: ' ', m: 0);
     for (int l = 1; l <= 10; l++) {
       emptyList.add(mod);
     }
@@ -40,7 +40,7 @@ class DbQueries {
 
     List<Bible> returnList = [];
     final defList = Bible(
-        id: 0, b: 0, c: chap, v: verse, t: 'Verse not found', n: 0, m: 0);
+        id: 0, b: 0, c: chap, v: verse, t: 'Verse not found', m: 0);
     returnList.add(defList);
 
     var res = await db.rawQuery(
@@ -74,7 +74,6 @@ class DbQueries {
         c: 0,
         v: 0,
         t: 'Search returned no results.',
-        n: 0,
         m: 0);
 
     returnList.add(mod);

@@ -6,10 +6,9 @@ class Bible {
   int c; // chapter
   int v; // verse
   String t; // text
-  int n; // note
   int m; // bookmark
 
-  Bible({this.id, this.b, this.c, this.v, this.t, this.n, this.m});
+  Bible({this.id, this.b, this.c, this.v, this.t, this.m});
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -17,7 +16,6 @@ class Bible {
         'c': c,
         'v': v,
         't': t,
-        'n': n,
         'm': m,
       };
 
@@ -27,7 +25,6 @@ class Bible {
         c: json['c'],
         v: json['v'],
         t: json['t'],
-        n: json['n'],
         m: json['m'],
       );
 }

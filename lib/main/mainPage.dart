@@ -21,7 +21,7 @@ import 'package:bibliasacra/main/textsize/textsize.dart';
 import 'package:bibliasacra/notes/edit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
-import 'package:bibliasacra/notes/nlist.dart';
+import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/notes/notes.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
@@ -47,11 +47,8 @@ BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
 NtQueries _ntQueries = NtQueries();
 VkQueries _vkQueries = VkQueries();
-NotesList _notesList = NotesList();
+GetLists _lists = GetLists();
 Dialogs _dialogs = Dialogs();
-
-List<HlModel> highLightList = [];
-//List<NtModel> notesList = [];
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
@@ -69,10 +66,6 @@ class MainPageState extends State<MainPage> {
     pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
-
-    getActiveHighLightList();
-
-    //getActiveNotesList();
 
     getActiveVersionsCount();
 
@@ -178,7 +171,7 @@ class MainPageState extends State<MainPage> {
           _hlQueries.deleteHighLight(bid).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
             setState(() {
-              getActiveHighLightList();
+              _lists.updateActiveLists('highs',Globals.bibleVersion);
             });
           });
         }
@@ -283,7 +276,7 @@ class MainPageState extends State<MainPage> {
     // );
     _hlQueries.saveHighLight(model).then((value) {
       setState(() {
-        getActiveHighLightList();
+        _lists.updateActiveLists('highs',Globals.bibleVersion);
       });
     });
   }
@@ -342,7 +335,7 @@ class MainPageState extends State<MainPage> {
         bid: bid);
     _ntQueries.insertNote(model).then((noteid) {
       setState(() {
-        _notesList.updateActiveNotesList();
+        _lists.updateActiveLists('notes',Globals.bibleVersion);
       });
     });
   }
@@ -352,8 +345,7 @@ class MainPageState extends State<MainPage> {
       builder: (context) => EditNotePage(model: model),
     );
     Navigator.push(context, route).then((value) {
-      setState(() {
-      });
+      setState(() {});
     });
   }
 
@@ -391,9 +383,9 @@ class MainPageState extends State<MainPage> {
 
   bool getNotesMatch(int bid) {
     bool match = false;
-    if (NotesList.notesList.isNotEmpty) {
-      for (int n = 0; n < NotesList.notesList.length; n++) {
-        if (NotesList.notesList[n].bid == bid) {
+    if (GetLists.notesList.isNotEmpty) {
+      for (int n = 0; n < GetLists.notesList.length; n++) {
+        if (GetLists.notesList[n].bid == bid) {
           match = true;
         }
       }
@@ -403,9 +395,9 @@ class MainPageState extends State<MainPage> {
 
   bool getHighLightMatch(int bid) {
     bool match = false;
-    if (highLightList.isNotEmpty) {
-      for (int h = 0; h < highLightList.length; h++) {
-        if (highLightList[h].bid == bid) {
+    if (GetLists.highsList.isNotEmpty) {
+      for (int h = 0; h < GetLists.highsList.length; h++) {
+        if (GetLists.highsList[h].bid == bid) {
           match = true;
         }
       }
@@ -505,7 +497,6 @@ class MainPageState extends State<MainPage> {
                                 c: snapshot.data[index].c,
                                 v: snapshot.data[index].v,
                                 t: '',
-                                n: 0,
                                 m: 0);
 
                             (activeVersionsCount > 1)
@@ -632,9 +623,9 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void getActiveHighLightList() async {
-    highLightList = await _hlQueries.getHighLightList();
-  }
+  // void getActiveHighLightList() async {
+  //   highLightList = await _hlQueries.getHighLightList();
+  // }
 
   // void getActiveNotesList() async {
   //   notesList = await _ntQueries.getAllNotes();

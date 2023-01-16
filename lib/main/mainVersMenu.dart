@@ -1,5 +1,6 @@
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
+import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/vers/vkModel.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:bibliasacra/vers/vkQueries.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 
 VkQueries _vkQueries = VkQueries(); // version key
 SharedPrefs sharedPrefs = SharedPrefs();
+GetLists _lists = GetLists();
 
 Future<dynamic> versionsDialog(BuildContext context) {
   return showDialog(
@@ -84,6 +86,8 @@ class AppBarVersions extends StatelessWidget {
                 sharedPrefs.saveVersion(Globals.bibleVersion);
                 sharedPrefs.saveVerAbbr(Globals.versionAbbr);
 
+                _lists.updateActiveLists('all',Globals.bibleVersion);
+
                 sharedPrefs.readBookName(Globals.bibleBook).then(
                   (value) {
                     Globals.bookName = value;
@@ -91,7 +95,7 @@ class AppBarVersions extends StatelessWidget {
                     versionChangeSnackBar(context, snapshot.data[index].m);
                   },
                 );
-                
+
                 backButton(context);
               },
             );
