@@ -25,6 +25,7 @@ import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/notes/notes.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
+import 'package:bibliasacra/utils/snackbars.dart';
 import 'package:bibliasacra/vers/versionsPage.dart';
 import 'package:bibliasacra/main/mainCompare.dart';
 import 'package:bibliasacra/vers/vkQueries.dart';
@@ -82,30 +83,6 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  SnackBar textCopiedSnackBar = const SnackBar(
-    content: Text('Text Copied'),
-  );
-
-  SnackBar moreVersionsSnackBar = const SnackBar(
-    content: Text('Activate more Bible versions!'),
-  );
-
-  SnackBar bookMarkSnackBar = const SnackBar(
-    content: Text('Book Mark Saved'),
-  );
-
-  SnackBar hiLightDeletedSnackBar = const SnackBar(
-    content: Text('Highlight deleted'),
-  );
-
-  SnackBar errorSnackBar = const SnackBar(
-    content: Text('Error occured!'),
-  );
-
-  SnackBar noteEditSnackBar = const SnackBar(
-    content: Text('Tap the Icon to Edit the Note!'),
-  );
-
   Future<void> scrollToIndex() async {
     Future.delayed(
       const Duration(milliseconds: 500),
@@ -142,43 +119,6 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  void exitWrapper(context) {
-    var arr = List.filled(4, '');
-    arr[0] = "Exit";
-    arr[1] = "Are you sure you want to exit?";
-    arr[2] = 'YES';
-    arr[3] = 'NO';
-
-    _dialogs.confirmDialog(context, arr).then(
-      (value) {
-        if (value == ConfirmAction.accept) {
-          SystemNavigator.pop();
-        }
-      }, //_deleteWrapper,
-    );
-  }
-
-  void deleteHighLightWrapper(BuildContext context, int bid) {
-    var arr = List.filled(4, '');
-    arr[0] = "Delete";
-    arr[1] = "Do you want to delete this highlight?";
-    arr[2] = 'YES';
-    arr[3] = 'NO';
-
-    _dialogs.confirmDialog(context, arr).then(
-      (value) {
-        if (value == ConfirmAction.accept) {
-          _hlQueries.deleteHighLight(bid).then((value) {
-            ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
-            setState(() {
-              _lists.updateActiveLists('highs',Globals.bibleVersion);
-            });
-          });
-        }
-      }, //_deleteWrapper,
-    );
-  }
-
   void copyVerseWrapper(context, snapshot, index) {
     var arr = List.filled(4, '');
     arr[0] = "Copy";
@@ -208,6 +148,43 @@ class MainPageState extends State<MainPage> {
             ClipboardData(text: sb.toString()),
           ).then((_) {
             ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
+          });
+        }
+      }, //_deleteWrapper,
+    );
+  }
+
+  void exitWrapper(context) {
+    var arr = List.filled(4, '');
+    arr[0] = "Exit";
+    arr[1] = "Are you sure you want to exit?";
+    arr[2] = 'YES';
+    arr[3] = 'NO';
+
+    _dialogs.confirmDialog(context, arr).then(
+      (value) {
+        if (value == ConfirmAction.accept) {
+          SystemNavigator.pop();
+        }
+      },
+    );
+  }
+
+  void deleteHighLightWrapper(BuildContext context, int bid) {
+    var arr = List.filled(4, '');
+    arr[0] = "Delete";
+    arr[1] = "Do you want to delete this highlight?";
+    arr[2] = 'YES';
+    arr[3] = 'NO';
+
+    _dialogs.confirmDialog(context, arr).then(
+      (value) {
+        if (value == ConfirmAction.accept) {
+          _hlQueries.deleteHighLight(bid).then((value) {
+            ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
+            setState(() {
+              _lists.updateActiveLists('highs', Globals.bibleVersion);
+            });
           });
         }
       }, //_deleteWrapper,
@@ -265,51 +242,12 @@ class MainPageState extends State<MainPage> {
         name: Globals.bookName,
         bid: bid);
 
-    // hid = highlight insert id
-    // bid = bible verse id
-    // _dbQueries
-    //     .updateHighlightId(await _hlQueries.saveHighLight(model), bid)
-    //     .then(
-    //   (val) {
-    //     setState(() {});
-    //   },
-    // );
     _hlQueries.saveHighLight(model).then((value) {
       setState(() {
-        _lists.updateActiveLists('highs',Globals.bibleVersion);
+        _lists.updateActiveLists('highs', Globals.bibleVersion);
       });
     });
   }
-
-  // saveAndGotoNote(NtModel model) async {
-  //   int noteid;
-  //   _dbQueries
-  //       .updateNoteId(noteid = await _ntQueries.insertNote(model), model.bid)
-  //       .then((value) {
-  //     final mod = NtModel(
-  //       id: noteid,
-  //       title: model.title,
-  //       contents: model.contents,
-  //       bid: model.bid,
-  //     );
-  //     Route route = MaterialPageRoute(
-  //       builder: (context) => EditNotePage(model: mod),
-  //     );
-  //     Navigator.push(context, route).then(
-  //       (value) {
-  //         setState(() {});
-  //       },
-  //     );
-  //   });
-  // }
-
-  // void saveNote(NtModel model) async {
-  //   _ntQueries.insertNote(model).then((noteid) {
-  //     setState(() {
-  //       getActiveNotesList();
-  //     });
-  //   });
-  // }
 
   void saveNote(int bid) {
     List<String> stringTitle = [
@@ -335,7 +273,7 @@ class MainPageState extends State<MainPage> {
         bid: bid);
     _ntQueries.insertNote(model).then((noteid) {
       setState(() {
-        _lists.updateActiveLists('notes',Globals.bibleVersion);
+        _lists.updateActiveLists('notes', Globals.bibleVersion);
       });
     });
   }
@@ -374,7 +312,7 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  gotoCompare(Bible model) async {
+  void gotoCompare(Bible model) async {
     Route route = MaterialPageRoute(
       builder: (context) => ComparePage(model: model),
     );
@@ -405,50 +343,90 @@ class MainPageState extends State<MainPage> {
     return match;
   }
 
-  Container showVerse(snapshot, index) {
+  // Expanded(
+  //   flex: 1,
+  //   child: Column(
+  //     children: [
+  //       (snapshot.data[index].v != 0)
+  //           ? Text(
+  //               '${snapshot.data[index].v}:',
+  //               style: TextStyle(fontSize: primaryTextSize),
+  //             )
+  //           : const Text(' '),
+  //     ],
+  //   ),
+  // ),
+
+  Widget dicVerseText(snapshot, index) {
+    if (snapshot.data[index].v != 0) {
+      return Text("${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+          style: TextStyle(fontSize: primaryTextSize));
+    } else {
+      return const Text('  ');
+    }
+  }
+
+  Widget dictionaryMode(snapshot, index) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 6.0),
-      child: IntrinsicHeight(
-        child: Row(
-          //crossAxisAlignment: CrossAxisAlignment.stretch, not sure if this is necessary
-          children: [
-            Expanded(
-              flex: 1,
-              child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  (snapshot.data[index].v != 0)
-                      ? Text('${snapshot.data[index].v}: ')
-                      : const Text(' '),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 9,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    children: [
-                      Text(
-                        "${snapshot.data[index].t}",
-                        style: TextStyle(
-                            fontSize: primaryTextSize,
-                            backgroundColor:
-                                (getHighLightMatch(snapshot.data[index].id))
-                                    ? primarySwatch[100]
-                                    : null),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              //),
-            ),
-            showNoteIcon(snapshot, index)
-          ],
-        ),
+      margin: const EdgeInsets.only(left: 5, bottom: 6.0),
+      child: Row(
+        children: [
+          Wrap(
+            children: [dicVerseText(snapshot, index)],
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget norVerseText(snapshot, index) {
+    if (snapshot.data[index].v != 0) {
+      return Text("${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+          style: TextStyle(
+              fontSize: primaryTextSize,
+              backgroundColor: (getHighLightMatch(snapshot.data[index].id))
+                  ? primarySwatch[100]
+                  : null));
+    } else {
+      return const Text('  ');
+    }
+  }
+
+  Widget normalModeContainer(snapshot, index) {
+    return Container(
+      margin: const EdgeInsets.only(left: 5, bottom: 6.0),
+      child: Row(
+        children: [
+          Wrap(
+            children: [
+              norVerseText(snapshot, index),
+            ],
+          ),
+          showNoteIcon(snapshot, index)
+        ],
+      ),
+
+      // child: Row(
+      //   children: [
+      //     (snapshot.data[index].v != 0)
+      //         ? Text('${snapshot.data[index].v}:')
+      //         : const Text(' '),
+      //     Wrap(
+      //       children: [
+      //         Text(
+      //           "${snapshot.data[index].t}",
+      //           style: TextStyle(
+      //               fontSize: primaryTextSize,
+      //               backgroundColor:
+      //                   (getHighLightMatch(snapshot.data[index].id))
+      //                       ? primarySwatch[100]
+      //                       : null),
+      //         ),
+      //       ],
+      //     ),
+      //     showNoteIcon(snapshot, index)
+      //   ],
+      // ),
     );
   }
 
@@ -472,6 +450,73 @@ class MainPageState extends State<MainPage> {
     }
   }
 
+  Widget normalMode(snapshot, index) {
+    return GestureDetector(
+      onTap: () {
+        Globals.verseNumber = snapshot.data[index].v;
+        Globals.verseText = snapshot.data[index].t;
+        contextMenuDialog(context).then(
+          (value) {
+            switch (value) {
+              case 0: // compare
+                final model = Bible(
+                    id: 0,
+                    b: snapshot.data[index].b,
+                    c: snapshot.data[index].c,
+                    v: snapshot.data[index].v,
+                    t: '',
+                    m: 0);
+
+                (activeVersionsCount > 1)
+                    ? gotoCompare(model)
+                    : ScaffoldMessenger.of(context)
+                        .showSnackBar(moreVersionsSnackBar);
+
+                break;
+
+              case 1: // bookmarks
+
+                insertBookMark();
+
+                break;
+
+              case 2: // highlight
+
+                int bid = snapshot.data[index].id;
+
+                (!getHighLightMatch(bid))
+                    ? insertHighLight(bid)
+                    : deleteHighLightWrapper(context, bid);
+
+                break;
+
+              case 3: // notes
+
+                int bid = snapshot.data[index].id;
+
+                (!getNotesMatch(bid))
+                    ? saveNote(bid)
+                    : ScaffoldMessenger.of(context)
+                        .showSnackBar(noteEditSnackBar);
+
+                break;
+
+              case 4: // copy
+
+                copyVerseWrapper(context, snapshot, index);
+
+                break;
+
+              default:
+                break;
+            }
+          },
+        );
+      },
+      child: normalModeContainer(snapshot, index),
+    );
+  }
+
   Widget showListView(int book, int ch) {
     return Container(
       padding: const EdgeInsets.all(15.0),
@@ -483,99 +528,9 @@ class MainPageState extends State<MainPage> {
               itemCount: snapshot.data.length,
               itemScrollController: itemScrollControllerSelector(),
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Globals.verseNumber = snapshot.data[index].v;
-                    Globals.verseText = snapshot.data[index].t;
-                    contextMenuDialog(context).then(
-                      (value) {
-                        switch (value) {
-                          case 0: // compare
-                            final model = Bible(
-                                id: 0,
-                                b: snapshot.data[index].b,
-                                c: snapshot.data[index].c,
-                                v: snapshot.data[index].v,
-                                t: '',
-                                m: 0);
-
-                            (activeVersionsCount > 1)
-                                ? gotoCompare(model)
-                                : ScaffoldMessenger.of(context)
-                                    .showSnackBar(moreVersionsSnackBar);
-
-                            break;
-
-                          case 1: // bookmarks
-
-                            insertBookMark();
-
-                            break;
-
-                          case 2: // highlight
-
-                            int bid = snapshot.data[index].id;
-
-                            (!getHighLightMatch(bid))
-                                ? insertHighLight(bid)
-                                : deleteHighLightWrapper(context, bid);
-
-                            break;
-
-                          case 3: // notes
-
-                            int bid = snapshot.data[index].id;
-
-                            if (!getNotesMatch(bid)) {
-                              // final buffer = <String>[
-                              //   Globals.versionAbbr,
-                              //   ' ',
-                              //   Globals.bookName,
-                              //   ' ',
-                              //   snapshot.data[index].c.toString(),
-                              //   ':',
-                              //   snapshot.data[index].v.toString()
-                              // ];
-
-                              // final sb = StringBuffer();
-                              // sb.writeAll(buffer);
-
-                              // final model = NtModel(
-                              //     id: null,
-                              //     version: Globals.bibleVersion,
-                              //     lang: Globals.bibleLang,
-                              //     title: sb.toString(),
-                              //     contents: snapshot.data[index].t,
-                              //     bid: bid // bible id
-                              //     );
-                              saveNote(bid);
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(noteEditSnackBar);
-                            }
-
-                            break;
-
-                          case 4: // copy
-
-                            copyVerseWrapper(context, snapshot, index);
-
-                            break;
-
-                          default:
-                            break;
-                        }
-                      },
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: showVerse(snapshot, index),
-                      ),
-                    ],
-                  ),
-                );
+                return (Globals.dictionaryMode)
+                    ? dictionaryMode(snapshot, index)
+                    : normalMode(snapshot, index);
               },
             );
           }
@@ -622,14 +577,6 @@ class MainPageState extends State<MainPage> {
       },
     );
   }
-
-  // void getActiveHighLightList() async {
-  //   highLightList = await _hlQueries.getHighLightList();
-  // }
-
-  // void getActiveNotesList() async {
-  //   notesList = await _ntQueries.getAllNotes();
-  // }
 
   void getActiveVersionsCount() async {
     activeVersionsCount = await _vkQueries.getActiveVersionCount();
@@ -831,6 +778,23 @@ class MainPageState extends State<MainPage> {
     );
   }
 
+  Padding iconButton() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: IconButton(
+        color: primarySwatch[700],
+        icon: const Icon(Icons.change_circle),
+        onPressed: () {
+          Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
+          (Globals.dictionaryMode)
+              ? ScaffoldMessenger.of(context).showSnackBar(dicModeOnSnackBar)
+              : ScaffoldMessenger.of(context).showSnackBar(dicModeOffSnackBar);
+          setState(() {});
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _dbQueries = DbQueries();
@@ -843,8 +807,8 @@ class MainPageState extends State<MainPage> {
           drawer: showDrawer(context),
           appBar: AppBar(
             elevation: 16,
-            //backgroundColor: primarySwatch[700],
             actions: [
+              (Globals.bibleLang == 'lat') ? iconButton() : Container(),
               Row(
                 children: [
                   ElevatedButton(

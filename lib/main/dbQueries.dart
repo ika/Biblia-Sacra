@@ -6,16 +6,11 @@ import 'package:bibliasacra/main/dbProvider.dart';
 // Bible database queries
 
 DbProvider _dbProvider;
-List<Bible> emptyList = [];
 
 class DbQueries {
   final String tableName = 'bible';
 
   DbQueries() {
-    final mod = Bible(id: 0, b: 0, c: 0, v: 0, t: ' ', m: 0);
-    for (int l = 1; l <= 10; l++) {
-      emptyList.add(mod);
-    }
     _dbProvider = DbProvider();
   }
 
@@ -23,6 +18,12 @@ class DbQueries {
     final db = await _dbProvider.database;
 
     List<Bible> list = [];
+    List<Bible> emptyList = [];
+
+    final mod = Bible(id: 0, b: 0, c: 0, v: 0, t: ' ', m: 0);
+    for (int l = 1; l <= 25; l++) {
+      emptyList.add(mod);
+    }
 
     var res = await db
         .rawQuery('''SELECT * FROM $tableName WHERE b=? AND c=?''', [b, c]);
@@ -39,8 +40,8 @@ class DbQueries {
     final db = await _dbProvider.database;
 
     List<Bible> returnList = [];
-    final defList = Bible(
-        id: 0, b: 0, c: chap, v: verse, t: 'Verse not found', m: 0);
+    final defList =
+        Bible(id: 0, b: 0, c: chap, v: verse, t: 'Verse not found', m: 0);
     returnList.add(defList);
 
     var res = await db.rawQuery(
@@ -68,13 +69,8 @@ class DbQueries {
 
     List<Bible> returnList = [];
 
-    final mod = Bible(
-        id: 0,
-        b: 0,
-        c: 0,
-        v: 0,
-        t: 'Search returned no results.',
-        m: 0);
+    final mod =
+        Bible(id: 0, b: 0, c: 0, v: 0, t: 'Search returned no results.', m: 0);
 
     returnList.add(mod);
 

@@ -86,7 +86,9 @@ class AppBarVersions extends StatelessWidget {
                 sharedPrefs.saveVersion(Globals.bibleVersion);
                 sharedPrefs.saveVerAbbr(Globals.versionAbbr);
 
-                _lists.updateActiveLists('all',Globals.bibleVersion);
+                Globals.dictionaryMode = false;
+
+                _lists.updateActiveLists('all', Globals.bibleVersion);
 
                 sharedPrefs.readBookName(Globals.bibleBook).then(
                   (value) {

@@ -27,6 +27,9 @@ class Globals {
   // colorListNumber
   static int colorListNumber = 12; //Blue
 
+  // Dictionary mode
+  static bool dictionaryMode = false;
+
   // Search
   // static int elementKey = 0;
 }
