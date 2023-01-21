@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:bibliasacra/utils/constants.dart';
 import 'package:bibliasacra/globals/globals.dart';
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
@@ -34,9 +33,9 @@ String getBVFileName(int v) {
     case 8:
       dbName = Constants.webbDbname;
       break;
-    case 9:
-      dbName = Constants.af83Dbname;
-      break;
+    // case 9:
+    //   dbName = Constants.af83Dbname;
+    //   break;
     case 10:
       dbName = Constants.asvbDbname;
       break;

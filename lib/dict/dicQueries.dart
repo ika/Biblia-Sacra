@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:bibliasacra/notes/edit.dart';
 
 import 'dicProvider.dart';
 
@@ -33,11 +32,8 @@ class DictQueries {
   final String _tableName = 't_wordlist';
 
   Future<List<DicModel>> getSearchedValues(String s) async {
-
     List<DicModel> emptyList = [];
-
     final mod = DicModel(id: 0, word: 'Search returned no results.', trans: '');
-
     emptyList.add(mod);
 
     final db = await dicProvider.db;
@@ -49,6 +45,9 @@ class DictQueries {
     List<DicModel> list = res.isNotEmpty
         ? res.map((tableName) => DicModel.fromMap(tableName)).toList()
         : emptyList;
+
+    // alphabetical order
+    list.sort(((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase())));
 
     return list;
   }

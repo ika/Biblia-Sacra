@@ -10,7 +10,7 @@ class Constants {
   //static const String dn33Dbname = "dba_dn1933_1.db"; // 6
   static const String ukjvDbname = "ndba_ukjv.db"; // 7
   static const String webbDbname = "ndba_webbe.db"; // 8
-  static const String af83Dbname = "ndba_afr83.db"; // 9
+  //static const String af83Dbname = "ndba_afr83.db"; // 9
   static const String asvbDbname = "ndba_asv.db"; // 10
 
   // Bookmarks

@@ -14,6 +14,7 @@ import 'package:bibliasacra/high/hlQueries.dart';
 import 'package:bibliasacra/main/dbModel.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/main/mainContextMenu.dart';
+import 'package:bibliasacra/main/mainDict.dart';
 import 'package:bibliasacra/main/mainVersMenu.dart';
 import 'package:bibliasacra/main/mainSearch.dart';
 import 'package:bibliasacra/main/mainSelector.dart';
@@ -33,7 +34,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-//import 'package:word_selectable_text/word_selectable_text.dart';
+import 'package:word_selectable_text/word_selectable_text.dart';
 
 PageController pageController;
 ItemScrollController initialScrollController;
@@ -359,8 +360,16 @@ class MainPageState extends State<MainPage> {
 
   Widget dicVerseText(snapshot, index) {
     if (snapshot.data[index].v != 0) {
-      return Text("${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-          style: TextStyle(fontSize: primaryTextSize));
+      return WordSelectableText(
+        selectable: true,
+        highlight: true,
+        text: "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+        style: TextStyle(fontSize: primaryTextSize),
+        onWordTapped: (word, index) {
+          Globals.dictionaryLookup = word;
+          dictDialog(context);
+        },
+      );
     } else {
       return const Text('  ');
     }
@@ -371,8 +380,9 @@ class MainPageState extends State<MainPage> {
       margin: const EdgeInsets.only(left: 5, bottom: 6.0),
       child: Row(
         children: [
-          Wrap(
-            children: [dicVerseText(snapshot, index)],
+          Flexible(
+            fit: FlexFit.loose,
+            child: (dicVerseText(snapshot, index)),
           ),
         ],
       ),
@@ -397,10 +407,9 @@ class MainPageState extends State<MainPage> {
       margin: const EdgeInsets.only(left: 5, bottom: 6.0),
       child: Row(
         children: [
-          Wrap(
-            children: [
-              norVerseText(snapshot, index),
-            ],
+          Flexible(
+            fit: FlexFit.loose,
+            child: (norVerseText(snapshot, index)),
           ),
           showNoteIcon(snapshot, index)
         ],
@@ -432,7 +441,6 @@ class MainPageState extends State<MainPage> {
 
   SizedBox showNoteIcon(snapshot, index) {
     if (getNotesMatch(snapshot.data[index].id)) {
-      // bid
       return SizedBox(
         height: 30,
         width: 20,
@@ -446,7 +454,7 @@ class MainPageState extends State<MainPage> {
         ),
       );
     } else {
-      return const SizedBox(height: 10, width: 10);
+      return const SizedBox(height: 0, width: 0);
     }
   }
 
@@ -464,8 +472,7 @@ class MainPageState extends State<MainPage> {
                     b: snapshot.data[index].b,
                     c: snapshot.data[index].c,
                     v: snapshot.data[index].v,
-                    t: '',
-                    m: 0);
+                    t: '');
 
                 (activeVersionsCount > 1)
                     ? gotoCompare(model)

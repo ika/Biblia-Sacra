@@ -95,17 +95,17 @@ class VersionsPageState extends State<VersionsPage> {
     return Scaffold(
       appBar: AppBar(
         //backgroundColor: primarySwatch[700],
-        flexibleSpace: GestureDetector(
-          onTap: () {
-            counter++;
-            if (counter > 4) {
-              counter = 0;
-              vkQueries.updateHiddenState().then((value) {
-                setState(() {});
-              });
-            }
-          },
-        ),
+        // flexibleSpace: GestureDetector(
+        //   onTap: () {
+        //     counter++;
+        //     if (counter > 4) {
+        //       counter = 0;
+        //       vkQueries.updateHiddenState().then((value) {
+        //         setState(() {});
+        //       });
+        //     }
+        //   },
+        // ),
         elevation: 0.1,
         title: const Text('Bibles'),
       ),

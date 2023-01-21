@@ -142,7 +142,7 @@ class _DicSearchState extends State<DictSearch> {
         snapshot.data[index].trans,
         style: const TextStyle(fontWeight: FontWeight.normal),
       ),
-      onTap: () {},
+      //onTap: () {},
     );
   }
 

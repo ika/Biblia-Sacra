@@ -20,8 +20,8 @@ class DbQueries {
     List<Bible> list = [];
     List<Bible> emptyList = [];
 
-    final mod = Bible(id: 0, b: 0, c: 0, v: 0, t: ' ', m: 0);
-    for (int l = 1; l <= 25; l++) {
+    final mod = Bible(id: 0, b: 0, c: 0, v: 0, t: ' ');
+    for (int l = 1; l <= 30; l++) {
       emptyList.add(mod);
     }
 
@@ -41,7 +41,7 @@ class DbQueries {
 
     List<Bible> returnList = [];
     final defList =
-        Bible(id: 0, b: 0, c: chap, v: verse, t: 'Verse not found', m: 0);
+        Bible(id: 0, b: 0, c: chap, v: verse, t: 'Verse not found');
     returnList.add(defList);
 
     var res = await db.rawQuery(
@@ -70,7 +70,7 @@ class DbQueries {
     List<Bible> returnList = [];
 
     final mod =
-        Bible(id: 0, b: 0, c: 0, v: 0, t: 'Search returned no results.', m: 0);
+        Bible(id: 0, b: 0, c: 0, v: 0, t: 'Search returned no results.');
 
     returnList.add(mod);
 

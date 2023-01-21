@@ -29,6 +29,7 @@ class Globals {
 
   // Dictionary mode
   static bool dictionaryMode = false;
+  static String dictionaryLookup = '';
 
   // Search
   // static int elementKey = 0;
