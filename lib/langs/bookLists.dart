@@ -1,6 +1,5 @@
 // BookLists
 
-import 'package:bibliasacra/langs/afrList.dart';
 import 'package:bibliasacra/langs/engList.dart';
 import 'package:bibliasacra/langs/latList.dart';
 
@@ -13,9 +12,9 @@ List<String> langListSelector(String lang) {
     case 'lat':
       langList = latList;
       break;
-    case 'afr':
-      langList = afrList;
-      break;
+    // case 'afr':
+    //   langList = afrList;
+    //   break;
   }
   return langList;
 }

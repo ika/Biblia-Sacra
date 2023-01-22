@@ -23,6 +23,7 @@ class _ComparePage extends State<ComparePage> {
   void initState() {
     Globals.scrollToVerse = false;
     Globals.initialScroll = false;
+    //Globals.chapterVerse = widget.model.v;
     super.initState();
   }
 

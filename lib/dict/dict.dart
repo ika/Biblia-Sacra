@@ -33,10 +33,22 @@ class _DicSearchState extends State<DictSearch> {
     super.initState();
   }
 
+  Future<List<DicModel>> repeatSearch(String enterdKeyWord) async {
+    List<DicModel> searchList = [];
+
+    do {
+      debugPrint("WORD $enterdKeyWord");
+      searchList = await _dictQueries.getSearchedValues(enterdKeyWord);
+      enterdKeyWord = enterdKeyWord.characters.skipLast(1).toString();
+    } while (searchList.first.trans.isEmpty);
+
+    return searchList;
+  }
+
   void runFilter(String enterdKeyWord) {
     enterdKeyWord.isEmpty
         ? results = blankSearch
-        : results = _dictQueries.getSearchedValues(enterdKeyWord);
+        : results = repeatSearch(enterdKeyWord);
 
     setState(
       () {

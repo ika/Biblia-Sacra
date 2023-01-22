@@ -1,4 +1,3 @@
-import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,132 +12,93 @@ class SharedPrefs {
     return _sharedPreferences;
   }
 
-  // Future<String> getLanguageBookName(number, lang) async {
-  //   List<LKeyModel> value = List<LKeyModel>.empty();
-  //   value = await _lkQueries.getBookName(number, lang);
-  //   return value.first.name;
-  // }
-
   // ==================SAVE=====================
 
-  // Save version
   Future<void> saveVersion(int v) async {
     final prefs = await initInstance();
-    const key = 'version';
-    final value = v;
-    prefs.setInt(key, value);
+    prefs.setInt('version', v);
   }
 
-  // Save book
   Future<void> saveBook(int b) async {
     final prefs = await initInstance();
-    const key = 'book';
-    final value = b;
-    prefs.setInt(key, value);
+    prefs.setInt('book', b);
   }
 
-  // Save chapter
   Future<void> saveChapter(int c) async {
     final prefs = await initInstance();
-    const key = 'chapter';
-    final value = c;
-    prefs.setInt(key, value);
+    prefs.setInt('chapter', c);
   }
 
-  // Save verse
   Future<void> saveVerse(int c) async {
     final prefs = await initInstance();
-    const key = 'verse';
-    final value = c;
-    prefs.setInt(key, value);
+    prefs.setInt('verse', c);
   }
 
   Future<void> saveLang(String l) async {
     final prefs = await initInstance();
-    const key = 'language';
-    final value = l;
-    prefs.setString(key, value);
+    prefs.setString('language', l);
   }
 
   Future<void> saveVerAbbr(String r) async {
     final prefs = await initInstance();
-    const key = 'verabbr';
-    final value = r;
-    prefs.setString(key, value);
+    prefs.setString('verabbr', r);
   }
 
   Future<void> saveBookName(String n) async {
     final prefs = await initInstance();
-    const key = 'bookname';
-    final value = n;
-    prefs.setString(key, value);
+    prefs.setString('bookname', n);
   }
 
   Future<void> saveSearchAreaKey(int a) async {
     final prefs = await initInstance();
-    const key = 'searcharea';
-    final value = a;
-    prefs.setInt(key, value);
+    prefs.setInt('searcharea', a);
   }
 
   Future<void> saveColorListNumber(int p) async {
     final prefs = await initInstance();
-    const key = 'colorsList';
-    final value = p;
-    prefs.setInt(key, value);
+    prefs.setInt('colorsList', p);
   }
 
   // ==================READ=====================
 
   Future<int> readColorsListNumber() async {
     final prefs = await initInstance();
-    const key = 'colorsList';
-    return prefs.getInt(key) ?? 12;
+    return prefs.getInt('colorsList') ?? 12;
   }
 
   Future<int> readSearchAreaKey() async {
     final prefs = await initInstance();
-    const key = 'searcharea';
-    return prefs.getInt(key) ?? 0;
+    return prefs.getInt('searcharea') ?? 0;
   }
 
   Future<int> readVersion() async {
     final prefs = await initInstance();
-    const key = 'version';
-    return prefs.getInt(key) ?? 1;
+    return prefs.getInt('version') ?? 1;
   }
 
-  // Read book
   Future<int> readBook() async {
     final prefs = await initInstance();
-    const key = 'book';
-    return prefs.getInt(key) ?? 43; // Gospel of John
+    return prefs.getInt('book') ?? 43; // Gospel of John
   }
 
-  // Read chapter
   Future<int> readChapter() async {
     final prefs = await initInstance();
-    const key = 'chapter';
-    return prefs.getInt(key) ?? 1; // Chapter one
+    return prefs.getInt('chapter') ?? 1; // Chapter one
   }
 
-  // Read verse
   Future<int> readVerse() async {
     final prefs = await initInstance();
-    const key = 'verse';
-    return prefs.getInt(key) ?? 1; // Chapter one
+    return prefs.getInt('verse') ?? 1; // Chapter one
   }
 
   Future<String> readLang() async {
     final prefs = await initInstance();
-    const key = 'language';
-    return prefs.getString(key) ?? 'eng'; // English
+    return prefs.getString('language') ?? 'eng'; // English
   }
 
   Future<String> readVerAbbr() async {
     final prefs = await initInstance();
-    const key = 'verabbr';
-    return prefs.getString(key) ?? 'KJV'; // King James version
+    return prefs.getString('verabbr') ?? 'KJV'; // King James version
   }
 
   Future<String> readBookName(int book) async {

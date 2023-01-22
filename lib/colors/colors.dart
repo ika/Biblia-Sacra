@@ -3,7 +3,6 @@ import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 MaterialColor primarySwatch;
 SharedPrefs _sharedPrefs = SharedPrefs();
@@ -21,15 +20,6 @@ class _ColorsPageState extends State<ColorsPage> {
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     super.initState();
   }
-
-  // backButton(BuildContext context) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => const MainPage(),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {

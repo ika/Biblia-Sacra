@@ -78,10 +78,6 @@ class _EditNotePageState extends State<EditNotePage> {
     );
   }
 
-  SnackBar noteDeletedSnackBar = const SnackBar(
-    content: Text('Note Deleted!'),
-  );
-
   // backButton(BuildContext context) {
   //   Future.delayed(
   //     const Duration(milliseconds: 200),
@@ -97,14 +93,14 @@ class _EditNotePageState extends State<EditNotePage> {
   //   );
   // }
 
-  delayedSnackbar() {
-    Future.delayed(
-      const Duration(milliseconds: 400),
-      () {
-        ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-      },
-    );
-  }
+  // delayedSnackbar(context) {
+  //   Future.delayed(
+  //     const Duration(milliseconds: 400),
+  //     () {
+  //       ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
+  //     },
+  //   );
+  // }
 
   // backButton(BuildContext context) {
   //   Navigator.push(
@@ -125,13 +121,12 @@ class _EditNotePageState extends State<EditNotePage> {
     _dialogs.confirmDialog(context, arr).then(
       (value) {
         if (value == ConfirmAction.accept) {
-          //debugPrint("PRESSES $value NOTEID $id BID $bid");
           _ntQueries.deleteNote(id).then(
             (value) {
               //backButton(context);
-              _lists.updateActiveLists('notes',Globals.bibleVersion);
-              Navigator.pop(context);
-              //delayedSnackbar();
+              _lists.updateActiveLists('all', Globals.bibleVersion);
+              Navigator.pop(context, 'deleted');
+              //delayedSnackbar(context);
             },
           );
         }

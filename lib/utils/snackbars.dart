@@ -20,9 +20,9 @@ SnackBar errorSnackBar = const SnackBar(
   content: Text('Error occured!'),
 );
 
-SnackBar noteEditSnackBar = const SnackBar(
-  content: Text('Tap the Icon to Edit the Note!'),
-);
+// SnackBar noteEditSnackBar = const SnackBar(
+//   content: Text('Tap the Icon to Edit the Note!'),
+// );
 
 SnackBar dicModeOnSnackBar = const SnackBar(
   content: Text('Dictionary Mode!'),
@@ -30,4 +30,8 @@ SnackBar dicModeOnSnackBar = const SnackBar(
 
 SnackBar dicModeOffSnackBar = const SnackBar(
   content: Text('Normal Mode!'),
+);
+
+SnackBar noteDeletedSnackBar = const SnackBar(
+  content: Text('Note Deleted!'),
 );

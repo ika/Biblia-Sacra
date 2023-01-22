@@ -18,8 +18,8 @@ class VkQueries {
   Future<int> getActiveVersionCount() async {
     final db = await _vkProvider.database;
     int count = Sqflite.firstIntValue(await db.rawQuery(
-        '''SELECT COUNT(*) FROM $tableName WHERE active=? AND hidden=?''',
-        ['1', '0']));
+        '''SELECT COUNT(*) FROM $tableName WHERE active=?''',
+        ['1']));
     return count;
   }
 
@@ -28,12 +28,6 @@ class VkQueries {
     await db
         .rawUpdate('''UPDATE $tableName SET active=? WHERE number=?''', [a, i]);
   }
-
-  // Future<void> updateHiddenState() async {
-  //   final db = await _vkProvider.database;
-  //   await db.rawUpdate(
-  //       '''UPDATE $tableName SET hidden=? AND active=?''', ['0', '0']);
-  // }
 
   Future<List<VkModel>> getAllVersions() async {
     final db = await _vkProvider.database;

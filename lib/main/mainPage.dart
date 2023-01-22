@@ -279,12 +279,24 @@ class MainPageState extends State<MainPage> {
     });
   }
 
+  void delayedSnackbar(context) {
+    Future.delayed(
+      const Duration(milliseconds: 300),
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
+      },
+    );
+  }
+
   void gotoEditNote(NtModel model) {
     Route route = MaterialPageRoute(
       builder: (context) => EditNotePage(model: model),
     );
     Navigator.push(context, route).then((value) {
       setState(() {});
+      if (value == 'deleted') {
+        delayedSnackbar(context);
+      }
     });
   }
 
@@ -443,9 +455,9 @@ class MainPageState extends State<MainPage> {
     if (getNotesMatch(snapshot.data[index].id)) {
       return SizedBox(
         height: 30,
-        width: 20,
+        width: 30,
         child: IconButton(
-          icon: Icon(Icons.notes, color: primarySwatch[700]),
+          icon: Icon(Icons.edit, color: primarySwatch[700]),
           onPressed: () => getNoteModel(snapshot.data[index].id).then(
             (model) {
               gotoEditNote(model);
@@ -503,8 +515,13 @@ class MainPageState extends State<MainPage> {
 
                 (!getNotesMatch(bid))
                     ? saveNote(bid)
-                    : ScaffoldMessenger.of(context)
-                        .showSnackBar(noteEditSnackBar);
+                    // : ScaffoldMessenger.of(context)
+                    //     .showSnackBar(noteEditSnackBar);
+                    : getNoteModel(bid).then(
+                        (model) {
+                          gotoEditNote(model);
+                        },
+                      );
 
                 break;
 

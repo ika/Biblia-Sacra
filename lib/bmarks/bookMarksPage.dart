@@ -119,15 +119,6 @@ class _BookMarkState extends State<BookMarksPage> {
           ),
         );
 
-    // Card makeCard(list, int index) => Card(
-    //       elevation: 8.0,
-    //       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-    //       child: Container(
-    //         decoration: BoxDecoration(color: primarySwatch[500]),
-    //         child: makeListTile(list, index),
-    //       ),
-    //     );
-
     final makeBody = Padding(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
       child: ListView.separated(
@@ -137,8 +128,7 @@ class _BookMarkState extends State<BookMarksPage> {
         itemBuilder: (BuildContext context, int index) {
           return makeListTile(list, index);
         },
-        separatorBuilder: (BuildContext context, int index) =>
-            const Divider(),
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
       ),
     );
 
