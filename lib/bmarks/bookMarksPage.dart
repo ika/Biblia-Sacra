@@ -1,9 +1,11 @@
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
+import 'package:bibliasacra/utils/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bmarks/bmModel.dart';
 import 'package:bibliasacra/bmarks/bmQueries.dart';
@@ -14,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 BmQueries _bmQueries = BmQueries();
 Dialogs _dialogs = Dialogs();
 MaterialColor primarySwatch;
+double primaryTextSize;
 
 class BookMarksPage extends StatefulWidget {
   const BookMarksPage({Key key}) : super(key: key);
@@ -27,23 +30,10 @@ class _BookMarkState extends State<BookMarksPage> {
 
   @override
   void initState() {
-    Globals.scrollToVerse = false;
-    Globals.initialScroll = false;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     super.initState();
   }
-
-  SnackBar bmDeletedSnackBar = const SnackBar(
-    content: Text('Book Mark Deleted!'),
-  );
-
-  // backPopButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 200),
-  //     () {
-  //       Navigator.pop(context);
-  //     },
-  //   );
-  // }
 
   backButton(BuildContext context) {
     Navigator.push(
@@ -98,9 +88,13 @@ class _BookMarkState extends State<BookMarksPage> {
             trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: Text(
               list[index].title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: primaryTextSize),
             ),
-            subtitle: Text(list[index].subtitle),
+            subtitle: Text(
+              list[index].subtitle,
+              style: TextStyle(fontSize: primaryTextSize),
+            ),
             onTap: () {
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
@@ -132,23 +126,17 @@ class _BookMarkState extends State<BookMarksPage> {
       ),
     );
 
-    final topAppBar = AppBar(
-      //backgroundColor: primarySwatch[700],
-      elevation: 0.1,
-      title: const Text('Bookmarks'),
-    );
-
     return Scaffold(
-      //backgroundColor: primarySwatch[50],
-      appBar: topAppBar,
+      appBar: AppBar(
+        elevation: 0.1,
+        title: const Text('Bookmarks'),
+      ),
       body: makeBody,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    Globals.scrollToVerse = Globals.initialScroll = true;
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     return FutureBuilder<List<BmModel>>(
       future: _bmQueries.getBookMarkList(),
       builder: (context, AsyncSnapshot<List<BmModel>> snapshot) {

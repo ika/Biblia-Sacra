@@ -5,7 +5,7 @@ SnackBar textCopiedSnackBar = const SnackBar(
 );
 
 SnackBar moreVersionsSnackBar = const SnackBar(
-  content: Text('Activate more Bible versions!'),
+  content: Text('Activate more Bibles!'),
 );
 
 SnackBar bookMarkSnackBar = const SnackBar(
@@ -20,10 +20,6 @@ SnackBar errorSnackBar = const SnackBar(
   content: Text('Error occured!'),
 );
 
-// SnackBar noteEditSnackBar = const SnackBar(
-//   content: Text('Tap the Icon to Edit the Note!'),
-// );
-
 SnackBar dicModeOnSnackBar = const SnackBar(
   content: Text('Dictionary Mode!'),
 );
@@ -34,4 +30,12 @@ SnackBar dicModeOffSnackBar = const SnackBar(
 
 SnackBar noteDeletedSnackBar = const SnackBar(
   content: Text('Note Deleted!'),
+);
+
+SnackBar hlDeletedSnackBar = const SnackBar(
+  content: Text('HighLight Deleted!'),
+);
+
+SnackBar bmDeletedSnackBar = const SnackBar(
+  content: Text('Book Mark Deleted!'),
 );

@@ -1,19 +1,21 @@
 import 'dart:async';
 
-import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/searchCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/main/dbModel.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:bibliasacra/main/mainPage.dart';
+import 'package:bibliasacra/main/mainVersMenu.dart';
 import 'package:bibliasacra/main/searchAreas.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bibliasacra/utils/snackbars.dart';
 
 DbQueries _dbQueries = DbQueries();
 SharedPrefs sharedPrefs = SharedPrefs();
@@ -26,6 +28,7 @@ Future<List<Bible>> results;
 String _contents = '';
 
 MaterialColor primarySwatch;
+double primaryTextSize;
 
 class MainSearch extends StatefulWidget {
   const MainSearch({Key key}) : super(key: key);
@@ -37,10 +40,10 @@ class MainSearch extends StatefulWidget {
 class _MainSearchState extends State<MainSearch> {
   @override
   initState() {
-    Globals.scrollToVerse = false;
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
 
@@ -134,6 +137,7 @@ class _MainSearchState extends State<MainSearch> {
             },
             decoration: InputDecoration(
               labelText: 'Search',
+              labelStyle: TextStyle(fontSize: primaryTextSize),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
@@ -182,31 +186,26 @@ class _MainSearchState extends State<MainSearch> {
     int idx = t.toLowerCase().indexOf(m.toLowerCase());
 
     if (idx != -1) {
-      // String firstPart = t.substring(0, idx);
-      // String middlPart = t.substring(idx, idx + m.length);
-      // String lastPart = t.substring(idx + m.length); // to the end
-
       return RichText(
         //softWrap: true,
         text: TextSpan(
           text: t.substring(0, idx),
-          style: const TextStyle(
-            fontSize: 16.0,
+          style: TextStyle(
+            fontSize: primaryTextSize,
             color: Colors.black,
           ),
           children: [
             TextSpan(
               text: t.substring(idx, idx + m.length),
               style: TextStyle(
-                fontSize: 16.0,
-                //fontWeight: FontWeight.bold,
+                fontSize: primaryTextSize,
                 backgroundColor: primarySwatch[50],
               ),
             ),
             TextSpan(
               text: t.substring(idx + m.length),
-              style: const TextStyle(
-                fontSize: 16.0,
+              style: TextStyle(
+                fontSize: primaryTextSize,
                 color: Colors.black,
               ),
             ),
@@ -218,8 +217,8 @@ class _MainSearchState extends State<MainSearch> {
         //softWrap: true,
         text: TextSpan(
           text: t,
-          style: const TextStyle(
-            fontSize: 16.0,
+          style: TextStyle(
+            fontSize: primaryTextSize,
             color: Colors.black,
           ),
         ),
@@ -233,12 +232,11 @@ class _MainSearchState extends State<MainSearch> {
     return ListTile(
       title: Text(
         "$bookName ${snapshot.data[index].c}:${snapshot.data[index].v}",
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style:
+            TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
       subtitle: highLiteSearchWord(snapshot.data[index].t, _contents),
       onTap: () {
-        //Globals.scrollToVerse = Globals.initialScroll = true;
-
         BlocProvider.of<ChapterCubit>(context)
             .setChapter(snapshot.data[index].c);
 
@@ -256,27 +254,44 @@ class _MainSearchState extends State<MainSearch> {
     );
   }
 
+    void showVersionsDialog(BuildContext context) {
+    (Globals.activeVersionCount > 1)
+        ? versionsDialog(context, 'search')
+        : ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
+  }
+
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            //backgroundColor: primarySwatch[700],
-            // centerTitle: true,
-            // elevation: 16,
             actions: [
               Row(
                 children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: primarySwatch[700]),
+                    onPressed: () {
+                      showVersionsDialog(context);
+                    },
+                    child: Text(
+                      Globals.versionAbbr,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
                   BlocBuilder<SearchCubit, int>(
                     builder: (context, area) {
                       return Text(
                         ereasList[area],
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16.0),
                       );
                     },
                   ),
                   const SizedBox(
-                    width: 56,
+                    width: 8,
                   ),
                   IconButton(
                     icon: const Icon(Icons.settings),

@@ -1,11 +1,14 @@
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/compare.dart';
 import 'package:bibliasacra/main/dbModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Compare versions
 
 Compare _compare = Compare();
+double primaryTextSize;
 
 class ComparePage extends StatefulWidget {
   const ComparePage({Key key, this.model}) : super(key: key);
@@ -23,7 +26,7 @@ class _ComparePage extends State<ComparePage> {
   void initState() {
     Globals.scrollToVerse = false;
     Globals.initialScroll = false;
-    //Globals.chapterVerse = widget.model.v;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
 
@@ -35,21 +38,11 @@ class _ComparePage extends State<ComparePage> {
         //     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         title: Text(
           "${list[index].a} - ${list[index].b} ${list[index].c}:${list[index].v}",
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
         ),
-        subtitle: Text(list[index].t),
+        subtitle: Text(list[index].t, style: TextStyle(fontSize: primaryTextSize),),
       );
     }
-
-    // Card makeCard(list, int index) => Card(
-    //       elevation: 8.0,
-    //       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-    //       child: Container(
-    //         decoration:
-    //             BoxDecoration(color: Theme.of(context).colorScheme.primary),
-    //         child: makeListTile(list, index),
-    //       ),
-    //     );
 
     final makeBody = Padding(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
@@ -64,14 +57,11 @@ class _ComparePage extends State<ComparePage> {
       ),
     );
 
-    final topAppBar = AppBar(
+    return Scaffold(
+      appBar: AppBar(
       elevation: 0.1,
       title: const Text('Compare Versions'),
-    );
-
-    return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: topAppBar,
+    ),
       body: makeBody,
     );
   }

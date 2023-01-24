@@ -1,4 +1,5 @@
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
@@ -17,6 +18,7 @@ int id;
 int bid;
 String noteFunction;
 MaterialColor primarySwatch;
+double primaryTextSize;
 
 class EditNotePage extends StatefulWidget {
   const EditNotePage({Key key, this.model}) : super(key: key);
@@ -34,6 +36,7 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   initState() {
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
     id = widget.model.id;
     bid = widget.model.bid;
@@ -78,39 +81,6 @@ class _EditNotePageState extends State<EditNotePage> {
     );
   }
 
-  // backButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 200),
-  //     () {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) =>
-  //               (back == 'main') ? const MainPage() : const NotesPage(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  // delayedSnackbar(context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 400),
-  //     () {
-  //       ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-  //     },
-  //   );
-  // }
-
-  // backButton(BuildContext context) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => const MainPage(),
-  //     ),
-  //   );
-  // }
-
   deleteWrapper(BuildContext context) {
     var arr = List.filled(4, '');
     arr[0] = "DELETE?";
@@ -139,7 +109,7 @@ class _EditNotePageState extends State<EditNotePage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(noteFunction),
+            title: Text(noteFunction, style: const TextStyle(fontSize: 20)),
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete),
@@ -155,37 +125,31 @@ class _EditNotePageState extends State<EditNotePage> {
               children: [
                 TextFormField(
                   controller: _titleController,
-                  decoration: const InputDecoration(
+                  style: TextStyle(fontSize: primaryTextSize),
+                  decoration: InputDecoration(
                     labelText: 'Title',
-                    //prefixIcon: Icon(Icons.verified_user_outlined),
-                    border: OutlineInputBorder(
+                    labelStyle: TextStyle(fontSize: primaryTextSize),
+                    border: const OutlineInputBorder(
                         //borderRadius: BorderRadius.circular(5.0),
                         ),
                   ),
                   maxLength: 35,
                   maxLines: 1, // auto line break
                   autofocus: false,
-                  // onChanged: (val) {
-                  //   title = val;
-                  //   handleOnChange();
-                  // },
                 ),
                 TextFormField(
                   controller: _contentsController,
-                  decoration: const InputDecoration(
+                  style: TextStyle(fontSize: primaryTextSize),
+                  decoration: InputDecoration(
                     labelText: 'Text',
-                    //prefixIcon: Icon(Icons.verified_user_outlined),
-                    border: OutlineInputBorder(
+                    labelStyle: TextStyle(fontSize: primaryTextSize),
+                    border: const OutlineInputBorder(
                         //borderRadius: BorderRadius.circular(5.0),
                         ),
                   ),
                   maxLength: 256,
                   maxLines: null, // auto line break
                   autofocus: false,
-                  // onChanged: (val) {
-                  //   contents = val;
-                  //   handleOnChange();
-                  // },
                 ),
               ],
             ),

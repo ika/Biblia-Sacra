@@ -1,4 +1,5 @@
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
 import 'package:bibliasacra/utils/utilities.dart';
@@ -13,9 +14,10 @@ VkQueries vkQueries = VkQueries();
 Utilities utilities = Utilities();
 DbQueries dbQueries = DbQueries();
 
-int counter =0;
+int counter = 0;
 
 MaterialColor primarySwatch;
+double primaryTextSize;
 
 class VersionsPage extends StatefulWidget {
   const VersionsPage({Key key}) : super(key: key);
@@ -31,6 +33,7 @@ class VersionsPageState extends State<VersionsPage> {
     Globals.initialScroll = false;
     counter = 0;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
 
@@ -63,6 +66,7 @@ class VersionsPageState extends State<VersionsPage> {
                   //controlAffinity: ListTileControlAffinity.trailing,
                   title: Text(
                     snapshot.data[index].m,
+                    style: TextStyle(fontSize: primaryTextSize),
                   ),
                   value: snapshot.data[index].a == 1 ? true : false,
                   onChanged: (value) {
@@ -72,6 +76,8 @@ class VersionsPageState extends State<VersionsPage> {
                         .then(
                       (value) async {
                         utilities.getDialogeHeight();
+                        Globals.activeVersionCount =
+                            await vkQueries.getActiveVersionCount();
                         setState(() {});
                       },
                     );

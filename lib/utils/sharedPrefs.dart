@@ -1,3 +1,4 @@
+
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,7 +60,17 @@ class SharedPrefs {
     prefs.setInt('colorsList', p);
   }
 
+    Future<void> saveTextSize(double s) async {
+    final prefs = await initInstance();
+    prefs.setDouble('textSize', s);
+  }
+
   // ==================READ=====================
+
+    Future<double> readTextSize() async {
+    final prefs = await initInstance();
+    return prefs.getDouble('textSize') ?? 16;
+  }
 
   Future<int> readColorsListNumber() async {
     final prefs = await initInstance();

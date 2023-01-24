@@ -1,10 +1,12 @@
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/main/mainPage.dart';
+import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 MaterialColor primarySwatch;
+SharedPrefs sharedPrefs = SharedPrefs();
 
 class TextSizePage extends StatefulWidget {
   const TextSizePage({Key key}) : super(key: key);
@@ -31,49 +33,18 @@ class _TextSizePageState extends State<TextSizePage> {
 
   List<double> sizesList = [14, 16, 18, 20, 22, 24, 26, 28];
 
-  //void setTextSize(BuildContext context, int size) {
-  // switch (size) {
-  //   case 14:
-  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  //     break;
-  //   case 16:
-  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  //     break;
-  //   case 18:
-  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  //     break;
-  //   case 20:
-  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  //     break;
-  //   case 22:
-  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  //     break;
-  //   case 24:
-  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  //     break;
-  //   case 26:
-  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  //     break;
-  //   case 28:
-  //     BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  //     break;
-  // }
-  // BlocProvider.of<TextSizeCubit>(context).setSize(size.toDouble());
-  // backButton(context);
-  //}
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        backButton(context);
-        return false;
-      },
+      onWillPop: () => backButton(context),
       child: Scaffold(
         appBar: AppBar(
           actions: const [],
           elevation: 16,
-          title: const Text('Text Size Selector'),
+          title: const Text(
+            'Text Size Selector',
+            style: TextStyle(fontSize: 20),
+          ),
         ),
         body: Center(
           child: ListView(
@@ -84,11 +55,11 @@ class _TextSizePageState extends State<TextSizePage> {
               for (int i = 0; i < sizesList.length; i++)
                 InkWell(
                   onTap: () {
-                    // debugPrint('text size ${sizesList[i]}');
-                    //setTextSize(context, sizesList[i].toInt());
-                    BlocProvider.of<TextSizeCubit>(context)
-                        .setSize(sizesList[i].toDouble());
-                    backButton(context);
+                    double tsize = sizesList[i].toDouble();
+                    BlocProvider.of<TextSizeCubit>(context).setSize(tsize);
+                    sharedPrefs.saveTextSize(tsize).then((value) {
+                      backButton(context);
+                    });
                   },
                   child: Container(
                     margin:

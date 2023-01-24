@@ -1,5 +1,6 @@
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
+import 'package:bibliasacra/main/mainSearch.dart';
 import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/vers/vkModel.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
@@ -9,8 +10,10 @@ import 'package:flutter/material.dart';
 VkQueries _vkQueries = VkQueries(); // version key
 SharedPrefs sharedPrefs = SharedPrefs();
 GetLists _lists = GetLists();
+String returnPath = 'main';
 
-Future<dynamic> versionsDialog(BuildContext context) {
+Future<dynamic> versionsDialog(BuildContext context, String ret) {
+  returnPath = ret;
   return showDialog(
     context: context,
     barrierDismissible: true,
@@ -41,11 +44,20 @@ Future<dynamic> versionsDialog(BuildContext context) {
 class AppBarVersions extends StatelessWidget {
   const AppBarVersions({Key key}) : super(key: key);
 
-  backButton(BuildContext context) {
+  backToMainButton(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const MainPage(),
+      ),
+    );
+  }
+
+    backToSearchButton(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MainSearch(),
       ),
     );
   }
@@ -68,9 +80,9 @@ class AppBarVersions extends StatelessWidget {
     return FutureBuilder<List<VkModel>>(
       future: _vkQueries.getActiveVersions(),
       builder: (BuildContext context, AsyncSnapshot<List<VkModel>> snapshot) {
-        int l = (snapshot.data != null) ? snapshot.data.length : 0;
+        int len = (snapshot.data != null) ? snapshot.data.length : 0;
         return ListView.separated(
-          itemCount: l,
+          itemCount: len,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               trailing: const Icon(Icons.arrow_right),
@@ -98,7 +110,9 @@ class AppBarVersions extends StatelessWidget {
                   },
                 );
 
-                backButton(context);
+                (returnPath == 'main')
+                    ? backToMainButton(context)
+                    : backToSearchButton(context);
               },
             );
           },

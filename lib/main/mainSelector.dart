@@ -1,4 +1,5 @@
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
@@ -7,11 +8,10 @@ import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-//LkQueries lkQueries = LkQueries();
 DbQueries dbQueries = DbQueries();
 SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
-//MaterialColor primarySwatch;
+double primaryTextSize;
 
 var allBooks = {};
 var filteredBooks = {};
@@ -32,6 +32,11 @@ class _MainSelectorState extends State<MainSelector>
   @override
   initState() {
     super.initState();
+    Globals.scrollToVerse = true;
+    Globals.initialScroll = true;
+    Globals.chapterVerse = 0;
+    Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     allBooks = bookLists.getBookListByLang(Globals.bibleLang);
     filteredBooks = allBooks;
 
@@ -48,7 +53,7 @@ class _MainSelectorState extends State<MainSelector>
   }
 
   void runFilter(String keyWord) {
-    keyWord.isEmpty
+    (keyWord.isEmpty)
         ? results = allBooks
         : results = bookLists.searchList(keyWord, Globals.bibleLang);
 
@@ -92,7 +97,7 @@ class _MainSelectorState extends State<MainSelector>
                           fit: BoxFit.none,
                           child: Text(
                             '$verse',
-                            style: const TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: primaryTextSize),
                           ),
                         ),
                       ),
@@ -138,16 +143,14 @@ class _MainSelectorState extends State<MainSelector>
                           },
                         );
                       },
-                      // child: Text('$chap',
                       child: SizedBox(
-                        //color: primarySwatch[50],
                         width: 40.0,
                         height: 40.0,
                         child: FittedBox(
                           fit: BoxFit.none,
                           child: Text(
                             '$chap',
-                            style: const TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: primaryTextSize),
                           ),
                         ),
                       ),
@@ -172,8 +175,10 @@ class _MainSelectorState extends State<MainSelector>
         children: [
           TextField(
             onChanged: (value) => runFilter(value),
-            decoration: const InputDecoration(
-                labelText: 'Search', suffixIcon: Icon(Icons.search)),
+            decoration: InputDecoration(
+                labelText: 'Search',
+                labelStyle: TextStyle(fontSize: primaryTextSize),
+                suffixIcon: const Icon(Icons.search)),
           ),
           const SizedBox(
             height: 20,
@@ -186,6 +191,7 @@ class _MainSelectorState extends State<MainSelector>
               return ListTile(
                 title: Text(
                   filteredBooks[key],
+                  style: TextStyle(fontSize: primaryTextSize),
                 ),
                 onTap: () {
                   int book = key + 1;
@@ -225,30 +231,28 @@ class _MainSelectorState extends State<MainSelector>
 
   @override
   Widget build(BuildContext context) {
-    Globals.scrollToVerse = Globals.initialScroll = true;
-    Globals.chapterVerse = 0;
-    Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
-    // primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     return WillPopScope(
-      onWillPop: () async {
-        Globals.scrollToVerse = false;
-        backButton(context);
-        return false;
-      },
+      onWillPop: () => backButton(context),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.1,
           title: Text(
             Globals.selectorText,
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 20.0),
           ),
           centerTitle: true,
           bottom: TabBar(
             controller: tabController,
             tabs: [
-              Tab(text: tabNames[0]),
-              Tab(text: tabNames[1]),
-              Tab(text: tabNames[2]),
+              Tab(
+                  child: Text(tabNames[0],
+                      style: const TextStyle(fontSize: 18.0))),
+              Tab(
+                  child: Text(tabNames[1],
+                      style: const TextStyle(fontSize: 18.0))),
+              Tab(
+                  child: Text(tabNames[2],
+                      style: const TextStyle(fontSize: 18.0))),
             ],
           ),
         ),

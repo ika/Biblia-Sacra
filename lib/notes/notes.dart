@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/main/mainPage.dart';
@@ -13,13 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
-//DbQueries _dbQueries = DbQueries();
 GetLists _lists = GetLists();
 Dialogs _dialogs = Dialogs();
 
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
 
 MaterialColor primarySwatch;
+double primaryTextSize;
 
 class NotesPage extends StatefulWidget {
   const NotesPage({Key key}) : super(key: key);
@@ -29,21 +28,14 @@ class NotesPage extends StatefulWidget {
 }
 
 class NotesPageState extends State<NotesPage> {
-  // FutureOr onReturnSetState() {
-  //   setState(() {});
-  // }
-
   @override
   void initState() {
     Globals.scrollToVerse = false;
     Globals.initialScroll = false;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
-
-  SnackBar noteDeletedSnackBar = const SnackBar(
-    content: Text('Note Deleted!'),
-  );
 
   _addEditPage(NtModel model) async {
     Route route = MaterialPageRoute(
@@ -68,7 +60,7 @@ class NotesPageState extends State<NotesPage> {
   onIconButtonPress(WriteVarsModel model) {
     Globals.scrollToVerse = true;
     Globals.initialScroll = true;
-    _lists.updateActiveLists('notes',model.version);
+    _lists.updateActiveLists('notes', model.version);
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -84,36 +76,12 @@ class NotesPageState extends State<NotesPage> {
     _dialogs.confirmDialog(context, arr).then((value) {
       if (value == ConfirmAction.accept) {
         _ntQueries.deleteNote(list[index].id).then((value) {
-          //ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-          _lists.updateActiveLists('notes',Globals.bibleVersion);
+          _lists.updateActiveLists('notes', Globals.bibleVersion);
           setState(() {});
         });
       }
     });
   }
-
-  // noteChoiceWrapper(BuildContext context, list, int index) {
-  //   var arr = List.filled(4, '');
-  //   arr[0] = "VIEW OR EDIT?";
-  //   arr[1] = "Do you want to go to the verse, or edit the note?";
-  //   arr[2] = 'GOTO';
-  //   arr[3] = 'EDIT';
-
-  //   _dialogs.confirmDialog(context, arr).then(
-  //     (value) {
-  //       if (value == ConfirmAction.accept) {
-  //         debugPrint('GOTO');
-  //       } else if (value == ConfirmAction.cancel) {
-  //         final model = NtModel(
-  //             id: list[index].id,
-  //             title: list[index].title,
-  //             contents: list[index].contents,
-  //             bid: list[index].bid);
-  //         _addEditPage(model);
-  //       }
-  //     },
-  //   );
-  // }
 
   IconButton showIconButton(list, index) {
     return IconButton(
@@ -152,11 +120,11 @@ class NotesPageState extends State<NotesPage> {
             //     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             title: Text(
               "${list[index].title}",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: primaryTextSize),
             ),
-            subtitle: Text(list[index].contents),
+            subtitle: Text(list[index].contents,
+                style: TextStyle(fontSize: primaryTextSize)),
             onTap: () {
-              //noteChoiceWrapper(context, list, index);
               final model = NtModel(
                   id: list[index].id,
                   title: list[index].title,
@@ -185,15 +153,11 @@ class NotesPageState extends State<NotesPage> {
       ),
     );
 
-    final topAppBar = AppBar(
-      elevation: 0.1,
-      //backgroundColor: primarySwatch[700],
-      title: const Text('Notes'),
-    );
-
     return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: topAppBar,
+      appBar: AppBar(
+        elevation: 0.1,
+        title: const Text('Notes'),
+      ),
       body: makeBody,
       floatingActionButton: FloatingActionButton(
         onPressed: () {

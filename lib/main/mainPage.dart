@@ -29,7 +29,6 @@ import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:bibliasacra/utils/snackbars.dart';
 import 'package:bibliasacra/vers/versionsPage.dart';
 import 'package:bibliasacra/main/mainCompare.dart';
-import 'package:bibliasacra/vers/vkQueries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,14 +40,11 @@ ItemScrollController initialScrollController;
 MaterialColor primarySwatch;
 double primaryTextSize;
 
-int activeVersionsCount = 0;
-
 DbQueries _dbQueries = DbQueries();
 SharedPrefs _sharedPrefs = SharedPrefs();
 BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
 NtQueries _ntQueries = NtQueries();
-VkQueries _vkQueries = VkQueries();
 GetLists _lists = GetLists();
 Dialogs _dialogs = Dialogs();
 
@@ -68,8 +64,6 @@ class MainPageState extends State<MainPage> {
     pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
-
-    getActiveVersionsCount();
 
     if (Globals.scrollToVerse) {
       WidgetsBinding.instance.addPostFrameCallback(
@@ -155,7 +149,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void exitWrapper(context) {
+  Future<bool> exitWrapper(context) async {
     var arr = List.filled(4, '');
     arr[0] = "Exit";
     arr[1] = "Are you sure you want to exit?";
@@ -169,6 +163,7 @@ class MainPageState extends State<MainPage> {
         }
       },
     );
+    return false;
   }
 
   void deleteHighLightWrapper(BuildContext context, int bid) {
@@ -356,20 +351,6 @@ class MainPageState extends State<MainPage> {
     return match;
   }
 
-  // Expanded(
-  //   flex: 1,
-  //   child: Column(
-  //     children: [
-  //       (snapshot.data[index].v != 0)
-  //           ? Text(
-  //               '${snapshot.data[index].v}:',
-  //               style: TextStyle(fontSize: primaryTextSize),
-  //             )
-  //           : const Text(' '),
-  //     ],
-  //   ),
-  // ),
-
   Widget dicVerseText(snapshot, index) {
     if (snapshot.data[index].v != 0) {
       return WordSelectableText(
@@ -486,7 +467,7 @@ class MainPageState extends State<MainPage> {
                     v: snapshot.data[index].v,
                     t: '');
 
-                (activeVersionsCount > 1)
+                (Globals.activeVersionCount > 1)
                     ? gotoCompare(model)
                     : ScaffoldMessenger.of(context)
                         .showSnackBar(moreVersionsSnackBar);
@@ -602,13 +583,13 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void getActiveVersionsCount() async {
-    activeVersionsCount = await _vkQueries.getActiveVersionCount();
-  }
+  // void getActiveVersionsCount() async {
+  //   activeVersionsCount = await _vkQueries.getActiveVersionCount();
+  // }
 
   void showVersionsDialog(BuildContext context) {
-    (activeVersionsCount > 1)
-        ? versionsDialog(context)
+    (Globals.activeVersionCount > 1)
+        ? versionsDialog(context,'main')
         : ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
   }
 
@@ -806,7 +787,7 @@ class MainPageState extends State<MainPage> {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: IconButton(
-        color: primarySwatch[700],
+        color: (Globals.dictionaryMode) ? Colors.red : primarySwatch[700],
         icon: const Icon(Icons.change_circle),
         onPressed: () {
           Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
@@ -823,10 +804,7 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     _dbQueries = DbQueries();
     return WillPopScope(
-      onWillPop: () async {
-        exitWrapper(context);
-        return false;
-      },
+      onWillPop: () => exitWrapper(context),
       child: Scaffold(
           drawer: showDrawer(context),
           appBar: AppBar(

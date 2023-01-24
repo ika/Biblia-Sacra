@@ -31,4 +31,9 @@ class Globals {
   static bool dictionaryMode = false;
   static String dictionaryLookup = '';
 
+  // Text Size
+  static double initialTextSize = 16;
+
+  // Active Version count
+  static int activeVersionCount = 0;
 }

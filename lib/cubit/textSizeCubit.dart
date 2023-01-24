@@ -1,13 +1,10 @@
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TextSizeCubit extends Cubit<double> {
-  //final sharedPrefs = SharedPrefs();
-
-  //Palette palette = Palette();
-
-  TextSizeCubit() : super(16);
+  TextSizeCubit() : super(Globals.initialTextSize);
 
   void setSize(double state) => emit(state);
 
-  void getSize() async => emit(16);
+  void getSize() async => emit(Globals.initialTextSize);
 }

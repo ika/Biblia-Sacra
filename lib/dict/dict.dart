@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/dict/dicQueries.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ Future<List<DicModel>> results;
 String _contents = '';
 
 MaterialColor primarySwatch;
+double primaryTextSize;
 
 class DictSearch extends StatefulWidget {
   const DictSearch({Key key}) : super(key: key);
@@ -30,6 +32,7 @@ class _DicSearchState extends State<DictSearch> {
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
 
@@ -37,7 +40,7 @@ class _DicSearchState extends State<DictSearch> {
     List<DicModel> searchList = [];
 
     do {
-      debugPrint("WORD $enterdKeyWord");
+      //debugPrint("WORD $enterdKeyWord");
       searchList = await _dictQueries.getSearchedValues(enterdKeyWord);
       enterdKeyWord = enterdKeyWord.characters.skipLast(1).toString();
     } while (searchList.first.trans.isEmpty);
@@ -56,15 +59,6 @@ class _DicSearchState extends State<DictSearch> {
       },
     );
   }
-
-  // backPopButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 300),
-  //     () {
-  //       Navigator.pop(context);
-  //     },
-  //   );
-  // }
 
   Future emptyInputDialog(context) async {
     return showDialog<void>(
@@ -103,6 +97,7 @@ class _DicSearchState extends State<DictSearch> {
             },
             decoration: InputDecoration(
               labelText: 'Search',
+              labelStyle: TextStyle(fontSize: primaryTextSize),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
@@ -148,11 +143,11 @@ class _DicSearchState extends State<DictSearch> {
     return ListTile(
       title: Text(
         snapshot.data[index].word,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
       subtitle: Text(
         snapshot.data[index].trans,
-        style: const TextStyle(fontWeight: FontWeight.normal),
+        style: TextStyle(fontWeight: FontWeight.normal, fontSize: primaryTextSize),
       ),
       //onTap: () {},
     );
@@ -163,10 +158,9 @@ class _DicSearchState extends State<DictSearch> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            //backgroundColor: primarySwatch[700],
             title: const Text(
               'Latin Word List',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 20),
             ),
           ),
           body: searchWidget(),

@@ -7,12 +7,18 @@ import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:bibliasacra/utils/utilities.dart';
+import 'package:bibliasacra/vers/vkQueries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 SharedPrefs _sharedPrefs = SharedPrefs();
 Utilities utilities = Utilities();
 GetLists _lists = GetLists();
+VkQueries _vkQueries = VkQueries();
+
+void getActiveVersionsCount() async {
+  Globals.activeVersionCount = await _vkQueries.getActiveVersionCount();
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +55,10 @@ Future<void> main() async {
                             _sharedPrefs.readBookName(Globals.bibleBook).then(
                               (g) {
                                 Globals.bookName = g;
+                                _sharedPrefs.readTextSize().then((t) {
+                                  Globals.initialTextSize = t;
+                                  getActiveVersionsCount();
+                                });
                                 runApp(
                                   const BibleApp(),
                                 );

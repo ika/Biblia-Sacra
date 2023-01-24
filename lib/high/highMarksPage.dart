@@ -1,5 +1,6 @@
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/high/hlModel.dart';
@@ -7,6 +8,7 @@ import 'package:bibliasacra/high/hlQueries.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:bibliasacra/utils/getlists.dart';
+import 'package:bibliasacra/utils/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +18,7 @@ HlQueries _hlQueries = HlQueries();
 Dialogs _dialogs = Dialogs();
 GetLists _lists = GetLists();
 MaterialColor primarySwatch;
+double primaryTextSize;
 
 class HighLightsPage extends StatefulWidget {
   const HighLightsPage({Key key}) : super(key: key);
@@ -32,21 +35,9 @@ class _HighLightsPage extends State<HighLightsPage> {
     Globals.scrollToVerse = false;
     Globals.initialScroll = false;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
-
-  SnackBar hlDeletedSnackBar = const SnackBar(
-    content: Text('HighLight Deleted!'),
-  );
-
-  // backPopButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 200),
-  //     () {
-  //       Navigator.pop(context);
-  //     },
-  //   );
-  // }
 
   backButton(BuildContext context) {
     Navigator.push(
@@ -60,7 +51,7 @@ class _HighLightsPage extends State<HighLightsPage> {
   onHilightTap(WriteVarsModel model) {
     Globals.scrollToVerse = true;
     Globals.initialScroll = true;
-    _lists.updateActiveLists('highs',model.version);
+    _lists.updateActiveLists('highs', model.version);
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -83,7 +74,7 @@ class _HighLightsPage extends State<HighLightsPage> {
           _hlQueries.deleteHighLight(list[index].bid).then(
             (value) {
               ScaffoldMessenger.of(context).showSnackBar(hlDeletedSnackBar);
-              _lists.updateActiveLists('highs',list[index].version);
+              _lists.updateActiveLists('highs', list[index].version);
               setState(() {});
             },
           );
@@ -103,10 +94,13 @@ class _HighLightsPage extends State<HighLightsPage> {
             trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
             title: Text(
               list[index].title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: primaryTextSize),
             ),
-            subtitle: Text(list[index]
-                .subtitle), //, style: const TextStyle(color: Colors.white)),
+            subtitle: Text(
+              list[index].subtitle,
+              style: TextStyle(fontSize: primaryTextSize),
+            ),
             onTap: () {
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
@@ -125,15 +119,6 @@ class _HighLightsPage extends State<HighLightsPage> {
           ),
         );
 
-    // Card makeCard(list, int index) => Card(
-    //       elevation: 8.0,
-    //       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-    //       child: Container(
-    //         decoration: BoxDecoration(color: primarySwatch[500]),
-    //         child: makeListTile(list, index),
-    //       ),
-    //     );
-
     final makeBody = Padding(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
       child: ListView.separated(
@@ -147,15 +132,11 @@ class _HighLightsPage extends State<HighLightsPage> {
       ),
     );
 
-    final topAppBar = AppBar(
-      //backgroundColor: primarySwatch[700],
-      elevation: 0.1,
-      title: const Text('Highlights'),
-    );
-
     return Scaffold(
-      //backgroundColor: primarySwatch[50],
-      appBar: topAppBar,
+      appBar: AppBar(
+        elevation: 0.1,
+        title: const Text('Highlights'),
+      ),
       body: makeBody,
     );
   }
@@ -163,10 +144,7 @@ class _HighLightsPage extends State<HighLightsPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        backButton(context);
-        return false;
-      },
+      onWillPop: () => backButton(context),
       child: FutureBuilder<List<HlModel>>(
         future: _hlQueries.getHighLightList(),
         builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
