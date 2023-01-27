@@ -40,6 +40,8 @@ class MainSearch extends StatefulWidget {
 class _MainSearchState extends State<MainSearch> {
   @override
   initState() {
+    Globals.scrollToVerse = false;
+    Globals.initialScroll = false;
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
@@ -70,17 +72,17 @@ class _MainSearchState extends State<MainSearch> {
 //   .firstWhere((element) => element.value == color.value);
 
   backButton(BuildContext context) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
-      },
+    // Future.delayed(
+    //   const Duration(milliseconds: 200),
+    //   () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MainPage(),
+      ),
     );
+    //   },
+    // );
   }
 
   onSearchTap(WriteVarsModel model) {
@@ -227,15 +229,21 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   ListTile listTileMethod(AsyncSnapshot<List<Bible>> snapshot, int index) {
-    String bookName = bookLists.getBookByNumber(
-        snapshot.data[index].b, Globals.bibleLang); // 0 - 66
+    bool emptySearchResult = (snapshot.data[index].b == 0) ? true : false;
+    String bookName = (!emptySearchResult)
+        ? bookLists.getBookByNumber(snapshot.data[index].b, Globals.bibleLang)
+        : '';
     return ListTile(
       title: Text(
-        "$bookName ${snapshot.data[index].c}:${snapshot.data[index].v}",
+        (!emptySearchResult)
+            ? "$bookName ${snapshot.data[index].c}:${snapshot.data[index].v}"
+            : snapshot.data[index].t,
         style:
             TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
-      subtitle: highLiteSearchWord(snapshot.data[index].t, _contents),
+      subtitle: (!emptySearchResult)
+          ? highLiteSearchWord(snapshot.data[index].t, _contents)
+          : Container(),
       onTap: () {
         BlocProvider.of<ChapterCubit>(context)
             .setChapter(snapshot.data[index].c);
@@ -254,56 +262,54 @@ class _MainSearchState extends State<MainSearch> {
     );
   }
 
-    void showVersionsDialog(BuildContext context) {
+  void showVersionsDialog(BuildContext context) {
     (Globals.activeVersionCount > 1)
-        ? versionsDialog(context, 'search')
+        ? versionsDialog(context, 'search').then((value) {
+            setState(() {});
+          })
         : ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
   }
 
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          appBar: AppBar(
-            actions: [
-              Row(
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: primarySwatch[700]),
-                    onPressed: () {
-                      showVersionsDialog(context);
-                    },
-                    child: Text(
+        child: WillPopScope(
+          onWillPop: () => backButton(context),
+          child: Scaffold(
+            appBar: AppBar(
+              actions: [
+                Row(
+                  children: [
+                    BlocBuilder<SearchCubit, int>(
+                      builder: (context, area) {
+                        return Text(
+                          ereasList[area],
+                          style: const TextStyle(fontSize: 16.0),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Text(
                       Globals.versionAbbr,
                       style: const TextStyle(fontSize: 16),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  BlocBuilder<SearchCubit, int>(
-                    builder: (context, area) {
-                      return Text(
-                        ereasList[area],
-                        style: const TextStyle(fontSize: 16.0),
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.settings),
-                    onPressed: () {
-                      searchAreasDialog(context);
-                    },
-                  )
-                ],
-              )
-            ],
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.settings),
+                      onPressed: () {
+                        searchAreasDialog(context);
+                      },
+                    )
+                  ],
+                )
+              ],
+            ),
+            body: searchWidget(),
           ),
-          body: searchWidget(),
         ),
       );
 }

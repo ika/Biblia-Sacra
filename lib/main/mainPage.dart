@@ -320,12 +320,12 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  void gotoCompare(Bible model) async {
-    Route route = MaterialPageRoute(
-      builder: (context) => ComparePage(model: model),
-    );
-    Navigator.push(context, route);
-  }
+  // void gotoCompare(Bible model) async {
+  //   Route route = MaterialPageRoute(
+  //     builder: (context) => mainCompareDialog(model: model),
+  //   );
+  //   Navigator.push(context, route);
+  // }
 
   bool getNotesMatch(int bid) {
     bool match = false;
@@ -468,7 +468,7 @@ class MainPageState extends State<MainPage> {
                     t: '');
 
                 (Globals.activeVersionCount > 1)
-                    ? gotoCompare(model)
+                    ? mainCompareDialog(context,model)
                     : ScaffoldMessenger.of(context)
                         .showSnackBar(moreVersionsSnackBar);
 

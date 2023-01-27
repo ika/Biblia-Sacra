@@ -53,13 +53,14 @@ class AppBarVersions extends StatelessWidget {
     );
   }
 
-    backToSearchButton(BuildContext context) {
+  void backToSearchButton(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const MainSearch(),
       ),
     );
+    //Navigator.pop(context);
   }
 
   void versionChangeSnackBar(BuildContext context, String snackBarText) {
@@ -106,7 +107,7 @@ class AppBarVersions extends StatelessWidget {
                   (value) {
                     Globals.bookName = value;
                     //Navigator.of(context).pop();
-                    versionChangeSnackBar(context, snapshot.data[index].m);
+                    //versionChangeSnackBar(context, snapshot.data[index].m);
                   },
                 );
 

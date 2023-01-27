@@ -10,6 +10,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Compare _compare = Compare();
 double primaryTextSize;
 
+Future<dynamic> mainCompareDialog(BuildContext context, Bible bible) {
+  return showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return SimpleDialog(
+        children: [
+          SizedBox(
+            height: 300,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ComparePage(model: bible),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class ComparePage extends StatefulWidget {
   const ComparePage({Key key, this.model}) : super(key: key);
 
@@ -33,36 +61,26 @@ class _ComparePage extends State<ComparePage> {
   Widget compareList(list, context) {
     makeListTile(list, int index) {
       return ListTile(
-        //leading: Icon(Icons.arrow_right, color: primarySwatch[700]),
-        // contentPadding:
-        //     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         title: Text(
           "${list[index].a} - ${list[index].b} ${list[index].c}:${list[index].v}",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+          style:
+              TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
         ),
-        subtitle: Text(list[index].t, style: TextStyle(fontSize: primaryTextSize),),
+        subtitle: Text(
+          list[index].t,
+          style: TextStyle(fontSize: primaryTextSize),
+        ),
       );
     }
 
-    final makeBody = Padding(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
-      child: ListView.separated(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: list == null ? 0 : list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeListTile(list, index);
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      ),
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-      elevation: 0.1,
-      title: const Text('Compare Versions'),
-    ),
-      body: makeBody,
+    return ListView.separated(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: list == null ? 0 : list.length,
+      itemBuilder: (BuildContext context, int index) {
+        return makeListTile(list, index);
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:bibliasacra/main/dbModel.dart';
 import 'package:bibliasacra/main/dbProvider.dart';
@@ -40,8 +41,7 @@ class DbQueries {
     final db = await _dbProvider.database;
 
     List<Bible> returnList = [];
-    final defList =
-        Bible(id: 0, b: 0, c: chap, v: verse, t: 'Verse not found');
+    final defList = Bible(id: 0, b: 0, c: chap, v: verse, t: 'Verse not found');
     returnList.add(defList);
 
     var res = await db.rawQuery(
@@ -55,30 +55,18 @@ class DbQueries {
     return list;
   }
 
-  // int id; // id
-  // int b; // book
-  // int c; // chapter
-  // int v; // verse
-  // String t; // text
-  // int h; // highlight
-  // int n; // note
-  // int m; // bookmark
-
-  Future<List<Bible>> getSearchedValues(String s, String l, String h) async {
-    //debugPrint('LOW $l HIGH $h');
-
-    List<Bible> returnList = [];
-
-    final mod =
-        Bible(id: 0, b: 0, c: 0, v: 0, t: 'Search returned no results.');
-
-    returnList.add(mod);
-
+  Future<List<Bible>> getSearchedValues(String search, String low, String high) async {
     final db = await _dbProvider.database;
 
+    debugPrint("TEXT $search LOW $low HIGH $high");
+
+    List<Bible> returnList = [];
+    final defList = Bible(id: 0, b: 0, c: 0, v: 0, t: 'No search results.');
+    returnList.add(defList);
+
     var res = await db.rawQuery(
-        '''SELECT * FROM $tableName WHERE t LIKE ? AND b BETWEEN ? AND ?''',
-        ['%$s%', l, h]); // text, low, high
+        '''SELECT * FROM $tableName WHERE t LIKE ? AND b BETWEEN ? AND ? ORDER BY id ASC''',
+        ['%$search%', low, high]);
 
     List<Bible> list = res.isNotEmpty
         ? res.map((tableName) => Bible.fromJson(tableName)).toList()
