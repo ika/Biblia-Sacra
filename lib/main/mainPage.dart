@@ -736,7 +736,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Padding iconButton(BuildContext context) {
+  Padding showIconButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: IconButton(
@@ -766,7 +766,7 @@ class MainPageState extends State<MainPage> {
           appBar: AppBar(
             elevation: 16,
             actions: [
-              (Globals.bibleLang == 'lat') ? iconButton(context) : Container(),
+              (Globals.bibleLang == 'lat') ? showIconButton(context) : Container(),
               Row(
                 children: [
                   ElevatedButton(
