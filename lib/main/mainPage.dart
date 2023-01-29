@@ -18,7 +18,7 @@ import 'package:bibliasacra/main/mainDict.dart';
 import 'package:bibliasacra/main/mainVersMenu.dart';
 import 'package:bibliasacra/main/mainSearch.dart';
 import 'package:bibliasacra/main/mainSelector.dart';
-import 'package:bibliasacra/main/textsize/textsize.dart';
+import 'package:bibliasacra/textsize/textsize.dart';
 import 'package:bibliasacra/notes/edit.dart';
 import 'package:bibliasacra/notes/nModel.dart';
 import 'package:bibliasacra/notes/nQueries.dart';
@@ -48,6 +48,9 @@ NtQueries _ntQueries = NtQueries();
 GetLists _lists = GetLists();
 Dialogs _dialogs = Dialogs();
 
+String verseText = '';
+int verseNumber = 0;
+
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
 
@@ -59,7 +62,6 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-
     initialScrollController = ItemScrollController();
     pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
@@ -68,24 +70,20 @@ class MainPageState extends State<MainPage> {
     if (Globals.scrollToVerse) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
-          scrollToIndex().then(
-            (value) {
-              Globals.scrollToVerse = false;
-            },
-          );
+          scrollToIndex();
         },
       );
     }
   }
 
-  Future<void> scrollToIndex() async {
+  void scrollToIndex() {
     Future.delayed(
-      const Duration(milliseconds: 500),
+      Duration(milliseconds: Globals.navigatorLongDelay),
       () {
         if (initialScrollController.isAttached) {
           initialScrollController.scrollTo(
             index: Globals.chapterVerse, // from verse selector
-            duration: const Duration(milliseconds: 500),
+            duration: Duration(milliseconds: Globals.navigatorLongDelay),
             curve: Curves.easeInOutCubic,
           );
         }
@@ -106,15 +104,12 @@ class MainPageState extends State<MainPage> {
   }
 
   ItemScrollController itemScrollControllerSelector() {
-    if (Globals.initialScroll) {
-      Globals.initialScroll = false;
-      return initialScrollController; // initial scroll
-    } else {
-      return ItemScrollController(); // PageView scroll
-    }
+    return (Globals.initialScroll)
+        ? initialScrollController // initial scroll
+        : ItemScrollController(); // PageView scroll
   }
 
-  void copyVerseWrapper(context, snapshot, index) {
+  void copyVerseWrapper(BuildContext context, snapshot, index) {
     var arr = List.filled(4, '');
     arr[0] = "Copy";
     arr[1] = "Do you want to copy this verse?";
@@ -149,7 +144,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Future<bool> exitWrapper(context) async {
+  exitWrapper(BuildContext context) {
     var arr = List.filled(4, '');
     arr[0] = "Exit";
     arr[1] = "Are you sure you want to exit?";
@@ -163,7 +158,6 @@ class MainPageState extends State<MainPage> {
         }
       },
     );
-    return false;
   }
 
   void deleteHighLightWrapper(BuildContext context, int bid) {
@@ -187,7 +181,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void insertBookMark() {
+  void insertBookMark(BuildContext context) {
     List<String> stringTitle = [
       Globals.versionAbbr,
       ' ',
@@ -195,18 +189,18 @@ class MainPageState extends State<MainPage> {
       ' ',
       '${Globals.bookChapter}',
       ':',
-      '${Globals.verseNumber}'
+      '$verseNumber'
     ];
 
     final model = BmModel(
         title: stringTitle.join(),
-        subtitle: Globals.verseText,
+        subtitle: verseText,
         lang: Globals.bibleLang,
         version: Globals.bibleVersion,
         abbr: Globals.versionAbbr,
         book: Globals.bibleBook,
         chapter: Globals.bookChapter,
-        verse: Globals.verseNumber,
+        verse: verseNumber,
         name: Globals.bookName);
     _bmQueries.saveBookMark(model).then(
       (value) {
@@ -223,18 +217,18 @@ class MainPageState extends State<MainPage> {
       ' ',
       '${Globals.bookChapter}',
       ':',
-      '${Globals.verseNumber}'
+      '$verseNumber'
     ];
 
     final model = HlModel(
         title: stringTitle.join(),
-        subtitle: Globals.verseText,
+        subtitle: verseText,
         lang: Globals.bibleLang,
         version: Globals.bibleVersion,
         abbr: Globals.versionAbbr,
         book: Globals.bibleBook,
         chapter: Globals.bookChapter,
-        verse: Globals.verseNumber,
+        verse: verseNumber,
         name: Globals.bookName,
         bid: bid);
 
@@ -253,18 +247,18 @@ class MainPageState extends State<MainPage> {
       ' ',
       '${Globals.bookChapter}',
       ':',
-      '${Globals.verseNumber}'
+      '$verseNumber'
     ];
 
     final model = NtModel(
         title: stringTitle.join(),
-        contents: Globals.verseText,
+        contents: verseText,
         lang: Globals.bibleLang,
         version: Globals.bibleVersion,
         abbr: Globals.versionAbbr,
         book: Globals.bibleBook,
         chapter: Globals.bookChapter,
-        verse: Globals.verseNumber,
+        verse: verseNumber,
         name: Globals.bookName,
         bid: bid);
     _ntQueries.insertNote(model).then((noteid) {
@@ -274,16 +268,16 @@ class MainPageState extends State<MainPage> {
     });
   }
 
-  void delayedSnackbar(context) {
+  void delayedSnackbar(BuildContext context) {
     Future.delayed(
-      const Duration(milliseconds: 300),
+      Duration(milliseconds: Globals.navigatorDelay),
       () {
         ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
       },
     );
   }
 
-  void gotoEditNote(NtModel model) {
+  void gotoEditNote(BuildContext context, NtModel model) {
     Route route = MaterialPageRoute(
       builder: (context) => EditNotePage(model: model),
     );
@@ -294,15 +288,6 @@ class MainPageState extends State<MainPage> {
       }
     });
   }
-
-  // void delayedsetState() {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 50),
-  //     () {
-  //       setState(() {});
-  //     },
-  //   );
-  // }
 
   Future<NtModel> getNoteModel(int bid) async {
     NtModel model =
@@ -319,13 +304,6 @@ class MainPageState extends State<MainPage> {
       return model;
     }
   }
-
-  // void gotoCompare(Bible model) async {
-  //   Route route = MaterialPageRoute(
-  //     builder: (context) => mainCompareDialog(model: model),
-  //   );
-  //   Navigator.push(context, route);
-  // }
 
   bool getNotesMatch(int bid) {
     bool match = false;
@@ -351,7 +329,7 @@ class MainPageState extends State<MainPage> {
     return match;
   }
 
-  Widget dicVerseText(snapshot, index) {
+  Widget dicVerseText(BuildContext context, snapshot, index) {
     if (snapshot.data[index].v != 0) {
       return WordSelectableText(
         selectable: true,
@@ -368,14 +346,14 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  Widget dictionaryMode(snapshot, index) {
+  Widget dictionaryMode(BuildContext context, snapshot, index) {
     return Container(
       margin: const EdgeInsets.only(left: 5, bottom: 6.0),
       child: Row(
         children: [
           Flexible(
             fit: FlexFit.loose,
-            child: (dicVerseText(snapshot, index)),
+            child: (dicVerseText(context, snapshot, index)),
           ),
         ],
       ),
@@ -395,7 +373,7 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  Widget normalModeContainer(snapshot, index) {
+  Widget normalModeContainer(BuildContext context, snapshot, index) {
     return Container(
       margin: const EdgeInsets.only(left: 5, bottom: 6.0),
       child: Row(
@@ -404,35 +382,13 @@ class MainPageState extends State<MainPage> {
             fit: FlexFit.loose,
             child: (norVerseText(snapshot, index)),
           ),
-          showNoteIcon(snapshot, index)
+          showNoteIcon(context, snapshot, index)
         ],
       ),
-
-      // child: Row(
-      //   children: [
-      //     (snapshot.data[index].v != 0)
-      //         ? Text('${snapshot.data[index].v}:')
-      //         : const Text(' '),
-      //     Wrap(
-      //       children: [
-      //         Text(
-      //           "${snapshot.data[index].t}",
-      //           style: TextStyle(
-      //               fontSize: primaryTextSize,
-      //               backgroundColor:
-      //                   (getHighLightMatch(snapshot.data[index].id))
-      //                       ? primarySwatch[100]
-      //                       : null),
-      //         ),
-      //       ],
-      //     ),
-      //     showNoteIcon(snapshot, index)
-      //   ],
-      // ),
     );
   }
 
-  SizedBox showNoteIcon(snapshot, index) {
+  SizedBox showNoteIcon(BuildContext context, snapshot, index) {
     if (getNotesMatch(snapshot.data[index].id)) {
       return SizedBox(
         height: 30,
@@ -441,7 +397,7 @@ class MainPageState extends State<MainPage> {
           icon: Icon(Icons.edit, color: primarySwatch[700]),
           onPressed: () => getNoteModel(snapshot.data[index].id).then(
             (model) {
-              gotoEditNote(model);
+              gotoEditNote(context, model);
             },
           ),
         ),
@@ -451,11 +407,11 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  Widget normalMode(snapshot, index) {
+  Widget normalMode(BuildContext context, snapshot, index) {
     return GestureDetector(
       onTap: () {
-        Globals.verseNumber = snapshot.data[index].v;
-        Globals.verseText = snapshot.data[index].t;
+        verseNumber = snapshot.data[index].v;
+        verseText = snapshot.data[index].t;
         contextMenuDialog(context).then(
           (value) {
             switch (value) {
@@ -468,7 +424,7 @@ class MainPageState extends State<MainPage> {
                     t: '');
 
                 (Globals.activeVersionCount > 1)
-                    ? mainCompareDialog(context,model)
+                    ? mainCompareDialog(context, model)
                     : ScaffoldMessenger.of(context)
                         .showSnackBar(moreVersionsSnackBar);
 
@@ -476,7 +432,7 @@ class MainPageState extends State<MainPage> {
 
               case 1: // bookmarks
 
-                insertBookMark();
+                insertBookMark(context);
 
                 break;
 
@@ -500,7 +456,7 @@ class MainPageState extends State<MainPage> {
                     //     .showSnackBar(noteEditSnackBar);
                     : getNoteModel(bid).then(
                         (model) {
-                          gotoEditNote(model);
+                          gotoEditNote(context, model);
                         },
                       );
 
@@ -518,11 +474,11 @@ class MainPageState extends State<MainPage> {
           },
         );
       },
-      child: normalModeContainer(snapshot, index),
+      child: normalModeContainer(context, snapshot, index),
     );
   }
 
-  Widget showListView(int book, int ch) {
+  Widget showListView(BuildContext context, int book, int ch) {
     return Container(
       padding: const EdgeInsets.all(15.0),
       child: FutureBuilder<List<Bible>>(
@@ -534,8 +490,8 @@ class MainPageState extends State<MainPage> {
               itemScrollController: itemScrollControllerSelector(),
               itemBuilder: (context, index) {
                 return (Globals.dictionaryMode)
-                    ? dictionaryMode(snapshot, index)
-                    : normalMode(snapshot, index);
+                    ? dictionaryMode(context, snapshot, index)
+                    : normalMode(context, snapshot, index);
               },
             );
           }
@@ -547,15 +503,16 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  List<Widget> chapterCountFunc(int book, int chapterCount) {
+  List<Widget> chapterCountFunc(
+      BuildContext context, int book, int chapterCount) {
     List<Widget> pagesList = [];
     for (int ch = 1; ch <= chapterCount; ch++) {
-      pagesList.add(showListView(book, ch));
+      pagesList.add(showListView(context, book, ch));
     }
     return pagesList;
   }
 
-  Widget chaptersList(int book) {
+  Widget chaptersList(BuildContext context, int book) {
     return FutureBuilder<int>(
       future: _dbQueries.getChapterCount(book),
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -566,7 +523,7 @@ class MainPageState extends State<MainPage> {
             scrollDirection: Axis.horizontal,
             pageSnapping: true,
             physics: const BouncingScrollPhysics(),
-            children: chapterCountFunc(book, chapterCount),
+            children: chapterCountFunc(context, book, chapterCount),
             onPageChanged: (index) {
               int c = index + 1;
               _sharedPrefs.saveChapter(c).then(
@@ -583,13 +540,9 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  // void getActiveVersionsCount() async {
-  //   activeVersionsCount = await _vkQueries.getActiveVersionCount();
-  // }
-
   void showVersionsDialog(BuildContext context) {
     (Globals.activeVersionCount > 1)
-        ? versionsDialog(context,'main')
+        ? versionsDialog(context, 'main')
         : ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
   }
 
@@ -783,7 +736,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Padding iconButton() {
+  Padding iconButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: IconButton(
@@ -804,13 +757,16 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     _dbQueries = DbQueries();
     return WillPopScope(
-      onWillPop: () => exitWrapper(context),
+      onWillPop: () async {
+        exitWrapper(context);
+        return false;
+      },
       child: Scaffold(
           drawer: showDrawer(context),
           appBar: AppBar(
             elevation: 16,
             actions: [
-              (Globals.bibleLang == 'lat') ? iconButton() : Container(),
+              (Globals.bibleLang == 'lat') ? iconButton(context) : Container(),
               Row(
                 children: [
                   ElevatedButton(
@@ -864,7 +820,7 @@ class MainPageState extends State<MainPage> {
               ),
             ],
           ),
-          body: chaptersList(Globals.bibleBook) //MainChapters(),
+          body: chaptersList(context, Globals.bibleBook) //MainChapters(),
           ),
     );
   }

@@ -103,7 +103,7 @@ class _DicSearchState extends State<DictSearch> {
                 onPressed: () {
                   FocusScope.of(context).unfocus();
                   Future.delayed(
-                    const Duration(milliseconds: 200),
+                    Duration(milliseconds: Globals.navigatorDelay),
                     () {
                       _contents.isEmpty
                           ? emptyInputDialog(context)

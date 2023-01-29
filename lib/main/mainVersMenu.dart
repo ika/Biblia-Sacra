@@ -65,7 +65,7 @@ class AppBarVersions extends StatelessWidget {
 
   void versionChangeSnackBar(BuildContext context, String snackBarText) {
     Future.delayed(
-      const Duration(milliseconds: 800),
+      Duration(milliseconds: Globals.navigatorLongestDelay),
       () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

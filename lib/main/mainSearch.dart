@@ -68,21 +68,18 @@ class _MainSearchState extends State<MainSearch> {
     );
   }
 
-// MaterialColor getMaterialColor(Color color) => Colors.primaries
-//   .firstWhere((element) => element.value == color.value);
-
   backButton(BuildContext context) {
-    // Future.delayed(
-    //   const Duration(milliseconds: 200),
-    //   () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      ),
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
     );
-    //   },
-    // );
   }
 
   onSearchTap(WriteVarsModel model) {
@@ -145,7 +142,7 @@ class _MainSearchState extends State<MainSearch> {
                 onPressed: () {
                   FocusScope.of(context).unfocus();
                   Future.delayed(
-                    const Duration(milliseconds: 300),
+                    Duration(milliseconds: Globals.navigatorDelay),
                     () {
                       _contents.isEmpty
                           ? emptyInputDialog(context)

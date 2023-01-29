@@ -40,11 +40,16 @@ class _HighLightsPage extends State<HighLightsPage> {
   }
 
   backButton(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      ),
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
     );
   }
 

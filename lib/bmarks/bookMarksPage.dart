@@ -30,17 +30,24 @@ class _BookMarkState extends State<BookMarksPage> {
 
   @override
   void initState() {
+    Globals.scrollToVerse = false;
+    Globals.initialScroll = false;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     super.initState();
   }
 
   backButton(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      ),
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
     );
   }
 
