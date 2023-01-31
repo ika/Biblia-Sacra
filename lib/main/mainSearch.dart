@@ -30,6 +30,8 @@ String _contents = '';
 MaterialColor primarySwatch;
 double primaryTextSize;
 
+bool initialScroll = false;
+
 class MainSearch extends StatefulWidget {
   const MainSearch({Key key}) : super(key: key);
 
@@ -40,8 +42,6 @@ class MainSearch extends StatefulWidget {
 class _MainSearchState extends State<MainSearch> {
   @override
   initState() {
-    Globals.scrollToVerse = false;
-    Globals.initialScroll = false;
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
@@ -75,7 +75,7 @@ class _MainSearchState extends State<MainSearch> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const MainPage(),
+            builder: (context) => MainPage(initialScroll: initialScroll),
           ),
         );
       },
@@ -83,21 +83,11 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   onSearchTap(WriteVarsModel model) {
-    Globals.scrollToVerse = true;
-    Globals.initialScroll = true;
+    initialScroll = true;
     writeVars(model).then((value) {
       backButton(context);
     });
   }
-
-  // backPopButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 300),
-  //     () {
-  //       Navigator.pop(context);
-  //     },
-  //   );
-  // }
 
   Future emptyInputDialog(context) async {
     return showDialog<void>(

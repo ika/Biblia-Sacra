@@ -18,6 +18,8 @@ Dialogs _dialogs = Dialogs();
 MaterialColor primarySwatch;
 double primaryTextSize;
 
+bool initialScroll = false;
+
 class BookMarksPage extends StatefulWidget {
   const BookMarksPage({Key key}) : super(key: key);
 
@@ -30,8 +32,6 @@ class _BookMarkState extends State<BookMarksPage> {
 
   @override
   void initState() {
-    Globals.scrollToVerse = false;
-    Globals.initialScroll = false;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     super.initState();
@@ -44,7 +44,7 @@ class _BookMarkState extends State<BookMarksPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const MainPage(),
+            builder: (context) => MainPage(initialScroll: initialScroll),
           ),
         );
       },
@@ -52,8 +52,7 @@ class _BookMarkState extends State<BookMarksPage> {
   }
 
   onBookMarkTap(WriteVarsModel model) {
-    Globals.scrollToVerse = true;
-    Globals.initialScroll = true;
+    initialScroll = true;
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -120,25 +119,27 @@ class _BookMarkState extends State<BookMarksPage> {
           ),
         );
 
-    final makeBody = Padding(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
-      child: ListView.separated(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: list == null ? 0 : list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeListTile(list, index);
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
+    return WillPopScope(
+      onWillPop: () => backButton(context),
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.1,
+          title: const Text('Bookmarks'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
+          child: ListView.separated(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: list == null ? 0 : list.length,
+            itemBuilder: (BuildContext context, int index) {
+              return makeListTile(list, index);
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+          ),
+        ),
       ),
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.1,
-        title: const Text('Bookmarks'),
-      ),
-      body: makeBody,
     );
   }
 

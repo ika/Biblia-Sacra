@@ -3,6 +3,7 @@ import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/dict/dicQueries.dart';
 import 'package:bibliasacra/globals/globals.dart';
+import 'package:bibliasacra/main/mainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,8 +28,6 @@ class DictSearch extends StatefulWidget {
 class _DicSearchState extends State<DictSearch> {
   @override
   initState() {
-    Globals.scrollToVerse = false;
-    Globals.initialScroll = false;
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
@@ -56,6 +55,20 @@ class _DicSearchState extends State<DictSearch> {
     setState(
       () {
         filteredSearch = results;
+      },
+    );
+  }
+
+  backButton(BuildContext context) {
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainPage(initialScroll: false),
+          ),
+        );
       },
     );
   }
@@ -143,11 +156,13 @@ class _DicSearchState extends State<DictSearch> {
     return ListTile(
       title: Text(
         snapshot.data[index].word,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+        style:
+            TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
       subtitle: Text(
         snapshot.data[index].trans,
-        style: TextStyle(fontWeight: FontWeight.normal, fontSize: primaryTextSize),
+        style:
+            TextStyle(fontWeight: FontWeight.normal, fontSize: primaryTextSize),
       ),
       //onTap: () {},
     );
@@ -156,14 +171,17 @@ class _DicSearchState extends State<DictSearch> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'Latin Word List',
-              style: TextStyle(fontSize: 20),
+        child: WillPopScope(
+          onWillPop: () => backButton(context),
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                'Latin Word List',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
+            body: searchWidget(),
           ),
-          body: searchWidget(),
         ),
       );
 }

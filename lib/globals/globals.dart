@@ -11,17 +11,10 @@ class Globals {
   static String bookName = 'John'; // Book name
   //--------------------------------------
 
-  //static String verseText; // for Dialogue
-  //static int verseNumber; // for Dialogue
-
   // Navigarot delay
   static int navigatorDelay = 200;
   static int navigatorLongDelay = 500;
   static int navigatorLongestDelay = 800;
-
-  // Bookmarks and Highlights
-  static bool scrollToVerse = false;
-  static bool initialScroll = false;
 
   // Dialog height
   static double dialogHeight = 0.0;

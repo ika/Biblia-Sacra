@@ -48,7 +48,7 @@ class AppBarVersions extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const MainPage(),
+        builder: (context) => MainPage(initialScroll: false),
       ),
     );
   }

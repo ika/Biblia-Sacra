@@ -11,6 +11,7 @@ class BmModel {
   int chapter; // chapter number
   int verse;
   String name; // book name
+  int bid;
 
   BmModel(
       {this.id,
@@ -22,31 +23,33 @@ class BmModel {
       this.book,
       this.chapter,
       this.verse,
-      this.name});
-  
-    factory BmModel.fromJson(Map<String, dynamic> json) => BmModel(
-        id: json['id'],
-        title: json['title'],
-        subtitle: json['subtitle'],
-        lang: json['lang'],
-        version: json['version'],
-        abbr: json['abbr'],
-        book: json['book'],
-        chapter: json['chapter'],
-        verse: json['verse'],
-        name: json['name']
-      );
+      this.name,
+      this.bid});
+
+  factory BmModel.fromJson(Map<String, dynamic> json) => BmModel(
+      id: json['id'],
+      title: json['title'],
+      subtitle: json['subtitle'],
+      lang: json['lang'],
+      version: json['version'],
+      abbr: json['abbr'],
+      book: json['book'],
+      chapter: json['chapter'],
+      verse: json['verse'],
+      name: json['name'],
+      bid: json['bid']);
 
   Map<String, dynamic> toJson() => {
-      'id': id,
-      'title': title,
-      'subtitle': subtitle,
-      'lang': lang,
-      'version': version,
-      'abbr': abbr,
-      'book': book,
-      'chapter': chapter,
-      'verse': verse,
-      'name': name
+        'id': id,
+        'title': title,
+        'subtitle': subtitle,
+        'lang': lang,
+        'version': version,
+        'abbr': abbr,
+        'book': book,
+        'chapter': chapter,
+        'verse': verse,
+        'name': name,
+        'bid': bid
       };
 }

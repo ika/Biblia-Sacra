@@ -106,7 +106,7 @@ class BibleApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: palette,
             ),
-            home: const MainPage(),
+            home: MainPage(initialScroll: false),
           );
         }),
       ),

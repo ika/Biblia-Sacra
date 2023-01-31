@@ -52,8 +52,6 @@ class _ComparePage extends State<ComparePage> {
 
   @override
   void initState() {
-    Globals.scrollToVerse = false;
-    Globals.initialScroll = false;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }

@@ -14,11 +14,6 @@ class HlQueries {
     _hlProvider = HlProvider();
   }
 
-  // Future<void> saveDatabaseId(int i, int b) async {
-  //   final db = await _hlProvider.database;
-  //   await db.rawUpdate('''UPDATE $tableName SET bid=? WHERE id=?''', [b, i]);
-  // }
-
   Future<int> saveHighLight(HlModel model) async {
     final db = await _hlProvider.database;
     return await db.insert(
@@ -46,7 +41,7 @@ class HlQueries {
     return list;
   }
 
-    Future<List<HlModel>> getHighVersionList(int v) async {
+  Future<List<HlModel>> getHighVersionList(int v) async {
     final db = await _hlProvider.database;
 
     var res =

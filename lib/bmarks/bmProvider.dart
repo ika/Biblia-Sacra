@@ -31,7 +31,7 @@ class BmProvider {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onOpen: (db) async {},
       onCreate: (Database db, int version) async {
         await db.execute('''
@@ -45,7 +45,8 @@ class BmProvider {
                     book INTEGER DEFAULT 0,
                     chapter INTEGER DEFAULT 0,
                     verse INTEGER DEFAULT 0,
-                    name TEXT DEFAULT ''
+                    name TEXT DEFAULT '',
+                    bid INTEGER DEFAULT 0
                 )
             ''');
       },

@@ -15,6 +15,8 @@ NtQueries _ntQueries = NtQueries();
 GetLists _lists = GetLists();
 Dialogs _dialogs = Dialogs();
 
+bool initialScroll = false;
+
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
 
 MaterialColor primarySwatch;
@@ -30,8 +32,6 @@ class NotesPage extends StatefulWidget {
 class NotesPageState extends State<NotesPage> {
   @override
   void initState() {
-    Globals.scrollToVerse = false;
-    Globals.initialScroll = false;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
@@ -55,7 +55,7 @@ class NotesPageState extends State<NotesPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const MainPage(),
+            builder: (context) => MainPage(initialScroll: initialScroll),
           ),
         );
       },
@@ -63,8 +63,7 @@ class NotesPageState extends State<NotesPage> {
   }
 
   onIconButtonPress(WriteVarsModel model) {
-    Globals.scrollToVerse = true;
-    Globals.initialScroll = true;
+    initialScroll = true;
     _lists.updateActiveLists('notes', model.version);
     writeVars(model).then((value) {
       backButton(context);

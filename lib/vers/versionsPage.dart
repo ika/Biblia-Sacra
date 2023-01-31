@@ -2,6 +2,7 @@ import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
+import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/utilities.dart';
 import 'package:bibliasacra/vers/vkModel.dart';
 import 'package:bibliasacra/vers/vkQueries.dart';
@@ -19,6 +20,8 @@ int counter = 0;
 MaterialColor primarySwatch;
 double primaryTextSize;
 
+bool initialScroll = false;
+
 class VersionsPage extends StatefulWidget {
   const VersionsPage({Key key}) : super(key: key);
 
@@ -29,28 +32,25 @@ class VersionsPage extends StatefulWidget {
 class VersionsPageState extends State<VersionsPage> {
   @override
   void initState() {
-    Globals.scrollToVerse = false;
-    Globals.initialScroll = false;
     counter = 0;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
 
-  // backButton(BuildContext context) {
-  //   Future.delayed(
-  //     const Duration(milliseconds: 300),
-  //     () {
-  //       Navigator.pop(context);
-  //       // Navigator.push(
-  //       //   context,
-  //       //   MaterialPageRoute(
-  //       //     builder: (context) => const MainPage(),
-  //       //   ),
-  //       // );
-  //     },
-  //   );
-  // }
+  backButton(BuildContext context) {
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainPage(initialScroll: initialScroll),
+          ),
+        );
+      },
+    );
+  }
 
   Widget versionsWidget() {
     return Container(
@@ -98,24 +98,15 @@ class VersionsPageState extends State<VersionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        //backgroundColor: primarySwatch[700],
-        // flexibleSpace: GestureDetector(
-        //   onTap: () {
-        //     counter++;
-        //     if (counter > 4) {
-        //       counter = 0;
-        //       vkQueries.updateHiddenState().then((value) {
-        //         setState(() {});
-        //       });
-        //     }
-        //   },
-        // ),
-        elevation: 0.1,
-        title: const Text('Bibles'),
+    return WillPopScope(
+      onWillPop: () => backButton(context),
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.1,
+          title: const Text('Bibles'),
+        ),
+        body: versionsWidget(),
       ),
-      body: versionsWidget(),
     );
   }
 }

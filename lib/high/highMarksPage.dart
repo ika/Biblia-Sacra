@@ -20,6 +20,8 @@ GetLists _lists = GetLists();
 MaterialColor primarySwatch;
 double primaryTextSize;
 
+bool initialScroll = false;
+
 class HighLightsPage extends StatefulWidget {
   const HighLightsPage({Key key}) : super(key: key);
 
@@ -32,8 +34,6 @@ class _HighLightsPage extends State<HighLightsPage> {
 
   @override
   void initState() {
-    Globals.scrollToVerse = false;
-    Globals.initialScroll = false;
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
@@ -46,7 +46,7 @@ class _HighLightsPage extends State<HighLightsPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const MainPage(),
+            builder: (context) => MainPage(initialScroll: initialScroll),
           ),
         );
       },
@@ -54,8 +54,7 @@ class _HighLightsPage extends State<HighLightsPage> {
   }
 
   onHilightTap(WriteVarsModel model) {
-    Globals.scrollToVerse = true;
-    Globals.initialScroll = true;
+    initialScroll = true;
     _lists.updateActiveLists('highs', model.version);
     writeVars(model).then((value) {
       backButton(context);
@@ -124,25 +123,24 @@ class _HighLightsPage extends State<HighLightsPage> {
           ),
         );
 
-    final makeBody = Padding(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
-      child: ListView.separated(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: list == null ? 0 : list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeListTile(list, index);
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      ),
-    );
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.1,
         title: const Text('Highlights'),
       ),
-      body: makeBody,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
+        child: ListView.separated(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: list == null ? 0 : list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return makeListTile(list, index);
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
+        ),
+      ),
     );
   }
 

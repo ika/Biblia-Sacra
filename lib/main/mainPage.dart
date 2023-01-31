@@ -51,8 +51,13 @@ Dialogs _dialogs = Dialogs();
 String verseText = '';
 int verseNumber = 0;
 
+//bool initialPager = true;
+
+// ignore: must_be_immutable
 class MainPage extends StatefulWidget {
-  const MainPage({Key key}) : super(key: key);
+  MainPage({Key key, this.initialScroll}) : super(key: key);
+
+  bool initialScroll;
 
   @override
   State<MainPage> createState() => MainPageState();
@@ -67,7 +72,7 @@ class MainPageState extends State<MainPage> {
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
-    if (Globals.scrollToVerse) {
+    if (widget.initialScroll) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           scrollToIndex();
@@ -104,9 +109,12 @@ class MainPageState extends State<MainPage> {
   }
 
   ItemScrollController itemScrollControllerSelector() {
-    return (Globals.initialScroll)
-        ? initialScrollController // initial scroll
-        : ItemScrollController(); // PageView scroll
+    if (widget.initialScroll) {
+      widget.initialScroll = false;
+      return initialScrollController; // initial scroll
+    } else {
+      return ItemScrollController(); // PageView scroll
+    }
   }
 
   void copyVerseWrapper(BuildContext context, snapshot, index) {
@@ -303,6 +311,18 @@ class MainPageState extends State<MainPage> {
     } else {
       return model;
     }
+  }
+
+  bool getBookMarksMatch(int bid) {
+    bool match = false;
+    if (GetLists.booksList.isNotEmpty) {
+      for (int b = 0; b < GetLists.booksList.length; b++) {
+        if (GetLists.booksList[b].bid == bid) {
+          match = true;
+        }
+      }
+    }
+    return match;
   }
 
   bool getNotesMatch(int bid) {
@@ -766,23 +786,11 @@ class MainPageState extends State<MainPage> {
           appBar: AppBar(
             elevation: 16,
             actions: [
-              (Globals.bibleLang == 'lat') ? showIconButton(context) : Container(),
+              (Globals.bibleLang == 'lat')
+                  ? showIconButton(context)
+                  : Container(),
               Row(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: primarySwatch[700]),
-                    onPressed: () {
-                      showVersionsDialog(context);
-                    },
-                    child: Text(
-                      Globals.versionAbbr,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: primarySwatch[700]),
@@ -810,6 +818,20 @@ class MainPageState extends State<MainPage> {
                           },
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: primarySwatch[700]),
+                    onPressed: () {
+                      showVersionsDialog(context);
+                    },
+                    child: Text(
+                      Globals.versionAbbr,
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                   const SizedBox(

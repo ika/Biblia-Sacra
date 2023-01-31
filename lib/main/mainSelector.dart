@@ -13,6 +13,8 @@ SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
 double primaryTextSize;
 
+bool initialScroll = true;
+
 var allBooks = {};
 var filteredBooks = {};
 var results = {};
@@ -32,8 +34,6 @@ class _MainSelectorState extends State<MainSelector>
   @override
   initState() {
     super.initState();
-    Globals.scrollToVerse = true;
-    Globals.initialScroll = true;
     Globals.chapterVerse = 0;
     Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
@@ -66,7 +66,7 @@ class _MainSelectorState extends State<MainSelector>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const MainPage(),
+        builder: (context) => MainPage(initialScroll: initialScroll),
       ),
     );
   }

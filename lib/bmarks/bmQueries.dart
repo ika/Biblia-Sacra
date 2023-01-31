@@ -18,10 +18,6 @@ class BmQueries {
   Future<int> saveBookMark(BmModel model) async {
     final db = await _bmProvider.database;
 
-    // var sql = '''INSERT INTO $tableName (title,subtitle,lang,version,abbr,book,chapter,verse,name) VALUES ("${model.title}","${model.subtitle}","${model.lang}","${model.version}","${model.abbr}","${model.book}","${model.chapter}","${model.verse}","${model.name})''';
-
-    // return db.rawInsert(sql);
-
     return await db.insert(
       tableName,
       model.toJson(),
@@ -37,6 +33,19 @@ class BmQueries {
   Future<List<BmModel>> getBookMarkList() async {
     final db = await _bmProvider.database;
     var res = await db.rawQuery("SELECT * FROM $tableName ORDER BY id DESC");
+
+    List<BmModel> list = res.isNotEmpty
+        ? res.map((tableName) => BmModel.fromJson(tableName)).toList()
+        : [];
+
+    return list;
+  }
+
+  Future<List<BmModel>> getBookMarksVersionList(int v) async {
+    final db = await _bmProvider.database;
+
+    var res =
+        await db.rawQuery('''SELECT * FROM $tableName WHERE version=?''', [v]);
 
     List<BmModel> list = res.isNotEmpty
         ? res.map((tableName) => BmModel.fromJson(tableName)).toList()
