@@ -15,8 +15,6 @@ NtQueries _ntQueries = NtQueries();
 GetLists _lists = GetLists();
 Dialogs _dialogs = Dialogs();
 
-bool initialScroll = false;
-
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
 
 MaterialColor primarySwatch;
@@ -55,7 +53,7 @@ class NotesPageState extends State<NotesPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MainPage(initialScroll: initialScroll),
+            builder: (context) => const MainPage(),
           ),
         );
       },
@@ -63,7 +61,6 @@ class NotesPageState extends State<NotesPage> {
   }
 
   onIconButtonPress(WriteVarsModel model) {
-    initialScroll = true;
     _lists.updateActiveLists('notes', model.version);
     writeVars(model).then((value) {
       backButton(context);
@@ -175,19 +172,16 @@ class NotesPageState extends State<NotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => backButton(context),
-      child: FutureBuilder<List<NtModel>>(
-        future: _ntQueries.getAllNotes(),
-        builder: (context, AsyncSnapshot<List<NtModel>> snapshot) {
-          if (snapshot.hasData) {
-            return notesList(snapshot.data, context);
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+    return FutureBuilder<List<NtModel>>(
+      future: _ntQueries.getAllNotes(),
+      builder: (context, AsyncSnapshot<List<NtModel>> snapshot) {
+        if (snapshot.hasData) {
+          return notesList(snapshot.data, context);
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

@@ -13,8 +13,6 @@ SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
 double primaryTextSize;
 
-bool initialScroll = true;
-
 var allBooks = {};
 var filteredBooks = {};
 var results = {};
@@ -66,7 +64,7 @@ class _MainSelectorState extends State<MainSelector>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MainPage(initialScroll: initialScroll),
+        builder: (context) => const MainPage(),
       ),
     );
   }

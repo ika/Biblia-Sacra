@@ -26,7 +26,7 @@ class _TextSizePageState extends State<TextSizePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MainPage(initialScroll: false),
+        builder: (context) => const MainPage(),
       ),
     );
   }

@@ -20,8 +20,6 @@ GetLists _lists = GetLists();
 MaterialColor primarySwatch;
 double primaryTextSize;
 
-bool initialScroll = false;
-
 class HighLightsPage extends StatefulWidget {
   const HighLightsPage({Key key}) : super(key: key);
 
@@ -46,7 +44,7 @@ class _HighLightsPage extends State<HighLightsPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MainPage(initialScroll: initialScroll),
+            builder: (context) => const MainPage(),
           ),
         );
       },
@@ -54,7 +52,6 @@ class _HighLightsPage extends State<HighLightsPage> {
   }
 
   onHilightTap(WriteVarsModel model) {
-    initialScroll = true;
     _lists.updateActiveLists('highs', model.version);
     writeVars(model).then((value) {
       backButton(context);
@@ -146,20 +143,17 @@ class _HighLightsPage extends State<HighLightsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => backButton(context),
-      child: FutureBuilder<List<HlModel>>(
-        future: _hlQueries.getHighLightList(),
-        builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
-          if (snapshot.hasData) {
-            list = snapshot.data;
-            return highLightList(list, context);
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+    return FutureBuilder<List<HlModel>>(
+      future: _hlQueries.getHighLightList(),
+      builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
+        if (snapshot.hasData) {
+          list = snapshot.data;
+          return highLightList(list, context);
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

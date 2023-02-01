@@ -30,8 +30,6 @@ String _contents = '';
 MaterialColor primarySwatch;
 double primaryTextSize;
 
-bool initialScroll = false;
-
 class MainSearch extends StatefulWidget {
   const MainSearch({Key key}) : super(key: key);
 
@@ -75,7 +73,7 @@ class _MainSearchState extends State<MainSearch> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MainPage(initialScroll: initialScroll),
+            builder: (context) => const MainPage(),
           ),
         );
       },
@@ -83,7 +81,6 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   onSearchTap(WriteVarsModel model) {
-    initialScroll = true;
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -260,43 +257,40 @@ class _MainSearchState extends State<MainSearch> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: WillPopScope(
-          onWillPop: () => backButton(context),
-          child: Scaffold(
-            appBar: AppBar(
-              actions: [
-                Row(
-                  children: [
-                    BlocBuilder<SearchCubit, int>(
-                      builder: (context, area) {
-                        return Text(
-                          ereasList[area],
-                          style: const TextStyle(fontSize: 16.0),
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Text(
-                      Globals.versionAbbr,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.settings),
-                      onPressed: () {
-                        searchAreasDialog(context);
-                      },
-                    )
-                  ],
-                )
-              ],
-            ),
-            body: searchWidget(),
+        child: Scaffold(
+          appBar: AppBar(
+            actions: [
+              Row(
+                children: [
+                  BlocBuilder<SearchCubit, int>(
+                    builder: (context, area) {
+                      return Text(
+                        ereasList[area],
+                        style: const TextStyle(fontSize: 16.0),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                    Globals.versionAbbr,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.settings),
+                    onPressed: () {
+                      searchAreasDialog(context);
+                    },
+                  )
+                ],
+              )
+            ],
           ),
+          body: searchWidget(),
         ),
       );
 }

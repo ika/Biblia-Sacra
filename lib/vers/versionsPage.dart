@@ -20,8 +20,6 @@ int counter = 0;
 MaterialColor primarySwatch;
 double primaryTextSize;
 
-bool initialScroll = false;
-
 class VersionsPage extends StatefulWidget {
   const VersionsPage({Key key}) : super(key: key);
 
@@ -45,7 +43,7 @@ class VersionsPageState extends State<VersionsPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MainPage(initialScroll: initialScroll),
+            builder: (context) => const MainPage(),
           ),
         );
       },

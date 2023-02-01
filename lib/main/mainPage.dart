@@ -51,13 +51,10 @@ Dialogs _dialogs = Dialogs();
 String verseText = '';
 int verseNumber = 0;
 
-//bool initialPager = true;
+bool initialPageScroll;
 
-// ignore: must_be_immutable
 class MainPage extends StatefulWidget {
-  MainPage({Key key, this.initialScroll}) : super(key: key);
-
-  bool initialScroll;
+  const MainPage({Key key}) : super(key: key);
 
   @override
   State<MainPage> createState() => MainPageState();
@@ -67,12 +64,13 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    initialPageScroll = true;
     initialScrollController = ItemScrollController();
     pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
-    if (widget.initialScroll) {
+    if (initialPageScroll) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           scrollToIndex();
@@ -109,8 +107,8 @@ class MainPageState extends State<MainPage> {
   }
 
   ItemScrollController itemScrollControllerSelector() {
-    if (widget.initialScroll) {
-      widget.initialScroll = false;
+    if (initialPageScroll) {
+      initialPageScroll = false;
       return initialScrollController; // initial scroll
     } else {
       return ItemScrollController(); // PageView scroll
