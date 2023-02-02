@@ -43,7 +43,7 @@ class _ColorsPageState extends State<ColorsPage> {
             for (int i = 0; i < Palette.colorsList.length; i++)
               InkWell(
                 onTap: () {
-                  _sharedPrefs.saveColorListNumber(i);
+                  _sharedPrefs.setIntPref('colorsList', i);
                   BlocProvider.of<PaletteCubit>(context)
                       .setPalette(Palette.colorsList.values.elementAt(i));
                 },

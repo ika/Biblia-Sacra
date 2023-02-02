@@ -10,5 +10,6 @@ class SearchCubit extends Cubit<int> {
 
   void setSearchAreaKey(int a) => emit(a);
 
-  void getSearchAreaKey() async => emit(await sharedPrefs.readSearchAreaKey());
+  void getSearchAreaKey() async =>
+      emit(await (sharedPrefs.getIntPref('searchArea')) ?? 12);
 }

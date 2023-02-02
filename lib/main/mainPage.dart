@@ -70,29 +70,39 @@ class MainPageState extends State<MainPage> {
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
-    if (initialPageScroll) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) {
-          scrollToIndex();
-        },
-      );
-    }
-  }
-
-  void scrollToIndex() {
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorLongDelay),
-      () {
-        if (initialScrollController.isAttached) {
-          initialScrollController.scrollTo(
-            index: Globals.chapterVerse, // from verse selector
-            duration: Duration(milliseconds: Globals.navigatorLongDelay),
-            curve: Curves.easeInOutCubic,
-          );
-        }
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        //scrollToIndex();
+        Future.delayed(
+          Duration(milliseconds: Globals.navigatorLongDelay),
+          () {
+            if (initialScrollController.isAttached) {
+              initialScrollController.scrollTo(
+                index: Globals.chapterVerse, // from verse selector
+                duration: Duration(milliseconds: Globals.navigatorLongDelay),
+                curve: Curves.easeInOutCubic,
+              );
+            }
+          },
+        );
       },
     );
   }
+
+  // void scrollToIndex() {
+  //   Future.delayed(
+  //     Duration(milliseconds: Globals.navigatorLongDelay),
+  //     () {
+  //       if (initialScrollController.isAttached) {
+  //         initialScrollController.scrollTo(
+  //           index: Globals.chapterVerse, // from verse selector
+  //           duration: Duration(milliseconds: Globals.navigatorLongDelay),
+  //           curve: Curves.easeInOutCubic,
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
 
   Future<List<Bible>> getBookText(int book, int ch) async {
     return await _dbQueries.getBookChapter(book, ch);
@@ -544,7 +554,7 @@ class MainPageState extends State<MainPage> {
             children: chapterCountFunc(context, book, chapterCount),
             onPageChanged: (index) {
               int c = index + 1;
-              _sharedPrefs.saveChapter(c).then(
+              _sharedPrefs.setIntPref('chapter', c).then(
                 (value) {
                   Globals.bookChapter = c;
                   BlocProvider.of<ChapterCubit>(context).setChapter(c);
@@ -754,17 +764,26 @@ class MainPageState extends State<MainPage> {
     );
   }
 
+  void changeNotice(BuildContext context) {
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        (Globals.dictionaryMode)
+            ? ScaffoldMessenger.of(context).showSnackBar(dicModeOnSnackBar)
+            : ScaffoldMessenger.of(context).showSnackBar(dicModeOffSnackBar);
+      },
+    );
+  }
+
   Padding showIconButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: IconButton(
-        color: (Globals.dictionaryMode) ? Colors.red : primarySwatch[700],
+        color: (Globals.dictionaryMode) ? primarySwatch[700] : Colors.white,
         icon: const Icon(Icons.change_circle),
         onPressed: () {
           Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
-          (Globals.dictionaryMode)
-              ? ScaffoldMessenger.of(context).showSnackBar(dicModeOnSnackBar)
-              : ScaffoldMessenger.of(context).showSnackBar(dicModeOffSnackBar);
+          changeNotice(context);
           setState(() {});
         },
       ),

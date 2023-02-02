@@ -88,7 +88,7 @@ class SearchAreasList extends StatelessWidget {
           ),
           onTap: () {
             Navigator.of(context).pop(index);
-            sharedPrefs.saveSearchAreaKey(elementKey).then((value) {
+            sharedPrefs.setIntPref('searchArea', elementKey).then((value) {
               BlocProvider.of<SearchCubit>(context)
                   .setSearchAreaKey(elementKey);
             });

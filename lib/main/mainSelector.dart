@@ -130,7 +130,7 @@ class _MainSelectorState extends State<MainSelector>
                     child: GestureDetector(
                       onTap: () {
                         // save chapter
-                        sharedPrefs.saveChapter(chap).then(
+                        sharedPrefs.setIntPref('chapter', chap).then(
                           (value) {
                             Globals.bookChapter = chap;
                             BlocProvider.of<ChapterCubit>(context)
@@ -194,14 +194,14 @@ class _MainSelectorState extends State<MainSelector>
                 onTap: () {
                   int book = key + 1;
                   // save book
-                  sharedPrefs.saveBook(book).then(
+                  sharedPrefs.setIntPref('book', book).then(
                     (value) {
                       Globals.bibleBook = book;
-                      sharedPrefs.writeBookName(book).then(
+                      bookLists.writeBookName(book).then(
                         // book number =1 and list number = 0
                         (value) {
                           // see also Globals.selectorText
-                          sharedPrefs.saveChapter(1).then(
+                          sharedPrefs.setIntPref('chapter', 1).then(
                             (value) {
                               Globals.bookChapter = 1;
                               BlocProvider.of<ChapterCubit>(context)

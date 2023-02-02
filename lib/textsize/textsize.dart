@@ -57,7 +57,7 @@ class _TextSizePageState extends State<TextSizePage> {
                   onTap: () {
                     double tsize = sizesList[i].toDouble();
                     BlocProvider.of<TextSizeCubit>(context).setSize(tsize);
-                    sharedPrefs.saveTextSize(tsize).then((value) {
+                    sharedPrefs.setDoublePref('textSize', tsize).then((value) {
                       backButton(context);
                     });
                   },
