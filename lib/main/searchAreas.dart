@@ -34,7 +34,7 @@ Future<dynamic> searchAreasDialog(BuildContext context) {
   );
 }
 
-List<String> ereasSections = [
+List<String> areasSections = [
   '1|5',
   '6|17',
   '18|22',
@@ -47,7 +47,7 @@ List<String> ereasSections = [
   '66|66'
 ];
 
-List<String> ereasList = [
+List<String> areasList = [
   'Books of Moses', // 1 -5
   'Historical Books', // 6 - 17
   'Poetic Books', // 18 - 22
@@ -63,8 +63,8 @@ List<String> ereasList = [
 Map getAreasList() {
   var listMap = {};
 
-  for (var i = 0; i < ereasList.length; i++) {
-    listMap[i] = ereasList[i];
+  for (var i = 0; i < areasList.length; i++) {
+    listMap[i] = areasList[i];
   }
 
   return listMap;

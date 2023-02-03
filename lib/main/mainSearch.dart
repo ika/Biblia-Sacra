@@ -12,13 +12,11 @@ import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/main/mainVersMenu.dart';
 import 'package:bibliasacra/main/searchAreas.dart';
-import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bibliasacra/utils/snackbars.dart';
 
 DbQueries _dbQueries = DbQueries();
-SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
 
 Future<List<Bible>> blankSearch;
@@ -48,10 +46,9 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   void runFilter(String enterdKeyWord) {
-    //int k = await sharedPrefs.readSearchAreaKey();
     int k = BlocProvider.of<SearchCubit>(context).state;
 
-    String sec = ereasSections[k];
+    String sec = areasSections[k];
     var arr = sec.split('|');
 
     enterdKeyWord.isEmpty
@@ -264,9 +261,10 @@ class _MainSearchState extends State<MainSearch> {
                 children: [
                   BlocBuilder<SearchCubit, int>(
                     builder: (context, area) {
+                      //debugPrint(areasList[area]);
                       return Text(
-                        ereasList[area],
-                        style: const TextStyle(fontSize: 16.0),
+                        areasList[area],
+                        style: const TextStyle(fontSize: 16),
                       );
                     },
                   ),
