@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/dbModel.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
+import 'package:bibliasacra/main/mainVersMenu.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:bibliasacra/vers/vkQueries.dart';
 
@@ -39,6 +40,7 @@ class Compare {
 
       abbr = (abbr.isNotEmpty) ? abbr : 'Unknown';
       bookName = (bookName.isNotEmpty) ? bookName : 'Unknown';
+      
       int c = (verse.first.c != null) ? verse.first.c : 0;
       int v = (verse.first.v != null) ? verse.first.v : 0;
       String t = (verse.first.t.isNotEmpty) ? verse.first.t : 'Unknown';

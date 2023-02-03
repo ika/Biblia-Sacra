@@ -16,14 +16,12 @@ List<String> langListSelector(String lang) {
     case 'lat':
       langList = latList;
       break;
-    // case 'afr':
-    //   langList = afrList;
-    //   break;
   }
   return langList;
 }
 
 class BookLists {
+
   String getBookByNumber(int number, String lang) {
     List<String> langList = [];
 
