@@ -101,7 +101,10 @@ class VersionsPageState extends State<VersionsPage> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.1,
-          title: const Text('Bibles'),
+          title: Text(
+            'Bibles',
+            style: TextStyle(fontSize: Globals.appBarFontSize),
+          ),
         ),
         body: versionsWidget(),
       ),

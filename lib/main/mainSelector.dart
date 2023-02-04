@@ -236,7 +236,7 @@ class _MainSelectorState extends State<MainSelector>
           elevation: 0.1,
           title: Text(
             Globals.selectorText,
-            style: const TextStyle(fontSize: 20.0),
+            style: TextStyle(fontSize: Globals.appBarFontSize),
           ),
           centerTitle: true,
           bottom: TabBar(
@@ -244,13 +244,13 @@ class _MainSelectorState extends State<MainSelector>
             tabs: [
               Tab(
                   child: Text(tabNames[0],
-                      style: const TextStyle(fontSize: 18.0))),
+                      style: TextStyle(fontSize: Globals.appBarFontSize))),
               Tab(
                   child: Text(tabNames[1],
-                      style: const TextStyle(fontSize: 18.0))),
+                      style: TextStyle(fontSize: Globals.appBarFontSize))),
               Tab(
                   child: Text(tabNames[2],
-                      style: const TextStyle(fontSize: 18.0))),
+                      style: TextStyle(fontSize: Globals.appBarFontSize))),
             ],
           ),
         ),

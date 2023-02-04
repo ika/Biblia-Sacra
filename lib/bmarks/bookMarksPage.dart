@@ -119,7 +119,10 @@ class _BookMarkState extends State<BookMarksPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.1,
-        title: const Text('Bookmarks'),
+        title: Text(
+          'Bookmarks',
+          style: TextStyle(fontSize: Globals.appBarFontSize),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20, left: 20, right: 8),

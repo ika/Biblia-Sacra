@@ -36,11 +36,11 @@ Future<void> main() async {
         // language
         _sharedPrefs.getStringPref('language').then(
           (b) {
-            Globals.bibleLang = (b.isNotEmpty) ? b : 'eng';
+            Globals.bibleLang = (b != null) ? b : 'eng';
             // version abbreviation
             _sharedPrefs.getStringPref('verabbr').then(
               (c) {
-                Globals.versionAbbr = (c.isNotEmpty) ? c : 'KVJ';
+                Globals.versionAbbr = (c != null) ? c : 'KVJ';
                 // Book
                 _sharedPrefs.getIntPref('book').then(
                   (d) {

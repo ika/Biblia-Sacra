@@ -173,9 +173,9 @@ class _DicSearchState extends State<DictSearch> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            title: const Text(
+            title: Text(
               'Latin Word List',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: Globals.appBarFontSize),
             ),
           ),
           body: searchWidget(),

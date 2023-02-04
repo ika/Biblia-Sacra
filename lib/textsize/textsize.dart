@@ -1,5 +1,6 @@
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
@@ -35,47 +36,49 @@ class _TextSizePageState extends State<TextSizePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => backButton(context),
-      child: Scaffold(
-        appBar: AppBar(
-          actions: const [],
-          elevation: 16,
-          title: const Text(
-            'Text Size Selector',
-            style: TextStyle(fontSize: 20),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        actions: const [],
+        leading: GestureDetector(
+          child: const Icon(Icons.arrow_back),
+          onTap: () {
+            backButton(context);
+          },
         ),
-        body: Center(
-          child: ListView(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              for (int i = 0; i < sizesList.length; i++)
-                InkWell(
-                  onTap: () {
-                    double tsize = sizesList[i].toDouble();
-                    BlocProvider.of<TextSizeCubit>(context).setSize(tsize);
-                    sharedPrefs.setDoublePref('textSize', tsize).then((value) {
-                      backButton(context);
-                    });
-                  },
-                  child: Container(
-                    margin:
-                        const EdgeInsets.only(bottom: 8, left: 20, right: 20),
-                    height: 55,
-                    color: primarySwatch[300],
-                    child: Center(
-                      child: Text(
-                        'In the beginning',
-                        style: TextStyle(fontSize: sizesList[i]),
-                      ),
+        elevation: 16,
+        title: Text(
+          'Text Size Selector',
+          style: TextStyle(fontSize: Globals.appBarFontSize),
+        ),
+      ),
+      body: Center(
+        child: ListView(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            for (int i = 0; i < sizesList.length; i++)
+              InkWell(
+                onTap: () {
+                  double tsize = sizesList[i].toDouble();
+                  BlocProvider.of<TextSizeCubit>(context).setSize(tsize);
+                  sharedPrefs.setDoublePref('textSize', tsize).then((value) {
+                    backButton(context);
+                  });
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 8, left: 20, right: 20),
+                  height: 55,
+                  color: primarySwatch[300],
+                  child: Center(
+                    child: Text(
+                      'In the beginning',
+                      style: TextStyle(fontSize: sizesList[i]),
                     ),
                   ),
-                )
-            ],
-          ),
+                ),
+              )
+          ],
         ),
       ),
     );

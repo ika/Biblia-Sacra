@@ -1,5 +1,7 @@
 import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/globals/globals.dart';
+import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,18 +23,36 @@ class _ColorsPageState extends State<ColorsPage> {
     super.initState();
   }
 
+  backButton(BuildContext context) {
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: const [],
         elevation: 16,
-        title: const Text('Color Selector'),
+        title: Text(
+          'Color Selector',
+          style: TextStyle(fontSize: Globals.appBarFontSize),
+        ),
         leading: GestureDetector(
-            child: const Icon(Icons.arrow_back),
-            onTap: () {
-              Navigator.of(context).pop();
-            }),
+          child: const Icon(Icons.arrow_back),
+          onTap: () {
+            backButton(context);
+          },
+        ),
       ),
       body: Center(
         child: ListView(

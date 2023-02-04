@@ -157,7 +157,10 @@ class NotesPageState extends State<NotesPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.1,
-        title: const Text('Notes'),
+        title: Text(
+          'Notes',
+          style: TextStyle(fontSize: Globals.appBarFontSize),
+        ),
       ),
       body: makeBody,
       floatingActionButton: FloatingActionButton(

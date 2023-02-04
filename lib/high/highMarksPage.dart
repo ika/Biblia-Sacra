@@ -123,7 +123,10 @@ class _HighLightsPage extends State<HighLightsPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.1,
-        title: const Text('Highlights'),
+        title: Text(
+          'Highlights',
+          style: TextStyle(fontSize: Globals.appBarFontSize),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20, left: 20, right: 8),

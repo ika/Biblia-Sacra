@@ -261,10 +261,9 @@ class _MainSearchState extends State<MainSearch> {
                 children: [
                   BlocBuilder<SearchCubit, int>(
                     builder: (context, area) {
-                      //debugPrint(areasList[area]);
                       return Text(
                         areasList[area],
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: Globals.appBarFontSize),
                       );
                     },
                   ),
@@ -273,10 +272,10 @@ class _MainSearchState extends State<MainSearch> {
                   ),
                   Text(
                     Globals.versionAbbr,
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: Globals.appBarFontSize),
                   ),
                   const SizedBox(
-                    width: 8,
+                    width: 16,
                   ),
                   IconButton(
                     icon: const Icon(Icons.settings),
@@ -287,6 +286,12 @@ class _MainSearchState extends State<MainSearch> {
                 ],
               )
             ],
+            leading: GestureDetector(
+              child: const Icon(Icons.arrow_back),
+              onTap: () {
+                backButton(context);
+              },
+            ),
           ),
           body: searchWidget(),
         ),

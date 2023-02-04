@@ -109,7 +109,10 @@ class _EditNotePageState extends State<EditNotePage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(noteFunction, style: const TextStyle(fontSize: 20)),
+            title: Text(
+              noteFunction,
+              style: TextStyle(fontSize: Globals.appBarFontSize),
+            ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete),

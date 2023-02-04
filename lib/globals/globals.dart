@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class Globals {
   //----initial read-----------------------
   static int bibleVersion = 1; // KJV bible version
@@ -15,6 +17,9 @@ class Globals {
   static int navigatorDelay = 200;
   static int navigatorLongDelay = 500;
   static int navigatorLongestDelay = 800;
+
+  // appbar font size
+  static double appBarFontSize = 18;
 
   // Dialog height
   static double dialogHeight = 0.0;
