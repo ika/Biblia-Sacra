@@ -287,7 +287,7 @@ class _MainSearchState extends State<MainSearch> {
               )
             ],
             leading: GestureDetector(
-              child: const Icon(Icons.arrow_back),
+              child: const Icon(Globals.backArrow),
               onTap: () {
                 backButton(context);
               },
