@@ -35,7 +35,7 @@ class NotesPageState extends State<NotesPage> {
     super.initState();
   }
 
-  _addEditPage(NtModel model) async {
+  Future<void> addEditPage(NtModel model) async {
     Route route = MaterialPageRoute(
       builder: (context) => EditNotePage(model: model),
     );
@@ -60,16 +60,16 @@ class NotesPageState extends State<NotesPage> {
     );
   }
 
-  onIconButtonPress(WriteVarsModel model) {
-    _lists.updateActiveLists('notes', model.version);
-    writeVars(model).then((value) {
-      backButton(context);
-    });
-  }
+  // onIconButtonPress(WriteVarsModel model) {
+  //   _lists.updateActiveLists('notes', model.version);
+  //   writeVars(model).then((value) {
+  //     backButton(context);
+  //   });
+  // }
 
   deleteWrapper(context, list, index) {
     var arr = List.filled(4, '');
-    arr[0] = "DELETE?";
+    arr[0] = "Delete?";
     arr[1] = "Do you want to delete this note?";
     arr[2] = 'YES';
     arr[3] = 'NO';
@@ -84,23 +84,63 @@ class NotesPageState extends State<NotesPage> {
     });
   }
 
-  IconButton showIconButton(list, index) {
-    return IconButton(
-      icon: Icon(Icons.arrow_right, color: primarySwatch[700]),
-      onPressed: () {
+  doWrapper(context, list, index) {
+    var arr = List.filled(4, '');
+    arr[0] = "Edit or Goto?";
+    arr[1] = "What would you like to do?";
+    arr[2] = 'EDIT';
+    arr[3] = 'GOTO';
+
+    _dialogs.confirmDialog(context, arr).then((value) {
+      if (value == ConfirmAction.accept) { // Edit
+        final model = NtModel(
+            id: list[index].id,
+            title: list[index].title,
+            contents: list[index].contents,
+            bid: list[index].bid);
+        addEditPage(model);
+      } else if (value == ConfirmAction.cancel) { // Goto
         final model = WriteVarsModel(
-          lang: list[index].lang,
-          version: list[index].version,
-          abbr: list[index].abbr,
-          book: list[index].book,
-          chapter: list[index].chapter,
-          verse: list[index].verse,
-          name: list[index].name,
-        );
-        onIconButtonPress(model);
-      },
-    );
+            lang: list[index].lang,
+            version: list[index].version,
+            abbr: list[index].abbr,
+            book: list[index].book,
+            chapter: list[index].chapter,
+            verse: list[index].verse,
+            name: list[index].name);
+
+        writeVars(model).then((value) {
+          //_lists.updateActiveLists('notes', model.version);
+          backButton(context);
+        });
+
+        // _ntQueries.deleteNote(list[index].id).then(
+        //   (value) {
+        //     _lists.updateActiveLists('notes', Globals.bibleVersion);
+        //     setState(() {});
+        //   },
+        // );
+      }
+    });
   }
+
+  // IconButton showIconButton(list, index) {
+  //   return IconButton(
+  //     icon: Icon(Icons.arrow_right, color: primarySwatch[700]),
+  //     onPressed: () {
+  //       final model = WriteVarsModel(
+  //         lang: list[index].lang,
+  //         version: list[index].version,
+  //         abbr: list[index].abbr,
+  //         book: list[index].book,
+  //         chapter: list[index].chapter,
+  //         verse: list[index].verse,
+  //         name: list[index].name,
+  //       );
+  //       onIconButtonPress(model);
+  //     },
+  //   );
+  // }
 
   Widget notesList(list, context) {
     GestureDetector makeListTile(list, int index) => GestureDetector(
@@ -110,35 +150,50 @@ class NotesPageState extends State<NotesPage> {
             }
           },
           child: ListTile(
-            trailing: SizedBox(
-              height: 30,
-              width: 20,
-              child: (list[index].bid != null)
-                  ? showIconButton(list, index)
-                  : null,
-            ),
-            // contentPadding:
-            //     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            title: Text(
-              "${list[index].title}",
-              style: TextStyle(fontSize: primaryTextSize),
-            ),
-            subtitle: Text(list[index].contents,
-                style: TextStyle(fontSize: primaryTextSize)),
-            onTap: () {
-              final model = NtModel(
-                  id: list[index].id,
-                  title: list[index].title,
-                  contents: list[index].contents,
-                  bid: list[index].bid);
-              _addEditPage(model);
-            },
-            //       const SizedBox(
-            //   height: 20,
-            //   width: 20,
-            //   child: Icon(Icons.notes, size: 18.0),
-            // );
-          ),
+              trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+              // trailing: SizedBox(
+              //   height: 30,
+              //   width: 20,
+              //   child: (list[index].bid != null)
+              //       ? showIconButton(list, index)
+              //       : null,
+              // ),
+              // contentPadding:
+              //     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              title: Text(
+                "${list[index].title}",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+              ),
+              subtitle: Text(list[index].contents,
+                  style: TextStyle(fontSize: primaryTextSize)),
+              onTap: () {
+                if (list[index].bid != null) {
+                  doWrapper(context, list, index);
+                } else {
+                  final model = NtModel(
+                      id: list[index].id,
+                      title: list[index].title,
+                      contents: list[index].contents,
+                      bid: list[index].bid);
+                  addEditPage(model);
+                }
+              }
+
+              // onTap: () {
+              //   final model = NtModel(
+              //       id: list[index].id,
+              //       title: list[index].title,
+              //       contents: list[index].contents,
+              //       bid: list[index].bid);
+              //   _addEditPage(model);
+              // },
+              //       const SizedBox(
+              //   height: 20,
+              //   width: 20,
+              //   child: Icon(Icons.notes, size: 18.0),
+              // );
+              ),
         );
 
     final makeBody = Padding(
@@ -172,7 +227,7 @@ class NotesPageState extends State<NotesPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final model = NtModel(id: null, title: '', contents: '', bid: null);
-          _addEditPage(model);
+          addEditPage(model);
         },
         child: const Icon(Icons.add),
       ),

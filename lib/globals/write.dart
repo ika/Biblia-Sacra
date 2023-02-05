@@ -36,13 +36,13 @@ Future<void> writeVars(WriteVarsModel model) async {
       _sharedPrefs.setStringPref('verabbr', model.abbr).then((v) {
         Globals.versionAbbr = model.abbr;
         // Book
-        _sharedPrefs.setIntPref('book',model.book).then((v) {
+        _sharedPrefs.setIntPref('book', model.book).then((v) {
           Globals.bibleBook = model.book;
           // Chapter
           _sharedPrefs.setIntPref('chapter', model.chapter).then((v) {
             Globals.bookChapter = model.chapter;
             // Verse
-            _sharedPrefs.setIntPref('verse', model.verse).then((v) {
+            _sharedPrefs.setIntPref('verse', model.verse - 1).then((v) {
               Globals.chapterVerse = model.verse - 1;
               // Book name
               _sharedPrefs.setStringPref('bookname', model.name).then((v) {

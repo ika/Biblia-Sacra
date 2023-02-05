@@ -37,6 +37,8 @@ import 'package:word_selectable_text/word_selectable_text.dart';
 
 PageController pageController;
 ItemScrollController initialScrollController;
+//AnimationController animationController;
+
 MaterialColor primarySwatch;
 double primaryTextSize;
 
@@ -52,6 +54,7 @@ String verseText = '';
 int verseNumber = 0;
 
 bool initialPageScroll;
+bool isShowing = true;
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
@@ -60,11 +63,18 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => MainPageState();
 }
 
+//class MainPageState extends State<MainPage> with TickerProviderStateMixin {
 class MainPageState extends State<MainPage> {
+  Timer timer;
+
   @override
   void initState() {
     super.initState();
     initialScrollController = ItemScrollController();
+    // animationController = AnimationController(
+    //     vsync: this, duration: const Duration(microseconds: 500));
+    // isPlaying = false;
+
     pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
@@ -86,7 +96,18 @@ class MainPageState extends State<MainPage> {
         );
       },
     );
+    // timer = Timer.periodic(const Duration(microseconds: 500), (_) {
+    //   setState(() {
+    //     isShowing = !isShowing;
+    //   });
+    // });
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   timer.cancel();
+  // }
 
   // void scrollToIndex() {
   //   Future.delayed(
@@ -778,8 +799,9 @@ class MainPageState extends State<MainPage> {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: IconButton(
-        color: (Globals.dictionaryMode) ? primarySwatch[700] : Colors.white,
+        color: (isShowing) ? Colors.white : Colors.transparent,
         icon: const Icon(Icons.change_circle),
+        iconSize: 30,
         onPressed: () {
           Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
           changeNotice(context);
@@ -788,6 +810,27 @@ class MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  // Padding showIconButton(BuildContext context) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(right: 20),
+  //     child: IconButton(
+  //       //color: (Globals.dictionaryMode) ? primarySwatch[700] : Colors.white,
+  //       color: Colors.white,
+  //       icon: AnimatedIcon(
+  //           icon: AnimatedIcons.arrow_menu, progress: animationController),
+  //           iconSize: 20,
+  //       onPressed: () {
+  //         Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
+  //         (Globals.dictionaryMode)
+  //             ? animationController.fling()
+  //             : animationController.reverse();
+  //         changeNotice(context);
+  //         setState(() {});
+  //       },
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

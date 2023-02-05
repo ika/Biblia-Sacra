@@ -5,6 +5,7 @@ import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
+import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/utils/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bmarks/bmModel.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 BmQueries _bmQueries = BmQueries();
 Dialogs _dialogs = Dialogs();
+GetLists _lists = GetLists();
+
 MaterialColor primarySwatch;
 double primaryTextSize;
 
@@ -50,6 +53,7 @@ class _BookMarkState extends State<BookMarksPage> {
   }
 
   onBookMarkTap(WriteVarsModel model) {
+    _lists.updateActiveLists('books', model.version);
     writeVars(model).then((value) {
       backButton(context);
     });

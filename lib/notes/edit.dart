@@ -83,7 +83,7 @@ class _EditNotePageState extends State<EditNotePage> {
 
   deleteWrapper(BuildContext context) {
     var arr = List.filled(4, '');
-    arr[0] = "DELETE?";
+    arr[0] = "Delete?";
     arr[1] = "Do you want to delete this note?";
     arr[2] = 'YES';
     arr[3] = 'NO';
@@ -93,10 +93,8 @@ class _EditNotePageState extends State<EditNotePage> {
         if (value == ConfirmAction.accept) {
           _ntQueries.deleteNote(id).then(
             (value) {
-              //backButton(context);
               _lists.updateActiveLists('all', Globals.bibleVersion);
               Navigator.pop(context, 'deleted');
-              //delayedSnackbar(context);
             },
           );
         }
@@ -109,6 +107,12 @@ class _EditNotePageState extends State<EditNotePage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
+            leading: GestureDetector(
+              child: const Icon(Globals.backArrow),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
             title: Text(
               noteFunction,
               style: TextStyle(fontSize: Globals.appBarFontSize),
