@@ -61,11 +61,16 @@ class _MainSelectorState extends State<MainSelector>
   }
 
   backButton(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      ),
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
     );
   }
 
@@ -229,45 +234,48 @@ class _MainSelectorState extends State<MainSelector>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => backButton(context),
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0.1,
-          title: Text(
-            Globals.selectorText,
-            style: TextStyle(fontSize: Globals.appBarFontSize),
-          ),
-          centerTitle: true,
-          bottom: TabBar(
-            controller: tabController,
-            tabs: [
-              Tab(
-                  child: Text(tabNames[0],
-                      style: TextStyle(fontSize: Globals.appBarFontSize))),
-              Tab(
-                  child: Text(tabNames[1],
-                      style: TextStyle(fontSize: Globals.appBarFontSize))),
-              Tab(
-                  child: Text(tabNames[2],
-                      style: TextStyle(fontSize: Globals.appBarFontSize))),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: GestureDetector(
+          child: const Icon(Globals.backArrow),
+          onTap: () {
+            backButton(context);
+          },
         ),
-        body: TabBarView(
+        elevation: 0.1,
+        title: Text(
+          Globals.selectorText,
+          style: TextStyle(fontSize: Globals.appBarFontSize),
+        ),
+        centerTitle: true,
+        bottom: TabBar(
           controller: tabController,
-          children: [
-            Center(
-              child: booksWidget(),
-            ),
-            Center(
-              child: chaptersWidget(),
-            ),
-            Center(
-              child: versesWidget(),
-            ),
+          tabs: [
+            Tab(
+                child: Text(tabNames[0],
+                    style: TextStyle(fontSize: Globals.appBarFontSize))),
+            Tab(
+                child: Text(tabNames[1],
+                    style: TextStyle(fontSize: Globals.appBarFontSize))),
+            Tab(
+                child: Text(tabNames[2],
+                    style: TextStyle(fontSize: Globals.appBarFontSize))),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: tabController,
+        children: [
+          Center(
+            child: booksWidget(),
+          ),
+          Center(
+            child: chaptersWidget(),
+          ),
+          Center(
+            child: versesWidget(),
+          ),
+        ],
       ),
     );
   }

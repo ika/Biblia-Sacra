@@ -59,19 +59,19 @@ class _DicSearchState extends State<DictSearch> {
     );
   }
 
-  // backButton(BuildContext context) {
-  //   Future.delayed(
-  //     Duration(milliseconds: Globals.navigatorDelay),
-  //     () {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => const MainPage(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  backButton(BuildContext context) {
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
+    );
+  }
 
   Future emptyInputDialog(context) async {
     return showDialog<void>(
@@ -173,6 +173,12 @@ class _DicSearchState extends State<DictSearch> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
+            leading: GestureDetector(
+              child: const Icon(Globals.backArrow),
+              onTap: () {
+                backButton(context);
+              },
+            ),
             title: Text(
               'Latin Word List',
               style: TextStyle(fontSize: Globals.appBarFontSize),

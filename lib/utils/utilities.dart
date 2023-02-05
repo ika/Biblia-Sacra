@@ -16,8 +16,8 @@ class Utilities {
     vkQueries.getActiveVersionCount().then(
       (value) {
         double dialogHeight = (value.toDouble() * 50.00);
-        if (dialogHeight > 300.00) {
-          dialogHeight = 300.00;
+        if (dialogHeight > 400.00) {
+          dialogHeight = 400.00;
         }
         Globals.dialogHeight = dialogHeight;
       },

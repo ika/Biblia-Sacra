@@ -96,18 +96,21 @@ class VersionsPageState extends State<VersionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => backButton(context),
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0.1,
-          title: Text(
-            'Bibles',
-            style: TextStyle(fontSize: Globals.appBarFontSize),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.1,
+        leading: GestureDetector(
+          child: const Icon(Globals.backArrow),
+          onTap: () {
+            backButton(context);
+          },
         ),
-        body: versionsWidget(),
+        title: Text(
+          'Bibles',
+          style: TextStyle(fontSize: Globals.appBarFontSize),
+        ),
       ),
+      body: versionsWidget(),
     );
   }
 }

@@ -122,6 +122,12 @@ class _HighLightsPage extends State<HighLightsPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          child: const Icon(Globals.backArrow),
+          onTap: () {
+            backButton(context);
+          },
+        ),
         elevation: 0.1,
         title: Text(
           'Highlights',

@@ -256,6 +256,12 @@ class _MainSearchState extends State<MainSearch> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           appBar: AppBar(
+            leading: GestureDetector(
+              child: const Icon(Globals.backArrow),
+              onTap: () {
+                backButton(context);
+              },
+            ),
             actions: [
               Row(
                 children: [
@@ -286,12 +292,6 @@ class _MainSearchState extends State<MainSearch> {
                 ],
               )
             ],
-            leading: GestureDetector(
-              child: const Icon(Globals.backArrow),
-              onTap: () {
-                backButton(context);
-              },
-            ),
           ),
           body: searchWidget(),
         ),

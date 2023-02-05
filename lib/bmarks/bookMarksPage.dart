@@ -119,6 +119,12 @@ class _BookMarkState extends State<BookMarksPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.1,
+        leading: GestureDetector(
+          child: const Icon(Globals.backArrow),
+          onTap: () {
+            backButton(context);
+          },
+        ),
         title: Text(
           'Bookmarks',
           style: TextStyle(fontSize: Globals.appBarFontSize),

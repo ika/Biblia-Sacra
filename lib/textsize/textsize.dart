@@ -24,11 +24,16 @@ class _TextSizePageState extends State<TextSizePage> {
   }
 
   backButton(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      ),
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
     );
   }
 
@@ -40,7 +45,7 @@ class _TextSizePageState extends State<TextSizePage> {
       appBar: AppBar(
         actions: const [],
         leading: GestureDetector(
-          child: const Icon(Icons.arrow_back),
+          child: const Icon(Globals.backArrow),
           onTap: () {
             backButton(context);
           },

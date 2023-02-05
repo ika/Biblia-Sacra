@@ -64,7 +64,6 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    initialPageScroll = true;
     initialScrollController = ItemScrollController();
     pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
@@ -792,6 +791,7 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    initialPageScroll = true;
     _dbQueries = DbQueries();
     return WillPopScope(
       onWillPop: () async {

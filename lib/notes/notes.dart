@@ -157,6 +157,12 @@ class NotesPageState extends State<NotesPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.1,
+        leading: GestureDetector(
+          child: const Icon(Globals.backArrow),
+          onTap: () {
+            backButton(context);
+          },
+        ),
         title: Text(
           'Notes',
           style: TextStyle(fontSize: Globals.appBarFontSize),
