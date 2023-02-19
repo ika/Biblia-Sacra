@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io' as io;
+import 'package:path/path.dart';
 import 'package:bibliasacra/utils/constants.dart';
-import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 // Version Key helper
 
@@ -9,7 +11,7 @@ class VkProvider {
   static VkProvider _vkProvider;
   static Database _database;
 
-  final String _dbName = Constants.vkeyDbname;
+  final String dataBaseName = Constants.vkeyDbname;
   final String tableName = 'versions';
 
   VkProvider._createInstance();
@@ -25,15 +27,18 @@ class VkProvider {
   }
 
   Future<Database> initDB() async {
-    var databasesPath = await getDatabasesPath();
-    var path = p.join(databasesPath, _dbName);
+    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, dataBaseName);
+
+    //var db = await databaseFactory.openDatabase(path);
+    //var db = await openDatabase(path, version: 1);
 
     return await openDatabase(
       path,
       version: 1,
       onOpen: (db) async {},
       onCreate: (Database db, int version) async {
-        await db.execute('''
+        db.execute('''
                 CREATE TABLE IF NOT EXISTS $tableName(
                     id INTEGER PRIMARY KEY,
                     number INTEGER DEFAULT 0,
@@ -64,15 +69,16 @@ class VkProvider {
             values (?, ?, ?, ?, ?, ?)''',
             [6, 7, 1, 'UKJV', 'eng', 'Updated King James version']);
         await db.execute(
-           '''INSERT INTO $tableName ('id', 'number', 'active', 'abbr', 'lang', 'name') 
+            '''INSERT INTO $tableName ('id', 'number', 'active', 'abbr', 'lang', 'name') 
             values (?, ?, ?, ?, ?, ?)''',
             [7, 8, 1, 'WEBBE', 'eng', 'World English Bible']);
         await db.execute(
-           '''INSERT INTO $tableName ('id', 'number', 'active', 'abbr', 'lang', 'name') 
+            '''INSERT INTO $tableName ('id', 'number', 'active', 'abbr', 'lang', 'name') 
             values (?, ?, ?, ?, ?, ?)''',
             [9, 10, 1, 'ASV', 'eng', 'American Standard Version']);
       },
     );
+    //return db;
   }
 
   Future close() async {

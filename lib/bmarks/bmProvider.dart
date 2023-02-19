@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:io' as io;
+import 'package:path/path.dart';
 import 'package:bibliasacra/utils/constants.dart';
-// ignore: depend_on_referenced_packages
-import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 // Bookmarks database helper
 
@@ -26,8 +27,11 @@ class BmProvider {
   }
 
   Future<Database> initDB() async {
-    var databasesPath = await getDatabasesPath();
-    var path = p.join(databasesPath, dataBaseName);
+    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, dataBaseName);
+
+    //var db = await databaseFactory.openDatabase(path);
+    //var db = await openDatabase(path);
 
     return await openDatabase(
       path,
@@ -51,6 +55,7 @@ class BmProvider {
             ''');
       },
     );
+    //return db;
   }
 
   Future close() async {

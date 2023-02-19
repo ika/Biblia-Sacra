@@ -1,3 +1,4 @@
+
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
 import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/searchCubit.dart';
@@ -11,6 +12,8 @@ import 'package:bibliasacra/utils/utilities.dart';
 import 'package:bibliasacra/vers/vkQueries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 SharedPrefs _sharedPrefs = SharedPrefs();
 Utilities utilities = Utilities();
@@ -24,6 +27,15 @@ void getActiveVersionsCount() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // if (Platform.isWindows || Platform.isLinux) {
+  //   debugPrint('IS LINUX');
+  //   sqfliteFfiInit();
+  //   databaseFactory = databaseFactoryFfi;
+  // }
+
+  // sqfliteFfiInit();
+  // databaseFactory = databaseFactoryFfi;
 
   utilities.getDialogeHeight();
 
@@ -52,7 +64,7 @@ Future<void> main() async {
                         // Verse
                         _sharedPrefs.getIntPref('verse').then(
                           (f) {
-                            Globals.chapterVerse = (f != null) ? f : 1;
+                            Globals.chapterVerse = (f != null) ? f : 0;
                             // Book Name
                             bookLists.readBookName(Globals.bibleBook).then(
                               (g) {
@@ -109,6 +121,7 @@ class BibleApp extends StatelessWidget {
           return MaterialApp(
             title: 'Bible App',
             theme: ThemeData(
+              fontFamily: 'Montserrat',
               primarySwatch: palette,
             ),
             home: const MainPage(),

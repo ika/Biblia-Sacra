@@ -53,7 +53,7 @@ class _BookMarkState extends State<BookMarksPage> {
   }
 
   onBookMarkTap(WriteVarsModel model) {
-    _lists.updateActiveLists('books', model.version);
+    _lists.updateActiveLists('all', model.version);
     writeVars(model).then((value) {
       backButton(context);
     });

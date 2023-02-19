@@ -93,15 +93,30 @@ class _MainSelectorState extends State<MainSelector>
                         Globals.chapterVerse = index;
                         backButton(context);
                       },
-                      child: SizedBox(
-                        width: 40.0,
-                        height: 40.0,
-                        child: FittedBox(
-                          fit: BoxFit.none,
-                          child: Text(
-                            '$verse',
-                            style: TextStyle(fontSize: primaryTextSize),
-                          ),
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(5),
+                          shape: BoxShape.rectangle,
+                          boxShadow: [
+                            BoxShadow(
+                                // Bottom right
+                                color: Colors.grey.shade600,
+                                offset: const Offset(3, 3),
+                                blurRadius: 5,
+                                spreadRadius: 1),
+                            const BoxShadow(
+                                // Top left
+                                color: Colors.white,
+                                offset: Offset(-3, -3),
+                                blurRadius: 5,
+                                spreadRadius: 1)
+                          ],
+                        ),
+                        child: Text(
+                          verse.toString(),
+                          style: TextStyle(fontSize: primaryTextSize),
                         ),
                       ),
                     ),
@@ -134,27 +149,38 @@ class _MainSelectorState extends State<MainSelector>
                   return Center(
                     child: GestureDetector(
                       onTap: () {
-                        // save chapter
-                        sharedPrefs.setIntPref('chapter', chap).then(
-                          (value) {
-                            Globals.bookChapter = chap;
-                            BlocProvider.of<ChapterCubit>(context)
-                                .setChapter(chap);
-                            Globals.selectorText =
-                                "${Globals.bookName}: $chap:1";
-                            tabController.animateTo(2);
-                          },
-                        );
+                        Globals.bookChapter = chap;
+                        Globals.selectorText = "${Globals.bookName}: $chap:1";
+                        sharedPrefs.setIntPref('chapter', chap).then((value) {
+                          BlocProvider.of<ChapterCubit>(context)
+                              .setChapter(chap);
+                          tabController.animateTo(2);
+                        });
                       },
-                      child: SizedBox(
-                        width: 40.0,
-                        height: 40.0,
-                        child: FittedBox(
-                          fit: BoxFit.none,
-                          child: Text(
-                            '$chap',
-                            style: TextStyle(fontSize: primaryTextSize),
-                          ),
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(5),
+                          shape: BoxShape.rectangle,
+                          boxShadow: [
+                            BoxShadow(
+                                // Bottom right
+                                color: Colors.grey.shade600,
+                                offset: const Offset(3, 3),
+                                blurRadius: 5,
+                                spreadRadius: 1),
+                            const BoxShadow(
+                                // Top left
+                                color: Colors.white,
+                                offset: Offset(-3, -3),
+                                blurRadius: 5,
+                                spreadRadius: 1)
+                          ],
+                        ),
+                        child: Text(
+                          chap.toString(),
+                          style: TextStyle(fontSize: primaryTextSize),
                         ),
                       ),
                     ),
@@ -198,17 +224,14 @@ class _MainSelectorState extends State<MainSelector>
                 ),
                 onTap: () {
                   int book = key + 1;
-                  // save book
+                  Globals.bibleBook = book;
+                  Globals.bookChapter = 1;
                   sharedPrefs.setIntPref('book', book).then(
                     (value) {
-                      Globals.bibleBook = book;
                       bookLists.writeBookName(book).then(
-                        // book number =1 and list number = 0
                         (value) {
-                          // see also Globals.selectorText
                           sharedPrefs.setIntPref('chapter', 1).then(
                             (value) {
-                              Globals.bookChapter = 1;
                               BlocProvider.of<ChapterCubit>(context)
                                   .setChapter(1);
                               tabController.animateTo(1);
@@ -235,6 +258,7 @@ class _MainSelectorState extends State<MainSelector>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
@@ -253,13 +277,13 @@ class _MainSelectorState extends State<MainSelector>
           tabs: [
             Tab(
                 child: Text(tabNames[0],
-                    style: TextStyle(fontSize: Globals.appBarFontSize))),
+                    style: TextStyle(fontSize: primaryTextSize))),
             Tab(
                 child: Text(tabNames[1],
-                    style: TextStyle(fontSize: Globals.appBarFontSize))),
+                    style: TextStyle(fontSize: primaryTextSize))),
             Tab(
                 child: Text(tabNames[2],
-                    style: TextStyle(fontSize: Globals.appBarFontSize))),
+                    style: TextStyle(fontSize: primaryTextSize))),
           ],
         ),
       ),

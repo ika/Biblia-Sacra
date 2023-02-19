@@ -1,10 +1,13 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:bibliasacra/utils/constants.dart';
+import 'dart:io' as io;
 import 'package:bibliasacra/globals/globals.dart';
-import 'package:path/path.dart' as p;
 import 'package:flutter/services.dart';
+import 'package:path/path.dart';
+import 'package:bibliasacra/utils/constants.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
+
+String dataBaseName = '';
 
 String getBVFileName(int v) {
   String dbName = '';
@@ -44,14 +47,14 @@ String getBVFileName(int v) {
 }
 
 class DbProvider {
-  static String _bibleDbName;
+  static String dataBaseName;
   static DbProvider _dbProvider;
   static Database _database;
 
   DbProvider._createInstance();
 
   factory DbProvider() {
-    _bibleDbName = getBVFileName(Globals.bibleVersion);
+    dataBaseName = getBVFileName(Globals.bibleVersion);
 
     // print('DbProvider VERSION = ' + Globals.v.toString());
     // print('DbProvider bibleDbName = ' + _bibleDbName);
@@ -67,24 +70,22 @@ class DbProvider {
   }
 
   Future<Database> initDB() async {
-    var databasesPath = await getDatabasesPath();
-    var path = p.join(databasesPath, _bibleDbName);
+    io.Directory documentsDirectory = await getTemporaryDirectory();
+    String path = join(documentsDirectory.path, dataBaseName);
 
     if (!(await databaseExists(path))) {
-      //debugPrint('INSTALLING DATABASE');
       try {
-        await Directory(p.dirname(path)).create(recursive: true);
+        await io.Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
 
-      // Copy from asset
-      ByteData data = await rootBundle.load(p.join("assets", _bibleDbName));
+      ByteData data = await rootBundle.load(join("assets/bibles", dataBaseName));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
-      await File(path).writeAsBytes(bytes, flush: true);
+      await io.File(path).writeAsBytes(bytes, flush: true);
     }
-
     return await openDatabase(path, version: 1);
+    //return await databaseFactory.openDatabase(path);
   }
 
   Future close() async {

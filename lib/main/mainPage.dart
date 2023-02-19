@@ -383,7 +383,7 @@ class MainPageState extends State<MainPage> {
         selectable: true,
         highlight: true,
         text: "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-        style: TextStyle(fontSize: primaryTextSize),
+        style: TextStyle(fontStyle: FontStyle.italic, fontSize: primaryTextSize),
         onWordTapped: (word, index) {
           Globals.dictionaryLookup = word;
           dictDialog(context);

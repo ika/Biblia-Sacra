@@ -1,12 +1,15 @@
+import 'dart:async';
+import 'dart:io' as io;
+import 'package:path/path.dart';
 import 'package:bibliasacra/utils/constants.dart';
-import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 class NtProvider {
   static NtProvider _ntProvider;
   static Database _database;
 
-  final String _dbName = Constants.notesDbname;
+  final String dataBaseName = Constants.notesDbname;
   final String _tableName = 'notes';
 
   NtProvider._createInstance();
@@ -22,16 +25,18 @@ class NtProvider {
   }
 
   Future<Database> initDB() async {
-    var databasesPath = await getDatabasesPath();
-    var path = p.join(databasesPath, _dbName);
+    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, dataBaseName);
+
+    //var db = await databaseFactory.openDatabase(path);
+    //var db = await openDatabase(path);
 
     return await openDatabase(
       path,
       version: 1,
       onOpen: (db) async {},
       onCreate: (Database db, int version) async {
-        // Create the note table
-         await db.execute('''
+        db.execute('''
                 CREATE TABLE IF NOT EXISTS $_tableName (
                     id INTEGER PRIMARY KEY,
                     title TEXT DEFAULT '',
@@ -48,6 +53,7 @@ class NtProvider {
             ''');
       },
     );
+    //return db;
   }
 
   Future close() async {

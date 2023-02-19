@@ -110,7 +110,7 @@ class NotesPageState extends State<NotesPage> {
             name: list[index].name);
 
         writeVars(model).then((value) {
-          //_lists.updateActiveLists('notes', model.version);
+          _lists.updateActiveLists('all', model.version);
           backButton(context);
         });
 

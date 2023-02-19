@@ -26,32 +26,25 @@ class WriteVarsModel {
 }
 
 Future<void> writeVars(WriteVarsModel model) async {
+  Globals.bibleVersion = model.version;
+  Globals.bibleLang = model.lang;
+  Globals.versionAbbr = model.abbr;
+  Globals.bibleBook = model.book;
+  Globals.bookChapter = model.chapter;
+  Globals.chapterVerse = model.verse - 1;
+  Globals.bookName = model.name;
   // version
-  _sharedPrefs.setIntPref('version', model.version).then((v) {
-    Globals.bibleVersion = model.version;
-    // language
-    _sharedPrefs.setStringPref('language', model.lang).then((v) {
-      Globals.bibleLang = model.lang;
-      // version abbreviation
-      _sharedPrefs.setStringPref('verabbr', model.abbr).then((v) {
-        Globals.versionAbbr = model.abbr;
-        // Book
-        _sharedPrefs.setIntPref('book', model.book).then((v) {
-          Globals.bibleBook = model.book;
-          // Chapter
-          _sharedPrefs.setIntPref('chapter', model.chapter).then((v) {
-            Globals.bookChapter = model.chapter;
-            // Verse
-            _sharedPrefs.setIntPref('verse', model.verse - 1).then((v) {
-              Globals.chapterVerse = model.verse - 1;
-              // Book name
-              _sharedPrefs.setStringPref('bookname', model.name).then((v) {
-                Globals.bookName = model.name;
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+  _sharedPrefs.setIntPref('version', model.version);
+  // language
+  _sharedPrefs.setStringPref('language', model.lang);
+  // version abbreviation
+  _sharedPrefs.setStringPref('verabbr', model.abbr);
+  // Book
+  _sharedPrefs.setIntPref('book', model.book);
+  // Chapter
+  _sharedPrefs.setIntPref('chapter', model.chapter);
+  // Verse
+  _sharedPrefs.setIntPref('verse', model.verse - 1);
+  // Book name
+  _sharedPrefs.setStringPref('bookname', model.name);
 }

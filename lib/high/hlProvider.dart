@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'dart:io' as io;
+import 'package:path/path.dart';
 import 'package:bibliasacra/utils/constants.dart';
-import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 // Bookmarks database helper
 
 class HlProvider {
-  final String _dbName = Constants.hltsDbname;
+  final String dataBaseName = Constants.hltsDbname;
   final String tableName = 'hlts_table';
 
   static HlProvider _dbProvider;
@@ -25,8 +27,11 @@ class HlProvider {
   }
 
   Future<Database> initDB() async {
-    var databasesPath = await getDatabasesPath();
-    var path = p.join(databasesPath, _dbName);
+    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, dataBaseName);
+
+    //var db = await databaseFactory.openDatabase(path);
+    //var db = await openDatabase(path);
 
     return await openDatabase(
       path,
@@ -50,6 +55,7 @@ class HlProvider {
             ''');
       },
     );
+    //return db;
   }
 
   Future close() async {
