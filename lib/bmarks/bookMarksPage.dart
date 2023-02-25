@@ -1,5 +1,5 @@
+import 'package:bibliasacra/cubit/SettingsCubit.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
-import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/globals/globals.dart';
@@ -34,7 +34,7 @@ class _BookMarkState extends State<BookMarksPage> {
   @override
   void initState() {
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     super.initState();
   }
 

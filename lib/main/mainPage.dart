@@ -3,10 +3,11 @@ import 'package:bibliasacra/bmarks/bmModel.dart';
 import 'package:bibliasacra/bmarks/bmQueries.dart';
 import 'package:bibliasacra/bmarks/bookMarksPage.dart';
 import 'package:bibliasacra/colors/colors.dart';
+import 'package:bibliasacra/cubit/SettingsCubit.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
-import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/dict/dict.dart';
+import 'package:bibliasacra/fonts/fonts.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/high/highMarksPage.dart';
 import 'package:bibliasacra/high/hlModel.dart';
@@ -63,20 +64,14 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => MainPageState();
 }
 
-//class MainPageState extends State<MainPage> with TickerProviderStateMixin {
 class MainPageState extends State<MainPage> {
-  Timer timer;
-
   @override
   void initState() {
     super.initState();
     initialScrollController = ItemScrollController();
-    // animationController = AnimationController(
-    //     vsync: this, duration: const Duration(microseconds: 500));
-    // isPlaying = false;
 
     pageController = PageController(initialPage: Globals.bookChapter - 1);
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -383,7 +378,8 @@ class MainPageState extends State<MainPage> {
         selectable: true,
         highlight: true,
         text: "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-        style: TextStyle(fontStyle: FontStyle.italic, fontSize: primaryTextSize),
+        style:
+            TextStyle(fontStyle: FontStyle.normal, fontSize: primaryTextSize),
         onWordTapped: (word, index) {
           Globals.dictionaryLookup = word;
           dictDialog(context);
@@ -757,8 +753,29 @@ class MainPageState extends State<MainPage> {
               );
               Navigator.push(context, route).then((value) {
                 setState(() {
-                  primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+                  primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
                 });
+              });
+            },
+          ),
+          ListTile(
+            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            title: const Text(
+              'Fonts',
+              style: TextStyle(
+                  //color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Route route = MaterialPageRoute(
+                builder: (context) => const FontsPage(),
+              );
+              Navigator.push(context, route).then((value) {
+                // setState(() {
+                //   primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+                // });
               });
             },
           ),

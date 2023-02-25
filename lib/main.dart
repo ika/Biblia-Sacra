@@ -1,6 +1,5 @@
-
+import 'package:bibliasacra/cubit/SettingsCubit.dart';
 import 'package:bibliasacra/cubit/chaptersCubit.dart';
-import 'package:bibliasacra/cubit/paletteCubit.dart';
 import 'package:bibliasacra/cubit/searchCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
@@ -12,8 +11,10 @@ import 'package:bibliasacra/utils/utilities.dart';
 import 'package:bibliasacra/vers/vkQueries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+//import 'package:sqflite/sqflite.dart';
+//import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+MaterialColor palette;
 
 SharedPrefs _sharedPrefs = SharedPrefs();
 Utilities utilities = Utilities();
@@ -74,7 +75,13 @@ Future<void> main() async {
                                     .then((t) {
                                   Globals.initialTextSize =
                                       (t != null) ? t : 16;
-                                  getActiveVersionsCount();
+                                  _sharedPrefs
+                                      .getStringPref('fontSel')
+                                      .then((f) {
+                                    Globals.initialFont =
+                                        (f != null) ? f : 'Roboto';
+                                    getActiveVersionsCount();
+                                  });
                                 });
                                 runApp(
                                   const BibleApp(),
@@ -96,6 +103,10 @@ Future<void> main() async {
   });
 }
 
+String getFontFamily() {
+  return 'Roboto';
+}
+
 class BibleApp extends StatelessWidget {
   const BibleApp({Key key}) : super(key: key);
 
@@ -109,21 +120,19 @@ class BibleApp extends StatelessWidget {
         BlocProvider<SearchCubit>(
           create: (context) => SearchCubit()..getSearchAreaKey(),
         ),
-        BlocProvider<PaletteCubit>(
-          create: (context) => PaletteCubit()..getPalette(),
-        ),
         BlocProvider<TextSizeCubit>(
           create: (context) => TextSizeCubit()..getSize(),
+        ),
+        BlocProvider<SettingsCubit>(
+          create: (context) => SettingsCubit(),
         )
       ],
-      child: BlocBuilder<PaletteCubit, MaterialColor>(
-        builder: ((context, palette) {
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        builder: ((context, state) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Bible App',
-            theme: ThemeData(
-              fontFamily: 'Montserrat',
-              primarySwatch: palette,
-            ),
+            theme: state.themeData,
             home: const MainPage(),
           );
         }),

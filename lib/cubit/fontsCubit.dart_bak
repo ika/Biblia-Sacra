@@ -1,0 +1,10 @@
+// import 'package:bibliasacra/globals/globals.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
+// class FontsCubitXX extends Cubit<String> {
+//   FontsCubitXX() : super(Globals.initialFont);
+
+//   void setFont(String state) => emit(state);
+
+//   void getFont() async => emit(Globals.initialFont);
+// }

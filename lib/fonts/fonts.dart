@@ -7,19 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 MaterialColor primarySwatch;
+double primaryTextSize;
 SharedPrefs sharedPrefs = SharedPrefs();
 
-class TextSizePage extends StatefulWidget {
-  const TextSizePage({Key key}) : super(key: key);
+class FontsPage extends StatefulWidget {
+  const FontsPage({Key key}) : super(key: key);
 
   @override
-  State<TextSizePage> createState() => _TextSizePageState();
+  State<FontsPage> createState() => _FontsPageState();
 }
 
-class _TextSizePageState extends State<TextSizePage> {
+class _FontsPageState extends State<FontsPage> {
   @override
   void initState() {
-    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primarySwatch =
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
 
@@ -37,11 +40,20 @@ class _TextSizePageState extends State<TextSizePage> {
     );
   }
 
-  List<double> sizesList = [14, 16, 18, 20, 22, 24, 26, 28];
+  List<String> fontsList = [
+    'Montserrat',
+    'OpenSans',
+    'PlayFairDisplay',
+    'Roboto',
+    'Raleway',
+    'Courgette',
+    'Kalam'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: Colors.grey,
       appBar: AppBar(
         actions: const [],
         leading: GestureDetector(
@@ -52,7 +64,7 @@ class _TextSizePageState extends State<TextSizePage> {
         ),
         elevation: 16,
         title: Text(
-          'Text Size Selector',
+          'Font Selector',
           style: TextStyle(fontSize: Globals.appBarFontSize),
         ),
       ),
@@ -62,12 +74,14 @@ class _TextSizePageState extends State<TextSizePage> {
             const SizedBox(
               height: 20,
             ),
-            for (int i = 0; i < sizesList.length; i++)
+            for (int i = 0; i < fontsList.length; i++)
               InkWell(
                 onTap: () {
-                  double tsize = sizesList[i].toDouble();
-                  sharedPrefs.setDoublePref('textSize', tsize).then((value) {
-                    BlocProvider.of<TextSizeCubit>(context).setSize(tsize);
+                  String fontSel = fontsList[i];
+                  final settings = context.read<SettingsCubit>();
+                  sharedPrefs.setStringPref('fontSel', fontSel).then((value) {
+                    Globals.initialFont = fontSel;
+                    settings.setFont(fontSel);
                     backButton(context);
                   });
                 },
@@ -77,8 +91,9 @@ class _TextSizePageState extends State<TextSizePage> {
                   color: primarySwatch[300],
                   child: Center(
                     child: Text(
-                      'In the beginning',
-                      style: TextStyle(fontSize: sizesList[i]),
+                      'For God so loved the world ...',
+                      style: TextStyle(
+                          fontFamily: fontsList[i], fontSize: primaryTextSize),
                     ),
                   ),
                 ),

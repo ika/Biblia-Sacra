@@ -1,12 +1,11 @@
 import 'package:bibliasacra/colors/palette.dart';
-import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/SettingsCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/mainPage.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-MaterialColor primarySwatch;
 SharedPrefs _sharedPrefs = SharedPrefs();
 
 class ColorsPage extends StatefulWidget {
@@ -17,12 +16,6 @@ class ColorsPage extends StatefulWidget {
 }
 
 class _ColorsPageState extends State<ColorsPage> {
-  @override
-  void initState() {
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
-    super.initState();
-  }
-
   backButton(BuildContext context) {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
@@ -63,9 +56,15 @@ class _ColorsPageState extends State<ColorsPage> {
             for (int i = 0; i < Palette.colorsList.length; i++)
               InkWell(
                 onTap: () {
-                  _sharedPrefs.setIntPref('colorsList', i);
-                  BlocProvider.of<PaletteCubit>(context)
-                      .setPalette(Palette.colorsList.values.elementAt(i));
+                  final settings = context.read<SettingsCubit>();
+                  _sharedPrefs.setIntPref('colorsList', i).then((value) {
+                    Globals.colorListNumber = i;
+                    settings.setPalette(Palette.colorsList.values.elementAt(i));
+                    backButton(context);
+                  });
+                  // this also works
+                  // BlocProvider.of<SettingsCubit>(context)
+                  //     .setPalette(Palette.colorsList.values.elementAt(i));
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 8, left: 20, right: 20),

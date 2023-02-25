@@ -22,7 +22,7 @@ class Globals {
   static double appBarFontSize = 18;
 
   // back Icon
-  static const IconData backArrow = 
+  static const IconData backArrow =
       IconData(0xe791, fontFamily: "MaterialIcons");
 
   // Dialog height
@@ -40,6 +40,9 @@ class Globals {
 
   // Text Size
   static double initialTextSize = 16;
+
+  // Font
+  static String initialFont = 'Roboto';
 
   // Active Version count
   static int activeVersionCount = 0;

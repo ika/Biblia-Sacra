@@ -1,4 +1,4 @@
-import 'package:bibliasacra/cubit/paletteCubit.dart';
+import 'package:bibliasacra/cubit/SettingsCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/dbQueries.dart';
@@ -31,7 +31,7 @@ class VersionsPageState extends State<VersionsPage> {
   @override
   void initState() {
     counter = 0;
-    primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }

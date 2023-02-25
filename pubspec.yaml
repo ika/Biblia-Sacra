@@ -92,8 +92,6 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: assets/fonts/Montserrat-Regular.ttf
-        - asset: assets/fonts/Montserrat-Italic.ttf
-          style: italic
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans-Regular.ttf
@@ -103,11 +101,15 @@ flutter:
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto-Italic.ttf
-          style: italic
     - family: Raleway
       fonts:
          - asset: assets/fonts/Raleway-Regular.ttf
+    - family: Courgette
+      fonts:
+         - asset: assets/fonts/Courgette-Regular.ttf
+    - family: Kalam
+      fonts:
+         - asset: assets/fonts/Kalam-Regular.ttf
 
 
   #         style: italic
