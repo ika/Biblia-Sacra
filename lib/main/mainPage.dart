@@ -382,9 +382,9 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Widget norVerseText(snapshot, index) {
+  Widget normalVerseText(snapshot, index) {
     if (snapshot.data[index].v != 0) {
-      return Text("${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+      return Text("${snapshot.data[index].v}:  ${snapshot.data[index].t}",q
           style: TextStyle(
               fontSize: primaryTextSize,
               backgroundColor: (getHighLightMatch(snapshot.data[index].id))
@@ -402,7 +402,7 @@ class MainPageState extends State<MainPage> {
         children: [
           Flexible(
             fit: FlexFit.loose,
-            child: (norVerseText(snapshot, index)),
+            child: (normalVerseText(snapshot, index)),
           ),
           showNoteIcon(context, snapshot, index)
         ],
