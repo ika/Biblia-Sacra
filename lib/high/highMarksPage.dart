@@ -32,7 +32,8 @@ class _HighLightsPage extends State<HighLightsPage> {
 
   @override
   void initState() {
-    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primarySwatch =
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -103,6 +104,7 @@ class _HighLightsPage extends State<HighLightsPage> {
               style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
+              Globals.scrollToVerse = true;
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
 

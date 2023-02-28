@@ -6,24 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsState {
   ThemeData themeData;
-
   SettingsState({this.themeData});
 
-  // static setThemeData(ThemeData theme) {
-  //   themeData = theme;
-  // }
-
-  // getThemeData() {
-  //   return themeData;
-  // }
-
-  // setPalette(MaterialColor palette) {
-  //   themeData = ThemeData(primarySwatch: palette);
-  // }
-
-  // getPrimarySwatch() {
-  //   return themeData.primaryColorDark;
-  // }
 }
 
 class SettingsCubit extends Cubit<SettingsState> {

@@ -40,7 +40,8 @@ class _MainSearchState extends State<MainSearch> {
   initState() {
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
-    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primarySwatch =
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -78,6 +79,7 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   onSearchTap(WriteVarsModel model) {
+    Globals.scrollToVerse = true;
     writeVars(model).then((value) {
       backButton(context);
     });

@@ -18,6 +18,9 @@ class Globals {
   static int navigatorLongDelay = 500;
   static int navigatorLongestDelay = 800;
 
+  // Scroll to verse
+  static bool scrollToVerse = false;
+
   // appbar font size
   static double appBarFontSize = 18;
 

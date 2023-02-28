@@ -20,13 +20,13 @@ SnackBar errorSnackBar = const SnackBar(
   content: Text('Error occured!'),
 );
 
-SnackBar dicModeOnSnackBar = const SnackBar(
-  content: Text('Dictionary Mode!'),
-);
+// SnackBar dicModeOnSnackBar = const SnackBar(
+//   content: Text('Dictionary Mode!'),
+// );
 
-SnackBar dicModeOffSnackBar = const SnackBar(
-  content: Text('Normal Mode!'),
-);
+// SnackBar dicModeOffSnackBar = const SnackBar(
+//   content: Text('Normal Mode!'),
+// );
 
 SnackBar noteDeletedSnackBar = const SnackBar(
   content: Text('Note Deleted!'),

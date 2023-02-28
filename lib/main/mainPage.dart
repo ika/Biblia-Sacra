@@ -71,53 +71,31 @@ class MainPageState extends State<MainPage> {
     initialScrollController = ItemScrollController();
 
     pageController = PageController(initialPage: Globals.bookChapter - 1);
-    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primarySwatch =
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        //scrollToIndex();
-        Future.delayed(
-          Duration(milliseconds: Globals.navigatorLongDelay),
-          () {
-            if (initialScrollController.isAttached) {
-              initialScrollController.scrollTo(
-                index: Globals.chapterVerse, // from verse selector
-                duration: Duration(milliseconds: Globals.navigatorLongDelay),
-                curve: Curves.easeInOutCubic,
-              );
-            }
-          },
-        );
-      },
-    );
-    // timer = Timer.periodic(const Duration(microseconds: 500), (_) {
-    //   setState(() {
-    //     isShowing = !isShowing;
-    //   });
-    // });
+    if (Globals.scrollToVerse) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          //scrollToIndex();
+          Future.delayed(
+            Duration(milliseconds: Globals.navigatorLongDelay),
+            () {
+              if (initialScrollController.isAttached) {
+                initialScrollController.scrollTo(
+                  index: Globals.chapterVerse, // from verse selector
+                  duration: Duration(milliseconds: Globals.navigatorLongDelay),
+                  curve: Curves.easeInOutCubic,
+                );
+              }
+            },
+          );
+        },
+      );
+      Globals.scrollToVerse = false;
+    }
   }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   timer.cancel();
-  // }
-
-  // void scrollToIndex() {
-  //   Future.delayed(
-  //     Duration(milliseconds: Globals.navigatorLongDelay),
-  //     () {
-  //       if (initialScrollController.isAttached) {
-  //         initialScrollController.scrollTo(
-  //           index: Globals.chapterVerse, // from verse selector
-  //           duration: Duration(milliseconds: Globals.navigatorLongDelay),
-  //           curve: Curves.easeInOutCubic,
-  //         );
-  //       }
-  //     },
-  //   );
-  // }
 
   Future<List<Bible>> getBookText(int book, int ch) async {
     return await _dbQueries.getBookChapter(book, ch);
@@ -386,7 +364,7 @@ class MainPageState extends State<MainPage> {
         },
       );
     } else {
-      return const Text('  ');
+      return const Text('');
     }
   }
 
@@ -413,7 +391,7 @@ class MainPageState extends State<MainPage> {
                   ? primarySwatch[100]
                   : null));
     } else {
-      return const Text('  ');
+      return const Text('');
     }
   }
 
@@ -753,7 +731,10 @@ class MainPageState extends State<MainPage> {
               );
               Navigator.push(context, route).then((value) {
                 setState(() {
-                  primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+                  primarySwatch = BlocProvider.of<SettingsCubit>(context)
+                      .state
+                      .themeData
+                      .primaryColor;
                 });
               });
             },
@@ -801,53 +782,49 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void changeNotice(BuildContext context) {
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        (Globals.dictionaryMode)
-            ? ScaffoldMessenger.of(context).showSnackBar(dicModeOnSnackBar)
-            : ScaffoldMessenger.of(context).showSnackBar(dicModeOffSnackBar);
-      },
-    );
-  }
-
-  Padding showIconButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: IconButton(
-        color: (isShowing) ? Colors.white : Colors.transparent,
-        icon: const Icon(Icons.change_circle),
-        iconSize: 30,
-        onPressed: () {
-          Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
-          changeNotice(context);
-          setState(() {});
-        },
-      ),
-    );
-  }
+  // void changeNotice(BuildContext context) {
+  //   Future.delayed(
+  //     Duration(milliseconds: Globals.navigatorDelay),
+  //     () {
+  //       (Globals.dictionaryMode)
+  //           ? ScaffoldMessenger.of(context).showSnackBar(dicModeOnSnackBar)
+  //           : ScaffoldMessenger.of(context).showSnackBar(dicModeOffSnackBar);
+  //     },
+  //   );
+  // }
 
   // Padding showIconButton(BuildContext context) {
   //   return Padding(
   //     padding: const EdgeInsets.only(right: 20),
   //     child: IconButton(
-  //       //color: (Globals.dictionaryMode) ? primarySwatch[700] : Colors.white,
-  //       color: Colors.white,
-  //       icon: AnimatedIcon(
-  //           icon: AnimatedIcons.arrow_menu, progress: animationController),
-  //           iconSize: 20,
+  //       color: (isShowing) ? Colors.white : Colors.transparent,
+  //       icon: const Icon(Icons.change_circle),
+  //       iconSize: 30,
   //       onPressed: () {
   //         Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
-  //         (Globals.dictionaryMode)
-  //             ? animationController.fling()
-  //             : animationController.reverse();
   //         changeNotice(context);
   //         setState(() {});
   //       },
   //     ),
   //   );
   // }
+
+  Widget showModes() {
+    if (Globals.bibleLang == 'lat') {
+      String modeText =
+          Globals.dictionaryMode ? 'Normal Mode' : 'Dictionary Mode';
+      return FloatingActionButton.extended(
+        label: Text(modeText),
+        icon: const Icon(Icons.change_circle),
+        onPressed: () {
+          Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
+          setState(() {});
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -859,68 +836,69 @@ class MainPageState extends State<MainPage> {
         return false;
       },
       child: Scaffold(
-          drawer: showDrawer(context),
-          appBar: AppBar(
-            elevation: 16,
-            actions: [
-              (Globals.bibleLang == 'lat')
-                  ? showIconButton(context)
-                  : Container(),
-              Row(
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: primarySwatch[700]),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainSelector(),
-                        ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          '${Globals.bookName}: ',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        BlocBuilder<ChapterCubit, int>(
-                          builder: (context, chapter) {
-                            return Text(
-                              chapter.toString(),
-                              style: const TextStyle(fontSize: 16),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+        drawer: showDrawer(context),
+        appBar: AppBar(
+          elevation: 16,
+          actions: [
+            // (Globals.bibleLang == 'lat')
+            //     ? showIconButton(context)
+            //     : Container(),
+            Row(
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: primarySwatch[700]),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainSelector(),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        '${Globals.bookName}: ',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      BlocBuilder<ChapterCubit, int>(
+                        builder: (context, chapter) {
+                          return Text(
+                            chapter.toString(),
+                            style: const TextStyle(fontSize: 16),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    width: 8,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: primarySwatch[700]),
+                  onPressed: () {
+                    showVersionsDialog(context);
+                  },
+                  child: Text(
+                    Globals.versionAbbr,
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: primarySwatch[700]),
-                    onPressed: () {
-                      showVersionsDialog(context);
-                    },
-                    child: Text(
-                      Globals.versionAbbr,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(
-                    // right side border width
-                    width: 16,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          body: chaptersList(context, Globals.bibleBook) //MainChapters(),
-          ),
+                ),
+                const SizedBox(
+                  // right side border width
+                  width: 16,
+                ),
+              ],
+            ),
+          ],
+        ),
+        body: chaptersList(context, Globals.bibleBook),
+        floatingActionButton: showModes(),
+      ),
     );
   }
 }

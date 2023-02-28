@@ -30,7 +30,8 @@ class NotesPage extends StatefulWidget {
 class NotesPageState extends State<NotesPage> {
   @override
   void initState() {
-    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primarySwatch =
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -92,14 +93,17 @@ class NotesPageState extends State<NotesPage> {
     arr[3] = 'GOTO';
 
     _dialogs.confirmDialog(context, arr).then((value) {
-      if (value == ConfirmAction.accept) { // Edit
+      if (value == ConfirmAction.accept) {
+        // Edit
         final model = NtModel(
             id: list[index].id,
             title: list[index].title,
             contents: list[index].contents,
             bid: list[index].bid);
         addEditPage(model);
-      } else if (value == ConfirmAction.cancel) { // Goto
+      } else if (value == ConfirmAction.cancel) {
+        // Goto
+        Globals.scrollToVerse = true;
         final model = WriteVarsModel(
             lang: list[index].lang,
             version: list[index].version,

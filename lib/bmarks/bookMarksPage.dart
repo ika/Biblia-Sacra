@@ -34,7 +34,8 @@ class _BookMarkState extends State<BookMarksPage> {
   @override
   void initState() {
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
-    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primarySwatch =
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     super.initState();
   }
 
@@ -103,6 +104,7 @@ class _BookMarkState extends State<BookMarksPage> {
               style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
+              Globals.scrollToVerse = true;
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
 
