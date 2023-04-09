@@ -1,5 +1,5 @@
-import 'package:bibliasacra/notes/nModel.dart';
-import 'package:bibliasacra/notes/nProvider.dart';
+import 'package:bibliasacra/notes/Model.dart';
+import 'package:bibliasacra/notes/Provider.dart';
 
 NtProvider _ntProvider;
 

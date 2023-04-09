@@ -2,8 +2,8 @@ import 'package:bibliasacra/bmarks/bmModel.dart';
 import 'package:bibliasacra/bmarks/bmQueries.dart';
 import 'package:bibliasacra/high/hlModel.dart';
 import 'package:bibliasacra/high/hlQueries.dart';
-import 'package:bibliasacra/notes/nModel.dart';
-import 'package:bibliasacra/notes/nQueries.dart';
+import 'package:bibliasacra/notes/Model.dart';
+import 'package:bibliasacra/notes/Queries.dart';
 
 NtQueries _ntQueries = NtQueries();
 HlQueries _hlQueries = HlQueries();

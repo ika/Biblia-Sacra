@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io' as io;
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/services.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 import 'package:bibliasacra/utils/constants.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 String dataBaseName = '';
 
@@ -56,9 +56,6 @@ class DbProvider {
   factory DbProvider() {
     dataBaseName = getBVFileName(Globals.bibleVersion);
 
-    // print('DbProvider VERSION = ' + Globals.v.toString());
-    // print('DbProvider bibleDbName = ' + _bibleDbName);
-
     _dbProvider ??= DbProvider._createInstance();
     return _dbProvider;
   }
@@ -70,22 +67,23 @@ class DbProvider {
   }
 
   Future<Database> initDB() async {
-    io.Directory documentsDirectory = await getTemporaryDirectory();
-    String path = join(documentsDirectory.path, dataBaseName);
+    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = p.join(documentsDirectory.path, dataBaseName);
 
-    if (!(await databaseExists(path))) {
+    if (!await databaseExists(path)) {
       try {
-        await io.Directory(dirname(path)).create(recursive: true);
+        await io.Directory(p.dirname(path)).create(recursive: true);
       } catch (_) {}
 
-      ByteData data = await rootBundle.load(join("assets/bibles", dataBaseName));
+      ByteData data =
+          await rootBundle.load(p.join("assets/bibles", dataBaseName));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
       await io.File(path).writeAsBytes(bytes, flush: true);
     }
-    return await openDatabase(path, version: 1);
-    //return await databaseFactory.openDatabase(path);
+
+    return await databaseFactory.openDatabase(path);
   }
 
   Future close() async {

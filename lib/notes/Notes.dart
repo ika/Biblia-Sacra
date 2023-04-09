@@ -3,9 +3,9 @@ import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/main/mainPage.dart';
-import 'package:bibliasacra/notes/edit.dart';
-import 'package:bibliasacra/notes/nModel.dart';
-import 'package:bibliasacra/notes/nQueries.dart';
+import 'package:bibliasacra/notes/Edit.dart';
+import 'package:bibliasacra/notes/Model.dart';
+import 'package:bibliasacra/notes/Queries.dart';
 import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -36,9 +36,9 @@ class NotesPageState extends State<NotesPage> {
     super.initState();
   }
 
-  Future<void> addEditPage(NtModel model) async {
+  Future<void> addEditPage(NtModel model, String mode) async {
     Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model),
+      builder: (context) => EditNotePage(model: model, mode: mode),
     );
     Navigator.push(context, route).then(
       (value) {
@@ -85,48 +85,48 @@ class NotesPageState extends State<NotesPage> {
     });
   }
 
-  doWrapper(context, list, index) {
-    var arr = List.filled(4, '');
-    arr[0] = "Edit or Goto?";
-    arr[1] = "What would you like to do?";
-    arr[2] = 'EDIT';
-    arr[3] = 'GOTO';
+  // doWrapper(context, list, index) {
+  //   var arr = List.filled(4, '');
+  //   arr[0] = "Edit or Goto?";
+  //   arr[1] = "What would you like to do?";
+  //   arr[2] = 'EDIT';
+  //   arr[3] = 'GOTO';
 
-    _dialogs.confirmDialog(context, arr).then((value) {
-      if (value == ConfirmAction.accept) {
-        // Edit
-        final model = NtModel(
-            id: list[index].id,
-            title: list[index].title,
-            contents: list[index].contents,
-            bid: list[index].bid);
-        addEditPage(model);
-      } else if (value == ConfirmAction.cancel) {
-        // Goto
-        Globals.scrollToVerse = true;
-        final model = WriteVarsModel(
-            lang: list[index].lang,
-            version: list[index].version,
-            abbr: list[index].abbr,
-            book: list[index].book,
-            chapter: list[index].chapter,
-            verse: list[index].verse,
-            name: list[index].name);
+  //   _dialogs.confirmDialog(context, arr).then((value) {
+  //     if (value == ConfirmAction.accept) {
+  //       // Edit
+  //       final model = NtModel(
+  //           id: list[index].id,
+  //           title: list[index].title,
+  //           contents: list[index].contents,
+  //           bid: list[index].bid);
+  //       addEditPage(model);
+  //     } else if (value == ConfirmAction.cancel) {
+  //       // Goto
+  //       Globals.scrollToVerse = true;
+  //       final model = WriteVarsModel(
+  //           lang: list[index].lang,
+  //           version: list[index].version,
+  //           abbr: list[index].abbr,
+  //           book: list[index].book,
+  //           chapter: list[index].chapter,
+  //           verse: list[index].verse,
+  //           name: list[index].name);
 
-        writeVars(model).then((value) {
-          _lists.updateActiveLists('all', model.version);
-          backButton(context);
-        });
+  //       writeVars(model).then((value) {
+  //         _lists.updateActiveLists('all', model.version);
+  //         backButton(context);
+  //       });
 
-        // _ntQueries.deleteNote(list[index].id).then(
-        //   (value) {
-        //     _lists.updateActiveLists('notes', Globals.bibleVersion);
-        //     setState(() {});
-        //   },
-        // );
-      }
-    });
-  }
+  //       // _ntQueries.deleteNote(list[index].id).then(
+  //       //   (value) {
+  //       //     _lists.updateActiveLists('notes', Globals.bibleVersion);
+  //       //     setState(() {});
+  //       //   },
+  //       // );
+  //     }
+  //   });
+  // }
 
   // IconButton showIconButton(list, index) {
   //   return IconButton(
@@ -172,16 +172,12 @@ class NotesPageState extends State<NotesPage> {
               subtitle: Text(list[index].contents,
                   style: TextStyle(fontSize: primaryTextSize)),
               onTap: () {
-                if (list[index].bid != null) {
-                  doWrapper(context, list, index);
-                } else {
-                  final model = NtModel(
-                      id: list[index].id,
-                      title: list[index].title,
-                      contents: list[index].contents,
-                      bid: list[index].bid);
-                  addEditPage(model);
-                }
+                final model = NtModel(
+                    id: list[index].id,
+                    title: list[index].title,
+                    contents: list[index].contents,
+                    bid: list[index].bid);
+                addEditPage(model, 'edit');
               }
 
               // onTap: () {
@@ -231,7 +227,7 @@ class NotesPageState extends State<NotesPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final model = NtModel(id: null, title: '', contents: '', bid: null);
-          addEditPage(model);
+          addEditPage(model, 'add');
         },
         child: const Icon(Icons.add),
       ),

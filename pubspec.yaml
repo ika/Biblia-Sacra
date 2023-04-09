@@ -39,10 +39,10 @@ dependencies:
   scrollable_positioned_list: ^0.3.5
   intl: ^0.18.0
   word_selectable_text: ^0.2.0
-  sqflite: ^2.2.3
-  path_provider: ^2.0.12
   path: ^1.8.2
-  sqflite_common_ffi: ^2.2.1+1
+  path_provider: ^2.0.14
+  sqflite: ^2.2.3
+
 
 dev_dependencies:
   flutter_test:
@@ -75,7 +75,8 @@ flutter:
     - assets/bibles/ndba_nvul.db
     - assets/bibles/ndba_ukjv.db
     - assets/bibles/ndba_webbe.db
-    - assets/bibles/ndba_dict.db
+    - assets/vkey/vkey.db
+    - assets/dict/dict.db
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

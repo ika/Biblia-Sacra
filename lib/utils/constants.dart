@@ -23,11 +23,11 @@ class Constants {
   //static const String lkeyDbname = "dba_lkey_1.db";
 
   // Version Key
-  static const String vkeyDbname = "ndba_vkey.db";
+  static const String vkeyDbname = "vkey.db";
 
   // Notes
-  static const String notesDbname = "ndba_notes.db";
+  static const String notesDbname = "notes.db";
 
   // Dictionary
-  static const String dictDbname = "ndba_dict.db";
+  static const String dictDbname = "dict.db";
 }

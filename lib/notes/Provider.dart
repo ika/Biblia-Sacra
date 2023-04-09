@@ -28,15 +28,9 @@ class NtProvider {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, dataBaseName);
 
-    //var db = await databaseFactory.openDatabase(path);
-    //var db = await openDatabase(path);
+    var db = await databaseFactory.openDatabase(path);
 
-    return await openDatabase(
-      path,
-      version: 1,
-      onOpen: (db) async {},
-      onCreate: (Database db, int version) async {
-        db.execute('''
+    await db.execute('''
                 CREATE TABLE IF NOT EXISTS $_tableName (
                     id INTEGER PRIMARY KEY,
                     title TEXT DEFAULT '',
@@ -51,9 +45,8 @@ class NtProvider {
                     bid INTEGER DEFAULT 0
                 )
             ''');
-      },
-    );
-    //return db;
+
+    return db;
   }
 
   Future close() async {

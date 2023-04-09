@@ -9,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 VkProvider _vkProvider;
 
 class VkQueries {
-  final String tableName = 'versions';
+  final String tableName = 'version_key';
 
   VkQueries() {
     _vkProvider = VkProvider();

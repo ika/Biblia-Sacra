@@ -20,11 +20,11 @@ import 'package:bibliasacra/main/mainVersMenu.dart';
 import 'package:bibliasacra/main/mainSearch.dart';
 import 'package:bibliasacra/main/mainSelector.dart';
 import 'package:bibliasacra/textsize/textsize.dart';
-import 'package:bibliasacra/notes/edit.dart';
-import 'package:bibliasacra/notes/nModel.dart';
-import 'package:bibliasacra/notes/nQueries.dart';
+import 'package:bibliasacra/notes/Edit.dart';
+import 'package:bibliasacra/notes/Model.dart';
+import 'package:bibliasacra/notes/Queries.dart';
 import 'package:bibliasacra/utils/getlists.dart';
-import 'package:bibliasacra/notes/notes.dart';
+import 'package:bibliasacra/notes/Notes.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:bibliasacra/utils/snackbars.dart';
@@ -38,7 +38,6 @@ import 'package:word_selectable_text/word_selectable_text.dart';
 
 PageController pageController;
 ItemScrollController initialScrollController;
-//AnimationController animationController;
 
 MaterialColor primarySwatch;
 double primaryTextSize;
@@ -384,7 +383,7 @@ class MainPageState extends State<MainPage> {
 
   Widget normalVerseText(snapshot, index) {
     if (snapshot.data[index].v != 0) {
-      return Text("${snapshot.data[index].v}:  ${snapshot.data[index].t}",q
+      return Text("${snapshot.data[index].v}:  ${snapshot.data[index].t}",
           style: TextStyle(
               fontSize: primaryTextSize,
               backgroundColor: (getHighLightMatch(snapshot.data[index].id))
@@ -812,7 +811,7 @@ class MainPageState extends State<MainPage> {
   Widget showModes() {
     if (Globals.bibleLang == 'lat') {
       String modeText =
-          Globals.dictionaryMode ? 'Normal Mode' : 'Dictionary Mode';
+          Globals.dictionaryMode ? 'Dictionary Mode' : 'Normal Mode';
       return FloatingActionButton.extended(
         label: Text(modeText),
         icon: const Icon(Icons.change_circle),
