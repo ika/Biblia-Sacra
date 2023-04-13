@@ -270,46 +270,63 @@ class MainPageState extends State<MainPage> {
         name: Globals.bookName,
         bid: bid);
     _ntQueries.insertNote(model).then((noteid) {
+      // setState(() {
+      //   _lists.updateActiveLists('notes', Globals.bibleVersion);
+      // });
+      model.id = noteid;
+      gotoEditNote(model);
+    });
+  }
+
+  // void delayedSnackbar(BuildContext context) {
+  //   Future.delayed(
+  //     Duration(milliseconds: Globals.navigatorDelay),
+  //     () {
+  //       ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
+  //     },
+  //   );
+  // }
+
+  void gotoEditNote(NtModel model) {
+    Route route = MaterialPageRoute(
+      builder: (context) => EditNotePage(model: model, mode: ''),
+    );
+    Navigator.push(context, route).then((value) {
       setState(() {
         _lists.updateActiveLists('notes', Globals.bibleVersion);
       });
     });
   }
 
-  void delayedSnackbar(BuildContext context) {
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-      },
-    );
-  }
+  Future<NtModel> getNoteModel(int id) async {
+    List<NtModel> vars = await _ntQueries.getNoteByBid(id);
 
-  void gotoEditNote(BuildContext context, NtModel model) {
-    Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model),
-    );
-    Navigator.push(context, route).then((value) {
-      setState(() {});
-      if (value == 'deleted') {
-        delayedSnackbar(context);
-      }
-    });
-  }
-
-  Future<NtModel> getNoteModel(int bid) async {
-    NtModel model =
-        NtModel(id: 0, title: 'no title', contents: 'not contents', bid: bid);
-    List<NtModel> vars = await _ntQueries.getNoteByBid(bid);
     if ((vars.isNotEmpty)) {
       return NtModel(
-          id: vars[0].id, // notes id
+          id: vars[0].id,
           title: vars[0].title,
           contents: vars[0].contents,
-          bid: vars[0].bid // bible id
-          );
+          lang: vars[0].lang,
+          version: vars[0].version,
+          abbr: vars[0].abbr,
+          book: vars[0].book,
+          chapter: vars[0].chapter,
+          verse: vars[0].verse,
+          name: vars[0].name,
+          bid: vars[0].bid);
     } else {
-      return model;
+      return NtModel(
+          id: 0,
+          title: '',
+          contents: '',
+          lang: '',
+          version: 0,
+          abbr: '',
+          book: 0,
+          chapter: 0,
+          verse: 0,
+          name: '',
+          bid: id);
     }
   }
 
@@ -394,7 +411,7 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  Widget normalModeContainer(BuildContext context, snapshot, index) {
+  Widget normalModeContainer(snapshot, index) {
     return Container(
       margin: const EdgeInsets.only(left: 5, bottom: 6.0),
       child: Row(
@@ -403,13 +420,13 @@ class MainPageState extends State<MainPage> {
             fit: FlexFit.loose,
             child: (normalVerseText(snapshot, index)),
           ),
-          showNoteIcon(context, snapshot, index)
+          showNoteIcon(snapshot, index)
         ],
       ),
     );
   }
 
-  SizedBox showNoteIcon(BuildContext context, snapshot, index) {
+  SizedBox showNoteIcon(snapshot, index) {
     if (getNotesMatch(snapshot.data[index].id)) {
       return SizedBox(
         height: 30,
@@ -418,7 +435,7 @@ class MainPageState extends State<MainPage> {
           icon: Icon(Icons.edit, color: primarySwatch[700]),
           onPressed: () => getNoteModel(snapshot.data[index].id).then(
             (model) {
-              gotoEditNote(context, model);
+              gotoEditNote(model);
             },
           ),
         ),
@@ -471,15 +488,13 @@ class MainPageState extends State<MainPage> {
 
                 int bid = snapshot.data[index].id;
 
-                (!getNotesMatch(bid))
-                    ? saveNote(bid)
-                    // : ScaffoldMessenger.of(context)
-                    //     .showSnackBar(noteEditSnackBar);
-                    : getNoteModel(bid).then(
-                        (model) {
-                          gotoEditNote(context, model);
-                        },
-                      );
+                if (getNotesMatch(bid)) {
+                  getNoteModel(bid).then((model) {
+                    gotoEditNote(model);
+                  });
+                } else {
+                  saveNote(bid);
+                }
 
                 break;
 
@@ -495,7 +510,7 @@ class MainPageState extends State<MainPage> {
           },
         );
       },
-      child: normalModeContainer(context, snapshot, index),
+      child: normalModeContainer(snapshot, index),
     );
   }
 

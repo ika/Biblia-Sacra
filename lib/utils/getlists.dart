@@ -20,7 +20,7 @@ class GetLists {
     booksList = [];
   }
 
-  void updateActiveLists(String mode, int v) async {
+  Future<void> updateActiveLists(String mode, int v) async {
     switch (mode) {
       case 'notes':
         notesList = await _ntQueries.getAllVersionNotes(v);

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'dicProvider.dart';
 
 class DicModel {

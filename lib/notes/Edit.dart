@@ -1,23 +1,15 @@
 import 'package:bibliasacra/cubit/SettingsCubit.dart';
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
 import 'package:bibliasacra/globals/globals.dart';
-import 'package:bibliasacra/globals/write.dart';
 import 'package:bibliasacra/notes/Model.dart';
 import 'package:bibliasacra/notes/Queries.dart';
-import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/utils/dialogs.dart';
-import 'package:bibliasacra/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
-Utilities _utilities = Utilities();
 Dialogs _dialogs = Dialogs();
-GetLists _lists = GetLists();
 
-int id;
-int bid;
-String noteFunction;
 MaterialColor primarySwatch;
 double primaryTextSize;
 
@@ -43,18 +35,8 @@ class _EditNotePageState extends State<EditNotePage> {
         BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
-    id = widget.model.id;
-    bid = widget.model.bid;
-
     _titleController.text = widget.model.title;
     _contentsController.text = widget.model.contents;
-
-    (widget.mode == 'add')
-        ? noteFunction = 'Add Note'
-        : noteFunction = 'Edit Note';
-
-    // _titleController.addListener(handleOnChange);
-    // _contentsController.addListener(handleOnChange);
   }
 
   @override
@@ -64,35 +46,27 @@ class _EditNotePageState extends State<EditNotePage> {
     super.dispose();
   }
 
-  Future<void> handleOnChange() async {
-    (id != null) ? saveEdit() : updateEdit();
+  Future<void> updateEdit() async {
+    widget.model.title = _titleController.text;
+    widget.model.contents = _contentsController.text;
+    await _ntQueries.updateNote(widget.model);
   }
 
-  void saveEdit() async {
-    NtModel model = NtModel(
-        title: _utilities.reduceLength(35, _titleController.text),
-        contents: _utilities.reduceLength(256, _contentsController.text),
-        bid: bid);
-
-    id = await _ntQueries.insertNote(
-        model); // populate 'id' so that it is not saved more than once
-
-    writeVars(model as WriteVarsModel).then((value) {
-      _lists.updateActiveLists('all', widget.model.version);
-    });
+  Widget showGotoVerse() {
+    if (widget.model.bid > 0 && widget.mode.isNotEmpty) {
+      return FloatingActionButton.extended(
+        label: const Text('Go to Verse'),
+        icon: const Icon(Icons.arrow_circle_right_outlined),
+        onPressed: () {
+          debugPrint('PRESSED');
+        },
+      );
+    } else {
+      return Container();
+    }
   }
 
-  void updateEdit() async {
-    await _ntQueries.updateNote(
-      NtModel(
-          id: id,
-          title: _utilities.reduceLength(35, _titleController.text),
-          contents: _utilities.reduceLength(256, _contentsController.text),
-          bid: bid),
-    );
-  }
-
-  deleteWrapper(BuildContext context) {
+  deleteWrapper() {
     var arr = List.filled(4, '');
     arr[0] = "Delete?";
     arr[1] = "Do you want to delete this note?";
@@ -102,9 +76,8 @@ class _EditNotePageState extends State<EditNotePage> {
     _dialogs.confirmDialog(context, arr).then(
       (value) {
         if (value == ConfirmAction.accept) {
-          _ntQueries.deleteNote(id).then(
+          _ntQueries.deleteNote(widget.model.id).then(
             (value) {
-              _lists.updateActiveLists('all', Globals.bibleVersion);
               Navigator.pop(context, 'deleted');
             },
           );
@@ -125,53 +98,18 @@ class _EditNotePageState extends State<EditNotePage> {
               },
             ),
             title: Text(
-              noteFunction,
+              'Edit Note',
               style: TextStyle(fontSize: Globals.appBarFontSize),
             ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  deleteWrapper(context);
+                  deleteWrapper();
                 },
               )
             ],
           ),
-          // body: Container(
-          //   padding: const EdgeInsets.all(20.0),
-          //   child: ListView(
-          //     children: [
-          //       TextFormField(
-          //         controller: _titleController,
-          //         style: TextStyle(fontSize: primaryTextSize),
-          //         decoration: InputDecoration(
-          //           labelText: 'Title',
-          //           labelStyle: TextStyle(fontSize: primaryTextSize),
-          //           border: const OutlineInputBorder(
-          //               //borderRadius: BorderRadius.circular(5.0),
-          //               ),
-          //         ),
-          //         maxLength: 35,
-          //         maxLines: 1, // auto line break
-          //         autofocus: false,
-          //       ),
-          //       TextFormField(
-          //         controller: _contentsController,
-          //         style: TextStyle(fontSize: primaryTextSize),
-          //         decoration: InputDecoration(
-          //           labelText: 'Text',
-          //           labelStyle: TextStyle(fontSize: primaryTextSize),
-          //           border: const OutlineInputBorder(
-          //               //borderRadius: BorderRadius.circular(5.0),
-          //               ),
-          //         ),
-          //         maxLength: 256,
-          //         maxLines: null, // auto line break
-          //         autofocus: false,
-          //       ),
-          //     ],
-          //   ),
-          // ),
           body: Material(
             child: Container(
               margin: const EdgeInsets.only(top: 20.0),
@@ -231,8 +169,8 @@ class _EditNotePageState extends State<EditNotePage> {
                             ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
-                                  handleOnChange().then((value) {
-                                    Navigator.pop(context, '');
+                                  updateEdit().then((value) {
+                                    Navigator.of(context).pop();
                                   });
                                 }
                               },
@@ -247,6 +185,7 @@ class _EditNotePageState extends State<EditNotePage> {
               ),
             ),
           ),
+          floatingActionButton: showGotoVerse(),
         ),
       );
 }
