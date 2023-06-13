@@ -95,14 +95,14 @@ class AppBarVersions extends StatelessWidget {
             return ListTile(
               trailing: const Icon(Icons.arrow_right),
               title: Text(
-                snapshot.data![index].m,
+                snapshot.data![index].m!,
               ),
               onTap: () {
-                _lists.updateActiveLists('all', snapshot.data![index].n);
+                _lists.updateActiveLists('all', snapshot.data![index].n!);
 
-                Globals.bibleLang = snapshot.data![index].l;
-                Globals.bibleVersion = snapshot.data![index].n;
-                Globals.versionAbbr = snapshot.data![index].r;
+                Globals.bibleLang = snapshot.data![index].l!;
+                Globals.bibleVersion = snapshot.data![index].n!;
+                Globals.versionAbbr = snapshot.data![index].r!;
                 //Globals.chapterVerse = 0; //reset verse number
 
                 Globals.dictionaryMode = false;

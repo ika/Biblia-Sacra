@@ -214,22 +214,22 @@ class _MainSearchState extends State<MainSearch> {
   ListTile listTileMethod(AsyncSnapshot<List<Bible>> snapshot, int index) {
     bool emptySearchResult = (snapshot.data![index].b == 0) ? true : false;
     String bookName = (!emptySearchResult)
-        ? bookLists.getBookByNumber(snapshot.data![index].b, Globals.bibleLang)
+        ? bookLists.getBookByNumber(snapshot.data![index].b!, Globals.bibleLang)
         : '';
     return ListTile(
       title: Text(
         (!emptySearchResult)
-            ? "$bookName ${snapshot.data![index].c}:${snapshot.data![index].v}"
-            : snapshot.data![index].t,
+            ? "$bookName ${snapshot.data![index].c!}:${snapshot.data![index].v!}"
+            : snapshot.data![index].t!,
         style:
             TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
       subtitle: (!emptySearchResult)
-          ? highLiteSearchWord(snapshot.data![index].t, _contents)
+          ? highLiteSearchWord(snapshot.data![index].t!, _contents)
           : Container(),
       onTap: () {
         BlocProvider.of<ChapterCubit>(context)
-            .setChapter(snapshot.data![index].c);
+            .setChapter(snapshot.data![index].c!);
 
         final model = WriteVarsModel(
           lang: Globals.bibleLang,
@@ -246,7 +246,7 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   void showVersionsDialog(BuildContext context) {
-    (Globals.activeVersionCount > 1)
+    (Globals.activeVersionCount! > 1)
         ? versionsDialog(context, 'search').then((value) {
             setState(() {});
           })

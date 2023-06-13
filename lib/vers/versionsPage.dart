@@ -63,14 +63,14 @@ class VersionsPageState extends State<VersionsPage> {
                 return CheckboxListTile(
                   //controlAffinity: ListTileControlAffinity.trailing,
                   title: Text(
-                    snapshot.data![index].m,
+                    snapshot.data![index].m!,
                     style: TextStyle(fontSize: primaryTextSize),
                   ),
                   value: snapshot.data[index].a == 1 ? true : false,
                   onChanged: (value) {
                     int active = value == true ? 1 : 0;
                     vkQueries
-                        .updateActiveState(active, snapshot.data![index].n)
+                        .updateActiveState(active, snapshot.data![index].n!)
                         .then(
                       (value) async {
                         utilities.getDialogeHeight();

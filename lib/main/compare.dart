@@ -16,7 +16,7 @@ class CompareModel {
   int v; // verse
   String t; // text
 
-  CompareModel({this.a, this.b, this.c, this.v, this.t});
+  CompareModel({required this.a, required this.b, required this.c, required this.v, required this.t});
 }
 
 class Compare {
@@ -36,14 +36,14 @@ class Compare {
       String abbr = activeVersions[x]['abbr'];
 
       DbQueries dbQueries = DbQueries();
-      List<Bible> verse = await dbQueries.getVerse(model.b, model.c, model.v);
+      List<Bible> verse = await dbQueries.getVerse(model.b!, model.c!, model.v!);
 
       abbr = (abbr.isNotEmpty) ? abbr : 'Unknown';
       bookName = (bookName.isNotEmpty) ? bookName : 'Unknown';
-      
-      int c = (verse.first.c != null) ? verse.first.c : 0;
-      int v = (verse.first.v != null) ? verse.first.v : 0;
-      String t = (verse.first.t.isNotEmpty) ? verse.first.t : 'Unknown';
+
+      int c = verse.first.c ?? 0;
+      int v = verse.first.v ?? 0;
+      String t = verse.first.t ?? 'Unknown';
 
       final cModel = CompareModel(a: abbr, b: bookName, c: c, v: v, t: t);
 

@@ -43,7 +43,7 @@ class _DicSearchState extends State<DictSearch> {
       //debugPrint("WORD $enterdKeyWord");
       searchList = await _dictQueries.getSearchedValues(enterdKeyWord);
       enterdKeyWord = enterdKeyWord.characters.skipLast(1).toString();
-    } while (searchList.first.trans.isEmpty);
+    } while (searchList.first.trans!.isEmpty);
 
     return searchList;
   }

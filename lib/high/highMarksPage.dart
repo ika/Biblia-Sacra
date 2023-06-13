@@ -53,7 +53,7 @@ class _HighLightsPage extends State<HighLightsPage> {
   }
 
   onHilightTap(WriteVarsModel model) {
-    _lists.updateActiveLists('all', model.version);
+    _lists.updateActiveLists('all', model.version!);
     writeVars(model).then((value) {
       backButton(context);
     });

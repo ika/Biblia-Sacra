@@ -577,7 +577,7 @@ class MainPageState extends State<MainPage> {
   }
 
   void showVersionsDialog(BuildContext context) {
-    (Globals.activeVersionCount > 1)
+    (Globals.activeVersionCount! > 1)
         ? versionsDialog(context, 'main')
         : ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
   }

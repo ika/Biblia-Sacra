@@ -41,7 +41,7 @@ Future<List<DicModel>> repeatSearch() async {
     //debugPrint("WORD $word");
     searchList = await _dictQueries.getSearchedValues(word);
     word = word.characters.skipLast(1).toString();
-  } while (searchList.first.trans.isEmpty);
+  } while (searchList.first.trans!.isEmpty);
 
   return searchList;
 }
@@ -49,11 +49,11 @@ Future<List<DicModel>> repeatSearch() async {
 Widget listTileMethod(AsyncSnapshot<List<DicModel>> snapshot, int index) {
   return ListTile(
     title: Text(
-      snapshot.data![index].word,
+      snapshot.data![index].word!,
       style: const TextStyle(fontWeight: FontWeight.bold),
     ),
     subtitle: Text(
-      snapshot.data![index].trans,
+      snapshot.data![index].trans!,
       style: const TextStyle(fontWeight: FontWeight.normal),
     ),
     //onTap: () {},
