@@ -461,7 +461,7 @@ class MainPageState extends State<MainPage> {
                     v: snapshot.data[index].v,
                     t: '');
 
-                (Globals.activeVersionCount > 1)
+                (Globals.activeVersionCount! > 1)
                     ? mainCompareDialog(context, model)
                     : ScaffoldMessenger.of(context)
                         .showSnackBar(moreVersionsSnackBar);

@@ -156,12 +156,12 @@ class _DicSearchState extends State<DictSearch> {
   ListTile listTileMethod(AsyncSnapshot<List<DicModel>> snapshot, int index) {
     return ListTile(
       title: Text(
-        snapshot.data![index].word,
+        snapshot.data![index].word!,
         style:
             TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
       subtitle: Text(
-        snapshot.data[index].trans,
+        snapshot.data![index].trans!,
         style:
             TextStyle(fontWeight: FontWeight.normal, fontSize: primaryTextSize),
       ),

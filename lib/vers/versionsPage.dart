@@ -66,7 +66,7 @@ class VersionsPageState extends State<VersionsPage> {
                     snapshot.data![index].m!,
                     style: TextStyle(fontSize: primaryTextSize),
                   ),
-                  value: snapshot.data[index].a == 1 ? true : false,
+                  value: snapshot.data![index].a == 1 ? true : false,
                   onChanged: (value) {
                     int active = value == true ? 1 : 0;
                     vkQueries

@@ -75,22 +75,23 @@ class DbQueries {
     return list;
   }
 
-  Future<int?> getChapterCount(int b) async {
+  Future<int> getChapterCount(int b) async {
     final db = await _dbProvider!.database;
 
-    return Sqflite.firstIntValue(
+    var cnt = Sqflite.firstIntValue(
       await db.rawQuery('''SELECT MAX(c) FROM $tableName WHERE b=?''', [b]),
     );
-
+    return cnt ?? 0;
   }
 
-  Future<int?> getVerseCount(int b, int c) async {
+  Future<int> getVerseCount(int b, int c) async {
     final db = await _dbProvider!.database;
 
-    return Sqflite.firstIntValue(
+    var cnt = Sqflite.firstIntValue(
       await db.rawQuery(
           '''SELECT MAX(v) FROM $tableName WHERE b=? AND c=?''', [b, c]),
     );
+    return cnt ?? 0;
   }
 
 // returns number of affected rows
