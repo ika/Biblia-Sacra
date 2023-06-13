@@ -1,15 +1,15 @@
 
-import 'package:bibliasacra/cubit/SettingsCubit.dart';
-import 'package:bibliasacra/cubit/chaptersCubit.dart';
-import 'package:bibliasacra/cubit/searchCubit.dart';
-import 'package:bibliasacra/cubit/textSizeCubit.dart';
-import 'package:bibliasacra/globals/globals.dart';
-import 'package:bibliasacra/langs/bookLists.dart';
-import 'package:bibliasacra/main/mainPage.dart';
-import 'package:bibliasacra/utils/getlists.dart';
-import 'package:bibliasacra/utils/sharedPrefs.dart';
-import 'package:bibliasacra/utils/utilities.dart';
-import 'package:bibliasacra/vers/vkQueries.dart';
+import 'package:bibliasacra/cubit/cub_settings.dart';
+import 'package:bibliasacra/cubit/cub_chapters.dart';
+import 'package:bibliasacra/cubit/cub_search.dart';
+import 'package:bibliasacra/cubit/cub_textsize.dart';
+import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/langs/lang_booklists.dart';
+import 'package:bibliasacra/main/main_page.dart';
+import 'package:bibliasacra/utils/utils_getlists.dart';
+import 'package:bibliasacra/utils/utils_sharedprefs.dart';
+import 'package:bibliasacra/utils/utils_utilities.dart';
+import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
