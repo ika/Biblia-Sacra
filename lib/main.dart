@@ -13,7 +13,7 @@ import 'package:bibliasacra/vers/vkQueries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-MaterialColor palette;
+MaterialColor? palette;
 
 SharedPrefs _sharedPrefs = SharedPrefs();
 Utilities utilities = Utilities();
@@ -101,7 +101,7 @@ Future<void> main() async {
 }
 
 class BibleApp extends StatelessWidget {
-  const BibleApp({Key key}) : super(key: key);
+  const BibleApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

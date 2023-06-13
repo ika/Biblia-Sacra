@@ -18,11 +18,11 @@ BmQueries _bmQueries = BmQueries();
 Dialogs _dialogs = Dialogs();
 GetLists _lists = GetLists();
 
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 
 class BookMarksPage extends StatefulWidget {
-  const BookMarksPage({Key key}) : super(key: key);
+  const BookMarksPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _BookMarkState();
@@ -35,7 +35,7 @@ class _BookMarkState extends State<BookMarksPage> {
   void initState() {
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     super.initState();
   }
 
@@ -54,7 +54,7 @@ class _BookMarkState extends State<BookMarksPage> {
   }
 
   onBookMarkTap(WriteVarsModel model) {
-    _lists.updateActiveLists('all', model.version);
+    _lists.updateActiveLists('all', model.version!);
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -88,12 +88,12 @@ class _BookMarkState extends State<BookMarksPage> {
   Widget bookMarksList(list, context) {
     GestureDetector makeListTile(list, int index) => GestureDetector(
           onHorizontalDragEnd: (DragEndDetails details) {
-            if (details.primaryVelocity > 0 || details.primaryVelocity < 0) {
+            if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
               deleteWrapper(context, list, index);
             }
           },
           child: ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: Text(
               list[index].title,
               style: TextStyle(
@@ -158,7 +158,7 @@ class _BookMarkState extends State<BookMarksPage> {
       future: _bmQueries.getBookMarkList(),
       builder: (context, AsyncSnapshot<List<BmModel>> snapshot) {
         if (snapshot.hasData) {
-          list = snapshot.data;
+          list = snapshot.data!;
           return bookMarksList(list, context);
         }
         return const Center(

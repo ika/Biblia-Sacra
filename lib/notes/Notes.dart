@@ -16,11 +16,11 @@ Dialogs _dialogs = Dialogs();
 
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
 
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 
 class NotesPage extends StatefulWidget {
-  const NotesPage({Key key}) : super(key: key);
+  const NotesPage({Key? key}) : super(key: key);
 
   @override
   NotesPageState createState() => NotesPageState();
@@ -30,7 +30,7 @@ class NotesPageState extends State<NotesPage> {
   @override
   void initState() {
     primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -96,12 +96,12 @@ class NotesPageState extends State<NotesPage> {
   Widget notesList(list, context) {
     GestureDetector makeListTile(list, int index) => GestureDetector(
           onHorizontalDragEnd: (DragEndDetails details) {
-            if (details.primaryVelocity > 0 || details.primaryVelocity < 0) {
+            if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
               deleteWrapper(context, list, index);
             }
           },
           child: ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: Text(
               "${list[index].title}",
               style: TextStyle(

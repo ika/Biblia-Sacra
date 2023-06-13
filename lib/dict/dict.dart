@@ -9,17 +9,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 DictQueries _dictQueries = DictQueries();
 
-Future<List<DicModel>> blankSearch;
-Future<List<DicModel>> filteredSearch;
-Future<List<DicModel>> results;
+Future<List<DicModel>>? blankSearch;
+Future<List<DicModel>>? filteredSearch;
+Future<List<DicModel>>? results;
 
 String _contents = '';
 
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 
 class DictSearch extends StatefulWidget {
-  const DictSearch({Key key}) : super(key: key);
+  const DictSearch({Key? key}) : super(key: key);
 
   @override
   State<DictSearch> createState() => _DicSearchState();
@@ -31,7 +31,7 @@ class _DicSearchState extends State<DictSearch> {
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
     primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -79,11 +79,11 @@ class _DicSearchState extends State<DictSearch> {
       context: context,
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Empty Input!'),
+        return const AlertDialog(
+          title: Text('Empty Input!'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: const [
+              children: [
                 Text('Please enter search text.'),
               ],
             ),
@@ -134,7 +134,7 @@ class _DicSearchState extends State<DictSearch> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.separated(
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       return listTileMethod(snapshot, index);
                     },
@@ -156,7 +156,7 @@ class _DicSearchState extends State<DictSearch> {
   ListTile listTileMethod(AsyncSnapshot<List<DicModel>> snapshot, int index) {
     return ListTile(
       title: Text(
-        snapshot.data[index].word,
+        snapshot.data![index].word,
         style:
             TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),

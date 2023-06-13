@@ -17,11 +17,11 @@ DbQueries dbQueries = DbQueries();
 
 int counter = 0;
 
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 
 class VersionsPage extends StatefulWidget {
-  const VersionsPage({Key key}) : super(key: key);
+  const VersionsPage({Key? key}) : super(key: key);
 
   @override
   VersionsPageState createState() => VersionsPageState();
@@ -31,7 +31,7 @@ class VersionsPageState extends State<VersionsPage> {
   @override
   void initState() {
     counter = 0;
-    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -58,19 +58,19 @@ class VersionsPageState extends State<VersionsPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return CheckboxListTile(
                   //controlAffinity: ListTileControlAffinity.trailing,
                   title: Text(
-                    snapshot.data[index].m,
+                    snapshot.data![index].m,
                     style: TextStyle(fontSize: primaryTextSize),
                   ),
                   value: snapshot.data[index].a == 1 ? true : false,
                   onChanged: (value) {
                     int active = value == true ? 1 : 0;
                     vkQueries
-                        .updateActiveState(active, snapshot.data[index].n)
+                        .updateActiveState(active, snapshot.data![index].n)
                         .then(
                       (value) async {
                         utilities.getDialogeHeight();

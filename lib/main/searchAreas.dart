@@ -71,7 +71,7 @@ Map getAreasList() {
 }
 
 class SearchAreasList extends StatelessWidget {
-  SearchAreasList({Key key}) : super(key: key);
+  SearchAreasList({Key? key}) : super(key: key);
 
   final searchAreasList = getAreasList();
 

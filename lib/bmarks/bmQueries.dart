@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 
 // Bookmarks database helper
 
-BmProvider _bmProvider;
+BmProvider? _bmProvider;
 
 class BmQueries {
   final String tableName = 'bmks_table';
@@ -16,7 +16,7 @@ class BmQueries {
 
 // returns insert id
   Future<int> saveBookMark(BmModel model) async {
-    final db = await _bmProvider.database;
+    final db = await _bmProvider!.database;
 
     return await db.insert(
       tableName,
@@ -26,12 +26,12 @@ class BmQueries {
   }
 
   Future<int> deleteBookMark(int id) async {
-    final db = await _bmProvider.database;
+    final db = await _bmProvider!.database;
     return await db.rawDelete("DELETE FROM $tableName WHERE id=?", [id]);
   }
 
   Future<List<BmModel>> getBookMarkList() async {
-    final db = await _bmProvider.database;
+    final db = await _bmProvider!.database;
     var res = await db.rawQuery("SELECT * FROM $tableName ORDER BY id DESC");
 
     List<BmModel> list = res.isNotEmpty
@@ -42,7 +42,7 @@ class BmQueries {
   }
 
   Future<List<BmModel>> getBookMarksVersionList(int v) async {
-    final db = await _bmProvider.database;
+    final db = await _bmProvider!.database;
 
     var res =
         await db.rawQuery('''SELECT * FROM $tableName WHERE version=?''', [v]);

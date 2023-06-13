@@ -10,11 +10,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 NtQueries _ntQueries = NtQueries();
 Dialogs _dialogs = Dialogs();
 
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 
 class EditNotePage extends StatefulWidget {
-  const EditNotePage({Key key, this.model, this.mode}) : super(key: key);
+  const EditNotePage({Key? key, required this.model, required this.mode}) : super(key: key);
 
   final NtModel model;
   final String mode;
@@ -32,11 +32,11 @@ class _EditNotePageState extends State<EditNotePage> {
   initState() {
     super.initState();
     primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
-    _titleController.text = widget.model.title;
-    _contentsController.text = widget.model.contents;
+    _titleController.text = widget.model.title!;
+    _contentsController.text = widget.model.contents!;
   }
 
   @override
@@ -53,7 +53,7 @@ class _EditNotePageState extends State<EditNotePage> {
   }
 
   Widget showGotoVerse() {
-    if (widget.model.bid > 0 && widget.mode.isNotEmpty) {
+    if (widget.model.bid! > 0 && widget.mode.isNotEmpty) {
       return FloatingActionButton.extended(
         label: const Text('Go to Verse'),
         icon: const Icon(Icons.arrow_circle_right_outlined),
@@ -76,7 +76,7 @@ class _EditNotePageState extends State<EditNotePage> {
     _dialogs.confirmDialog(context, arr).then(
       (value) {
         if (value == ConfirmAction.accept) {
-          _ntQueries.deleteNote(widget.model.id).then(
+          _ntQueries.deleteNote(widget.model.id!).then(
             (value) {
               Navigator.pop(context, 'deleted');
             },
@@ -168,7 +168,7 @@ class _EditNotePageState extends State<EditNotePage> {
                           children: <Widget>[
                             ElevatedButton(
                               onPressed: () {
-                                if (_formKey.currentState.validate()) {
+                                if (_formKey.currentState!.validate()) {
                                   updateEdit().then((value) {
                                     Navigator.of(context).pop();
                                   });

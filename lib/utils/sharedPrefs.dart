@@ -22,17 +22,17 @@ class SharedPrefs {
 
   // ==================GET=====================
 
-  Future<String> getStringPref(String key) async {
+  Future<String?> getStringPref(String key) async {
     final prefs = await sharedPrefs;
     return prefs.getString(key);
   }
 
-  Future<int> getIntPref(String key) async {
+  Future<int?> getIntPref(String key) async {
     final prefs = await sharedPrefs;
     return prefs.getInt(key);
   }
 
-  Future<double> getDoublePref(String key) async {
+  Future<double?> getDoublePref(String key) async {
     final prefs = await sharedPrefs;
     return prefs.getDouble(key);
   }

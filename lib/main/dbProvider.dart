@@ -47,9 +47,9 @@ String getBVFileName(int v) {
 }
 
 class DbProvider {
-  static String dataBaseName;
-  static DbProvider _dbProvider;
-  static Database _database;
+  static String? dataBaseName;
+  static DbProvider? _dbProvider;
+  static Database? _database;
 
   DbProvider._createInstance();
 
@@ -57,13 +57,13 @@ class DbProvider {
     dataBaseName = getBVFileName(Globals.bibleVersion);
 
     _dbProvider ??= DbProvider._createInstance();
-    return _dbProvider;
+    return _dbProvider!;
   }
 
   Future<Database> get database async {
     //_database ??= await initDB();
     _database = await initDB();
-    return _database;
+    return _database!;
   }
 
   Future<Database> initDB() async {
@@ -87,6 +87,6 @@ class DbProvider {
   }
 
   Future close() async {
-    return _database.close();
+    return _database!.close();
   }
 }

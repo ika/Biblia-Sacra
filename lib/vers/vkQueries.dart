@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 // Version Key
 
-VkProvider _vkProvider;
+VkProvider? _vkProvider;
 
 class VkQueries {
   final String tableName = 'version_key';
@@ -15,22 +15,21 @@ class VkQueries {
     _vkProvider = VkProvider();
   }
 
-  Future<int> getActiveVersionCount() async {
-    final db = await _vkProvider.database;
-    int count = Sqflite.firstIntValue(await db.rawQuery(
+  Future<int?> getActiveVersionCount() async {
+    final db = await _vkProvider!.database;
+    return  Sqflite.firstIntValue(await db.rawQuery(
         '''SELECT COUNT(*) FROM $tableName WHERE active=?''',
         ['1']));
-    return count;
   }
 
   Future<void> updateActiveState(int a, int i) async {
-    final db = await _vkProvider.database;
+    final db = await _vkProvider!.database;
     await db
         .rawUpdate('''UPDATE $tableName SET active=? WHERE number=?''', [a, i]);
   }
 
   Future<List<VkModel>> getAllVersions() async {
-    final db = await _vkProvider.database;
+    final db = await _vkProvider!.database;
 
     var res = await db.rawQuery(
         '''SELECT * FROM $tableName WHERE number <> ?''',
@@ -44,7 +43,7 @@ class VkQueries {
   }
 
   Future<List> getActiveVersionNumbers() async {
-    final db = await _vkProvider.database;
+    final db = await _vkProvider!.database;
 
     final List values = await db.rawQuery(
         '''SELECT number,abbr,lang FROM $tableName WHERE active=?''',
@@ -53,7 +52,7 @@ class VkQueries {
   }
 
   Future<List<VkModel>> getActiveVersions() async {
-    final db = await _vkProvider.database;
+    final db = await _vkProvider!.database;
 
     var res = await db.rawQuery(
         '''SELECT * FROM $tableName WHERE active=? and number <> ?''',
@@ -67,7 +66,7 @@ class VkQueries {
   }
 
   Future<List<VkModel>> getVersionKey(int n) async {
-    final db = await _vkProvider.database;
+    final db = await _vkProvider!.database;
 
     var res =
         await db.rawQuery('''SELECT * FROM $tableName WHERE number=?''', [n]);

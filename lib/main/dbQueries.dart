@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:bibliasacra/main/dbModel.dart';
 import 'package:bibliasacra/main/dbProvider.dart';
 
 // Bible database queries
 
-DbProvider _dbProvider;
+DbProvider? _dbProvider;
 
 class DbQueries {
   final String tableName = 'bible';
@@ -16,7 +15,7 @@ class DbQueries {
   }
 
   Future<List<Bible>> getBookChapter(int b, int c) async {
-    final db = await _dbProvider.database;
+    final db = await _dbProvider!.database;
 
     List<Bible> list = [];
     List<Bible> emptyList = [];
@@ -38,7 +37,7 @@ class DbQueries {
   }
 
   Future<List<Bible>> getVerse(int book, int chap, int verse) async {
-    final db = await _dbProvider.database;
+    final db = await _dbProvider!.database;
 
     List<Bible> returnList = [];
     final defList = Bible(id: 0, b: 0, c: chap, v: verse, t: 'Verse not found');
@@ -55,8 +54,9 @@ class DbQueries {
     return list;
   }
 
-  Future<List<Bible>> getSearchedValues(String search, String low, String high) async {
-    final db = await _dbProvider.database;
+  Future<List<Bible>> getSearchedValues(
+      String search, String low, String high) async {
+    final db = await _dbProvider!.database;
 
     //debugPrint("TEXT $search LOW $low HIGH $high");
 
@@ -75,22 +75,22 @@ class DbQueries {
     return list;
   }
 
-  Future<int> getChapterCount(int b) async {
-    final db = await _dbProvider.database;
+  Future<int?> getChapterCount(int b) async {
+    final db = await _dbProvider!.database;
 
     return Sqflite.firstIntValue(
       await db.rawQuery('''SELECT MAX(c) FROM $tableName WHERE b=?''', [b]),
     );
+
   }
 
-  Future<int> getVerseCount(int b, int c) async {
-    final db = await _dbProvider.database;
+  Future<int?> getVerseCount(int b, int c) async {
+    final db = await _dbProvider!.database;
 
-    int cnt = Sqflite.firstIntValue(
+    return Sqflite.firstIntValue(
       await db.rawQuery(
           '''SELECT MAX(v) FROM $tableName WHERE b=? AND c=?''', [b, c]),
     );
-    return cnt;
   }
 
 // returns number of affected rows

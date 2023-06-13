@@ -6,8 +6,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NtProvider {
-  static NtProvider _ntProvider;
-  static Database _database;
+  static NtProvider? _ntProvider;
+  static Database? _database;
 
   final String dataBaseName = Constants.notesDbname;
   final String _tableName = 'notes';
@@ -16,12 +16,12 @@ class NtProvider {
 
   factory NtProvider() {
     _ntProvider ??= NtProvider._createInstance();
-    return _ntProvider;
+    return _ntProvider!;
   }
 
   Future<Database> get database async {
     _database ??= await initDB();
-    return _database;
+    return _database!;
   }
 
   Future<Database> initDB() async {
@@ -50,6 +50,6 @@ class NtProvider {
   }
 
   Future close() async {
-    return _database.close();
+    return _database!.close();
   }
 }

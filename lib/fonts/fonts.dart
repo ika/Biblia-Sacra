@@ -6,12 +6,12 @@ import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 SharedPrefs sharedPrefs = SharedPrefs();
 
 class FontsPage extends StatefulWidget {
-  const FontsPage({Key key}) : super(key: key);
+  const FontsPage({Key? key}) : super(key: key);
 
   @override
   State<FontsPage> createState() => _FontsPageState();
@@ -21,7 +21,7 @@ class _FontsPageState extends State<FontsPage> {
   @override
   void initState() {
     primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -88,7 +88,7 @@ class _FontsPageState extends State<FontsPage> {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 8, left: 20, right: 20),
                   height: 55,
-                  color: primarySwatch[300],
+                  color: primarySwatch![300],
                   child: Center(
                     child: Text(
                       'For God so loved the world ...',

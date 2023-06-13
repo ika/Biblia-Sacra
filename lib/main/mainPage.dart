@@ -36,11 +36,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
 
-PageController pageController;
-ItemScrollController initialScrollController;
+PageController? pageController;
+ItemScrollController? initialScrollController;
 
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 
 DbQueries _dbQueries = DbQueries();
 SharedPrefs _sharedPrefs = SharedPrefs();
@@ -53,11 +53,11 @@ Dialogs _dialogs = Dialogs();
 String verseText = '';
 int verseNumber = 0;
 
-bool initialPageScroll;
+bool? initialPageScroll;
 bool isShowing = true;
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key key}) : super(key: key);
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   State<MainPage> createState() => MainPageState();
@@ -71,7 +71,7 @@ class MainPageState extends State<MainPage> {
 
     pageController = PageController(initialPage: Globals.bookChapter - 1);
     primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
     if (Globals.scrollToVerse) {
@@ -81,8 +81,8 @@ class MainPageState extends State<MainPage> {
           Future.delayed(
             Duration(milliseconds: Globals.navigatorLongDelay),
             () {
-              if (initialScrollController.isAttached) {
-                initialScrollController.scrollTo(
+              if (initialScrollController!.isAttached) {
+                initialScrollController!.scrollTo(
                   index: Globals.chapterVerse, // from verse selector
                   duration: Duration(milliseconds: Globals.navigatorLongDelay),
                   curve: Curves.easeInOutCubic,
@@ -108,8 +108,8 @@ class MainPageState extends State<MainPage> {
     return bible;
   }
 
-  ItemScrollController itemScrollControllerSelector() {
-    if (initialPageScroll) {
+  ItemScrollController? itemScrollControllerSelector() {
+    if (initialPageScroll!) {
       initialPageScroll = false;
       return initialScrollController; // initial scroll
     } else {
@@ -332,9 +332,9 @@ class MainPageState extends State<MainPage> {
 
   bool getBookMarksMatch(int bid) {
     bool match = false;
-    if (GetLists.booksList.isNotEmpty) {
-      for (int b = 0; b < GetLists.booksList.length; b++) {
-        if (GetLists.booksList[b].bid == bid) {
+    if (GetLists.booksList!.isNotEmpty) {
+      for (int b = 0; b < GetLists.booksList!.length; b++) {
+        if (GetLists.booksList![b].bid == bid) {
           match = true;
         }
       }
@@ -344,9 +344,9 @@ class MainPageState extends State<MainPage> {
 
   bool getNotesMatch(int bid) {
     bool match = false;
-    if (GetLists.notesList.isNotEmpty) {
-      for (int n = 0; n < GetLists.notesList.length; n++) {
-        if (GetLists.notesList[n].bid == bid) {
+    if (GetLists.notesList!.isNotEmpty) {
+      for (int n = 0; n < GetLists.notesList!.length; n++) {
+        if (GetLists.notesList![n].bid == bid) {
           match = true;
         }
       }
@@ -356,9 +356,9 @@ class MainPageState extends State<MainPage> {
 
   bool getHighLightMatch(int bid) {
     bool match = false;
-    if (GetLists.highsList.isNotEmpty) {
-      for (int h = 0; h < GetLists.highsList.length; h++) {
-        if (GetLists.highsList[h].bid == bid) {
+    if (GetLists.highsList!.isNotEmpty) {
+      for (int h = 0; h < GetLists.highsList!.length; h++) {
+        if (GetLists.highsList![h].bid == bid) {
           match = true;
         }
       }
@@ -404,7 +404,7 @@ class MainPageState extends State<MainPage> {
           style: TextStyle(
               fontSize: primaryTextSize,
               backgroundColor: (getHighLightMatch(snapshot.data[index].id))
-                  ? primarySwatch[100]
+                  ? primarySwatch![100]
                   : null));
     } else {
       return const Text('');
@@ -432,7 +432,7 @@ class MainPageState extends State<MainPage> {
         height: 30,
         width: 30,
         child: IconButton(
-          icon: Icon(Icons.edit, color: primarySwatch[700]),
+          icon: Icon(Icons.edit, color: primarySwatch![700]),
           onPressed: () => getNoteModel(snapshot.data[index].id).then(
             (model) {
               gotoEditNote(model);
@@ -522,7 +522,7 @@ class MainPageState extends State<MainPage> {
         builder: (context, AsyncSnapshot<List<Bible>> snapshot) {
           if (snapshot.hasData) {
             return ScrollablePositionedList.builder(
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data!.length,
               itemScrollController: itemScrollControllerSelector(),
               itemBuilder: (context, index) {
                 return (Globals.dictionaryMode)
@@ -553,7 +553,7 @@ class MainPageState extends State<MainPage> {
       future: _dbQueries.getChapterCount(book),
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         if (snapshot.hasData) {
-          int chapterCount = snapshot.data.toInt();
+          int chapterCount = snapshot.data!.toInt();
           return PageView(
             controller: pageController,
             scrollDirection: Axis.horizontal,
@@ -589,7 +589,7 @@ class MainPageState extends State<MainPage> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: primarySwatch[500],
+              color: primarySwatch![500],
               // image: DecorationImage(
               //   fit: BoxFit.fill,
               //   image: AssetImage('path/to/header_background.png'),
@@ -603,7 +603,7 @@ class MainPageState extends State<MainPage> {
                   child: Text(
                     "Version 1.0",
                     style: TextStyle(
-                        color: primarySwatch[900],
+                        color: primarySwatch![900],
                         fontSize: 10.0,
                         fontWeight: FontWeight.w500),
                   ),
@@ -614,7 +614,7 @@ class MainPageState extends State<MainPage> {
                   child: Text(
                     "Biblia Sacra",
                     style: TextStyle(
-                        color: primarySwatch[900],
+                        color: primarySwatch![900],
                         fontSize: 32.0,
                         fontWeight: FontWeight.w500),
                   ),
@@ -626,7 +626,7 @@ class MainPageState extends State<MainPage> {
             height: 10,
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Bookmarks',
               style: TextStyle(
@@ -645,7 +645,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Highlights',
               style: TextStyle(
@@ -662,7 +662,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Notes',
               style: TextStyle(
@@ -679,7 +679,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Dictionary',
               style: TextStyle(
@@ -696,7 +696,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Search',
               style: TextStyle(
@@ -713,7 +713,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Bibles',
               style: TextStyle(
@@ -730,7 +730,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Colors',
               style: TextStyle(
@@ -748,13 +748,13 @@ class MainPageState extends State<MainPage> {
                   primarySwatch = BlocProvider.of<SettingsCubit>(context)
                       .state
                       .themeData
-                      .primaryColor;
+                      .primaryColor as MaterialColor?;
                 });
               });
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Fonts',
               style: TextStyle(
@@ -775,7 +775,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: const Text(
               'Text Size',
               style: TextStyle(
@@ -861,7 +861,7 @@ class MainPageState extends State<MainPage> {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: primarySwatch[700]),
+                      backgroundColor: primarySwatch![700]),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -893,7 +893,7 @@ class MainPageState extends State<MainPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: primarySwatch[700]),
+                      backgroundColor: primarySwatch![700]),
                   onPressed: () {
                     showVersionsDialog(context);
                   },

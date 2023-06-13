@@ -1,16 +1,16 @@
 
 class NtModel {
-  int id;
-  String title;
-  String contents;
-  String lang;
-  int version; // version book number
-  String abbr; // version abbreviation
-  int book; // book number
-  int chapter; // chapter number
-  int verse;
-  String name; // book name
-  int bid; // bible id
+  int? id;
+  String? title;
+  String? contents;
+  String? lang;
+  int? version; // version book number
+  String? abbr; // version abbreviation
+  int? book; // book number
+  int? chapter; // chapter number
+  int? verse;
+  String? name; // book name
+  int? bid; // bible id
 
   NtModel(
       {this.id,

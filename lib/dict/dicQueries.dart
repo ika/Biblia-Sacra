@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dicProvider.dart';
 
 class DicModel {
-  int id;
-  String word;
-  String trans;
+  int? id;
+  String? word;
+  String? trans;
 
   DicModel({this.id, this.word, this.trans});
 
@@ -46,7 +46,7 @@ class DictQueries {
         : emptyList;
 
     // alphabetical order
-    list.sort(((a, b) => a.word.toLowerCase().compareTo(b.word.toLowerCase())));
+    list.sort(((a, b) => a.word!.toLowerCase().compareTo(b.word!.toLowerCase())));
 
     return list;
   }

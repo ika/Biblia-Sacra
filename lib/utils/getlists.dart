@@ -10,9 +10,9 @@ HlQueries _hlQueries = HlQueries();
 BmQueries _bmQueries = BmQueries();
 
 class GetLists {
-  static List<NtModel> notesList;
-  static List<HlModel> highsList;
-  static List<BmModel> booksList;
+  static List<NtModel>? notesList;
+  static List<HlModel>? highsList;
+  static List<BmModel>? booksList;
 
   GetLists() {
     notesList = [];

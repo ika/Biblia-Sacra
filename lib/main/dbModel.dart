@@ -1,11 +1,11 @@
 // Bible Database Model
 
 class Bible {
-  int id; // id
-  int b; // book
-  int c; // chapter
-  int v; // verse
-  String t; // text
+  int? id; // id
+  int? b; // book
+  int? c; // chapter
+  int? v; // verse
+  String? t; // text
 
   Bible({this.id, this.b, this.c, this.v, this.t});
 

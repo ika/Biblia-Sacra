@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 
 // Highlights database queries
 
-HlProvider _hlProvider;
+HlProvider? _hlProvider;
 
 class HlQueries {
   final String tableName = 'hlts_table';
@@ -15,7 +15,7 @@ class HlQueries {
   }
 
   Future<int> saveHighLight(HlModel model) async {
-    final db = await _hlProvider.database;
+    final db = await _hlProvider!.database;
     return await db.insert(
       tableName,
       model.toJson(),
@@ -24,12 +24,12 @@ class HlQueries {
   }
 
   Future<int> deleteHighLight(int bid) async {
-    final db = await _hlProvider.database;
+    final db = await _hlProvider!.database;
     return await db.rawDelete('''DELETE FROM $tableName WHERE bid=?''', [bid]);
   }
 
   Future<List<HlModel>> getHighLightList() async {
-    final db = await _hlProvider.database;
+    final db = await _hlProvider!.database;
 
     var res =
         await db.rawQuery('''SELECT * FROM $tableName ORDER BY id DESC''');
@@ -42,7 +42,7 @@ class HlQueries {
   }
 
   Future<List<HlModel>> getHighVersionList(int v) async {
-    final db = await _hlProvider.database;
+    final db = await _hlProvider!.database;
 
     var res =
         await db.rawQuery('''SELECT * FROM $tableName WHERE version=?''', [v]);

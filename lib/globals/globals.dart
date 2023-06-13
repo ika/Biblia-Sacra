@@ -48,5 +48,5 @@ class Globals {
   static String initialFont = 'Roboto';
 
   // Active Version count
-  static int activeVersionCount = 0;
+  static int? activeVersionCount = 0;
 }

@@ -1,13 +1,11 @@
 import 'package:bibliasacra/colors/palette.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsState {
   ThemeData themeData;
-  SettingsState({this.themeData});
-
+  SettingsState({required this.themeData});
 }
 
 class SettingsCubit extends Cubit<SettingsState> {

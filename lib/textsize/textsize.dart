@@ -6,11 +6,11 @@ import 'package:bibliasacra/utils/sharedPrefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-MaterialColor primarySwatch;
+MaterialColor? primarySwatch;
 SharedPrefs sharedPrefs = SharedPrefs();
 
 class TextSizePage extends StatefulWidget {
-  const TextSizePage({Key key}) : super(key: key);
+  const TextSizePage({Key? key}) : super(key: key);
 
   @override
   State<TextSizePage> createState() => _TextSizePageState();
@@ -19,7 +19,8 @@ class TextSizePage extends StatefulWidget {
 class _TextSizePageState extends State<TextSizePage> {
   @override
   void initState() {
-    primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+    primarySwatch =
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     super.initState();
   }
 
@@ -74,7 +75,7 @@ class _TextSizePageState extends State<TextSizePage> {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 8, left: 20, right: 20),
                   height: 55,
-                  color: primarySwatch[300],
+                  color: primarySwatch![300],
                   child: Center(
                     child: Text(
                       'In the beginning',

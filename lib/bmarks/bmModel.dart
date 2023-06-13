@@ -1,17 +1,17 @@
 // BookMark Model
 
 class BmModel {
-  int id;
-  String title;
-  String subtitle;
-  String lang;
-  int version; // version book number
-  String abbr; // version abbreviation
-  int book; // book number
-  int chapter; // chapter number
-  int verse;
-  String name; // book name
-  int bid;
+  int? id;
+  String? title;
+  String? subtitle;
+  String? lang;
+  int? version; // version book number
+  String? abbr; // version abbreviation
+  int? book; // book number
+  int? chapter; // chapter number
+  int? verse;
+  String? name; // book name
+  int? bid;
 
   BmModel(
       {this.id,

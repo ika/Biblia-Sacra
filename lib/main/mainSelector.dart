@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 DbQueries dbQueries = DbQueries();
 SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
-double primaryTextSize;
+double? primaryTextSize;
 
 var allBooks = {};
 var filteredBooks = {};
@@ -19,7 +19,7 @@ var results = {};
 List<String> tabNames = ['Books', 'Chapters', 'Verses'];
 
 class MainSelector extends StatefulWidget {
-  const MainSelector({Key key}) : super(key: key);
+  const MainSelector({Key? key}) : super(key: key);
 
   @override
   State<MainSelector> createState() => _MainSelectorState();
@@ -27,7 +27,7 @@ class MainSelector extends StatefulWidget {
 
 class _MainSelectorState extends State<MainSelector>
     with SingleTickerProviderStateMixin {
-  TabController tabController;
+  TabController? tabController;
 
   @override
   initState() {
@@ -39,14 +39,14 @@ class _MainSelectorState extends State<MainSelector>
     filteredBooks = allBooks;
 
     tabController = TabController(length: 3, vsync: this);
-    tabController.addListener(() {
+    tabController!.addListener(() {
       setState(() {});
     });
   }
 
   @override
   void dispose() {
-    tabController.dispose();
+    tabController!.dispose();
     super.dispose();
   }
 
@@ -84,7 +84,7 @@ class _MainSelectorState extends State<MainSelector>
             return GridView.count(
               crossAxisCount: 5,
               children: List.generate(
-                snapshot.data,
+                snapshot.data!,
                 (index) {
                   int verse = index + 1;
                   return Center(
@@ -144,7 +144,7 @@ class _MainSelectorState extends State<MainSelector>
             return GridView.count(
               crossAxisCount: 5,
               children: List.generate(
-                snapshot.data,
+                snapshot.data!,
                 (index) {
                   int chap = index + 1;
                   return Center(
@@ -155,7 +155,7 @@ class _MainSelectorState extends State<MainSelector>
                         sharedPrefs.setIntPref('chapter', chap).then((value) {
                           BlocProvider.of<ChapterCubit>(context)
                               .setChapter(chap);
-                          tabController.animateTo(2);
+                          tabController!.animateTo(2);
                         });
                       },
                       child: Container(
@@ -235,7 +235,7 @@ class _MainSelectorState extends State<MainSelector>
                             (value) {
                               BlocProvider.of<ChapterCubit>(context)
                                   .setChapter(1);
-                              tabController.animateTo(1);
+                              tabController!.animateTo(1);
                             },
                           );
                         },

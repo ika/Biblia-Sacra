@@ -9,8 +9,8 @@ import 'package:path_provider/path_provider.dart';
 // Version Key helper
 
 class VkProvider {
-  static VkProvider _vkProvider;
-  static Database _database;
+  static VkProvider? _vkProvider;
+  static Database? _database;
 
   final String dataBaseName = Constants.vkeyDbname;
   //final String tableName = 'versions';
@@ -19,12 +19,12 @@ class VkProvider {
 
   factory VkProvider() {
     _vkProvider ??= VkProvider._createInstance();
-    return _vkProvider;
+    return _vkProvider!;
   }
 
   Future<Database> get database async {
     _database ??= await initDB();
-    return _database;
+    return _database!;
   }
 
   Future<Database> initDB() async {
@@ -98,6 +98,6 @@ class VkProvider {
   // }
 
   Future close() async {
-    return _database.close();
+    return _database!.close();
   }
 }

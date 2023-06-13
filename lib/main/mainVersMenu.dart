@@ -1,7 +1,6 @@
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/bookLists.dart';
 import 'package:bibliasacra/main/mainPage.dart';
-import 'package:bibliasacra/main/mainSearch.dart';
 import 'package:bibliasacra/utils/getlists.dart';
 import 'package:bibliasacra/vers/vkModel.dart';
 import 'package:bibliasacra/utils/sharedPrefs.dart';
@@ -26,11 +25,11 @@ Future<dynamic> versionsDialog(BuildContext context, String ret) {
           SizedBox(
             height: Globals.dialogHeight,
             width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Expanded(
                     child: AppBarVersions(),
                   ),
@@ -45,7 +44,7 @@ Future<dynamic> versionsDialog(BuildContext context, String ret) {
 }
 
 class AppBarVersions extends StatelessWidget {
-  const AppBarVersions({Key key}) : super(key: key);
+  const AppBarVersions({Key? key}) : super(key: key);
 
   backToMainButton(BuildContext context) {
     Future.delayed(
@@ -89,21 +88,21 @@ class AppBarVersions extends StatelessWidget {
     return FutureBuilder<List<VkModel>>(
       future: _vkQueries.getActiveVersions(),
       builder: (BuildContext context, AsyncSnapshot<List<VkModel>> snapshot) {
-        int len = (snapshot.data != null) ? snapshot.data.length : 0;
+        int len = (snapshot.data != null) ? snapshot.data!.length : 0;
         return ListView.separated(
           itemCount: len,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               trailing: const Icon(Icons.arrow_right),
               title: Text(
-                snapshot.data[index].m,
+                snapshot.data![index].m,
               ),
               onTap: () {
-                _lists.updateActiveLists('all', snapshot.data[index].n);
+                _lists.updateActiveLists('all', snapshot.data![index].n);
 
-                Globals.bibleLang = snapshot.data[index].l;
-                Globals.bibleVersion = snapshot.data[index].n;
-                Globals.versionAbbr = snapshot.data[index].r;
+                Globals.bibleLang = snapshot.data![index].l;
+                Globals.bibleVersion = snapshot.data![index].n;
+                Globals.versionAbbr = snapshot.data![index].r;
                 //Globals.chapterVerse = 0; //reset verse number
 
                 Globals.dictionaryMode = false;

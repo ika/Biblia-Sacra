@@ -1,5 +1,4 @@
 import 'package:bibliasacra/cubit/textSizeCubit.dart';
-import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/compare.dart';
 import 'package:bibliasacra/main/dbModel.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Compare versions
 
 Compare _compare = Compare();
-double primaryTextSize;
+double? primaryTextSize;
 
 Future<dynamic> mainCompareDialog(BuildContext context, Bible bible) {
   return showDialog(
@@ -39,7 +38,7 @@ Future<dynamic> mainCompareDialog(BuildContext context, Bible bible) {
 }
 
 class ComparePage extends StatefulWidget {
-  const ComparePage({Key key, this.model}) : super(key: key);
+  const ComparePage({Key? key, required this.model}) : super(key: key);
 
   final Bible model;
 
@@ -88,7 +87,7 @@ class _ComparePage extends State<ComparePage> {
       future: _compare.activeVersions(widget.model),
       builder: (context, AsyncSnapshot<List<CompareModel>> snapshot) {
         if (snapshot.hasData) {
-          list = snapshot.data;
+          list = snapshot.data!;
           return compareList(list, context);
         }
         return const Center(

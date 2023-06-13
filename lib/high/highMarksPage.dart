@@ -17,11 +17,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 HlQueries _hlQueries = HlQueries();
 Dialogs _dialogs = Dialogs();
 GetLists _lists = GetLists();
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 
 class HighLightsPage extends StatefulWidget {
-  const HighLightsPage({Key key}) : super(key: key);
+  const HighLightsPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HighLightsPage();
@@ -33,7 +33,7 @@ class _HighLightsPage extends State<HighLightsPage> {
   @override
   void initState() {
     primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -88,12 +88,12 @@ class _HighLightsPage extends State<HighLightsPage> {
   Widget highLightList(list, context) {
     GestureDetector makeListTile(list, int index) => GestureDetector(
           onHorizontalDragEnd: (DragEndDetails details) {
-            if (details.primaryVelocity > 0 || details.primaryVelocity < 0) {
+            if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
               deleteWrapper(context, list, index);
             }
           },
           child: ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch[700]),
+            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
             title: Text(
               list[index].title,
               style: TextStyle(
@@ -158,7 +158,7 @@ class _HighLightsPage extends State<HighLightsPage> {
       future: _hlQueries.getHighLightList(),
       builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
         if (snapshot.hasData) {
-          list = snapshot.data;
+          list = snapshot.data!;
           return highLightList(list, context);
         }
         return const Center(

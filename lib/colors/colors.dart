@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 SharedPrefs _sharedPrefs = SharedPrefs();
 
 class ColorsPage extends StatefulWidget {
-  const ColorsPage({Key key}) : super(key: key);
+  const ColorsPage({Key? key}) : super(key: key);
 
   @override
   State<ColorsPage> createState() => _ColorsPageState();

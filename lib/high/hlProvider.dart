@@ -11,19 +11,19 @@ class HlProvider {
   final String dataBaseName = Constants.hltsDbname;
   final String tableName = 'hlts_table';
 
-  static HlProvider _dbProvider;
-  static Database _database;
+  static HlProvider? _dbProvider;
+  static Database? _database;
 
   HlProvider._createInstance();
 
   factory HlProvider() {
     _dbProvider ??= HlProvider._createInstance();
-    return _dbProvider;
+    return _dbProvider!;
   }
 
   Future<Database> get database async {
     _database ??= await initDB();
-    return _database;
+    return _database!;
   }
 
   Future<Database> initDB() async {
@@ -52,6 +52,6 @@ class HlProvider {
   }
 
   Future close() async {
-    return _database.close();
+    return _database!.close();
   }
 }

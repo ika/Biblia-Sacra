@@ -11,19 +11,19 @@ class BmProvider {
   final String dataBaseName = Constants.bmksDbname;
   final String tableName = 'bmks_table';
 
-  static BmProvider _dbProvider;
-  static Database _database;
+  static BmProvider? _dbProvider;
+  static Database? _database;
 
   BmProvider._createInstance();
 
   factory BmProvider() {
     _dbProvider ??= BmProvider._createInstance();
-    return _dbProvider;
+    return _dbProvider!;
   }
 
   Future<Database> get database async {
     _database ??= await initDB();
-    return _database;
+    return _database!;
   }
 
   Future<Database> initDB() async {
@@ -51,6 +51,6 @@ class BmProvider {
   }
 
   Future close() async {
-    return _database.close();
+    return _database!.close();
   }
 }

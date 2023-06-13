@@ -1,7 +1,16 @@
+# bibliasacra
 
-# Biblia_Sacra
-Biblia Sacra is an Android application, designed to assist the user in learning the Latin Bible. 
+A new Flutter project.
 
-# Privacy Policy
-Biblia Sacra does not require any registration or login. No user information, of any type, is collected.
+## Getting Started
 
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

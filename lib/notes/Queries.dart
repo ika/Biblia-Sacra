@@ -1,7 +1,7 @@
 import 'package:bibliasacra/notes/Model.dart';
 import 'package:bibliasacra/notes/Provider.dart';
 
-NtProvider _ntProvider;
+NtProvider? _ntProvider;
 
 class NtQueries {
   final String tableName = 'notes';
@@ -11,20 +11,20 @@ class NtQueries {
   }
 
   Future<int> insertNote(NtModel model) async {
-    final db = await _ntProvider.database;
+    final db = await _ntProvider!.database;
 
     return await db.insert(tableName, model.toJson());
   }
 
   Future<int> updateNote(NtModel model) async {
-    final db = await _ntProvider.database;
+    final db = await _ntProvider!.database;
 
     return await db.update(tableName, model.toJson(),
         where: 'id=?', whereArgs: [model.id]);
   }
 
   Future<List<NtModel>> getAllVersionNotes(int v) async {
-    final db = await _ntProvider.database;
+    final db = await _ntProvider!.database;
 
     var res =
         await db.rawQuery('''SELECT * FROM $tableName WHERE version=?''', [v]);
@@ -37,7 +37,7 @@ class NtQueries {
   }
 
     Future<List<NtModel>> getAllNotes() async {
-    final db = await _ntProvider.database;
+    final db = await _ntProvider!.database;
 
     var res =
         await db.rawQuery('''SELECT * FROM $tableName ORDER BY id DESC''');
@@ -50,7 +50,7 @@ class NtQueries {
   }
 
   Future<List<NtModel>> getNoteByBid(int bid) async {
-    final db = await _ntProvider.database;
+    final db = await _ntProvider!.database;
 
     var res =
         await db.rawQuery('''SELECT * FROM $tableName WHERE bid=?''', [bid]);
@@ -63,7 +63,7 @@ class NtQueries {
   }
 
   Future<int> deleteNote(int id) async {
-    final db = await _ntProvider.database;
+    final db = await _ntProvider!.database;
 
     return await db.rawDelete('''DELETE FROM $tableName WHERE id=?''', [id]);
   }

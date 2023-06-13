@@ -19,17 +19,17 @@ import 'package:bibliasacra/utils/snackbars.dart';
 DbQueries _dbQueries = DbQueries();
 BookLists bookLists = BookLists();
 
-Future<List<Bible>> blankSearch;
-Future<List<Bible>> filteredSearch;
-Future<List<Bible>> results;
+Future<List<Bible>>? blankSearch;
+Future<List<Bible>>? filteredSearch;
+Future<List<Bible>>? results;
 
 String _contents = '';
 
-MaterialColor primarySwatch;
-double primaryTextSize;
+MaterialColor? primarySwatch;
+double? primaryTextSize;
 
 class MainSearch extends StatefulWidget {
-  const MainSearch({Key key}) : super(key: key);
+  const MainSearch({Key? key}) : super(key: key);
 
   @override
   State<MainSearch> createState() => _MainSearchState();
@@ -41,7 +41,7 @@ class _MainSearchState extends State<MainSearch> {
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
     primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor;
+        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -90,11 +90,11 @@ class _MainSearchState extends State<MainSearch> {
       context: context,
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Empty Input!'),
+        return const AlertDialog(
+          title: Text('Empty Input!'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: const [
+              children: [
                 Text('Please enter some text.'),
               ],
             ),
@@ -148,7 +148,7 @@ class _MainSearchState extends State<MainSearch> {
               builder: (BuildContext context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.separated(
-                    itemCount: snapshot.data.length,
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       return listTileMethod(snapshot, index);
                     },
@@ -184,7 +184,7 @@ class _MainSearchState extends State<MainSearch> {
               text: t.substring(idx, idx + m.length),
               style: TextStyle(
                 fontSize: primaryTextSize,
-                backgroundColor: primarySwatch[100],
+                backgroundColor: primarySwatch![100],
               ),
             ),
             TextSpan(
@@ -212,32 +212,32 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   ListTile listTileMethod(AsyncSnapshot<List<Bible>> snapshot, int index) {
-    bool emptySearchResult = (snapshot.data[index].b == 0) ? true : false;
+    bool emptySearchResult = (snapshot.data![index].b == 0) ? true : false;
     String bookName = (!emptySearchResult)
-        ? bookLists.getBookByNumber(snapshot.data[index].b, Globals.bibleLang)
+        ? bookLists.getBookByNumber(snapshot.data![index].b, Globals.bibleLang)
         : '';
     return ListTile(
       title: Text(
         (!emptySearchResult)
-            ? "$bookName ${snapshot.data[index].c}:${snapshot.data[index].v}"
-            : snapshot.data[index].t,
+            ? "$bookName ${snapshot.data![index].c}:${snapshot.data![index].v}"
+            : snapshot.data![index].t,
         style:
             TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
       subtitle: (!emptySearchResult)
-          ? highLiteSearchWord(snapshot.data[index].t, _contents)
+          ? highLiteSearchWord(snapshot.data![index].t, _contents)
           : Container(),
       onTap: () {
         BlocProvider.of<ChapterCubit>(context)
-            .setChapter(snapshot.data[index].c);
+            .setChapter(snapshot.data![index].c);
 
         final model = WriteVarsModel(
           lang: Globals.bibleLang,
           version: Globals.bibleVersion,
           abbr: Globals.versionAbbr,
-          book: snapshot.data[index].b,
-          chapter: snapshot.data[index].c,
-          verse: snapshot.data[index].v,
+          book: snapshot.data![index].b,
+          chapter: snapshot.data![index].c,
+          verse: snapshot.data![index].v,
           name: bookName,
         );
         onSearchTap(model);

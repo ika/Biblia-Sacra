@@ -14,11 +14,11 @@ Future<dynamic> dictDialog(BuildContext context) {
           SizedBox(
             height: 300,
             width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Expanded(
                     child: DictListing(),
                   ),
@@ -49,11 +49,11 @@ Future<List<DicModel>> repeatSearch() async {
 Widget listTileMethod(AsyncSnapshot<List<DicModel>> snapshot, int index) {
   return ListTile(
     title: Text(
-      snapshot.data[index].word,
+      snapshot.data![index].word,
       style: const TextStyle(fontWeight: FontWeight.bold),
     ),
     subtitle: Text(
-      snapshot.data[index].trans,
+      snapshot.data![index].trans,
       style: const TextStyle(fontWeight: FontWeight.normal),
     ),
     //onTap: () {},
@@ -61,14 +61,14 @@ Widget listTileMethod(AsyncSnapshot<List<DicModel>> snapshot, int index) {
 }
 
 class DictListing extends StatelessWidget {
-  const DictListing({Key key}) : super(key: key);
+  const DictListing({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DicModel>>(
       future: repeatSearch(),
       builder: (BuildContext context, AsyncSnapshot<List<DicModel>> snapshot) {
-        int l = (snapshot.data != null) ? snapshot.data.length : 0;
+        int l = (snapshot.data != null) ? snapshot.data!.length : 0;
         return ListView.separated(
           itemCount: l,
           itemBuilder: (BuildContext context, int index) {
