@@ -35,7 +35,7 @@ class Globals {
   static String selectorText = bookName;
 
   // colorListNumber
-  static int colorListNumber = 12; //Blue
+  static int colorListNumber = 4; // Amber
 
   // Dictionary mode
   static bool dictionaryMode = false;

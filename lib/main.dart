@@ -1,4 +1,3 @@
-
 import 'package:bibliasacra/cubit/cub_settings.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_search.dart';
@@ -38,31 +37,31 @@ Future<void> main() async {
   utilities.getDialogeHeight();
 
   _sharedPrefs.getIntPref('colorsList').then((p) {
-    Globals.colorListNumber = (p != null) ? p : 12;
+    Globals.colorListNumber = p ?? 4; // Amber
     _sharedPrefs.getIntPref('version').then(
       (a) {
-        Globals.bibleVersion = (a != null) ? a : 1;
+        Globals.bibleVersion = a ?? 1;
         _lists.updateActiveLists('all', Globals.bibleVersion);
         // language
         _sharedPrefs.getStringPref('language').then(
           (b) {
-            Globals.bibleLang = (b != null) ? b : 'eng';
+            Globals.bibleLang = b ?? 'eng';
             // version abbreviation
             _sharedPrefs.getStringPref('verabbr').then(
               (c) {
-                Globals.versionAbbr = (c != null) ? c : 'KVJ';
+                Globals.versionAbbr = c ?? 'KVJ';
                 // Book
                 _sharedPrefs.getIntPref('book').then(
                   (d) {
-                    Globals.bibleBook = (d != null) ? d : 43;
+                    Globals.bibleBook = d ?? 43;
                     // Chapter
                     _sharedPrefs.getIntPref('chapter').then(
                       (e) {
-                        Globals.bookChapter = (e != null) ? e : 1;
+                        Globals.bookChapter = e ?? 1;
                         // Verse
                         _sharedPrefs.getIntPref('verse').then(
                           (f) {
-                            Globals.chapterVerse = (f != null) ? f : 0;
+                            Globals.chapterVerse = f ?? 0;
                             // Book Name
                             bookLists.readBookName(Globals.bibleBook).then(
                               (g) {
@@ -70,13 +69,11 @@ Future<void> main() async {
                                 _sharedPrefs
                                     .getDoublePref('textSize')
                                     .then((t) {
-                                  Globals.initialTextSize =
-                                      (t != null) ? t : 16;
+                                  Globals.initialTextSize = t ?? 16;
                                   _sharedPrefs
                                       .getStringPref('fontSel')
                                       .then((f) {
-                                    Globals.initialFont =
-                                        (f != null) ? f : 'Roboto';
+                                    Globals.initialFont = f ?? 'Roboto';
                                     getActiveVersionsCount();
                                   });
                                 });
