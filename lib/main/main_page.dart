@@ -24,7 +24,7 @@ import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
-import 'package:bibliasacra/notes/no_notes.dart';
+import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/utils/utils_dialogs.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';

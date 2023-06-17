@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_settings.dart';
 import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globs_write.dart';
+import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_dialogs.dart';
@@ -14,7 +19,8 @@ MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class EditNotePage extends StatefulWidget {
-  const EditNotePage({Key? key, required this.model, required this.mode}) : super(key: key);
+  const EditNotePage({Key? key, required this.model, required this.mode})
+      : super(key: key);
 
   final NtModel model;
   final String mode;
@@ -31,8 +37,10 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   initState() {
     super.initState();
-    primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
+    primarySwatch = BlocProvider.of<SettingsCubit>(context)
+        .state
+        .themeData
+        .primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
     _titleController.text = widget.model.title!;
@@ -52,13 +60,48 @@ class _EditNotePageState extends State<EditNotePage> {
     await _ntQueries.updateNote(widget.model);
   }
 
+  backButton(BuildContext context) {
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        );
+      },
+    );
+  }
+
+  onGoToVerseTap(WriteVarsModel model) {
+    // _lists.updateActiveLists('all', model.version!);
+    writeVars(model).then((value) {
+      backButton(context);
+    });
+  }
+
   Widget showGotoVerse() {
     if (widget.model.bid! > 0 && widget.mode.isNotEmpty) {
       return FloatingActionButton.extended(
         label: const Text('Go to Verse'),
         icon: const Icon(Icons.arrow_circle_right_outlined),
         onPressed: () {
-          debugPrint('PRESSED');
+          //debugPrint('PRESSED');
+          //debugPrint(jsonEncode(widget.model));
+          Globals.scrollToVerse = true;
+          BlocProvider.of<ChapterCubit>(context)
+              .setChapter(widget.model.chapter!);
+
+          final model = WriteVarsModel(
+              lang: widget.model.lang,
+              version: widget.model.version,
+              abbr: widget.model.abbr,
+              book: widget.model.book,
+              chapter: widget.model.chapter,
+              verse: widget.model.verse,
+              name: widget.model.name);
+          onGoToVerseTap(model);
         },
       );
     } else {
@@ -165,7 +208,7 @@ class _EditNotePageState extends State<EditNotePage> {
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
+                          children: [
                             ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
