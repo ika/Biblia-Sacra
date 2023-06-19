@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
-import 'package:flutter/foundation.dart';
 
 NtQueries _ntQueries = NtQueries();
 HlQueries _hlQueries = HlQueries();

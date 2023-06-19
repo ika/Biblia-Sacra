@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_settings.dart';
