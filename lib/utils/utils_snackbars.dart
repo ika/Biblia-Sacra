@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 SnackBar textCopiedSnackBar = const SnackBar(
-  content: Text('Text Copied'),
+  content: Text('Text copied'),
 );
 
 SnackBar moreVersionsSnackBar = const SnackBar(
-  content: Text('Activate more Bibles!'),
+  content: Text('Activate more Bibles'),
 );
 
 SnackBar bookMarkSnackBar = const SnackBar(
-  content: Text('Book Mark Saved'),
+  content: Text('Book Mark added'),
 );
 
 SnackBar hiLightDeletedSnackBar = const SnackBar(
@@ -29,13 +29,13 @@ SnackBar errorSnackBar = const SnackBar(
 // );
 
 SnackBar noteDeletedSnackBar = const SnackBar(
-  content: Text('Note Deleted!'),
+  content: Text('Note deleted'),
 );
 
-SnackBar hlDeletedSnackBar = const SnackBar(
-  content: Text('HighLight Deleted!'),
+SnackBar hiLightAddedSnackBar = const SnackBar(
+  content: Text('HighLight added'),
 );
 
 SnackBar bmDeletedSnackBar = const SnackBar(
-  content: Text('Book Mark Deleted!'),
+  content: Text('Book Mark deleted'),
 );

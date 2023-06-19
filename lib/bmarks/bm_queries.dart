@@ -30,6 +30,11 @@ class BmQueries {
     return await db.rawDelete("DELETE FROM $tableName WHERE id=?", [id]);
   }
 
+  Future<int> deleteBookMarkbyBid(int bid) async {
+    final db = await _bmProvider!.database;
+    return await db.rawDelete("DELETE FROM $tableName WHERE bid=?", [bid]);
+  }
+
   Future<List<BmModel>> getBookMarkList() async {
     final db = await _bmProvider!.database;
     var res = await db.rawQuery("SELECT * FROM $tableName ORDER BY id DESC");

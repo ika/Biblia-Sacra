@@ -70,8 +70,10 @@ class MainPageState extends State<MainPage> {
     initialScrollController = ItemScrollController();
 
     pageController = PageController(initialPage: Globals.bookChapter - 1);
-    primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
+    primarySwatch = BlocProvider.of<SettingsCubit>(context)
+        .state
+        .themeData
+        .primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
     if (Globals.scrollToVerse) {
@@ -168,7 +170,7 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void deleteHighLightWrapper(BuildContext context, int bid) {
+  void deleteHighLightWrapper(int bid) {
     var arr = List.filled(4, '');
     arr[0] = "Delete";
     arr[1] = "Do you want to delete this highlight?";
@@ -189,7 +191,28 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  void insertBookMark(BuildContext context) {
+  void deleteBookMarkWrapper(int bid) {
+    var arr = List.filled(4, '');
+    arr[0] = "Delete $bid";
+    arr[1] = "Do you want to delete this bookmark?";
+    arr[2] = 'YES';
+    arr[3] = 'NO';
+
+    _dialogs.confirmDialog(context, arr).then(
+      (value) {
+        if (value == ConfirmAction.accept) {
+          _bmQueries.deleteBookMarkbyBid(bid).then((value) {
+            ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
+            setState(() {
+              _lists.updateActiveLists('all', Globals.bibleVersion);
+            });
+          });
+        }
+      }, //_deleteWrapper,
+    );
+  }
+
+  void insertBookMark(int bid) {
     List<String> stringTitle = [
       Globals.versionAbbr,
       ' ',
@@ -209,10 +232,14 @@ class MainPageState extends State<MainPage> {
         book: Globals.bibleBook,
         chapter: Globals.bookChapter,
         verse: verseNumber,
-        name: Globals.bookName);
+        name: Globals.bookName,
+        bid: bid);
     _bmQueries.saveBookMark(model).then(
       (value) {
         ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
+        setState(() {
+          _lists.updateActiveLists('books', Globals.bibleVersion);
+        });
       },
     );
   }
@@ -241,6 +268,7 @@ class MainPageState extends State<MainPage> {
         bid: bid);
 
     _hlQueries.saveHighLight(model).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(hiLightAddedSnackBar);
       setState(() {
         _lists.updateActiveLists('highs', Globals.bibleVersion);
       });
@@ -277,15 +305,6 @@ class MainPageState extends State<MainPage> {
       gotoEditNote(model);
     });
   }
-
-  // void delayedSnackbar(BuildContext context) {
-  //   Future.delayed(
-  //     Duration(milliseconds: Globals.navigatorDelay),
-  //     () {
-  //       ScaffoldMessenger.of(context).showSnackBar(noteDeletedSnackBar);
-  //     },
-  //   );
-  // }
 
   void gotoEditNote(NtModel model) {
     Route route = MaterialPageRoute(
@@ -420,7 +439,8 @@ class MainPageState extends State<MainPage> {
             fit: FlexFit.loose,
             child: (normalVerseText(snapshot, index)),
           ),
-          showNoteIcon(snapshot, index)
+          showNoteIcon(snapshot, index),
+          showBookMarkIcon(snapshot, index)
         ],
       ),
     );
@@ -438,6 +458,28 @@ class MainPageState extends State<MainPage> {
               gotoEditNote(model);
             },
           ),
+        ),
+      );
+    } else {
+      return const SizedBox(height: 0, width: 0);
+    }
+  }
+
+  SizedBox showBookMarkIcon(snapshot, index) {
+    if (getBookMarksMatch(snapshot.data[index].id)) {
+      return SizedBox(
+        height: 30,
+        width: 30,
+        child: IconButton(
+          icon: Icon(Icons.bookmark_border_outlined, color: primarySwatch![700]),
+          onPressed: () {
+            debugPrint('BOOKMARK PRESSES');
+          },
+          // onPressed: () => getNoteModel(snapshot.data[index].id).then(
+          //   (model) {
+          //     gotoEditNote(model);
+          //   },
+          // ),
         ),
       );
     } else {
@@ -470,7 +512,11 @@ class MainPageState extends State<MainPage> {
 
               case 1: // bookmarks
 
-                insertBookMark(context);
+                int bid = snapshot.data[index].id;
+
+                (!getBookMarksMatch(bid))
+                    ? insertBookMark(bid)
+                    : deleteBookMarkWrapper(bid);
 
                 break;
 
@@ -480,7 +526,7 @@ class MainPageState extends State<MainPage> {
 
                 (!getHighLightMatch(bid))
                     ? insertHighLight(bid)
-                    : deleteHighLightWrapper(context, bid);
+                    : deleteHighLightWrapper(bid);
 
                 break;
 

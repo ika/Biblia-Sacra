@@ -75,7 +75,7 @@ class _HighLightsPage extends State<HighLightsPage> {
         if (value == ConfirmAction.accept) {
           _hlQueries.deleteHighLight(list[index].bid).then(
             (value) {
-              ScaffoldMessenger.of(context).showSnackBar(hlDeletedSnackBar);
+              ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
               _lists.updateActiveLists('all', list[index].version);
               setState(() {});
             },
