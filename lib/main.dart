@@ -41,7 +41,7 @@ Future<void> main() async {
     _sharedPrefs.getIntPref('version').then(
       (a) {
         Globals.bibleVersion = a ?? 1;
-        _lists.updateActiveLists('all', Globals.bibleVersion);
+        _lists.updateActiveLists(Globals.bibleVersion);
         // language
         _sharedPrefs.getStringPref('language').then(
           (b) {

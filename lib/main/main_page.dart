@@ -183,7 +183,7 @@ class MainPageState extends State<MainPage> {
           _hlQueries.deleteHighLight(bid).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
             setState(() {
-              _lists.updateActiveLists('highs', Globals.bibleVersion);
+              _lists.updateActiveLists(Globals.bibleVersion);
             });
           });
         }
@@ -193,7 +193,7 @@ class MainPageState extends State<MainPage> {
 
   void deleteBookMarkWrapper(int bid) {
     var arr = List.filled(4, '');
-    arr[0] = "Delete $bid";
+    arr[0] = 'Delete';
     arr[1] = "Do you want to delete this bookmark?";
     arr[2] = 'YES';
     arr[3] = 'NO';
@@ -204,7 +204,7 @@ class MainPageState extends State<MainPage> {
           _bmQueries.deleteBookMarkbyBid(bid).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
             setState(() {
-              _lists.updateActiveLists('all', Globals.bibleVersion);
+              _lists.updateActiveLists(Globals.bibleVersion);
             });
           });
         }
@@ -238,7 +238,7 @@ class MainPageState extends State<MainPage> {
       (value) {
         ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
         setState(() {
-          _lists.updateActiveLists('books', Globals.bibleVersion);
+          _lists.updateActiveLists(Globals.bibleVersion);
         });
       },
     );
@@ -270,7 +270,7 @@ class MainPageState extends State<MainPage> {
     _hlQueries.saveHighLight(model).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(hiLightAddedSnackBar);
       setState(() {
-        _lists.updateActiveLists('highs', Globals.bibleVersion);
+        _lists.updateActiveLists(Globals.bibleVersion);
       });
     });
   }
@@ -312,7 +312,7 @@ class MainPageState extends State<MainPage> {
     );
     Navigator.push(context, route).then((value) {
       setState(() {
-        _lists.updateActiveLists('notes', Globals.bibleVersion);
+        _lists.updateActiveLists(Globals.bibleVersion);
       });
     });
   }

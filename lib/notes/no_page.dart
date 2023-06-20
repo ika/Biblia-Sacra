@@ -49,7 +49,7 @@ class NotesPageState extends State<NotesPage> {
     Navigator.push(context, route).then(
       (value) {
         setState(() {
-          _lists.updateActiveLists('notes', Globals.bibleVersion);
+          _lists.updateActiveLists(Globals.bibleVersion);
         });
       },
     );
@@ -86,7 +86,7 @@ class NotesPageState extends State<NotesPage> {
     _dialogs.confirmDialog(context, arr).then((value) {
       if (value == ConfirmAction.accept) {
         _ntQueries.deleteNote(list[index].id).then((value) {
-          _lists.updateActiveLists('notes', Globals.bibleVersion);
+          _lists.updateActiveLists(Globals.bibleVersion);
           setState(() {});
         });
       }

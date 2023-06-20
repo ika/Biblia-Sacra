@@ -98,7 +98,7 @@ class AppBarVersions extends StatelessWidget {
                 snapshot.data![index].m!,
               ),
               onTap: () {
-                _lists.updateActiveLists('all', snapshot.data![index].n!);
+                _lists.updateActiveLists(snapshot.data![index].n!);
 
                 Globals.bibleLang = snapshot.data![index].l!;
                 Globals.bibleVersion = snapshot.data![index].n!;

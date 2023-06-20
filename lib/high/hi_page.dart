@@ -53,7 +53,7 @@ class _HighLightsPage extends State<HighLightsPage> {
   }
 
   onHilightTap(WriteVarsModel model) {
-    _lists.updateActiveLists('all', model.version!);
+    _lists.updateActiveLists(model.version!);
     writeVars(model).then((value) {
       backButton(context);
     });
@@ -76,7 +76,7 @@ class _HighLightsPage extends State<HighLightsPage> {
           _hlQueries.deleteHighLight(list[index].bid).then(
             (value) {
               ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
-              _lists.updateActiveLists('all', list[index].version);
+              _lists.updateActiveLists(list[index].version);
               setState(() {});
             },
           );
