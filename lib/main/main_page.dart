@@ -25,7 +25,6 @@ import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/notes/no_page.dart';
-import 'package:bibliasacra/utils/utils_dialogs.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:bibliasacra/vers/vers_page.dart';
@@ -48,7 +47,6 @@ BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
 NtQueries _ntQueries = NtQueries();
 GetLists _lists = GetLists();
-Dialogs _dialogs = Dialogs();
 
 String verseText = '';
 int verseNumber = 0;
@@ -119,16 +117,37 @@ class MainPageState extends State<MainPage> {
     }
   }
 
+  Future confirmDialog(arr) async {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(arr[0].toString()),
+        content: Text(arr[1].toString()),
+        actions: [
+          TextButton(
+            child:
+                const Text('NO', style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          TextButton(
+            child: const Text('YES',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    );
+  }
+
   void copyVerseWrapper(BuildContext context, snapshot, index) {
-    var arr = List.filled(4, '');
+    var arr = List.filled(2, '');
     arr[0] = "Copy";
     arr[1] = "Do you want to copy this verse?";
-    arr[2] = 'YES';
-    arr[3] = 'NO';
 
-    _dialogs.confirmDialog(context, arr).then(
+    confirmDialog(arr).then(
       (value) {
-        if (value == ConfirmAction.accept) {
+        if (value) {
           final list = <String>[
             snapshot.data[index].t,
             ' ',
@@ -158,12 +177,10 @@ class MainPageState extends State<MainPage> {
     var arr = List.filled(4, '');
     arr[0] = "Exit";
     arr[1] = "Are you sure you want to exit?";
-    arr[2] = 'YES';
-    arr[3] = 'NO';
 
-    _dialogs.confirmDialog(context, arr).then(
+    confirmDialog(arr).then(
       (value) {
-        if (value == ConfirmAction.accept) {
+        if (value) {
           SystemNavigator.pop();
         }
       },
@@ -174,12 +191,10 @@ class MainPageState extends State<MainPage> {
     var arr = List.filled(4, '');
     arr[0] = "Delete";
     arr[1] = "Do you want to delete this highlight?";
-    arr[2] = 'YES';
-    arr[3] = 'NO';
 
-    _dialogs.confirmDialog(context, arr).then(
+    confirmDialog(arr).then(
       (value) {
-        if (value == ConfirmAction.accept) {
+        if (value) {
           _hlQueries.deleteHighLight(bid).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
             setState(() {
@@ -195,12 +210,10 @@ class MainPageState extends State<MainPage> {
     var arr = List.filled(4, '');
     arr[0] = 'Delete';
     arr[1] = "Do you want to delete this bookmark?";
-    arr[2] = 'YES';
-    arr[3] = 'NO';
 
-    _dialogs.confirmDialog(context, arr).then(
+    confirmDialog(arr).then(
       (value) {
-        if (value == ConfirmAction.accept) {
+        if (value) {
           _bmQueries.deleteBookMarkbyBid(bid).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
             setState(() {
@@ -471,7 +484,8 @@ class MainPageState extends State<MainPage> {
         height: 30,
         width: 30,
         child: IconButton(
-          icon: Icon(Icons.bookmark_border_outlined, color: primarySwatch![700]),
+          icon:
+              Icon(Icons.bookmark_border_outlined, color: primarySwatch![700]),
           onPressed: () {
             debugPrint('BOOKMARK PRESSES');
           },

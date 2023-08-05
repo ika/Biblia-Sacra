@@ -6,13 +6,11 @@ import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
-import 'package:bibliasacra/utils/utils_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
 GetLists _lists = GetLists();
-Dialogs _dialogs = Dialogs();
 
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
 
@@ -29,8 +27,10 @@ class NotesPage extends StatefulWidget {
 class NotesPageState extends State<NotesPage> {
   @override
   void initState() {
-    primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
+    primarySwatch = BlocProvider.of<SettingsCubit>(context)
+        .state
+        .themeData
+        .primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
     super.initState();
   }
@@ -76,15 +76,36 @@ class NotesPageState extends State<NotesPage> {
   //   });
   // }
 
+  Future confirmDialog(arr) async {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(arr[0].toString()),
+        content: Text(arr[1].toString()),
+        actions: [
+          TextButton(
+            child:
+                const Text('NO', style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          TextButton(
+            child: const Text('YES',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    );
+  }
+
   deleteWrapper(context, list, index) {
-    var arr = List.filled(4, '');
+    var arr = List.filled(2, '');
     arr[0] = "Delete?";
     arr[1] = "Do you want to delete this note?";
-    arr[2] = 'YES';
-    arr[3] = 'NO';
 
-    _dialogs.confirmDialog(context, arr).then((value) {
-      if (value == ConfirmAction.accept) {
+    confirmDialog(arr).then((value) {
+      if (value) {
         _ntQueries.deleteNote(list[index].id).then((value) {
           _lists.updateActiveLists(Globals.bibleVersion);
           setState(() {});

@@ -4,7 +4,6 @@ import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/main_page.dart';
-import 'package:bibliasacra/utils/utils_dialogs.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Bookmarks
 
 BmQueries _bmQueries = BmQueries();
-Dialogs _dialogs = Dialogs();
 GetLists _lists = GetLists();
 
 MaterialColor? primarySwatch;
@@ -34,8 +32,10 @@ class _BookMarkState extends State<BookMarksPage> {
   @override
   void initState() {
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
-    primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
+    primarySwatch = BlocProvider.of<SettingsCubit>(context)
+        .state
+        .themeData
+        .primaryColor as MaterialColor?;
     super.initState();
   }
 
@@ -60,20 +60,41 @@ class _BookMarkState extends State<BookMarksPage> {
     });
   }
 
+  Future confirmDialog(arr) async {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(arr[0].toString()),
+        content: Text(arr[1].toString()),
+        actions: [
+          TextButton(
+            child:
+                const Text('NO', style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          TextButton(
+            child: const Text('YES',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    );
+  }
+
   deleteWrapper(context, list, index) {
     final buffer = <String>[list[index].title, "\n", list[index].subtitle];
     final sb = StringBuffer();
     sb.writeAll(buffer);
 
-    var arr = List.filled(4, '');
+    var arr = List.filled(2, '');
     arr[0] = "Delete this Bookmark?";
     arr[1] = sb.toString();
-    arr[2] = 'YES';
-    arr[3] = 'NO';
 
-    _dialogs.confirmDialog(context, arr).then(
+    confirmDialog(arr).then(
       (value) {
-        if (value == ConfirmAction.accept) {
+        if (value) {
           _bmQueries.deleteBookMark(list[index].id).then(
             (value) {
               ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);

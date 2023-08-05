@@ -75,7 +75,7 @@ class DictListing extends StatelessWidget {
             return listTileMethod(snapshot, index);
           },
           separatorBuilder: (BuildContext context, int index) =>
-              const Divider(height: 2.0),
+              const Divider(),
         );
       },
     );

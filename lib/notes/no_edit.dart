@@ -1,4 +1,3 @@
-
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_settings.dart';
 import 'package:bibliasacra/cubit/cub_textsize.dart';
@@ -7,12 +6,10 @@ import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
-import 'package:bibliasacra/utils/utils_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
-Dialogs _dialogs = Dialogs();
 
 MaterialColor? primarySwatch;
 double? primaryTextSize;
@@ -108,16 +105,37 @@ class _EditNotePageState extends State<EditNotePage> {
     }
   }
 
+  Future confirmDialog(arr) async {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(arr[0].toString()),
+        content: Text(arr[1].toString()),
+        actions: [
+          TextButton(
+            child:
+                const Text('NO', style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          TextButton(
+            child: const Text('YES',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    );
+  }
+
   deleteWrapper() {
-    var arr = List.filled(4, '');
+    var arr = List.filled(2, '');
     arr[0] = "Delete?";
     arr[1] = "Do you want to delete this note?";
-    arr[2] = 'YES';
-    arr[3] = 'NO';
 
-    _dialogs.confirmDialog(context, arr).then(
+    confirmDialog(arr).then(
       (value) {
-        if (value == ConfirmAction.accept) {
+        if (value) {
           _ntQueries.deleteNote(widget.model.id!).then(
             (value) {
               Navigator.pop(context, 'deleted');
