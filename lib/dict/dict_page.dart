@@ -39,8 +39,10 @@ class _DicSearchState extends State<DictSearch> {
   Future<List<DicModel>> repeatSearch(String enterdKeyWord) async {
     List<DicModel> searchList = [];
 
+    enterdKeyWord = enterdKeyWord.replaceAll(RegExp(r'[^\w\s]+'),'');
+
     do {
-      //debugPrint("WORD $enterdKeyWord");
+      debugPrint("ENTEREDKEYWORD $enterdKeyWord");
       searchList = await _dictQueries.getSearchedValues(enterdKeyWord);
       enterdKeyWord = enterdKeyWord.characters.skipLast(1).toString();
     } while (searchList.first.trans!.isEmpty);

@@ -33,12 +33,14 @@ Future<dynamic> dictDialog(BuildContext context) {
 }
 
 Future<List<DicModel>> repeatSearch() async {
+  
   List<DicModel> searchList = [];
+  String word = ''; //Globals.dictionaryLookup;
 
-  String word = Globals.dictionaryLookup;
+  word = Globals.dictionaryLookup.replaceAll(RegExp(r'[^\w\s]+'), '');
 
   do {
-    //debugPrint("WORD $word");
+    debugPrint("MAIN_DIC_WORD $word");
     searchList = await _dictQueries.getSearchedValues(word);
     word = word.characters.skipLast(1).toString();
   } while (searchList.first.trans!.isEmpty);
