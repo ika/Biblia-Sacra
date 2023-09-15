@@ -125,7 +125,6 @@ class _BookMarkState extends State<BookMarksPage> {
               style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
-              Globals.scrollToVerse = true;
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
 

@@ -3,11 +3,9 @@ import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 
 VkQueries vkQueries = VkQueries();
-SharedPrefs sharedPrefs = SharedPrefs();
 
 class CompareModel {
   String a; // abbr
@@ -16,10 +14,16 @@ class CompareModel {
   int v; // verse
   String t; // text
 
-  CompareModel({required this.a, required this.b, required this.c, required this.v, required this.t});
+  CompareModel(
+      {required this.a,
+      required this.b,
+      required this.c,
+      required this.v,
+      required this.t});
 }
 
 class Compare {
+
   Future<List<CompareModel>> activeVersions(Bible model) async {
     List<CompareModel> compareList = [];
 
@@ -36,7 +40,8 @@ class Compare {
       String abbr = activeVersions[x]['abbr'];
 
       DbQueries dbQueries = DbQueries();
-      List<Bible> verse = await dbQueries.getVerse(model.b!, model.c!, model.v!);
+      List<Bible> verse =
+          await dbQueries.getVerse(model.b!, model.c!, model.v!);
 
       abbr = (abbr.isNotEmpty) ? abbr : 'Unknown';
       bookName = (bookName.isNotEmpty) ? bookName : 'Unknown';

@@ -126,7 +126,6 @@ class _HighLightsPage extends State<HighLightsPage> {
               style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
-              Globals.scrollToVerse = true;
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
 

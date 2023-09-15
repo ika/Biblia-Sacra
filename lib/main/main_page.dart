@@ -74,26 +74,23 @@ class MainPageState extends State<MainPage> {
         .primaryColor as MaterialColor?;
     primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
 
-    if (Globals.scrollToVerse) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) {
-          //scrollToIndex();
-          Future.delayed(
-            Duration(milliseconds: Globals.navigatorLongDelay),
-            () {
-              if (initialScrollController!.isAttached) {
-                initialScrollController!.scrollTo(
-                  index: Globals.chapterVerse, // from verse selector
-                  duration: Duration(milliseconds: Globals.navigatorLongDelay),
-                  curve: Curves.easeInOutCubic,
-                );
-              }
-            },
-          );
-        },
-      );
-      Globals.scrollToVerse = false;
-    }
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        //scrollToIndex();
+        Future.delayed(
+          Duration(milliseconds: Globals.navigatorLongDelay),
+          () {
+            if (initialScrollController!.isAttached) {
+              initialScrollController!.scrollTo(
+                index: Globals.chapterVerse, // from verse selector
+                duration: Duration(milliseconds: Globals.navigatorLongDelay),
+                curve: Curves.easeInOutCubic,
+              );
+            }
+          },
+        );
+      },
+    );
   }
 
   Future<List<Bible>> getBookText(int book, int ch) async {
@@ -626,6 +623,9 @@ class MainPageState extends State<MainPage> {
                 (value) {
                   Globals.bookChapter = c;
                   BlocProvider.of<ChapterCubit>(context).setChapter(c);
+                  _sharedPrefs.setIntPref('verse', 0).then((value) {
+                    Globals.chapterVerse = 0; // move to top of next chapter
+                  });
                 },
               );
             },

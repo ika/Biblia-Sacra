@@ -9,9 +9,11 @@ import 'package:sqflite/sqflite.dart';
 
 String dataBaseName = '';
 
-String getBVFileName(int v) {
-  String dbName = '';
-  switch (v) {
+String getBVFileName() {
+
+  String dbName = Constants.kjvbDbname;
+
+  switch (Globals.bibleVersion) {
     case 1:
       dbName = Constants.kjvbDbname;
       break;
@@ -43,6 +45,7 @@ String getBVFileName(int v) {
       dbName = Constants.asvbDbname;
       break;
   }
+
   return dbName;
 }
 
@@ -54,7 +57,7 @@ class DbProvider {
   DbProvider._createInstance();
 
   factory DbProvider() {
-    dataBaseName = getBVFileName(Globals.bibleVersion);
+    dataBaseName = getBVFileName();
 
     _dbProvider ??= DbProvider._createInstance();
     return _dbProvider!;

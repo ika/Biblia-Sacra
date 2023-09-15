@@ -90,7 +90,6 @@ class _MainSelectorState extends State<MainSelector>
                   return Center(
                     child: GestureDetector(
                       onTap: () {
-                        Globals.scrollToVerse = true;
                         Globals.chapterVerse = index;
                         backButton(context);
                       },

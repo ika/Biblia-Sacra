@@ -79,7 +79,6 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   onSearchTap(WriteVarsModel model) {
-    Globals.scrollToVerse = true;
     writeVars(model).then((value) {
       backButton(context);
     });

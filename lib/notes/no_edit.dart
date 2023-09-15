@@ -85,7 +85,6 @@ class _EditNotePageState extends State<EditNotePage> {
         onPressed: () {
           //debugPrint('PRESSED');
           //debugPrint(jsonEncode(widget.model));
-          Globals.scrollToVerse = true;
           BlocProvider.of<ChapterCubit>(context)
               .setChapter(widget.model.chapter!);
 

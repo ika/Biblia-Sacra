@@ -1,7 +1,7 @@
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 
-SharedPrefs _sharedPrefs = SharedPrefs();
+SharedPrefs sharedPrefs = SharedPrefs();
 
 class WriteVarsModel {
   int? id;
@@ -34,17 +34,17 @@ Future<void> writeVars(WriteVarsModel model) async {
   Globals.chapterVerse = model.verse! - 1;
   Globals.bookName = model.name!;
   // version
-  _sharedPrefs.setIntPref('version', model.version!);
+  sharedPrefs.setIntPref('version', model.version!);
   // language
-  _sharedPrefs.setStringPref('language', model.lang!);
+  sharedPrefs.setStringPref('language', model.lang!);
   // version abbreviation
-  _sharedPrefs.setStringPref('verabbr', model.abbr!);
+  sharedPrefs.setStringPref('verabbr', model.abbr!);
   // Book
-  _sharedPrefs.setIntPref('book', model.book!);
+  sharedPrefs.setIntPref('book', model.book!);
   // Chapter
-  _sharedPrefs.setIntPref('chapter', model.chapter!);
+  sharedPrefs.setIntPref('chapter', model.chapter!);
   // Verse
-  _sharedPrefs.setIntPref('verse', model.verse! - 1);
+  sharedPrefs.setIntPref('verse', model.verse! - 1);
   // Book name
-  _sharedPrefs.setStringPref('bookname', model.name!);
+  sharedPrefs.setStringPref('bookname', model.name!);
 }
