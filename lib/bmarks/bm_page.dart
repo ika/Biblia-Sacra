@@ -1,6 +1,4 @@
-import 'package:bibliasacra/cubit/cub_settings.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
-import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -31,11 +29,11 @@ class _BookMarkState extends State<BookMarksPage> {
 
   @override
   void initState() {
-    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
-    primarySwatch = BlocProvider.of<SettingsCubit>(context)
-        .state
-        .themeData
-        .primaryColor as MaterialColor?;
+    primaryTextSize = Globals.initialTextSize;
+    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
+    //     .state
+    //     .themeData
+    //     .primaryColor as MaterialColor?;
     super.initState();
   }
 

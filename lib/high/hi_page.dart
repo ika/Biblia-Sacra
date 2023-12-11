@@ -1,6 +1,4 @@
-import 'package:bibliasacra/cubit/cub_settings.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
-import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/high/hl_model.dart';
@@ -30,11 +28,11 @@ class _HighLightsPage extends State<HighLightsPage> {
 
   @override
   void initState() {
-    primarySwatch = BlocProvider.of<SettingsCubit>(context)
-        .state
-        .themeData
-        .primaryColor as MaterialColor?;
-    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
+    //     .state
+    //     .themeData
+    //     .primaryColor as MaterialColor?;
+    primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 

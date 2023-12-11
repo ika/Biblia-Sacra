@@ -1,8 +1,7 @@
-import 'package:bibliasacra/cubit/cub_textsize.dart';
+import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/main_comp.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Compare versions
 
@@ -51,7 +50,7 @@ class _ComparePage extends State<ComparePage> {
 
   @override
   void initState() {
-    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+    primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 

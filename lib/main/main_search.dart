@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:bibliasacra/cubit/cub_settings.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_search.dart';
-import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/main/db_model.dart';
@@ -40,9 +38,9 @@ class _MainSearchState extends State<MainSearch> {
   initState() {
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
-    primarySwatch =
-        BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
-    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+    // primarySwatch =
+    //     BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
+    primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 

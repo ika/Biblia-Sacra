@@ -42,7 +42,7 @@ class Globals {
   static double initialTextSize = 16;
 
   // Font
-  static String initialFont = 'Roboto';
+  static String initialFont = 'OpenSans';
 
   // Active Version count
   static int? activeVersionCount = 0;

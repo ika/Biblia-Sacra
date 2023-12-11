@@ -2,12 +2,8 @@ import 'dart:async';
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:bibliasacra/bmarks/bm_page.dart';
-import 'package:bibliasacra/colors/col_page.dart';
-import 'package:bibliasacra/cubit/cub_settings.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
-import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/dict/dict_page.dart';
-import 'package:bibliasacra/fonts/fonts_page.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/high/hl_model.dart';
@@ -19,7 +15,6 @@ import 'package:bibliasacra/main/main_dict.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/main/main_search.dart';
 import 'package:bibliasacra/main/main_selector.dart';
-import 'package:bibliasacra/text/text_page.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
@@ -68,11 +63,11 @@ class MainPageState extends State<MainPage> {
     initialScrollController = ItemScrollController();
 
     pageController = PageController(initialPage: Globals.bookChapter - 1);
-    primarySwatch = BlocProvider.of<SettingsCubit>(context)
-        .state
-        .themeData
-        .primaryColor as MaterialColor?;
-    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
+    //     .state
+    //     .themeData
+    //     .primaryColor as MaterialColor?;
+    primaryTextSize = Globals.initialTextSize;
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -789,68 +784,68 @@ class MainPageState extends State<MainPage> {
               Navigator.push(context, route);
             },
           ),
-          ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
-            title: const Text(
-              'Colors',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Route route = MaterialPageRoute(
-                builder: (context) => const ColorsPage(),
-              );
-              Navigator.push(context, route).then((value) {
-                setState(() {
-                  primarySwatch = BlocProvider.of<SettingsCubit>(context)
-                      .state
-                      .themeData
-                      .primaryColor as MaterialColor?;
-                });
-              });
-            },
-          ),
-          ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
-            title: const Text(
-              'Fonts',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Route route = MaterialPageRoute(
-                builder: (context) => const FontsPage(),
-              );
-              Navigator.push(context, route).then((value) {
-                // setState(() {
-                //   primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
-                // });
-              });
-            },
-          ),
-          ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
-            title: const Text(
-              'Text Size',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Route route = MaterialPageRoute(
-                builder: (context) => const TextSizePage(),
-              );
-              Navigator.push(context, route);
-            },
-          ),
+          // ListTile(
+          //   trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+          //   title: const Text(
+          //     'Colors',
+          //     style: TextStyle(
+          //         //color: Colors.white,
+          //         fontSize: 16.0,
+          //         fontWeight: FontWeight.bold),
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Route route = MaterialPageRoute(
+          //       builder: (context) => const ColorsPage(),
+          //     );
+          //     Navigator.push(context, route).then((value) {
+          //       setState(() {
+          //         primarySwatch = BlocProvider.of<SettingsCubit>(context)
+          //             .state
+          //             .themeData
+          //             .primaryColor as MaterialColor?;
+          //       });
+          //     });
+          //   },
+          // ),
+          // ListTile(
+          //   trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+          //   title: const Text(
+          //     'Fonts',
+          //     style: TextStyle(
+          //         //color: Colors.white,
+          //         fontSize: 16.0,
+          //         fontWeight: FontWeight.bold),
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Route route = MaterialPageRoute(
+          //       builder: (context) => const FontsPage(),
+          //     );
+          //     Navigator.push(context, route).then((value) {
+          //       // setState(() {
+          //       //   primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
+          //       // });
+          //     });
+          //   },
+          // ),
+          // ListTile(
+          //   trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+          //   title: const Text(
+          //     'Text Size',
+          //     style: TextStyle(
+          //         //color: Colors.white,
+          //         fontSize: 16.0,
+          //         fontWeight: FontWeight.bold),
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Route route = MaterialPageRoute(
+          //       builder: (context) => const TextSizePage(),
+          //     );
+          //     Navigator.push(context, route);
+          //   },
+          // ),
         ],
       ),
     );

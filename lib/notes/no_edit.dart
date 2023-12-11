@@ -1,6 +1,4 @@
 import 'package:bibliasacra/cubit/cub_chapters.dart';
-import 'package:bibliasacra/cubit/cub_settings.dart';
-import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -33,11 +31,11 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   initState() {
     super.initState();
-    primarySwatch = BlocProvider.of<SettingsCubit>(context)
-        .state
-        .themeData
-        .primaryColor as MaterialColor?;
-    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
+    //     .state
+    //     .themeData
+    //     .primaryColor as MaterialColor?;
+    primaryTextSize = Globals.initialTextSize;
 
     _titleController.text = widget.model.title!;
     _contentsController.text = widget.model.contents!;

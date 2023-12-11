@@ -1,7 +1,5 @@
-import 'package:bibliasacra/cubit/cub_settings.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_search.dart';
-import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -26,13 +24,6 @@ void getActiveVersionsCount() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // if (Platform.isWindows || Platform.isLinux) {
-  //   // Initialize FFI
-  //   sqfliteFfiInit();
-  //   // Change the default factory
-  //   databaseFactory = databaseFactoryFfi;
-  // }
 
   utilities.getDialogeHeight();
 
@@ -66,17 +57,18 @@ Future<void> main() async {
                             bookLists.readBookName(Globals.bibleBook).then(
                               (g) {
                                 Globals.bookName = g;
-                                _sharedPrefs
-                                    .getDoublePref('textSize')
-                                    .then((t) {
-                                  Globals.initialTextSize = t ?? 16;
-                                  _sharedPrefs
-                                      .getStringPref('fontSel')
-                                      .then((f) {
-                                    Globals.initialFont = f ?? 'Roboto';
-                                    getActiveVersionsCount();
-                                  });
-                                });
+                                getActiveVersionsCount();
+                                // _sharedPrefs
+                                //     .getDoublePref('textSize')
+                                //     .then((t) {
+                                //   Globals.initialTextSize = t ?? 16;
+                                //   _sharedPrefs
+                                //       .getStringPref('fontSel')
+                                //       .then((f) {
+                                //     Globals.initialFont = f ?? 'Roboto';
+                                //     getActiveVersionsCount();
+                                //   });
+                                // });
                                 runApp(
                                   const BibleApp(),
                                 );
@@ -110,22 +102,27 @@ class BibleApp extends StatelessWidget {
         BlocProvider<SearchCubit>(
           create: (context) => SearchCubit()..getSearchAreaKey(),
         ),
-        BlocProvider<TextSizeCubit>(
-          create: (context) => TextSizeCubit()..getSize(),
-        ),
-        BlocProvider<SettingsCubit>(
-          create: (context) => SettingsCubit(),
-        )
+        // BlocProvider<TextSizeCubit>(
+        //   create: (context) => TextSizeCubit()..getSize(),
+        // ),
+        // BlocProvider<SettingsCubit>(
+        //   create: (context) => SettingsCubit(),
+        // )
       ],
-      child: BlocBuilder<SettingsCubit, SettingsState>(
-        builder: ((context, state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Bible App',
-            theme: state.themeData,
-            home: const MainPage(),
-          );
-        }),
+      // child: BlocBuilder<SettingsCubit, SettingsState>(
+      //   builder: ((context, state) {
+      //     return MaterialApp(
+      //       debugShowCheckedModeBanner: false,
+      //       title: 'Bible App',
+      //       theme: state.themeData,
+      //       home: const MainPage(),
+      //     );
+      //   }),
+      // ),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Bible App',
+        home: MainPage(),
       ),
     );
   }

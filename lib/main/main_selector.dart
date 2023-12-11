@@ -1,5 +1,4 @@
 import 'package:bibliasacra/cubit/cub_chapters.dart';
-import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
@@ -34,7 +33,7 @@ class _MainSelectorState extends State<MainSelector>
     super.initState();
     Globals.chapterVerse = 0;
     Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
-    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+    primaryTextSize = Globals.initialTextSize;
     allBooks = bookLists.getBookListByLang(Globals.bibleLang);
     filteredBooks = allBooks;
 

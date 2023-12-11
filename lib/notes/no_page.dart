@@ -1,5 +1,3 @@
-import 'package:bibliasacra/cubit/cub_settings.dart';
-import 'package:bibliasacra/cubit/cub_textsize.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
@@ -7,7 +5,6 @@ import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
 GetLists _lists = GetLists();
@@ -27,11 +24,11 @@ class NotesPage extends StatefulWidget {
 class NotesPageState extends State<NotesPage> {
   @override
   void initState() {
-    primarySwatch = BlocProvider.of<SettingsCubit>(context)
-        .state
-        .themeData
-        .primaryColor as MaterialColor?;
-    primaryTextSize = BlocProvider.of<TextSizeCubit>(context).state;
+    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
+    //     .state
+    //     .themeData
+    //     .primaryColor as MaterialColor?;
+    primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 
