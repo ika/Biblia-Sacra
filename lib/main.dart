@@ -10,8 +10,6 @@ import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-MaterialColor? palette;
-
 SharedPrefs _sharedPrefs = SharedPrefs();
 Utilities utilities = Utilities();
 GetLists _lists = GetLists();
