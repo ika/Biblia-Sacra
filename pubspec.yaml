@@ -91,26 +91,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Montserrat
-      fonts:
-        - asset: assets/fonts/Montserrat-Regular.ttf
+
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans-Regular.ttf
-    - family: PlayFairDisplay
-      fonts:
-         - asset: assets/fonts/PlayfairDisplay-Regular.ttf
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto-Regular.ttf
-    - family: Raleway
-      fonts:
-         - asset: assets/fonts/Raleway-Regular.ttf
-    - family: Courgette
-      fonts:
-         - asset: assets/fonts/Courgette-Regular.ttf
-    - family: Kalam
-      fonts:
-         - asset: assets/fonts/Kalam-Regular.ttf
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
