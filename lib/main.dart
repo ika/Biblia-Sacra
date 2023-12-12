@@ -1,11 +1,17 @@
+import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_search.dart';
+import 'package:bibliasacra/dict/dict_page.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
+import 'package:bibliasacra/main/main_search.dart';
+import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
+import 'package:bibliasacra/vers/vers_page.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,10 +123,20 @@ class BibleApp extends StatelessWidget {
       //     );
       //   }),
       // ),
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bible App',
-        home: MainPage(),
+        theme: ThemeData.light(),
+        initialRoute: '/MainPage',
+        routes: {
+          '/MainPage': (context) => const MainPage(),
+          '/MainSearch': (context) => const MainSearch(),
+          '/DictSearch': (context) => const DictSearch(),
+          '/BookMarksPage': (context) => const BookMarksPage(),
+          '/HighLightsPage': (context) => const HighLightsPage(),
+          '/NotesPage': (context) => const NotesPage(),
+          '/VersionsPage': (context) => const VersionsPage()
+        },
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
@@ -15,7 +14,7 @@ MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class NotesPage extends StatefulWidget {
-  const NotesPage({Key? key}) : super(key: key);
+  const NotesPage({super.key});
 
   @override
   NotesPageState createState() => NotesPageState();
@@ -56,12 +55,13 @@ class NotesPageState extends State<NotesPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const MainPage(),
+        //   ),
+        // );
+        Navigator.of(context).pushNamed('/MainPage');
       },
     );
   }

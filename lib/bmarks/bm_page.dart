@@ -1,7 +1,6 @@
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,7 @@ MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class BookMarksPage extends StatefulWidget {
-  const BookMarksPage({Key? key}) : super(key: key);
+  const BookMarksPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _BookMarkState();
@@ -41,12 +40,13 @@ class _BookMarkState extends State<BookMarksPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const MainPage(),
+        //   ),
+        // );
+        Navigator.of(context).pushNamed('/MainPage');
       },
     );
   }

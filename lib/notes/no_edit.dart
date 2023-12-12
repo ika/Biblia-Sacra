@@ -1,7 +1,6 @@
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:flutter/material.dart';
@@ -58,12 +57,13 @@ class _EditNotePageState extends State<EditNotePage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const MainPage(),
+        //   ),
+        // );
+        Navigator.of(context).pushNamed('/MainPage');
       },
     );
   }

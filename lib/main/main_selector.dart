@@ -2,7 +2,6 @@ import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,12 +62,13 @@ class _MainSelectorState extends State<MainSelector>
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const MainPage(),
+        //   ),
+        // );
+        Navigator.of(context).pushNamed('/MainPage');
       },
     );
   }

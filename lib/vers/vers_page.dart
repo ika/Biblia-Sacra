@@ -1,6 +1,5 @@
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/db_queries.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
@@ -18,13 +17,14 @@ MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class VersionsPage extends StatefulWidget {
-  const VersionsPage({Key? key}) : super(key: key);
+  const VersionsPage({super.key});
 
   @override
   VersionsPageState createState() => VersionsPageState();
 }
 
 class VersionsPageState extends State<VersionsPage> {
+
   @override
   void initState() {
     counter = 0;
@@ -37,12 +37,13 @@ class VersionsPageState extends State<VersionsPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const MainPage(),
+        //   ),
+        // );
+        Navigator.of(context).pushNamed('/MainPage');
       },
     );
   }

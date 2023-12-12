@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:bibliasacra/dict/dict_queries.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:flutter/material.dart';
 
 DictQueries _dictQueries = DictQueries();
@@ -16,7 +15,7 @@ MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class DictSearch extends StatefulWidget {
-  const DictSearch({Key? key}) : super(key: key);
+  const DictSearch({super.key});
 
   @override
   State<DictSearch> createState() => _DicSearchState();
@@ -63,12 +62,13 @@ class _DicSearchState extends State<DictSearch> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const MainPage(),
+        //   ),
+        // );
+        Navigator.of(context).pushNamed('/MainPage');
       },
     );
   }

@@ -1,6 +1,5 @@
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
@@ -50,12 +49,13 @@ class AppBarVersions extends StatelessWidget {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainPage(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const MainPage(),
+        //   ),
+        // );
+        Navigator.of(context).pushNamed('/MainPage');
       },
     );
   }

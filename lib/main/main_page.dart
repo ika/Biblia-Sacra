@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
-import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
-import 'package:bibliasacra/dict/dict_page.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/main/db_model.dart';
@@ -19,7 +16,6 @@ import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
-import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:bibliasacra/vers/vers_page.dart';
@@ -29,6 +25,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
+
+class MainPageArgs {
+  final int verseIndex;
+  MainPageArgs(this.verseIndex);
+}
 
 PageController? pageController;
 ItemScrollController? initialScrollController;
@@ -50,7 +51,7 @@ bool? initialPageScroll;
 bool isShowing = true;
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => MainPageState();
@@ -67,6 +68,7 @@ class MainPageState extends State<MainPage> {
     //     .state
     //     .themeData
     //     .primaryColor as MaterialColor?;
+    primarySwatch = Colors.yellow;
     primaryTextSize = Globals.initialTextSize;
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -652,17 +654,17 @@ class MainPageState extends State<MainPage> {
             ),
             child: Stack(
               children: [
-                Positioned(
-                  bottom: 12.0,
-                  right: 16.0,
-                  child: Text(
-                    "Version 1.0",
-                    style: TextStyle(
-                        color: primarySwatch![900],
-                        fontSize: 10.0,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
+                // const Positioned(
+                //   bottom: 12.0,
+                //   right: 16.0,
+                //   child: Text(
+                //     "Version 1.0",
+                //     style: TextStyle(
+                //         color: primarySwatch![900],
+                //         fontSize: 10.0,
+                //         fontWeight: FontWeight.w500),
+                //   ),
+                // ),
                 Positioned(
                   bottom: 20.0,
                   left: 16.0,
@@ -691,12 +693,13 @@ class MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const BookMarksPage(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const BookMarksPage(),
+              //   ),
+              // );
+              Navigator.of(context).pushNamed('/BookMarksPage');
             },
           ),
           ListTile(
@@ -710,10 +713,11 @@ class MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Route route = MaterialPageRoute(
-                builder: (context) => const HighLightsPage(),
-              );
-              Navigator.push(context, route);
+              // Route route = MaterialPageRoute(
+              //   builder: (context) => const HighLightsPage(),
+              // );
+              // Navigator.push(context, route);
+              Navigator.of(context).pushNamed('/HighLightsPage');
             },
           ),
           ListTile(
@@ -727,10 +731,11 @@ class MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Route route = MaterialPageRoute(
-                builder: (context) => const NotesPage(),
-              );
-              Navigator.push(context, route);
+              //   Route route = MaterialPageRoute(
+              //     builder: (context) => const NotesPage(),
+              //   );
+              //   Navigator.push(context, route);
+              Navigator.of(context).pushNamed('/NotesPage');
             },
           ),
           ListTile(
@@ -744,10 +749,11 @@ class MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Route route = MaterialPageRoute(
-                builder: (context) => const DictSearch(),
-              );
-              Navigator.push(context, route);
+              // Route route = MaterialPageRoute(
+              //   builder: (context) => const DictSearch(),
+              // );
+              // Navigator.push(context, route);
+              Navigator.of(context).pushNamed('/DictSearch');
             },
           ),
           ListTile(
@@ -761,10 +767,11 @@ class MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Route route = MaterialPageRoute(
-                builder: (context) => const MainSearch(),
-              );
-              Navigator.push(context, route);
+              // Route route = MaterialPageRoute(
+              //   builder: (context) => const MainSearch(),
+              // );
+              // Navigator.push(context, route);
+              Navigator.of(context).pushNamed('/MainSearch');
             },
           ),
           ListTile(
@@ -778,10 +785,11 @@ class MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Route route = MaterialPageRoute(
-                builder: (context) => const VersionsPage(),
-              );
-              Navigator.push(context, route);
+              // Route route = MaterialPageRoute(
+              //   builder: (context) => const VersionsPage(),
+              // );
+              // Navigator.push(context, route);
+              Navigator.of(context).pushNamed('/VersionsPage');
             },
           ),
           // ListTile(
