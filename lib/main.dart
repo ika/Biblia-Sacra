@@ -8,6 +8,7 @@ import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/main/main_search.dart';
 import 'package:bibliasacra/notes/no_page.dart';
+import 'package:bibliasacra/theme/apptheme.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
@@ -94,10 +95,11 @@ Future<void> main() async {
 }
 
 class BibleApp extends StatelessWidget {
-  const BibleApp({Key? key}) : super(key: key);
+  const BibleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ChapterCubit>(
@@ -126,7 +128,7 @@ class BibleApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bible App',
-        theme: ThemeData.light(),
+        theme: AppTheme.light,
         initialRoute: '/MainPage',
         routes: {
           '/MainPage': (context) => const MainPage(),
