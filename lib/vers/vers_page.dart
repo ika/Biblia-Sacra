@@ -13,7 +13,6 @@ DbQueries dbQueries = DbQueries();
 
 int counter = 0;
 
-MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class VersionsPage extends StatefulWidget {
@@ -95,8 +94,9 @@ class VersionsPageState extends State<VersionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        elevation: 0.1,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

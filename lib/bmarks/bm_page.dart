@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 BmQueries _bmQueries = BmQueries();
 GetLists _lists = GetLists();
 
-MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class BookMarksPage extends StatefulWidget {
@@ -29,6 +28,7 @@ class _BookMarkState extends State<BookMarksPage> {
   @override
   void initState() {
     primaryTextSize = Globals.initialTextSize;
+
     // primarySwatch = BlocProvider.of<SettingsCubit>(context)
     //     .state
     //     .themeData
@@ -112,7 +112,7 @@ class _BookMarkState extends State<BookMarksPage> {
             }
           },
           child: ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: Text(
               list[index].title,
               style: TextStyle(
@@ -141,8 +141,9 @@ class _BookMarkState extends State<BookMarksPage> {
         );
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        elevation: 0.1,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

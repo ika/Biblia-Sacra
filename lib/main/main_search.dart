@@ -22,7 +22,6 @@ Future<List<Bible>>? results;
 
 String _contents = '';
 
-MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class MainSearch extends StatefulWidget {
@@ -181,7 +180,7 @@ class _MainSearchState extends State<MainSearch> {
               text: t.substring(idx, idx + m.length),
               style: TextStyle(
                 fontSize: primaryTextSize,
-                backgroundColor: primarySwatch![100],
+                //backgroundColor: primarySwatch![100],
               ),
             ),
             TextSpan(
@@ -254,7 +253,9 @@ class _MainSearchState extends State<MainSearch> {
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {

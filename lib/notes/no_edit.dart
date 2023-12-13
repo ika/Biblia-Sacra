@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
 
-MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class EditNotePage extends StatefulWidget {
@@ -78,6 +77,7 @@ class _EditNotePageState extends State<EditNotePage> {
   Widget showGotoVerse() {
     if (widget.model.bid! > 0 && widget.mode.isNotEmpty) {
       return FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         label: const Text('Go to Verse'),
         icon: const Icon(Icons.arrow_circle_right_outlined),
         onPressed: () {
@@ -147,7 +147,9 @@ class _EditNotePageState extends State<EditNotePage> {
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {

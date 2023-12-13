@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 HlQueries _hlQueries = HlQueries();
 GetLists _lists = GetLists();
-MaterialColor? primarySwatch;
+
 double? primaryTextSize;
 
 class HighLightsPage extends StatefulWidget {
@@ -113,7 +113,7 @@ class _HighLightsPage extends State<HighLightsPage> {
             }
           },
           child: ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: Text(
               list[index].title,
               style: TextStyle(
@@ -142,7 +142,9 @@ class _HighLightsPage extends State<HighLightsPage> {
         );
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

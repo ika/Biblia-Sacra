@@ -32,7 +32,6 @@ class MainPageArgs {
 PageController? pageController;
 ItemScrollController? initialScrollController;
 
-MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 DbQueries _dbQueries = DbQueries();
@@ -66,7 +65,7 @@ class MainPageState extends State<MainPage> {
     //     .state
     //     .themeData
     //     .primaryColor as MaterialColor?;
-    primarySwatch = Colors.yellow;
+  
     primaryTextSize = Globals.initialTextSize;
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -428,7 +427,7 @@ class MainPageState extends State<MainPage> {
           style: TextStyle(
               fontSize: primaryTextSize,
               backgroundColor: (getHighLightMatch(snapshot.data[index].id))
-                  ? primarySwatch![100]
+                  ? Theme.of(context).colorScheme.secondaryContainer
                   : null));
     } else {
       return const Text('');
@@ -457,7 +456,7 @@ class MainPageState extends State<MainPage> {
         height: 30,
         width: 30,
         child: IconButton(
-          icon: Icon(Icons.edit, color: primarySwatch![700]),
+          icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
           onPressed: () => getNoteModel(snapshot.data[index].id).then(
             (model) {
               gotoEditNote(model);
@@ -644,7 +643,7 @@ class MainPageState extends State<MainPage> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.primaryContainer,
               // image: DecorationImage(
               //   fit: BoxFit.fill,
               //   image: AssetImage('path/to/header_background.png'),
@@ -669,7 +668,7 @@ class MainPageState extends State<MainPage> {
                   child: Text(
                     "Biblia Sacra",
                     style: TextStyle(
-                        color: primarySwatch![900],
+                        color: Theme.of(context).colorScheme.primary,
                         fontSize: 32.0,
                         fontWeight: FontWeight.w500),
                   ),
@@ -681,7 +680,7 @@ class MainPageState extends State<MainPage> {
             height: 10,
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Bookmarks',
               style: TextStyle(
@@ -701,7 +700,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Highlights',
               style: TextStyle(
@@ -719,7 +718,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Notes',
               style: TextStyle(
@@ -737,7 +736,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Dictionary',
               style: TextStyle(
@@ -755,7 +754,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Search',
               style: TextStyle(
@@ -773,7 +772,7 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Bibles',
               style: TextStyle(
@@ -910,7 +909,7 @@ class MainPageState extends State<MainPage> {
       drawer: showDrawer(context),
       appBar: AppBar(
         //elevation: 16,
-        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: [
           // (Globals.bibleLang == 'lat')
           //     ? showIconButton(context)
@@ -919,7 +918,7 @@ class MainPageState extends State<MainPage> {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary),
+                    backgroundColor: Theme.of(context).colorScheme.inversePrimary),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -933,13 +932,13 @@ class MainPageState extends State<MainPage> {
                   children: [
                     Text(
                       '${Globals.bookName}: ',
-                      style: const TextStyle(fontSize: 16),
+                      style:TextStyle(color: Theme.of(context).colorScheme.primary)
                     ),
                     BlocBuilder<ChapterCubit, int>(
                       builder: (context, chapter) {
                         return Text(
                           chapter.toString(),
-                          style: const TextStyle(fontSize: 16),
+                          style:TextStyle(color: Theme.of(context).colorScheme.primary)
                         );
                       },
                     ),
@@ -951,13 +950,13 @@ class MainPageState extends State<MainPage> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.onTertiaryContainer),
+                    backgroundColor: Theme.of(context).colorScheme.inversePrimary),
                 onPressed: () {
                   showVersionsDialog(context);
                 },
                 child: Text(
                   Globals.versionAbbr,
-                  style: const TextStyle(fontSize: 16),
+                  style:TextStyle(color: Theme.of(context).colorScheme.primary)
                 ),
               ),
               const SizedBox(

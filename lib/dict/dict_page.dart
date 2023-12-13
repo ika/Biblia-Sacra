@@ -172,7 +172,9 @@ class _DicSearchState extends State<DictSearch> {
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {

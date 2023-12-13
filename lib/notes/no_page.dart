@@ -10,7 +10,6 @@ GetLists _lists = GetLists();
 
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
 
-MaterialColor? primarySwatch;
 double? primaryTextSize;
 
 class NotesPage extends StatefulWidget {
@@ -119,7 +118,7 @@ class NotesPageState extends State<NotesPage> {
             }
           },
           child: ListTile(
-            trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
+            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: Text(
               "${list[index].title}",
               style: TextStyle(
@@ -159,8 +158,9 @@ class NotesPageState extends State<NotesPage> {
     );
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        elevation: 0.1,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
@@ -174,6 +174,7 @@ class NotesPageState extends State<NotesPage> {
       ),
       body: makeBody,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () {
           final model = NtModel(
               title: '',
