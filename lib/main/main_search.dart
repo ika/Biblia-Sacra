@@ -255,7 +255,7 @@ class _MainSearchState extends State<MainSearch> {
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
@@ -269,7 +269,7 @@ class _MainSearchState extends State<MainSearch> {
                     builder: (context, area) {
                       return Text(
                         areasList[area],
-                        style: TextStyle(fontSize: Globals.appBarFontSize),
+                        // style: TextStyle(fontSize: Globals.appBarFontSize),
                       );
                     },
                   ),
@@ -278,7 +278,7 @@ class _MainSearchState extends State<MainSearch> {
                   ),
                   Text(
                     Globals.versionAbbr,
-                    style: TextStyle(fontSize: Globals.appBarFontSize),
+                    // style: TextStyle(fontSize: Globals.appBarFontSize),
                   ),
                   const SizedBox(
                     width: 16,

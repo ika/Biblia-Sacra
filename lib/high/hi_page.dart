@@ -144,7 +144,7 @@ class _HighLightsPage extends State<HighLightsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

@@ -24,10 +24,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
 
-class MainPageArgs {
-  final int verseIndex;
-  MainPageArgs(this.verseIndex);
-}
+// class MainPageArgs {
+//   final int currentChapterValue;
+//   final int currentVerseValue;
+//   MainPageArgs(this.currentChapterValue, this.currentVerseValue);
+// }
 
 PageController? pageController;
 ItemScrollController? initialScrollController;
@@ -48,7 +49,13 @@ bool? initialPageScroll;
 bool isShowing = true;
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  const MainPage(
+      {super.key,
+      required this.currentChapterValue,
+      required this.currentVerseValue});
+
+  final int currentChapterValue;
+  final int currentVerseValue;
 
   @override
   State<MainPage> createState() => MainPageState();
@@ -65,7 +72,7 @@ class MainPageState extends State<MainPage> {
     //     .state
     //     .themeData
     //     .primaryColor as MaterialColor?;
-  
+
     primaryTextSize = Globals.initialTextSize;
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -76,7 +83,8 @@ class MainPageState extends State<MainPage> {
           () {
             if (initialScrollController!.isAttached) {
               initialScrollController!.scrollTo(
-                index: Globals.chapterVerse, // from verse selector
+                index: widget.currentVerseValue - 1,
+                //Globals.chapterVerse, // from verse selector
                 duration: Duration(milliseconds: Globals.navigatorLongDelay),
                 curve: Curves.easeInOutCubic,
               );
@@ -423,12 +431,14 @@ class MainPageState extends State<MainPage> {
 
   Widget normalVerseText(snapshot, index) {
     if (snapshot.data[index].v != 0) {
-      return Text("${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-          style: TextStyle(
-              fontSize: primaryTextSize,
-              backgroundColor: (getHighLightMatch(snapshot.data[index].id))
-                  ? Theme.of(context).colorScheme.secondaryContainer
-                  : null));
+      return Text(
+        "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+        style: TextStyle(
+            fontSize: primaryTextSize,
+            backgroundColor: (getHighLightMatch(snapshot.data[index].id))
+                ? Theme.of(context).colorScheme.primaryContainer
+                : null),
+      );
     } else {
       return const Text('');
     }
@@ -475,8 +485,8 @@ class MainPageState extends State<MainPage> {
         height: 30,
         width: 30,
         child: IconButton(
-          icon:
-              Icon(Icons.bookmark_border_outlined, color: Theme.of(context).colorScheme.primary),
+          icon: Icon(Icons.bookmark_border_outlined,
+              color: Theme.of(context).colorScheme.primary),
           onPressed: () {
             debugPrint('BOOKMARK PRESSES');
           },
@@ -617,9 +627,11 @@ class MainPageState extends State<MainPage> {
                 (value) {
                   Globals.bookChapter = c;
                   BlocProvider.of<ChapterCubit>(context).setChapter(c);
-                  _sharedPrefs.setIntPref('verse', 0).then((value) {
-                    Globals.chapterVerse = 0; // move to top of next chapter
-                  });
+                  _sharedPrefs.setIntPref('verse', 0).then(
+                    (value) {
+                      //Globals.chapterVerse = 0; // move to top of next chapter
+                    },
+                  );
                 },
               );
             },
@@ -643,13 +655,13 @@ class MainPageState extends State<MainPage> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: Theme.of(context).colorScheme.primary,
               // image: DecorationImage(
               //   fit: BoxFit.fill,
               //   image: AssetImage('path/to/header_background.png'),
               // ),
             ),
-            child: Stack(
+            child: const Stack(
               children: [
                 // const Positioned(
                 //   bottom: 12.0,
@@ -668,7 +680,7 @@ class MainPageState extends State<MainPage> {
                   child: Text(
                     "Biblia Sacra",
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        //color: Theme.of(context).colorScheme.primary,
                         fontSize: 32.0,
                         fontWeight: FontWeight.w500),
                   ),
@@ -680,7 +692,8 @@ class MainPageState extends State<MainPage> {
             height: 10,
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+            trailing: Icon(Icons.arrow_right,
+                color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Bookmarks',
               style: TextStyle(
@@ -700,7 +713,8 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+            trailing: Icon(Icons.arrow_right,
+                color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Highlights',
               style: TextStyle(
@@ -718,7 +732,8 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+            trailing: Icon(Icons.arrow_right,
+                color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Notes',
               style: TextStyle(
@@ -736,7 +751,8 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+            trailing: Icon(Icons.arrow_right,
+                color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Dictionary',
               style: TextStyle(
@@ -754,7 +770,8 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+            trailing: Icon(Icons.arrow_right,
+                color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Search',
               style: TextStyle(
@@ -772,7 +789,8 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+            trailing: Icon(Icons.arrow_right,
+                color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Bibles',
               style: TextStyle(
@@ -902,14 +920,17 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final ThemeData theme = Theme.of(context);
+    // final args = ModalRoute.of(context)!.settings.arguments as MainPageArgs;
+    // print("${args.currentChapterValue} ${args.currentVerseValue}");
+
     initialPageScroll = true;
     _dbQueries = DbQueries();
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: theme.colorScheme.background,
       drawer: showDrawer(context),
       appBar: AppBar(
-        //elevation: 16,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        // backgroundColor: theme.colorScheme.primary,
         actions: [
           // (Globals.bibleLang == 'lat')
           //     ? showIconButton(context)
@@ -917,8 +938,8 @@ class MainPageState extends State<MainPage> {
           Row(
             children: [
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.inversePrimary),
+                // style: ElevatedButton.styleFrom(
+                //     backgroundColor: theme.colorScheme.inversePrimary),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -932,13 +953,13 @@ class MainPageState extends State<MainPage> {
                   children: [
                     Text(
                       '${Globals.bookName}: ',
-                      style:TextStyle(color: Theme.of(context).colorScheme.primary)
+                      //style: const TextStyle(fontWeight: FontWeight.bold)
                     ),
                     BlocBuilder<ChapterCubit, int>(
                       builder: (context, chapter) {
                         return Text(
                           chapter.toString(),
-                          style:TextStyle(color: Theme.of(context).colorScheme.primary)
+                          //style: const TextStyle(fontWeight: FontWeight.bold)
                         );
                       },
                     ),
@@ -949,14 +970,14 @@ class MainPageState extends State<MainPage> {
                 width: 8,
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.inversePrimary),
+                // style: ElevatedButton.styleFrom(
+                //     backgroundColor: theme.colorScheme.onPrimary),
                 onPressed: () {
                   showVersionsDialog(context);
                 },
                 child: Text(
                   Globals.versionAbbr,
-                  style:TextStyle(color: Theme.of(context).colorScheme.primary)
+                  //style: const TextStyle(fontWeight: FontWeight.bold)
                 ),
               ),
               const SizedBox(

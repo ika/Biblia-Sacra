@@ -14,8 +14,11 @@ import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_page.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 SharedPrefs _sharedPrefs = SharedPrefs();
 Utilities utilities = Utilities();
@@ -99,6 +102,35 @@ class BibleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = ColorScheme.fromSeed(
+        brightness: MediaQuery.platformBrightnessOf(context),
+        seedColor: Colors.blue);
+
+    //final ColorScheme colorScheme = const ColorScheme(
+    //brightness: brightness,
+    // primary: primary,
+    // onPrimary: onPrimary,
+    // secondary: secondary,
+    // onSecondary: onSecondary,
+    // error: error,
+    // onError: onError,
+    // background: background,
+    // onBackground: onBackground,
+    // surface: surface,
+    // onSurface: onSurface
+
+    ThemeData lightTheme = ThemeData(
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: Colors.grey[200],
+      appBarTheme: AppBarTheme(
+        backgroundColor: colorScheme.primary,
+        centerTitle: true,
+      ),
+      fontFamily: GoogleFonts.notoSans().fontFamily,
+      textTheme: const TextTheme(),
+    );
+
+    ThemeData darkTheme = ThemeData(colorScheme: colorScheme);
 
     return MultiBlocProvider(
       providers: [
@@ -128,10 +160,13 @@ class BibleApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bible App',
-        theme: AppTheme.light,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.light,
         initialRoute: '/MainPage',
         routes: {
-          '/MainPage': (context) => const MainPage(),
+          '/MainPage': (context) =>
+              const MainPage(currentChapterValue: 1, currentVerseValue: 1),
           '/MainSearch': (context) => const MainSearch(),
           '/DictSearch': (context) => const DictSearch(),
           '/BookMarksPage': (context) => const BookMarksPage(),

@@ -160,7 +160,7 @@ class NotesPageState extends State<NotesPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
@@ -174,7 +174,7 @@ class NotesPageState extends State<NotesPage> {
       ),
       body: makeBody,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        //backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () {
           final model = NtModel(
               title: '',

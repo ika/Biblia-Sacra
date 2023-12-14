@@ -2,6 +2,7 @@ import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
+import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +36,7 @@ class _MainSelectorState extends State<MainSelector>
   initState() {
     super.initState();
     Globals.chapterVerse = 0;
-    Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
+    //Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
     primaryTextSize = Globals.initialTextSize;
     allBooks = bookLists.getBookListByLang(Globals.bibleLang);
     filteredBooks = allBooks;
@@ -63,18 +64,21 @@ class _MainSelectorState extends State<MainSelector>
   }
 
   backButton(BuildContext context) {
-    print("$_currentChapterValue  $_currentVerseValue");
+    //print("$_currentChapterValue  $_currentVerseValue");
 
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const MainPage(),
-        //   ),
-        // );
-        Navigator.of(context).pushNamed('/MainPage');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainPage(
+                currentChapterValue: _currentChapterValue,
+                currentVerseValue: _currentVerseValue),
+          ),
+        );
+        // Navigator.of(context).pushNamed('/MainPage':
+        //arguments: MainPageArgs(_currentChapterValue, _currentVerseValue));
       },
     );
   }
@@ -223,8 +227,9 @@ class _MainSelectorState extends State<MainSelector>
                   itemHeight: 100,
                   axis: Axis.horizontal,
                   onChanged: (value) {
+                    Globals.chapterVerse = value;
                     setState(() {
-                      Globals.chapterVerse = _currentVerseValue = value;
+                      _currentVerseValue = value;
                     });
                   },
                   decoration: BoxDecoration(
@@ -265,8 +270,9 @@ class _MainSelectorState extends State<MainSelector>
                   itemHeight: 100,
                   axis: Axis.horizontal,
                   onChanged: (value) {
+                    Globals.bookChapter = value;
                     setState(() {
-                      Globals.bookChapter = _currentChapterValue = value;
+                      _currentChapterValue = value;
                     });
                   },
                   decoration: BoxDecoration(
@@ -310,7 +316,7 @@ class _MainSelectorState extends State<MainSelector>
                 return ListTile(
                   title: Text(
                     filteredBooks[key],
-                    style: TextStyle(fontSize: primaryTextSize),
+                    //style: TextStyle(fontSize: primaryTextSize),
                   ),
                   onTap: () {
                     int book = key + 1;
@@ -324,7 +330,7 @@ class _MainSelectorState extends State<MainSelector>
                               (value) {
                                 BlocProvider.of<ChapterCubit>(context)
                                     .setChapter(1);
-                                //tabController!.animateTo(1);
+                                tabController!.animateTo(1);
                               },
                             );
                           },
@@ -334,11 +340,14 @@ class _MainSelectorState extends State<MainSelector>
                     FocusScope.of(context).requestFocus(FocusNode());
                     filteredBooks = allBooks; // restore full list
                   },
-                  trailing: const Icon(Icons.arrow_right),
+                  trailing: Icon(
+                    Icons.arrow_right,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 );
               },
               separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(height: 2.0),
+                  const Divider(),
             ),
           ),
         ],
@@ -349,9 +358,9 @@ class _MainSelectorState extends State<MainSelector>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        // backgroundColor: Theme.of(context).colorScheme.primary,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
@@ -359,21 +368,30 @@ class _MainSelectorState extends State<MainSelector>
           },
         ),
         title: Text(
-          Globals.selectorText,
-          style: TextStyle(fontSize: Globals.appBarFontSize),
-        ),
+            //Globals.selectorText,
+            //style: TextStyle(fontSize: Globals.appBarFontSize),
+            "${Globals.bookName} $_currentChapterValue : $_currentVerseValue"),
         bottom: TabBar(
           controller: tabController,
           tabs: [
             Tab(
-                child: Text(tabNames[0],
-                    style: TextStyle(fontSize: primaryTextSize))),
+              child: Text(
+                tabNames[0],
+                // style: TextStyle(fontSize: primaryTextSize),
+              ),
+            ),
             Tab(
-                child: Text(tabNames[1],
-                    style: TextStyle(fontSize: primaryTextSize))),
+              child: Text(
+                tabNames[1],
+                //style: TextStyle(fontSize: primaryTextSize),
+              ),
+            ),
             Tab(
-                child: Text(tabNames[2],
-                    style: TextStyle(fontSize: primaryTextSize))),
+              child: Text(
+                tabNames[2],
+                //style: TextStyle(fontSize: primaryTextSize),
+              ),
+            ),
           ],
         ),
       ),

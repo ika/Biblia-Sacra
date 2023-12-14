@@ -125,7 +125,7 @@ class AppBarVersions extends StatelessWidget {
             );
           },
           separatorBuilder: (BuildContext context, int index) =>
-              const Divider(height: 2.0),
+              const Divider(),
         );
       },
     );

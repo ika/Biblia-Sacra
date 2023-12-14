@@ -156,13 +156,13 @@ class _DicSearchState extends State<DictSearch> {
     return ListTile(
       title: Text(
         snapshot.data![index].word!,
-        style:
-            TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+        // style:
+        //     TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
       subtitle: Text(
         snapshot.data![index].trans!,
-        style:
-            TextStyle(fontWeight: FontWeight.normal, fontSize: primaryTextSize),
+        // style:
+        //     TextStyle(fontWeight: FontWeight.normal, fontSize: primaryTextSize),
       ),
       //onTap: () {},
     );
@@ -174,7 +174,7 @@ class _DicSearchState extends State<DictSearch> {
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {

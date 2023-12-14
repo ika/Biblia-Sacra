@@ -115,12 +115,12 @@ class _BookMarkState extends State<BookMarksPage> {
             trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
             title: Text(
               list[index].title,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+              // style: TextStyle(
+              //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
             ),
             subtitle: Text(
               list[index].subtitle,
-              style: TextStyle(fontSize: primaryTextSize),
+              // style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
               BlocProvider.of<ChapterCubit>(context)
@@ -143,30 +143,27 @@ class _BookMarkState extends State<BookMarksPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
             backButton(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Bookmarks',
-          style: TextStyle(fontSize: Globals.appBarFontSize),
+          //style: TextStyle(fontSize: Globals.appBarFontSize),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
-        child: ListView.separated(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: list == null ? 0 : list.length,
-          itemBuilder: (BuildContext context, int index) {
-            return makeListTile(list, index);
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
-        ),
+      body: ListView.separated(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: list == null ? 0 : list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return makeListTile(list, index);
+        },
+        separatorBuilder: (BuildContext context, int index) =>
+            const Divider(),
       ),
     );
   }

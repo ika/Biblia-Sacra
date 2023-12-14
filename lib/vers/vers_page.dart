@@ -96,16 +96,16 @@ class VersionsPageState extends State<VersionsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
             backButton(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Bibles',
-          style: TextStyle(fontSize: Globals.appBarFontSize),
+          // style: TextStyle(fontSize: Globals.appBarFontSize),
         ),
       ),
       body: versionsWidget(),
