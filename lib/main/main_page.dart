@@ -50,12 +50,7 @@ bool isShowing = true;
 
 class MainPage extends StatefulWidget {
   const MainPage(
-      {super.key,
-      required this.currentChapterValue,
-      required this.currentVerseValue});
-
-  final int currentChapterValue;
-  final int currentVerseValue;
+      {super.key});
 
   @override
   State<MainPage> createState() => MainPageState();
@@ -65,6 +60,7 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+
     initialScrollController = ItemScrollController();
 
     pageController = PageController(initialPage: Globals.bookChapter - 1);
@@ -83,8 +79,7 @@ class MainPageState extends State<MainPage> {
           () {
             if (initialScrollController!.isAttached) {
               initialScrollController!.scrollTo(
-                index: widget.currentVerseValue - 1,
-                //Globals.chapterVerse, // from verse selector
+                index: Globals.chapterVerse, // from verse selector
                 duration: Duration(milliseconds: Globals.navigatorLongDelay),
                 curve: Curves.easeInOutCubic,
               );

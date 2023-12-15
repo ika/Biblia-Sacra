@@ -18,8 +18,21 @@ var filteredBooks = {};
 var results = {};
 List<String> tabNames = ['Books', 'Chapters', 'Verses'];
 
+int _currentChapterValue = Globals.bookChapter;
+int _currentVerseValue = Globals.chapterVerse;
+
+// // Chapter
+// sharedPrefs.getIntPref('chapter').then((c) {
+//   _currentChapterValue = c ?? 0;
+// });
+
+// // Verse
+// sharedPrefs.getIntPref('verse').then((v) {
+//   _currentVerseValue = v ?? 0;
+// });
+
 class MainSelector extends StatefulWidget {
-  const MainSelector({Key? key}) : super(key: key);
+  const MainSelector({super.key});
 
   @override
   State<MainSelector> createState() => _MainSelectorState();
@@ -29,14 +42,13 @@ class _MainSelectorState extends State<MainSelector>
     with SingleTickerProviderStateMixin {
   TabController? tabController;
 
-  int _currentChapterValue = 1;
-  int _currentVerseValue = 1;
-
   @override
   initState() {
     super.initState();
-    Globals.chapterVerse = 0;
-    //Globals.selectorText = "${Globals.bookName}: ${Globals.bookChapter}:1";
+
+    // _currentChapterValue = Globals.bookChapter;
+    // _currentVerseValue = Globals.chapterVerse;
+
     primaryTextSize = Globals.initialTextSize;
     allBooks = bookLists.getBookListByLang(Globals.bibleLang);
     filteredBooks = allBooks;
@@ -64,23 +76,31 @@ class _MainSelectorState extends State<MainSelector>
   }
 
   backButton(BuildContext context) {
-    //print("$_currentChapterValue  $_currentVerseValue");
+    // update Chapter
+    Globals.bookChapter = _currentChapterValue;
+    sharedPrefs.setIntPref('chapter', _currentChapterValue).then((v) {
+      BlocProvider.of<ChapterCubit>(context).setChapter(_currentChapterValue);
 
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MainPage(
-                currentChapterValue: _currentChapterValue,
-                currentVerseValue: _currentVerseValue),
-          ),
+      // upate Verse
+      //_currentVerseValue -= 1; // scroller starts with 0
+
+      Globals.chapterVerse = _currentVerseValue;
+      sharedPrefs.setIntPref('verse', _currentVerseValue).then((v) {
+        Future.delayed(
+          Duration(milliseconds: Globals.navigatorDelay),
+          () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainPage(),
+              ),
+            );
+            // Navigator.of(context).pushNamed('/MainPage':
+            //arguments: MainPageArgs(_currentChapterValue, _currentVerseValue));
+          },
         );
-        // Navigator.of(context).pushNamed('/MainPage':
-        //arguments: MainPageArgs(_currentChapterValue, _currentVerseValue));
-      },
-    );
+      });
+    });
   }
 
   // Widget versesWidget() {
@@ -210,7 +230,8 @@ class _MainSelectorState extends State<MainSelector>
     return Container(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder<int>(
-        future: dbQueries.getVerseCount(Globals.bibleBook, Globals.bookChapter),
+        future:
+            dbQueries.getVerseCount(Globals.bibleBook, _currentChapterValue),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             int lastVerse = snapshot.data!.toInt();
@@ -227,7 +248,6 @@ class _MainSelectorState extends State<MainSelector>
                   itemHeight: 100,
                   axis: Axis.horizontal,
                   onChanged: (value) {
-                    Globals.chapterVerse = value;
                     setState(() {
                       _currentVerseValue = value;
                     });
@@ -270,9 +290,9 @@ class _MainSelectorState extends State<MainSelector>
                   itemHeight: 100,
                   axis: Axis.horizontal,
                   onChanged: (value) {
-                    Globals.bookChapter = value;
                     setState(() {
                       _currentChapterValue = value;
+                      _currentVerseValue = 1;
                     });
                   },
                   decoration: BoxDecoration(
@@ -321,7 +341,7 @@ class _MainSelectorState extends State<MainSelector>
                   onTap: () {
                     int book = key + 1;
                     Globals.bibleBook = book;
-                    Globals.bookChapter = 1;
+                    //Globals.bookChapter = 1;
                     sharedPrefs.setIntPref('book', book).then(
                       (value) {
                         bookLists.writeBookName(book).then(

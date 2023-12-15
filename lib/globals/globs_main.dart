@@ -8,7 +8,7 @@ class Globals {
   //static String versionName = 'King James Version';  // version full name
   static int bibleBook = 43; // Gospel of John
   //static int bookNameIndex = 42; // index is one less that book number
-  static int bookChapter = 1; // Chapter
+  static int bookChapter = 1; // used for Block cubit
   static int chapterVerse = 1; // Verse
   static String bookName = 'John'; // Book name
   //--------------------------------------

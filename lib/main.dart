@@ -26,6 +26,9 @@ GetLists _lists = GetLists();
 VkQueries _vkQueries = VkQueries();
 BookLists bookLists = BookLists();
 
+late int chapterVerse;
+late int bookChapter;
+
 void getActiveVersionsCount() async {
   Globals.activeVersionCount = await _vkQueries.getActiveVersionCount();
 }
@@ -57,33 +60,32 @@ Future<void> main() async {
                     _sharedPrefs.getIntPref('chapter').then(
                       (e) {
                         Globals.bookChapter = e ?? 1;
+
                         // Verse
-                        _sharedPrefs.getIntPref('verse').then(
-                          (f) {
-                            Globals.chapterVerse = f ?? 0;
-                            // Book Name
-                            bookLists.readBookName(Globals.bibleBook).then(
-                              (g) {
-                                Globals.bookName = g;
-                                getActiveVersionsCount();
-                                // _sharedPrefs
-                                //     .getDoublePref('textSize')
-                                //     .then((t) {
-                                //   Globals.initialTextSize = t ?? 16;
-                                //   _sharedPrefs
-                                //       .getStringPref('fontSel')
-                                //       .then((f) {
-                                //     Globals.initialFont = f ?? 'Roboto';
-                                //     getActiveVersionsCount();
-                                //   });
-                                // });
-                                runApp(
-                                  const BibleApp(),
-                                );
-                              },
-                            );
-                          },
-                        );
+                        _sharedPrefs.getIntPref('verse').then((f) {
+                          Globals.chapterVerse = f ?? 1;
+                          // Book Name
+                          bookLists.readBookName(Globals.bibleBook).then(
+                            (g) {
+                              Globals.bookName = g;
+                              getActiveVersionsCount();
+                              // _sharedPrefs
+                              //     .getDoublePref('textSize')
+                              //     .then((t) {
+                              //   Globals.initialTextSize = t ?? 16;
+                              //   _sharedPrefs
+                              //       .getStringPref('fontSel')
+                              //       .then((f) {
+                              //     Globals.initialFont = f ?? 'Roboto';
+                              //     getActiveVersionsCount();
+                              //   });
+                              // });
+                              runApp(
+                                const BibleApp(),
+                              );
+                            },
+                          );
+                        });
                       },
                     );
                   },
@@ -165,8 +167,7 @@ class BibleApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         initialRoute: '/MainPage',
         routes: {
-          '/MainPage': (context) =>
-              const MainPage(currentChapterValue: 1, currentVerseValue: 1),
+          '/MainPage': (context) => const MainPage(),
           '/MainSearch': (context) => const MainSearch(),
           '/DictSearch': (context) => const DictSearch(),
           '/BookMarksPage': (context) => const BookMarksPage(),
