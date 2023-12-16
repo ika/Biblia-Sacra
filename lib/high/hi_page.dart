@@ -158,16 +158,20 @@ class _HighLightsPage extends State<HighLightsPage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
-        child: ListView.separated(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: list == null ? 0 : list.length,
-          itemBuilder: (BuildContext context, int index) {
-            return makeListTile(list, index);
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: list == null ? 0 : list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return makeListTile(list, index);
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+            ),
+          ],
         ),
       ),
     );

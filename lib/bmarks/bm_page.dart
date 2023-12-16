@@ -155,15 +155,22 @@ class _BookMarkState extends State<BookMarksPage> {
           //style: TextStyle(fontSize: Globals.appBarFontSize),
         ),
       ),
-      body: ListView.separated(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: list == null ? 0 : list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeListTile(list, index);
-        },
-        separatorBuilder: (BuildContext context, int index) =>
-            const Divider(),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: list == null ? 0 : list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return makeListTile(list, index);
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+            ),
+          ],
+        ),
       ),
     );
   }

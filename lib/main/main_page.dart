@@ -79,7 +79,7 @@ class MainPageState extends State<MainPage> {
           () {
             if (initialScrollController!.isAttached) {
               initialScrollController!.scrollTo(
-                index: Globals.chapterVerse, // from verse selector
+                index: Globals.chapterVerse -1, // from verse selector
                 duration: Duration(milliseconds: Globals.navigatorLongDelay),
                 curve: Curves.easeInOutCubic,
               );
@@ -622,9 +622,9 @@ class MainPageState extends State<MainPage> {
                 (value) {
                   Globals.bookChapter = c;
                   BlocProvider.of<ChapterCubit>(context).setChapter(c);
-                  _sharedPrefs.setIntPref('verse', 0).then(
+                  _sharedPrefs.setIntPref('verse', 1).then(
                     (value) {
-                      //Globals.chapterVerse = 0; // move to top of next chapter
+                      Globals.chapterVerse = 1; // move to top of next chapter
                     },
                   );
                 },
@@ -936,12 +936,13 @@ class MainPageState extends State<MainPage> {
                 // style: ElevatedButton.styleFrom(
                 //     backgroundColor: theme.colorScheme.inversePrimary),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainSelector(),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const MainSelector(),
+                  //   ),
+                  // );
+                  Navigator.of(context).pushNamed('/MainSelector');
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

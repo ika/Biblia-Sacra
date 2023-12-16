@@ -47,9 +47,13 @@ class _EditNotePageState extends State<EditNotePage> {
   }
 
   Future<void> updateEdit() async {
-    widget.model.title = _titleController.text;
-    widget.model.contents = _contentsController.text;
-    await _ntQueries.updateNote(widget.model);
+    if (_titleController.text.isEmpty & _contentsController.text.isEmpty) {
+      await _ntQueries.deleteNote(widget.model.id!);
+    } else {
+      widget.model.title = _titleController.text;
+      widget.model.contents = _contentsController.text;
+      await _ntQueries.updateNote(widget.model);
+    }
   }
 
   backButton(BuildContext context) {
@@ -77,7 +81,7 @@ class _EditNotePageState extends State<EditNotePage> {
   Widget showGotoVerse() {
     if (widget.model.bid! > 0 && widget.mode.isNotEmpty) {
       return FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        //backgroundColor: Theme.of(context).colorScheme.primary,
         label: const Text('Go to Verse'),
         icon: const Icon(Icons.arrow_circle_right_outlined),
         onPressed: () {
@@ -153,12 +157,17 @@ class _EditNotePageState extends State<EditNotePage> {
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
+                // if (_formKey.currentState!.validate()) {
+                updateEdit().then((value) {
+                  Navigator.of(context).pop();
+                });
+                // }
               },
             ),
-            title: Text(
+            title: const Text(
               'Edit Note',
-              style: TextStyle(fontSize: Globals.appBarFontSize),
+              //style: TextStyle(fontSize: Globals.appBarFontSize),
             ),
             actions: [
               IconButton(
@@ -170,77 +179,82 @@ class _EditNotePageState extends State<EditNotePage> {
             ],
           ),
           body: Material(
-            child: Container(
-              margin: const EdgeInsets.only(top: 20.0),
-              padding: const EdgeInsets.only(top: 12.0, left: 12, right: 12),
-              child: Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: _titleController,
-                        maxLength: 50,
-                        maxLines: 1, // auto line break
-                        autofocus: false,
-                        decoration: InputDecoration(
-                          labelText: 'Title',
-                          labelStyle: Theme.of(context).textTheme.titleMedium,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Title is required!';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      TextFormField(
-                        controller: _contentsController,
-                        maxLength: 256,
-                        maxLines: null, // auto line break
-                        autofocus: false,
-                        decoration: InputDecoration(
-                          labelText: 'Text',
-                          labelStyle: Theme.of(context).textTheme.titleMedium,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Text is required!';
-                          }
-                          return null;
-                        },
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  updateEdit().then((value) {
-                                    Navigator.of(context).pop();
-                                  });
-                                }
-                              },
-                              child: const Text('Submit'),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: _titleController,
+                            maxLength: 50,
+                            maxLines: 1, // auto line break
+                            autofocus: false,
+                            decoration: InputDecoration(
+                              labelText: 'Title',
+                              labelStyle:
+                                  Theme.of(context).textTheme.titleMedium,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
                             ),
-                          ],
-                        ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Title is required!';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          TextFormField(
+                            controller: _contentsController,
+                            maxLength: 256,
+                            maxLines: null, // auto line break
+                            autofocus: false,
+                            decoration: InputDecoration(
+                              labelText: 'Text',
+                              labelStyle:
+                                  Theme.of(context).textTheme.titleMedium,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Text is required!';
+                              }
+                              return null;
+                            },
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      updateEdit().then((value) {
+                                        Navigator.of(context).pop();
+                                      });
+                                    }
+                                  },
+                                  child: const Text('Submit'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),

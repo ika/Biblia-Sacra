@@ -69,7 +69,7 @@ class BookLists {
         sharedPrefs.setStringPref('bookname', name).then(
           (v) {
             Globals.bookName = name;
-            Globals.selectorText = "$name: 1:1";
+            //Globals.selectorText = "$name: 1:1";
           },
         );
       },

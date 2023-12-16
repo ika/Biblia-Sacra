@@ -94,7 +94,7 @@ class _DicSearchState extends State<DictSearch> {
 
   Widget searchWidget() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
           TextFormField(

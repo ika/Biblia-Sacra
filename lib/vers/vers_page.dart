@@ -48,7 +48,7 @@ class VersionsPageState extends State<VersionsPage> {
   }
 
   Widget versionsWidget() {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder<List<VkModel>>(
         future: vkQueries.getAllVersions(),

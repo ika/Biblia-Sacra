@@ -7,8 +7,8 @@ import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/main/main_search.dart';
+import 'package:bibliasacra/main/main_selector.dart';
 import 'package:bibliasacra/notes/no_page.dart';
-import 'package:bibliasacra/theme/apptheme.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
@@ -99,40 +99,41 @@ Future<void> main() async {
   });
 }
 
-class BibleApp extends StatelessWidget {
+class BibleApp extends StatefulWidget {
   const BibleApp({super.key});
 
   @override
+  State<BibleApp> createState() => _BibleAppState();
+}
+
+class _BibleAppState extends State<BibleApp> {
+  // Used to select if we use the dark or light theme, start with system mode.
+  ThemeMode themeMode = ThemeMode.system;
+  // Opt in/out on Material 3
+  bool useMaterial3 = true;
+
+  @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = ColorScheme.fromSeed(
-        brightness: MediaQuery.platformBrightnessOf(context),
-        seedColor: Colors.blue);
+    // Select the predefined FlexScheme color scheme to use. Modify the
+    // used FlexScheme enum value below to try other pre-made color schemes.
+    const FlexScheme usedScheme = FlexScheme.mandyRed;
 
-    //final ColorScheme colorScheme = const ColorScheme(
-    //brightness: brightness,
-    // primary: primary,
-    // onPrimary: onPrimary,
-    // secondary: secondary,
-    // onSecondary: onSecondary,
-    // error: error,
-    // onError: onError,
-    // background: background,
-    // onBackground: onBackground,
-    // surface: surface,
-    // onSurface: onSurface
+    // final ColorScheme colorScheme = ColorScheme.fromSeed(
+    //     brightness: MediaQuery.platformBrightnessOf(context),
+    //     seedColor: Colors.blue);
 
-    ThemeData lightTheme = ThemeData(
-      colorScheme: colorScheme,
-      scaffoldBackgroundColor: Colors.grey[200],
-      appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.primary,
-        centerTitle: true,
-      ),
-      fontFamily: GoogleFonts.notoSans().fontFamily,
-      textTheme: const TextTheme(),
-    );
+    // ThemeData lightTheme = ThemeData(
+    //   colorScheme: colorScheme,
+    //   scaffoldBackgroundColor: Colors.grey[200],
+    //   appBarTheme: AppBarTheme(
+    //     backgroundColor: colorScheme.primary,
+    //     centerTitle: true,
+    //   ),
+    //   fontFamily: GoogleFonts.notoSans().fontFamily,
+    //   textTheme: const TextTheme(),
+    // );
 
-    ThemeData darkTheme = ThemeData(colorScheme: colorScheme);
+    //ThemeData darkTheme = ThemeData(colorScheme: colorScheme);
 
     return MultiBlocProvider(
       providers: [
@@ -162,12 +163,31 @@ class BibleApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bible App',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.light,
+        theme: FlexThemeData.light(
+          scheme: usedScheme,
+          // Use very subtly themed app bar elevation in light mode.
+          appBarElevation: 0.5,
+          // Opt in/out of using Material 3.
+          useMaterial3: useMaterial3,
+          // We use the nicer Material 3 Typography in both M2 and M3 mode.
+          typography: Typography.material2021(platform: defaultTargetPlatform),
+        ),
+        // Same definition for the dark theme, but using FlexThemeData.dark().
+        darkTheme: FlexThemeData.dark(
+          scheme: usedScheme,
+          // Use a bit more themed elevated app bar in dark mode.
+          appBarElevation: 2,
+          // Opt in/out of using Material 3.
+          useMaterial3: useMaterial3,
+          // We use the nicer Material 3 Typography in both M2 and M3 mode.
+          typography: Typography.material2021(platform: defaultTargetPlatform),
+        ),
+        // Use the above dark or light theme based on active themeMode.
+        themeMode: themeMode,
         initialRoute: '/MainPage',
         routes: {
           '/MainPage': (context) => const MainPage(),
+          '/MainSelector': (context) => const MainSelector(),
           '/MainSearch': (context) => const MainSearch(),
           '/DictSearch': (context) => const DictSearch(),
           '/BookMarksPage': (context) => const BookMarksPage(),

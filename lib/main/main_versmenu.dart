@@ -25,7 +25,7 @@ Future<dynamic> versionsDialog(BuildContext context, String ret) {
             height: Globals.dialogHeight,
             width: MediaQuery.of(context).size.width,
             child: const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -93,7 +93,7 @@ class AppBarVersions extends StatelessWidget {
           itemCount: len,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              trailing: const Icon(Icons.arrow_right),
+              trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
               title: Text(
                 snapshot.data![index].m!,
               ),

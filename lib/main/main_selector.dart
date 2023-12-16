@@ -2,7 +2,6 @@ import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,8 +17,8 @@ var filteredBooks = {};
 var results = {};
 List<String> tabNames = ['Books', 'Chapters', 'Verses'];
 
-int _currentChapterValue = Globals.bookChapter;
-int _currentVerseValue = Globals.chapterVerse;
+late int _currentChapterValue; // = Globals.bookChapter;
+late int _currentVerseValue; // = Globals.chapterVerse;
 
 // // Chapter
 // sharedPrefs.getIntPref('chapter').then((c) {
@@ -46,8 +45,8 @@ class _MainSelectorState extends State<MainSelector>
   initState() {
     super.initState();
 
-    // _currentChapterValue = Globals.bookChapter;
-    // _currentVerseValue = Globals.chapterVerse;
+    _currentChapterValue = Globals.bookChapter;
+    _currentVerseValue = Globals.chapterVerse;
 
     primaryTextSize = Globals.initialTextSize;
     allBooks = bookLists.getBookListByLang(Globals.bibleLang);
@@ -77,25 +76,24 @@ class _MainSelectorState extends State<MainSelector>
 
   backButton(BuildContext context) {
     // update Chapter
-    Globals.bookChapter = _currentChapterValue;
-    sharedPrefs.setIntPref('chapter', _currentChapterValue).then((v) {
+    sharedPrefs.setIntPref('chapter', _currentChapterValue).then((c) {
+      Globals.bookChapter = _currentChapterValue;
+
       BlocProvider.of<ChapterCubit>(context).setChapter(_currentChapterValue);
 
       // upate Verse
-      //_currentVerseValue -= 1; // scroller starts with 0
-
-      Globals.chapterVerse = _currentVerseValue;
       sharedPrefs.setIntPref('verse', _currentVerseValue).then((v) {
+        Globals.chapterVerse = _currentVerseValue;
         Future.delayed(
           Duration(milliseconds: Globals.navigatorDelay),
           () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MainPage(),
-              ),
-            );
-            // Navigator.of(context).pushNamed('/MainPage':
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => const MainPage(),
+            //   ),
+            // );
+            Navigator.of(context).pushNamed('/MainPage');
             //arguments: MainPageArgs(_currentChapterValue, _currentVerseValue));
           },
         );
@@ -292,7 +290,6 @@ class _MainSelectorState extends State<MainSelector>
                   onChanged: (value) {
                     setState(() {
                       _currentChapterValue = value;
-                      _currentVerseValue = 1;
                     });
                   },
                   decoration: BoxDecoration(
@@ -314,7 +311,7 @@ class _MainSelectorState extends State<MainSelector>
 
   Widget booksWidget() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
           TextField(
@@ -340,19 +337,17 @@ class _MainSelectorState extends State<MainSelector>
                   ),
                   onTap: () {
                     int book = key + 1;
-                    Globals.bibleBook = book;
                     //Globals.bookChapter = 1;
                     sharedPrefs.setIntPref('book', book).then(
-                      (value) {
+                      (v) {
+                        Globals.bibleBook = book;
                         bookLists.writeBookName(book).then(
-                          (value) {
-                            sharedPrefs.setIntPref('chapter', 1).then(
-                              (value) {
-                                BlocProvider.of<ChapterCubit>(context)
-                                    .setChapter(1);
-                                tabController!.animateTo(1);
-                              },
-                            );
+                          (v) {
+                            setState(() {
+                              _currentChapterValue = _currentVerseValue = 1;
+                            });
+
+                            tabController!.animateTo(1);
                           },
                         );
                       },
