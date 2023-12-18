@@ -21,29 +21,22 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 SharedPrefs _sharedPrefs = SharedPrefs();
-Utilities utilities = Utilities();
-GetLists _lists = GetLists();
-VkQueries _vkQueries = VkQueries();
-BookLists bookLists = BookLists();
-
-late int chapterVerse;
-late int bookChapter;
 
 void getActiveVersionsCount() async {
-  Globals.activeVersionCount = await _vkQueries.getActiveVersionCount();
+  Globals.activeVersionCount = await VkQueries().getActiveVersionCount();
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  utilities.getDialogeHeight();
+  Utilities().getDialogeHeight();
 
   _sharedPrefs.getIntPref('colorsList').then((p) {
     Globals.colorListNumber = p ?? 4; // Amber
     _sharedPrefs.getIntPref('version').then(
       (a) {
         Globals.bibleVersion = a ?? 1;
-        _lists.updateActiveLists(Globals.bibleVersion);
+        GetLists().updateActiveLists(Globals.bibleVersion);
         // language
         _sharedPrefs.getStringPref('language').then(
           (b) {
@@ -65,7 +58,7 @@ Future<void> main() async {
                         _sharedPrefs.getIntPref('verse').then((f) {
                           Globals.chapterVerse = f ?? 1;
                           // Book Name
-                          bookLists.readBookName(Globals.bibleBook).then(
+                          BookLists().readBookName(Globals.bibleBook).then(
                             (g) {
                               Globals.bookName = g;
                               getActiveVersionsCount();
