@@ -108,7 +108,7 @@ class BibleApp extends StatefulWidget {
 
 class _BibleAppState extends State<BibleApp> {
   // Used to select if we use the dark or light theme, start with system mode.
-  ThemeMode themeMode = ThemeMode.system;
+  ThemeMode themeMode = ThemeMode.light;
   // Opt in/out on Material 3
   bool useMaterial3 = true;
 
@@ -116,7 +116,15 @@ class _BibleAppState extends State<BibleApp> {
   Widget build(BuildContext context) {
     // Select the predefined FlexScheme color scheme to use. Modify the
     // used FlexScheme enum value below to try other pre-made color schemes.
-    const FlexScheme usedScheme = FlexScheme.mandyRed;
+    const FlexScheme usedScheme = FlexScheme.rosewood;
+    const double appBarElevation = 0.5;
+    const double appBarOpacity = 0.94;
+    final String? fontFamily = GoogleFonts.notoSans().fontFamily;
+
+    // DrawerThemeData drawerThemeData =
+    //     const DrawerThemeData(backgroundColor: FlexColor.rosewoodLightPrimary);
+
+    //AppBarTheme appBarTheme = const AppBarTheme(centerTitle: true);
 
     // final ColorScheme colorScheme = ColorScheme.fromSeed(
     //     brightness: MediaQuery.platformBrightnessOf(context),
@@ -163,26 +171,24 @@ class _BibleAppState extends State<BibleApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bible App',
+
         theme: FlexThemeData.light(
           scheme: usedScheme,
-          // Use very subtly themed app bar elevation in light mode.
-          appBarElevation: 0.5,
-          // Opt in/out of using Material 3.
           useMaterial3: useMaterial3,
-          // We use the nicer Material 3 Typography in both M2 and M3 mode.
+          fontFamily: fontFamily,
+          appBarStyle: FlexAppBarStyle.primary,
+          appBarElevation: appBarElevation,
+          appBarOpacity: appBarOpacity,
+          scaffoldBackground: Colors.grey[200],
           typography: Typography.material2021(platform: defaultTargetPlatform),
         ),
         // Same definition for the dark theme, but using FlexThemeData.dark().
         darkTheme: FlexThemeData.dark(
           scheme: usedScheme,
-          // Use a bit more themed elevated app bar in dark mode.
-          appBarElevation: 2,
-          // Opt in/out of using Material 3.
           useMaterial3: useMaterial3,
-          // We use the nicer Material 3 Typography in both M2 and M3 mode.
+          fontFamily: fontFamily,
           typography: Typography.material2021(platform: defaultTargetPlatform),
         ),
-        // Use the above dark or light theme based on active themeMode.
         themeMode: themeMode,
         initialRoute: '/MainPage',
         routes: {

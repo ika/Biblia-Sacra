@@ -376,6 +376,7 @@ class _MainSelectorState extends State<MainSelector>
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         // backgroundColor: Theme.of(context).colorScheme.primary,
+        centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
@@ -388,23 +389,24 @@ class _MainSelectorState extends State<MainSelector>
             "${Globals.bookName} $_currentChapterValue : $_currentVerseValue"),
         bottom: TabBar(
           controller: tabController,
+          //labelStyle: Theme.of(context).tabBarTheme.labelStyle?.copyWith(color: Colors.white),
           tabs: [
             Tab(
               child: Text(
                 tabNames[0],
-                // style: TextStyle(fontSize: primaryTextSize),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
             Tab(
               child: Text(
                 tabNames[1],
-                //style: TextStyle(fontSize: primaryTextSize),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
             Tab(
               child: Text(
                 tabNames[2],
-                //style: TextStyle(fontSize: primaryTextSize),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ],

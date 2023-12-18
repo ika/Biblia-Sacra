@@ -10,7 +10,6 @@ import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_contmenu.dart';
 import 'package:bibliasacra/main/main_dict.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
-import 'package:bibliasacra/main/main_selector.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
@@ -48,6 +47,8 @@ int verseNumber = 0;
 bool? initialPageScroll;
 bool isShowing = true;
 
+
+
 class MainPage extends StatefulWidget {
   const MainPage(
       {super.key});
@@ -57,9 +58,12 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
+
   @override
   void initState() {
     super.initState();
+
+      
 
     initialScrollController = ItemScrollController();
 
@@ -656,7 +660,7 @@ class MainPageState extends State<MainPage> {
               //   image: AssetImage('path/to/header_background.png'),
               // ),
             ),
-            child: const Stack(
+            child: Stack(
               children: [
                 // const Positioned(
                 //   bottom: 12.0,
@@ -675,7 +679,7 @@ class MainPageState extends State<MainPage> {
                   child: Text(
                     "Biblia Sacra",
                     style: TextStyle(
-                        //color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontSize: 32.0,
                         fontWeight: FontWeight.w500),
                   ),
@@ -915,7 +919,7 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final ThemeData theme = Theme.of(context);
+  
     // final args = ModalRoute.of(context)!.settings.arguments as MainPageArgs;
     // print("${args.currentChapterValue} ${args.currentVerseValue}");
 

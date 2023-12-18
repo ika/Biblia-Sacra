@@ -54,13 +54,7 @@ class NotesPageState extends State<NotesPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const MainPage(),
-        //   ),
-        // );
-        Navigator.of(context).pushNamed('/MainPage');
+        Navigator.of(context).pop();
       },
     );
   }
@@ -118,7 +112,8 @@ class NotesPageState extends State<NotesPage> {
             }
           },
           child: ListTile(
-            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+            trailing: Icon(Icons.arrow_right,
+                color: Theme.of(context).colorScheme.primary),
             title: Text(
               "${list[index].title}",
               style: TextStyle(
@@ -155,16 +150,18 @@ class NotesPageState extends State<NotesPage> {
             itemBuilder: (BuildContext context, int index) {
               return makeListTile(list, index);
             },
-            separatorBuilder: (BuildContext context, int index) => const Divider(),
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
           ),
         ],
       ),
     );
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        //backgroundColor: Theme.of(context).colorScheme.primary,
+        centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

@@ -60,13 +60,7 @@ class _EditNotePageState extends State<EditNotePage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const MainPage(),
-        //   ),
-        // );
-        Navigator.of(context).pushNamed('/MainPage');
+        Navigator.of(context).pop();
       },
     );
   }
@@ -151,16 +145,17 @@ class _EditNotePageState extends State<EditNotePage> {
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          //backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            //backgroundColor: Theme.of(context).colorScheme.primary,
+            centerTitle: true,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
                 //Navigator.of(context).pop();
                 // if (_formKey.currentState!.validate()) {
                 updateEdit().then((value) {
-                  Navigator.of(context).pop();
+                  backButton(context);
                 });
                 // }
               },

@@ -64,13 +64,7 @@ class _MainSearchState extends State<MainSearch> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const MainPage(),
-        //   ),
-        // );
-        Navigator.of(context).pushNamed('/MainPage');
+        Navigator.of(context).pop();
       },
     );
   }
@@ -253,9 +247,10 @@ class _MainSearchState extends State<MainSearch> {
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          //backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            //backgroundColor: Theme.of(context).colorScheme.primary,
+            centerTitle: true,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {

@@ -23,7 +23,6 @@ class VersionsPage extends StatefulWidget {
 }
 
 class VersionsPageState extends State<VersionsPage> {
-
   @override
   void initState() {
     counter = 0;
@@ -36,13 +35,7 @@ class VersionsPageState extends State<VersionsPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const MainPage(),
-        //   ),
-        // );
-        Navigator.of(context).pushNamed('/MainPage');
+        Navigator.of(context).pop();
       },
     );
   }
@@ -94,9 +87,10 @@ class VersionsPageState extends State<VersionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        //backgroundColor: Theme.of(context).colorScheme.primary,
+        centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

@@ -39,13 +39,8 @@ class _HighLightsPage extends State<HighLightsPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const MainPage(),
-        //   ),
-        // );
-        Navigator.of(context).pushNamed('/MainPage');
+        //Navigator.of(context).pushNamed('/MainPage');
+        Navigator.of(context).pop();
       },
     );
   }
@@ -113,7 +108,8 @@ class _HighLightsPage extends State<HighLightsPage> {
             }
           },
           child: ListTile(
-            trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+            trailing: Icon(Icons.arrow_right,
+                color: Theme.of(context).colorScheme.primary),
             title: Text(
               list[index].title,
               style: TextStyle(
@@ -142,9 +138,10 @@ class _HighLightsPage extends State<HighLightsPage> {
         );
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        //backgroundColor: Theme.of(context).colorScheme.primary,
+        centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
