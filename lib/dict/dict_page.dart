@@ -170,16 +170,16 @@ class _DicSearchState extends State<DictSearch> {
           
           appBar: AppBar(
             //backgroundColor: Theme.of(context).colorScheme.primary,
-            centerTitle: true,
+            //centerTitle: true,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
                 backButton(context);
               },
             ),
-            title: Text(
+            title: const Text(
               'Latin Word List',
-              style: TextStyle(fontSize: Globals.appBarFontSize),
+              //style: TextStyle(fontSize: Globals.appBarFontSize),
             ),
           ),
           body: searchWidget(),

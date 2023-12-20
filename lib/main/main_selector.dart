@@ -376,7 +376,7 @@ class _MainSelectorState extends State<MainSelector>
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         // backgroundColor: Theme.of(context).colorScheme.primary,
-        centerTitle: true,
+        //centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
@@ -394,19 +394,19 @@ class _MainSelectorState extends State<MainSelector>
             Tab(
               child: Text(
                 tabNames[0],
-                style: const TextStyle(color: Colors.white),
+                //style: const TextStyle(color: Colors.white),
               ),
             ),
             Tab(
               child: Text(
                 tabNames[1],
-                style: const TextStyle(color: Colors.white),
+                //style: const TextStyle(color: Colors.white),
               ),
             ),
             Tab(
               child: Text(
                 tabNames[2],
-                style: const TextStyle(color: Colors.white),
+                //style: const TextStyle(color: Colors.white),
               ),
             ),
           ],

@@ -32,7 +32,7 @@ import 'package:word_selectable_text/word_selectable_text.dart';
 PageController? pageController;
 ItemScrollController? initialScrollController;
 
-double? primaryTextSize;
+//double? primaryTextSize;
 
 DbQueries _dbQueries = DbQueries();
 SharedPrefs _sharedPrefs = SharedPrefs();
@@ -47,23 +47,17 @@ int verseNumber = 0;
 bool? initialPageScroll;
 bool isShowing = true;
 
-
-
 class MainPage extends StatefulWidget {
-  const MainPage(
-      {super.key});
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => MainPageState();
 }
 
 class MainPageState extends State<MainPage> {
-
   @override
   void initState() {
     super.initState();
-
-      
 
     initialScrollController = ItemScrollController();
 
@@ -73,7 +67,7 @@ class MainPageState extends State<MainPage> {
     //     .themeData
     //     .primaryColor as MaterialColor?;
 
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -83,7 +77,7 @@ class MainPageState extends State<MainPage> {
           () {
             if (initialScrollController!.isAttached) {
               initialScrollController!.scrollTo(
-                index: Globals.chapterVerse -1, // from verse selector
+                index: Globals.chapterVerse - 1, // from verse selector
                 duration: Duration(milliseconds: Globals.navigatorLongDelay),
                 curve: Curves.easeInOutCubic,
               );
@@ -402,8 +396,8 @@ class MainPageState extends State<MainPage> {
         selectable: true,
         highlight: true,
         text: "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-        style:
-            TextStyle(fontStyle: FontStyle.normal, fontSize: primaryTextSize),
+        // style:
+        //     TextStyle(fontStyle: FontStyle.normal, fontSize: primaryTextSize),
         onWordTapped: (word, index) {
           Globals.dictionaryLookup = word;
           dictDialog(context);
@@ -433,7 +427,7 @@ class MainPageState extends State<MainPage> {
       return Text(
         "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
         style: TextStyle(
-            fontSize: primaryTextSize,
+            //fontSize: primaryTextSize,
             backgroundColor: (getHighLightMatch(snapshot.data[index].id))
                 ? Theme.of(context).colorScheme.primaryContainer
                 : null),
@@ -650,38 +644,27 @@ class MainPageState extends State<MainPage> {
   Widget showDrawer(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.all(20),
         children: [
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              // image: DecorationImage(
-              //   fit: BoxFit.fill,
-              //   image: AssetImage('path/to/header_background.png'),
-              // ),
-            ),
+                //color: Theme.of(context).colorScheme.primary,
+                // image: DecorationImage(
+                //   fit: BoxFit.fill,
+                //   image: AssetImage('path/to/header_background.png'),
+                // ),
+                ),
             child: Stack(
               children: [
-                // const Positioned(
-                //   bottom: 12.0,
-                //   right: 16.0,
-                //   child: Text(
-                //     "Version 1.0",
-                //     style: TextStyle(
-                //         color: primarySwatch![900],
-                //         fontSize: 10.0,
-                //         fontWeight: FontWeight.w500),
-                //   ),
-                // ),
                 Positioned(
                   bottom: 20.0,
-                  left: 16.0,
+                  //left: 16.0,
                   child: Text(
                     "Biblia Sacra",
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.w500),
+                        //color: Theme.of(context).colorScheme.onPrimary,
+                        fontSize: 32.0),
+                        //fontWeight: FontWeight.w500),
                   ),
                 ),
               ],
@@ -691,17 +674,17 @@ class MainPageState extends State<MainPage> {
             height: 10,
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right,
-                color: Theme.of(context).colorScheme.primary),
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Bookmarks',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.pop(context);
+              //Navigator.pop(context);
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(
@@ -712,17 +695,17 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right,
-                color: Theme.of(context).colorScheme.primary),
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Highlights',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.pop(context);
+              //Navigator.pop(context);
               // Route route = MaterialPageRoute(
               //   builder: (context) => const HighLightsPage(),
               // );
@@ -731,17 +714,17 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right,
-                color: Theme.of(context).colorScheme.primary),
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Notes',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.pop(context);
+              //Navigator.pop(context);
               //   Route route = MaterialPageRoute(
               //     builder: (context) => const NotesPage(),
               //   );
@@ -750,17 +733,17 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right,
-                color: Theme.of(context).colorScheme.primary),
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Dictionary',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.pop(context);
+              //Navigator.pop(context);
               // Route route = MaterialPageRoute(
               //   builder: (context) => const DictSearch(),
               // );
@@ -769,17 +752,17 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right,
-                color: Theme.of(context).colorScheme.primary),
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Search',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.pop(context);
+              //Navigator.pop(context);
               // Route route = MaterialPageRoute(
               //   builder: (context) => const MainSearch(),
               // );
@@ -788,17 +771,17 @@ class MainPageState extends State<MainPage> {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.arrow_right,
-                color: Theme.of(context).colorScheme.primary),
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
             title: const Text(
               'Bibles',
-              style: TextStyle(
-                  //color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.pop(context);
+              //Navigator.pop(context);
               // Route route = MaterialPageRoute(
               //   builder: (context) => const VersionsPage(),
               // );
@@ -806,68 +789,6 @@ class MainPageState extends State<MainPage> {
               Navigator.of(context).pushNamed('/VersionsPage');
             },
           ),
-          // ListTile(
-          //   trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
-          //   title: const Text(
-          //     'Colors',
-          //     style: TextStyle(
-          //         //color: Colors.white,
-          //         fontSize: 16.0,
-          //         fontWeight: FontWeight.bold),
-          //   ),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //     Route route = MaterialPageRoute(
-          //       builder: (context) => const ColorsPage(),
-          //     );
-          //     Navigator.push(context, route).then((value) {
-          //       setState(() {
-          //         primarySwatch = BlocProvider.of<SettingsCubit>(context)
-          //             .state
-          //             .themeData
-          //             .primaryColor as MaterialColor?;
-          //       });
-          //     });
-          //   },
-          // ),
-          // ListTile(
-          //   trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
-          //   title: const Text(
-          //     'Fonts',
-          //     style: TextStyle(
-          //         //color: Colors.white,
-          //         fontSize: 16.0,
-          //         fontWeight: FontWeight.bold),
-          //   ),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //     Route route = MaterialPageRoute(
-          //       builder: (context) => const FontsPage(),
-          //     );
-          //     Navigator.push(context, route).then((value) {
-          //       // setState(() {
-          //       //   primarySwatch = BlocProvider.of<PaletteCubit>(context).state;
-          //       // });
-          //     });
-          //   },
-          // ),
-          // ListTile(
-          //   trailing: Icon(Icons.arrow_right, color: primarySwatch![700]),
-          //   title: const Text(
-          //     'Text Size',
-          //     style: TextStyle(
-          //         //color: Colors.white,
-          //         fontSize: 16.0,
-          //         fontWeight: FontWeight.bold),
-          //   ),
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //     Route route = MaterialPageRoute(
-          //       builder: (context) => const TextSizePage(),
-          //     );
-          //     Navigator.push(context, route);
-          //   },
-          // ),
         ],
       ),
     );
@@ -919,7 +840,6 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-  
     // final args = ModalRoute.of(context)!.settings.arguments as MainPageArgs;
     // print("${args.currentChapterValue} ${args.currentVerseValue}");
 

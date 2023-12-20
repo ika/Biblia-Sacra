@@ -13,16 +13,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 
-DbQueries _dbQueries = DbQueries();
-BookLists bookLists = BookLists();
-
 Future<List<Bible>>? blankSearch;
 Future<List<Bible>>? filteredSearch;
 Future<List<Bible>>? results;
 
 String _contents = '';
 
-double? primaryTextSize;
+//double? primaryTextSize;
 
 class MainSearch extends StatefulWidget {
   const MainSearch({super.key});
@@ -38,7 +35,7 @@ class _MainSearchState extends State<MainSearch> {
     filteredSearch = blankSearch;
     // primarySwatch =
     //     BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 
@@ -50,7 +47,7 @@ class _MainSearchState extends State<MainSearch> {
 
     enterdKeyWord.isEmpty
         ? results = blankSearch
-        : results = _dbQueries.getSearchedValues(enterdKeyWord, arr[0], arr[1]);
+        : results = DbQueries().getSearchedValues(enterdKeyWord, arr[0], arr[1]);
 
     // Refresh the UI
     setState(
@@ -112,7 +109,7 @@ class _MainSearchState extends State<MainSearch> {
             },
             decoration: InputDecoration(
               labelText: 'Search',
-              labelStyle: TextStyle(fontSize: primaryTextSize),
+              //labelStyle: TextStyle(fontSize: primaryTextSize),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
@@ -165,24 +162,24 @@ class _MainSearchState extends State<MainSearch> {
         //softWrap: true,
         text: TextSpan(
           text: t.substring(0, idx),
-          style: TextStyle(
-            fontSize: primaryTextSize,
-            color: Colors.black,
-          ),
+          // style: TextStyle(
+          //   fontSize: primaryTextSize,
+          //   color: Colors.black,
+          // ),
           children: [
             TextSpan(
               text: t.substring(idx, idx + m.length),
-              style: TextStyle(
-                fontSize: primaryTextSize,
-                //backgroundColor: primarySwatch![100],
-              ),
+              // style: TextStyle(
+              //   fontSize: primaryTextSize,
+              //   //backgroundColor: primarySwatch![100],
+              // ),
             ),
             TextSpan(
               text: t.substring(idx + m.length),
-              style: TextStyle(
-                fontSize: primaryTextSize,
-                color: Colors.black,
-              ),
+              // style: TextStyle(
+              //   fontSize: primaryTextSize,
+              //   color: Colors.black,
+              // ),
             ),
           ],
         ),
@@ -192,10 +189,10 @@ class _MainSearchState extends State<MainSearch> {
         //softWrap: true,
         text: TextSpan(
           text: t,
-          style: TextStyle(
-            fontSize: primaryTextSize,
-            color: Colors.black,
-          ),
+          // style: TextStyle(
+          //   fontSize: primaryTextSize,
+          //   color: Colors.black,
+          // ),
         ),
       );
     }
@@ -204,15 +201,15 @@ class _MainSearchState extends State<MainSearch> {
   ListTile listTileMethod(AsyncSnapshot<List<Bible>> snapshot, int index) {
     bool emptySearchResult = (snapshot.data![index].b == 0) ? true : false;
     String bookName = (!emptySearchResult)
-        ? bookLists.getBookByNumber(snapshot.data![index].b!, Globals.bibleLang)
+        ? BookLists().getBookByNumber(snapshot.data![index].b!, Globals.bibleLang)
         : '';
     return ListTile(
       title: Text(
         (!emptySearchResult)
             ? "$bookName ${snapshot.data![index].c!}:${snapshot.data![index].v!}"
             : snapshot.data![index].t!,
-        style:
-            TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+        // style:
+        //     TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
       ),
       subtitle: (!emptySearchResult)
           ? highLiteSearchWord(snapshot.data![index].t!, _contents)
@@ -250,7 +247,7 @@ class _MainSearchState extends State<MainSearch> {
           //backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
             //backgroundColor: Theme.of(context).colorScheme.primary,
-            centerTitle: true,
+            //centerTitle: true,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {

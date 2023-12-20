@@ -39,8 +39,8 @@ class _HighLightsPage extends State<HighLightsPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        //Navigator.of(context).pushNamed('/MainPage');
-        Navigator.of(context).pop();
+        Navigator.of(context).pushNamed('/MainPage');
+        //Navigator.of(context).pop();
       },
     );
   }
@@ -141,17 +141,17 @@ class _HighLightsPage extends State<HighLightsPage> {
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         //backgroundColor: Theme.of(context).colorScheme.primary,
-        centerTitle: true,
+        //centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
             backButton(context);
           },
         ),
-        elevation: 0.1,
-        title: Text(
+        //elevation: 0.1,
+        title: const Text(
           'Highlights',
-          style: TextStyle(fontSize: Globals.appBarFontSize),
+          //style: TextStyle(fontSize: Globals.appBarFontSize),
         ),
       ),
       body: Padding(

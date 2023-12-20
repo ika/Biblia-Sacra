@@ -17,7 +17,7 @@ Future<dynamic> searchAreasDialog(BuildContext context) {
             height: 300.0,
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

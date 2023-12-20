@@ -100,24 +100,42 @@ class BibleApp extends StatefulWidget {
 }
 
 class _BibleAppState extends State<BibleApp> {
+  // Used to select if we use the dark or light theme, start with system mode.
   ThemeMode themeMode = ThemeMode.light;
+  // Opt in/out on Material 3
   bool useMaterial3 = true;
-  MaterialColor useColor = Colors.green;
-
-  // AppBarTheme appBarTheme = AppBarTheme(
-  //     backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-  //     // foregroundColor: Colors.amber[700],
-  //     centerTitle: true);
-
-  // DrawerThemeData drawerTheme =
-  //     DrawerThemeData(backgroundColor: Colors.amber[200]);
-
-  // ElevatedButtonThemeData elevatedButtonTheme = ElevatedButtonThemeData(
-  //     style: ButtonStyle(
-  //         backgroundColor: MaterialStatePropertyAll(Colors.amber[400])));
 
   @override
   Widget build(BuildContext context) {
+    // Select the predefined FlexScheme color scheme to use. Modify the
+    // used FlexScheme enum value below to try other pre-made color schemes.
+    const FlexScheme usedScheme = FlexScheme.rosewood;
+    const double appBarElevation = 0.5;
+    const double appBarOpacity = 0.94;
+    final String? fontFamily = GoogleFonts.notoSans().fontFamily;
+
+    // DrawerThemeData drawerThemeData =
+    //     const DrawerThemeData(backgroundColor: FlexColor.rosewoodLightPrimary);
+
+    //AppBarTheme appBarTheme = const AppBarTheme(centerTitle: true);
+
+    // final ColorScheme colorScheme = ColorScheme.fromSeed(
+    //     brightness: MediaQuery.platformBrightnessOf(context),
+    //     seedColor: Colors.blue);
+
+    // ThemeData lightTheme = ThemeData(
+    //   colorScheme: colorScheme,
+    //   scaffoldBackgroundColor: Colors.grey[200],
+    //   appBarTheme: AppBarTheme(
+    //     backgroundColor: colorScheme.primary,
+    //     centerTitle: true,
+    //   ),
+    //   fontFamily: GoogleFonts.notoSans().fontFamily,
+    //   textTheme: const TextTheme(),
+    // );
+
+    //ThemeData darkTheme = ThemeData(colorScheme: colorScheme);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ChapterCubit>(
@@ -126,19 +144,43 @@ class _BibleAppState extends State<BibleApp> {
         BlocProvider<SearchCubit>(
           create: (context) => SearchCubit()..getSearchAreaKey(),
         ),
+        // BlocProvider<TextSizeCubit>(
+        //   create: (context) => TextSizeCubit()..getSize(),
+        // ),
+        // BlocProvider<SettingsCubit>(
+        //   create: (context) => SettingsCubit(),
+        // )
       ],
+      // child: BlocBuilder<SettingsCubit, SettingsState>(
+      //   builder: ((context, state) {
+      //     return MaterialApp(
+      //       debugShowCheckedModeBanner: false,
+      //       title: 'Bible App',
+      //       theme: state.themeData,
+      //       home: const MainPage(),
+      //     );
+      //   }),
+      // ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bible App',
-        theme: ThemeData(
-          colorSchemeSeed: useColor,
-          brightness: Brightness.light,
-          useMaterial3: useMaterial3
+
+        theme: FlexThemeData.light(
+          scheme: usedScheme,
+          useMaterial3: useMaterial3,
+          fontFamily: fontFamily,
+          appBarStyle: FlexAppBarStyle.primary,
+          appBarElevation: appBarElevation,
+          appBarOpacity: appBarOpacity,
+          scaffoldBackground: Colors.grey[200],
+          typography: Typography.material2021(platform: defaultTargetPlatform),
         ),
-        darkTheme: ThemeData(
-          colorSchemeSeed: useColor,
-          brightness: Brightness.dark,
-          useMaterial3: useMaterial3
+        // Same definition for the dark theme, but using FlexThemeData.dark().
+        darkTheme: FlexThemeData.dark(
+          scheme: usedScheme,
+          useMaterial3: useMaterial3,
+          fontFamily: fontFamily,
+          typography: Typography.material2021(platform: defaultTargetPlatform),
         ),
         themeMode: themeMode,
         initialRoute: '/MainPage',

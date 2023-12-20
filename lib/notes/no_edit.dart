@@ -60,7 +60,8 @@ class _EditNotePageState extends State<EditNotePage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.of(context).pop();
+        //Navigator.of(context).pop();
+        Navigator.of(context).pushNamed('/MainPage');
       },
     );
   }
@@ -148,14 +149,14 @@ class _EditNotePageState extends State<EditNotePage> {
           //backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
             //backgroundColor: Theme.of(context).colorScheme.primary,
-            centerTitle: true,
+            //centerTitle: true,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
                 //Navigator.of(context).pop();
                 // if (_formKey.currentState!.validate()) {
                 updateEdit().then((value) {
-                  backButton(context);
+                  Navigator.of(context).pop();
                 });
                 // }
               },

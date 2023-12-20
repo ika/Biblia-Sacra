@@ -40,8 +40,8 @@ class _BookMarkState extends State<BookMarksPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        //Navigator.of(context).pushNamed('/MainPage');
-        Navigator.of(context).pop();
+        Navigator.of(context).pushNamed('/MainPage');
+        //Navigator.of(context).pop();
       },
     );
   }
@@ -140,7 +140,7 @@ class _BookMarkState extends State<BookMarksPage> {
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         //backgroundColor: Theme.of(context).colorScheme.primary,
-        centerTitle: true,
+        //centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
