@@ -13,6 +13,9 @@ class Globals {
   static String bookName = 'John'; // Book name
   //--------------------------------------
 
+  // Main Search
+  //static String areaSearchTitle = '';
+
   // Navigarot delay
   static int navigatorDelay = 200;
   static int navigatorLongDelay = 500;

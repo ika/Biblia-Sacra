@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
@@ -238,22 +240,29 @@ class _MainSelectorState extends State<MainSelector>
                 const SizedBox(height: 32),
                 Text("Verses 1 - $lastVerse",
                     style: Theme.of(context).textTheme.bodyMedium),
-                NumberPicker(
-                  value: _currentVerseValue,
-                  minValue: 1,
-                  maxValue: lastVerse,
-                  step: 1,
-                  itemHeight: 100,
-                  axis: Axis.horizontal,
-                  onChanged: (value) {
-                    setState(() {
-                      _currentVerseValue = value;
-                    });
-                  },
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.primary),
+                ScrollConfiguration(
+                  behavior:
+                      ScrollConfiguration.of(context).copyWith(dragDevices: {
+                    PointerDeviceKind.touch,
+                    PointerDeviceKind.mouse,
+                  }),
+                  child: NumberPicker(
+                    value: _currentVerseValue,
+                    minValue: 1,
+                    maxValue: lastVerse,
+                    step: 1,
+                    itemHeight: 100,
+                    axis: Axis.horizontal,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentVerseValue = value;
+                      });
+                    },
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
                   ),
                 ),
               ],
@@ -280,22 +289,30 @@ class _MainSelectorState extends State<MainSelector>
                 const SizedBox(height: 32),
                 Text("Chapters 1 - $lastChapter",
                     style: Theme.of(context).textTheme.bodyMedium),
-                NumberPicker(
-                  value: _currentChapterValue,
-                  minValue: 1,
-                  maxValue: lastChapter,
-                  step: 1,
-                  itemHeight: 100,
-                  axis: Axis.horizontal,
-                  onChanged: (value) {
-                    setState(() {
-                      _currentChapterValue = value;
-                    });
-                  },
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.primary),
+                ScrollConfiguration(
+                  behavior:
+                      ScrollConfiguration.of(context).copyWith(dragDevices: {
+                    PointerDeviceKind.touch,
+                    PointerDeviceKind.mouse,
+                  }),
+                  child: NumberPicker(
+                    value: _currentChapterValue,
+                    minValue: 1,
+                    maxValue: lastChapter,
+                    step: 1,
+                    itemHeight: 100,
+                    axis: Axis.horizontal,
+                    haptics: true,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentChapterValue = value;
+                      });
+                    },
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
                   ),
                 ),
               ],
@@ -376,7 +393,7 @@ class _MainSelectorState extends State<MainSelector>
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         // backgroundColor: Theme.of(context).colorScheme.primary,
-        //centerTitle: true,
+        centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

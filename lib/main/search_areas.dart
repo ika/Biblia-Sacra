@@ -1,4 +1,5 @@
 import 'package:bibliasacra/cubit/cub_search.dart';
+import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,7 +72,7 @@ Map getAreasList() {
 }
 
 class SearchAreasList extends StatelessWidget {
-  SearchAreasList({Key? key}) : super(key: key);
+  SearchAreasList({super.key});
 
   final searchAreasList = getAreasList();
 
@@ -87,16 +88,21 @@ class SearchAreasList extends StatelessWidget {
             searchAreasList[elementKey],
           ),
           onTap: () {
-            Navigator.of(context).pop(index);
-            sharedPrefs.setIntPref('searchArea', elementKey).then((value) {
+            sharedPrefs.setIntPref('searchArea', elementKey).then((v) {
               BlocProvider.of<SearchCubit>(context)
                   .setSearchAreaKey(elementKey);
+
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.of(context).pop();
+                },
+              );
             });
           },
         );
       },
-      separatorBuilder: (BuildContext context, int index) =>
-          const Divider(),
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 }

@@ -161,7 +161,7 @@ class NotesPageState extends State<NotesPage> {
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         //backgroundColor: Theme.of(context).colorScheme.primary,
-        //centerTitle: true,
+        centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

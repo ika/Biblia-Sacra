@@ -12,6 +12,9 @@ import 'package:bibliasacra/main/search_areas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
+import 'package:bibliasacra/utils/utils_sharedprefs.dart';
+
+SharedPrefs sharedPrefs = SharedPrefs();
 
 Future<List<Bible>>? blankSearch;
 Future<List<Bible>>? filteredSearch;
@@ -33,21 +36,20 @@ class _MainSearchState extends State<MainSearch> {
   initState() {
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
-    // primarySwatch =
-    //     BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
-    //primaryTextSize = Globals.initialTextSize;
+
     super.initState();
   }
 
-  void runFilter(String enterdKeyWord) {
-    int k = BlocProvider.of<SearchCubit>(context).state;
+  Future<void> runFilter(String enterdKeyWord) async {
+    int? k = BlocProvider.of<SearchCubit>(context).state;
 
     String sec = areasSections[k];
     var arr = sec.split('|');
 
     enterdKeyWord.isEmpty
         ? results = blankSearch
-        : results = DbQueries().getSearchedValues(enterdKeyWord, arr[0], arr[1]);
+        : results =
+            DbQueries().getSearchedValues(enterdKeyWord, arr[0], arr[1]);
 
     // Refresh the UI
     setState(
@@ -57,18 +59,14 @@ class _MainSearchState extends State<MainSearch> {
     );
   }
 
-  backButton(BuildContext context) {
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.of(context).pop();
-      },
-    );
-  }
-
   onSearchTap(WriteVarsModel model) {
     writeVars(model).then((value) {
-      backButton(context);
+      Future.delayed(
+        Duration(milliseconds: Globals.navigatorDelay),
+        () {
+          Navigator.of(context).pushNamed('/MainPage');
+        },
+      );
     });
   }
 
@@ -82,7 +80,7 @@ class _MainSearchState extends State<MainSearch> {
           content: SingleChildScrollView(
             child: ListBody(
               children: [
-                Text('Please enter some text.'),
+                Text('Please enter a search text!'),
               ],
             ),
           ),
@@ -162,24 +160,24 @@ class _MainSearchState extends State<MainSearch> {
         //softWrap: true,
         text: TextSpan(
           text: t.substring(0, idx),
-          // style: TextStyle(
-          //   fontSize: primaryTextSize,
-          //   color: Colors.black,
-          // ),
+          style: const TextStyle(
+            //fontSize: primaryTextSize,
+            color: Colors.black,
+          ),
           children: [
             TextSpan(
               text: t.substring(idx, idx + m.length),
-              // style: TextStyle(
-              //   fontSize: primaryTextSize,
-              //   //backgroundColor: primarySwatch![100],
-              // ),
+              style: TextStyle(
+                //fontSize: primaryTextSize,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              ),
             ),
             TextSpan(
               text: t.substring(idx + m.length),
-              // style: TextStyle(
-              //   fontSize: primaryTextSize,
-              //   color: Colors.black,
-              // ),
+              style: const TextStyle(
+                //fontSize: primaryTextSize,
+                color: Colors.black,
+              ),
             ),
           ],
         ),
@@ -189,10 +187,10 @@ class _MainSearchState extends State<MainSearch> {
         //softWrap: true,
         text: TextSpan(
           text: t,
-          // style: TextStyle(
-          //   fontSize: primaryTextSize,
-          //   color: Colors.black,
-          // ),
+          style: const TextStyle(
+            //fontSize: primaryTextSize,
+            color: Colors.black,
+          ),
         ),
       );
     }
@@ -201,7 +199,8 @@ class _MainSearchState extends State<MainSearch> {
   ListTile listTileMethod(AsyncSnapshot<List<Bible>> snapshot, int index) {
     bool emptySearchResult = (snapshot.data![index].b == 0) ? true : false;
     String bookName = (!emptySearchResult)
-        ? BookLists().getBookByNumber(snapshot.data![index].b!, Globals.bibleLang)
+        ? BookLists()
+            .getBookByNumber(snapshot.data![index].b!, Globals.bibleLang)
         : '';
     return ListTile(
       title: Text(
@@ -247,34 +246,32 @@ class _MainSearchState extends State<MainSearch> {
           //backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
             //backgroundColor: Theme.of(context).colorScheme.primary,
-            //centerTitle: true,
+            centerTitle: true,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
-                backButton(context);
+                Future.delayed(
+                  Duration(milliseconds: Globals.navigatorDelay),
+                  () {
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+            // title: Text("${Globals.areaSearchTitle} - ${Globals.versionAbbr}"
+            //     //style: TextStyle(fontSize: Globals.appBarFontSize),
+            //     ),
+            title: BlocBuilder<SearchCubit, int>(
+              builder: (context, area) {
+                return Text(
+                  "${areasList[area]} - ${Globals.versionAbbr}",
+                  // style: TextStyle(fontSize: Globals.appBarFontSize),
+                );
               },
             ),
             actions: [
               Row(
                 children: [
-                  BlocBuilder<SearchCubit, int>(
-                    builder: (context, area) {
-                      return Text(
-                        areasList[area],
-                        // style: TextStyle(fontSize: Globals.appBarFontSize),
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    Globals.versionAbbr,
-                    // style: TextStyle(fontSize: Globals.appBarFontSize),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
                   IconButton(
                     icon: const Icon(Icons.settings),
                     onPressed: () {

@@ -141,9 +141,9 @@ class _BibleAppState extends State<BibleApp> {
         BlocProvider<ChapterCubit>(
           create: (context) => ChapterCubit()..getChapter(),
         ),
-        BlocProvider<SearchCubit>(
-          create: (context) => SearchCubit()..getSearchAreaKey(),
-        ),
+        // BlocProvider<SearchCubit>(
+        //   create: (context) => SearchCubit()..getSearchAreaKey(),
+        // ),
         // BlocProvider<TextSizeCubit>(
         //   create: (context) => TextSizeCubit()..getSize(),
         // ),

@@ -35,10 +35,12 @@ class _DicSearchState extends State<DictSearch> {
   Future<List<DicModel>> repeatSearch(String enterdKeyWord) async {
     List<DicModel> searchList = [];
 
-    enterdKeyWord = enterdKeyWord.replaceAll(RegExp(r'[^\w\s]+'), '');
+    enterdKeyWord = enterdKeyWord.trim();
+
+    //enterdKeyWord = enterdKeyWord.replaceAll(RegExp(r'[^\w\s]+'), '');
 
     do {
-      debugPrint("ENTEREDKEYWORD $enterdKeyWord");
+      //debugPrint("ENTEREDKEYWORD $enterdKeyWord");
       searchList = await _dictQueries.getSearchedValues(enterdKeyWord);
       enterdKeyWord = enterdKeyWord.characters.skipLast(1).toString();
     } while (searchList.first.trans!.isEmpty);
@@ -167,10 +169,10 @@ class _DicSearchState extends State<DictSearch> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           //backgroundColor: Theme.of(context).colorScheme.background,
-          
+
           appBar: AppBar(
             //backgroundColor: Theme.of(context).colorScheme.primary,
-            //centerTitle: true,
+            centerTitle: true,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
