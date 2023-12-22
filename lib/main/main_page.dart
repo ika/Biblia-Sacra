@@ -664,7 +664,7 @@ class MainPageState extends State<MainPage> {
                     style: TextStyle(
                         //color: Theme.of(context).colorScheme.onPrimary,
                         fontSize: 32.0),
-                        //fontWeight: FontWeight.w500),
+                    //fontWeight: FontWeight.w500),
                   ),
                 ),
               ],
@@ -843,6 +843,8 @@ class MainPageState extends State<MainPage> {
     // final args = ModalRoute.of(context)!.settings.arguments as MainPageArgs;
     // print("${args.currentChapterValue} ${args.currentVerseValue}");
 
+    final ThemeData theme = Theme.of(context);
+
     initialPageScroll = true;
     _dbQueries = DbQueries();
     return Scaffold(
@@ -856,9 +858,10 @@ class MainPageState extends State<MainPage> {
           //     : Container(),
           Row(
             children: [
-              ElevatedButton(
+              FilledButton(
                 // style: ElevatedButton.styleFrom(
-                //     backgroundColor: theme.colorScheme.inversePrimary),
+                //     backgroundColor: theme.colorScheme.secondary
+                //     ),
                 onPressed: () {
                   // Navigator.push(
                   //   context,
@@ -889,9 +892,9 @@ class MainPageState extends State<MainPage> {
               const SizedBox(
                 width: 8,
               ),
-              ElevatedButton(
+              FilledButton(
                 // style: ElevatedButton.styleFrom(
-                //     backgroundColor: theme.colorScheme.onPrimary),
+                //     backgroundColor: theme.colorScheme.secondary),
                 onPressed: () {
                   showVersionsDialog(context);
                 },

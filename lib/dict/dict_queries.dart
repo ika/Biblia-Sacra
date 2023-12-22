@@ -51,6 +51,7 @@ class DictQueries {
 
     // alphabetical order
     //list.sort(((a, b) => a.word!.toLowerCase().compareTo(b.word!.toLowerCase())));
+    list.sort((a, b) => a.toString().compareTo(b.toString()));
 
     return list;
   }

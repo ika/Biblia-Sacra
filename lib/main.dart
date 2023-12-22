@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:flutter/material.dart';
 import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_search.dart';
@@ -10,16 +10,17 @@ import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/main/main_search.dart';
 import 'package:bibliasacra/main/main_selector.dart';
-import 'package:bibliasacra/main/search_areas.dart';
 import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_page.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
-import 'package:flutter/material.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+// https://rydmike.com/flexcolorscheme/themesplayground-latest/
 
 SharedPrefs _sharedPrefs = SharedPrefs();
 
@@ -104,21 +105,7 @@ class BibleApp extends StatefulWidget {
 }
 
 class _BibleAppState extends State<BibleApp> {
-  ThemeMode themeMode = ThemeMode.light;
   bool useMaterial3 = false;
-  MaterialColor useColor = Colors.blue;
-
-  // AppBarTheme appBarTheme = AppBarTheme(
-  //     backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-  //     // foregroundColor: Colors.amber[700],
-  //     centerTitle: true);
-
-  // DrawerThemeData drawerTheme =
-  //     DrawerThemeData(backgroundColor: Colors.amber[200]);
-
-  // ElevatedButtonThemeData elevatedButtonTheme = ElevatedButtonThemeData(
-  //     style: ButtonStyle(
-  //         backgroundColor: MaterialStatePropertyAll(Colors.amber[400])));
 
   @override
   Widget build(BuildContext context) {
@@ -134,15 +121,45 @@ class _BibleAppState extends State<BibleApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bible App',
-        theme: ThemeData(
-            colorSchemeSeed: useColor,
-            brightness: Brightness.light,
-            useMaterial3: useMaterial3),
-        darkTheme: ThemeData(
-            colorSchemeSeed: useColor,
-            brightness: Brightness.dark,
-            useMaterial3: useMaterial3),
-        themeMode: themeMode,
+        theme: FlexThemeData.light(
+          scheme: FlexScheme.sanJuanBlue,
+          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+          blendLevel: 7,
+          subThemesData: const FlexSubThemesData(
+            blendOnLevel: 10,
+            blendOnColors: false,
+            useTextTheme: true,
+            useM2StyleDividerInM3: true,
+            alignedDropdown: true,
+            useInputDecoratorThemeInDialogs: true,
+          ),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          useMaterial3: useMaterial3,
+          swapLegacyOnMaterial3: true,
+          // To use the Playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
+        ),
+        darkTheme: FlexThemeData.dark(
+          scheme: FlexScheme.sanJuanBlue,
+          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+          blendLevel: 13,
+          subThemesData: const FlexSubThemesData(
+            blendOnLevel: 20,
+            useTextTheme: true,
+            useM2StyleDividerInM3: true,
+            alignedDropdown: true,
+            useInputDecoratorThemeInDialogs: true,
+          ),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          useMaterial3: useMaterial3,
+          swapLegacyOnMaterial3: true,
+          // To use the Playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
+        ),
+// If you do not have a themeMode switch, uncomment this line
+// to let the device system mode control the theme mode:
+        themeMode: ThemeMode.system,
+
         initialRoute: '/MainPage',
         routes: {
           '/MainPage': (context) => const MainPage(),
