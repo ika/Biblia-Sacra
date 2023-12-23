@@ -484,7 +484,7 @@ class MainPageState extends State<MainPage> {
         children: [
           Flexible(
             fit: FlexFit.loose,
-            child: (normalVerseText(snapshot, index)),
+            child: normalVerseText(snapshot, index),
           ),
           showNoteIcon(snapshot, index),
           showBookMarkIcon(snapshot, index)
