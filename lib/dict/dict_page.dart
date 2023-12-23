@@ -12,7 +12,7 @@ Future<List<DicModel>>? results;
 String _contents = '';
 
 MaterialColor? primarySwatch;
-double? primaryTextSize;
+//double? primaryTextSize;
 
 class DictSearch extends StatefulWidget {
   const DictSearch({super.key});
@@ -28,7 +28,7 @@ class _DicSearchState extends State<DictSearch> {
     filteredSearch = blankSearch;
     // primarySwatch =
     //     BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 
@@ -106,7 +106,7 @@ class _DicSearchState extends State<DictSearch> {
             },
             decoration: InputDecoration(
               labelText: 'Search',
-              labelStyle: TextStyle(fontSize: primaryTextSize),
+              //labelStyle: TextStyle(fontSize: primaryTextSize),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {

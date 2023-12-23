@@ -10,7 +10,7 @@ GetLists _lists = GetLists();
 
 //final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
 
-double? primaryTextSize;
+//double? primaryTextSize;
 
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
@@ -26,7 +26,7 @@ class NotesPageState extends State<NotesPage> {
     //     .state
     //     .themeData
     //     .primaryColor as MaterialColor?;
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 
@@ -37,14 +37,30 @@ class NotesPageState extends State<NotesPage> {
     });
   }
 
+  // Future<void> gotoEditNote(NtModel model) async {
+  //   Route route = MaterialPageRoute(
+  //     builder: (context) => EditNotePage(model: model, mode: 'note'),
+  //   );
+  //   Navigator.push(context, route).then(
+  //     (value) {
+  //       setState(() {
+  //         _lists.updateActiveLists(Globals.bibleVersion);
+  //       });
+  //     },
+  //   );
+  // }
+
   Future<void> gotoEditNote(NtModel model) async {
-    Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model, mode: 'note'),
-    );
-    Navigator.push(context, route).then(
-      (value) {
-        setState(() {
-          _lists.updateActiveLists(Globals.bibleVersion);
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.of(context)
+            .pushNamed('/EditNotePage',
+                arguments: EditNotePage(mode: 'note', model: model))
+            .then((v) {
+          setState(() {
+            _lists.updateActiveLists(Globals.bibleVersion);
+          });
         });
       },
     );
@@ -116,11 +132,13 @@ class NotesPageState extends State<NotesPage> {
                 color: Theme.of(context).colorScheme.primary),
             title: Text(
               "${list[index].title}",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+              // style: TextStyle(
+              //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
             ),
-            subtitle: Text(list[index].contents,
-                style: TextStyle(fontSize: primaryTextSize)),
+            subtitle: Text(
+              list[index].contents,
+              //style: TextStyle(fontSize: primaryTextSize),
+            ),
             onTap: () {
               final model = NtModel(
                   id: list[index].id,

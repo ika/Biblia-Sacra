@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
@@ -133,37 +134,60 @@ class MainPageState extends State<MainPage> {
   }
 
   void copyVerseWrapper(BuildContext context, snapshot, index) {
-    var arr = List.filled(2, '');
-    arr[0] = "Copy";
-    arr[1] = "Do you want to copy this verse?";
+    final list = <String>[
+      snapshot.data[index].t,
+      ' ',
+      Globals.versionAbbr,
+      ' ',
+      Globals.bookName,
+      ' ',
+      snapshot.data[index].c.toString(),
+      ':',
+      snapshot.data[index].v.toString()
+    ];
 
-    confirmDialog(arr).then(
-      (value) {
-        if (value) {
-          final list = <String>[
-            snapshot.data[index].t,
-            ' ',
-            Globals.versionAbbr,
-            ' ',
-            Globals.bookName,
-            ' ',
-            snapshot.data[index].c.toString(),
-            ':',
-            snapshot.data[index].v.toString()
-          ];
+    final sb = StringBuffer();
+    sb.writeAll(list);
 
-          final sb = StringBuffer();
-          sb.writeAll(list);
-
-          Clipboard.setData(
-            ClipboardData(text: sb.toString()),
-          ).then((_) {
-            ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
-          });
-        }
-      }, //_deleteWrapper,
-    );
+    Clipboard.setData(
+      ClipboardData(text: sb.toString()),
+    ).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
+    });
   }
+
+  // void copyVerseWrapper(BuildContext context, snapshot, index) {
+  //   var arr = List.filled(2, '');
+  //   arr[0] = "Copy";
+  //   arr[1] = "Do you want to copy this verse?";
+
+  //   confirmDialog(arr).then(
+  //     (value) {
+  //       if (value) {
+  //         final list = <String>[
+  //           snapshot.data[index].t,
+  //           ' ',
+  //           Globals.versionAbbr,
+  //           ' ',
+  //           Globals.bookName,
+  //           ' ',
+  //           snapshot.data[index].c.toString(),
+  //           ':',
+  //           snapshot.data[index].v.toString()
+  //         ];
+
+  //         final sb = StringBuffer();
+  //         sb.writeAll(list);
+
+  //         Clipboard.setData(
+  //           ClipboardData(text: sb.toString()),
+  //         ).then((_) {
+  //           ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
+  //         });
+  //       }
+  //     }, //_deleteWrapper,
+  //   );
+  // }
 
   // exitWrapper(BuildContext context) {
   //   var arr = List.filled(4, '');
@@ -311,15 +335,31 @@ class MainPageState extends State<MainPage> {
     });
   }
 
-  void gotoEditNote(NtModel model) {
-    Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model, mode: ''),
+  // void gotoEditNote(NtModel model) {
+  //   Route route = MaterialPageRoute(
+  //     builder: (context) => EditNotePage(model: model, mode: ''),
+  //   );
+  //   Navigator.push(context, route).then((value) {
+  //     setState(() {
+  //       _lists.updateActiveLists(Globals.bibleVersion);
+  //     });
+  //   });
+  // }
+
+  Future<void> gotoEditNote(NtModel model) async {
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.of(context)
+            .pushNamed('/EditNotePage',
+                arguments: EditNotePage(mode: '', model: model))
+            .then((v) {
+          setState(() {
+            _lists.updateActiveLists(Globals.bibleVersion);
+          });
+        });
+      },
     );
-    Navigator.push(context, route).then((value) {
-      setState(() {
-        _lists.updateActiveLists(Globals.bibleVersion);
-      });
-    });
   }
 
   Future<NtModel> getNoteModel(int id) async {
@@ -608,26 +648,32 @@ class MainPageState extends State<MainPage> {
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         if (snapshot.hasData) {
           int chapterCount = snapshot.data!.toInt();
-          return PageView(
-            controller: pageController,
-            scrollDirection: Axis.horizontal,
-            pageSnapping: true,
-            physics: const BouncingScrollPhysics(),
-            children: chapterCountFunc(context, book, chapterCount),
-            onPageChanged: (index) {
-              int c = index + 1;
-              _sharedPrefs.setIntPref('chapter', c).then(
-                (value) {
-                  Globals.bookChapter = c;
-                  BlocProvider.of<ChapterCubit>(context).setChapter(c);
-                  _sharedPrefs.setIntPref('verse', 1).then(
-                    (value) {
-                      Globals.chapterVerse = 1; // move to top of next chapter
-                    },
-                  );
-                },
-              );
-            },
+          return ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+            }),
+            child: PageView(
+              controller: pageController,
+              scrollDirection: Axis.horizontal,
+              pageSnapping: true,
+              physics: const BouncingScrollPhysics(),
+              children: chapterCountFunc(context, book, chapterCount),
+              onPageChanged: (index) {
+                int c = index + 1;
+                _sharedPrefs.setIntPref('chapter', c).then(
+                  (value) {
+                    Globals.bookChapter = c;
+                    BlocProvider.of<ChapterCubit>(context).setChapter(c);
+                    _sharedPrefs.setIntPref('verse', 1).then(
+                      (value) {
+                        Globals.chapterVerse = 1; // move to top of next chapter
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           );
         }
         return const Center(child: CircularProgressIndicator());
@@ -725,7 +771,7 @@ class MainPageState extends State<MainPage> {
             ),
             onTap: () {
               //Navigator.pop(context);
-              //   Route route = MaterialPageRoute(
+              //Route route = MaterialPageRoute(
               //     builder: (context) => const NotesPage(),
               //   );
               //   Navigator.push(context, route);
@@ -843,7 +889,7 @@ class MainPageState extends State<MainPage> {
     // final args = ModalRoute.of(context)!.settings.arguments as MainPageArgs;
     // print("${args.currentChapterValue} ${args.currentVerseValue}");
 
-    final ThemeData theme = Theme.of(context);
+    //final ThemeData theme = Theme.of(context);
 
     initialPageScroll = true;
     _dbQueries = DbQueries();

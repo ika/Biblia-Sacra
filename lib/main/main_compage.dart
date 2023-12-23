@@ -1,4 +1,3 @@
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/main_comp.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
 // Compare versions
 
 Compare _compare = Compare();
-double? primaryTextSize;
+//double? primaryTextSize;
 
 Future<dynamic> mainCompareDialog(BuildContext context, Bible bible) {
   return showDialog(
@@ -50,7 +49,7 @@ class _ComparePage extends State<ComparePage> {
 
   @override
   void initState() {
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 
@@ -59,12 +58,12 @@ class _ComparePage extends State<ComparePage> {
       return ListTile(
         title: Text(
           "${list[index].a} - ${list[index].b} ${list[index].c}:${list[index].v}",
-          style:
-              TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+          // style:
+          //     TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
         ),
         subtitle: Text(
           list[index].t,
-          style: TextStyle(fontSize: primaryTextSize),
+          // style: TextStyle(fontSize: primaryTextSize),
         ),
       );
     }

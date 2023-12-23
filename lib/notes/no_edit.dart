@@ -8,14 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
 
-double? primaryTextSize;
+//double? primaryTextSize;
 
 class EditNotePage extends StatefulWidget {
-  const EditNotePage({Key? key, required this.model, required this.mode})
-      : super(key: key);
+  const EditNotePage({super.key, required this.mode, required this.model});
 
+  final String  mode;
   final NtModel model;
-  final String mode;
 
   @override
   State<EditNotePage> createState() => _EditNotePageState();
@@ -26,6 +25,8 @@ class _EditNotePageState extends State<EditNotePage> {
   final _contentsController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  
+
   @override
   initState() {
     super.initState();
@@ -33,7 +34,7 @@ class _EditNotePageState extends State<EditNotePage> {
     //     .state
     //     .themeData
     //     .primaryColor as MaterialColor?;
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
 
     _titleController.text = widget.model.title!;
     _contentsController.text = widget.model.contents!;

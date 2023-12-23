@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 BmQueries _bmQueries = BmQueries();
 GetLists _lists = GetLists();
 
-double? primaryTextSize;
+//double? primaryTextSize;
 
 class BookMarksPage extends StatefulWidget {
   const BookMarksPage({super.key});
@@ -27,7 +27,7 @@ class _BookMarkState extends State<BookMarksPage> {
 
   @override
   void initState() {
-    primaryTextSize = Globals.initialTextSize;
+   // primaryTextSize = Globals.initialTextSize;
 
     // primarySwatch = BlocProvider.of<SettingsCubit>(context)
     //     .state

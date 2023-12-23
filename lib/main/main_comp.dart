@@ -5,8 +5,6 @@ import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 
-VkQueries vkQueries = VkQueries();
-
 class CompareModel {
   String a; // abbr
   String b; // book name
@@ -22,12 +20,14 @@ class CompareModel {
       required this.t});
 }
 
+//VkQueries vkQueries = VkQueries();
+
 class Compare {
 
   Future<List<CompareModel>> activeVersions(Bible model) async {
     List<CompareModel> compareList = [];
 
-    List activeVersions = await vkQueries.getActiveVersionNumbers();
+    List activeVersions = await VkQueries().getActiveVersionNumbers();
 
     int initialBibleVersion = Globals.bibleVersion; // save bible version
 

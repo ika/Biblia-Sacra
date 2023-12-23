@@ -42,7 +42,7 @@ class Globals {
   static String dictionaryLookup = '';
 
   // Text Size
-  static double initialTextSize = 16;
+  //static double initialTextSize = 16;
 
   // Font
   static String initialFont = 'OpenSans';

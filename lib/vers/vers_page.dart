@@ -1,5 +1,4 @@
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
@@ -8,12 +7,11 @@ import 'package:flutter/material.dart';
 // Versions
 
 VkQueries vkQueries = VkQueries();
-Utilities utilities = Utilities();
-DbQueries dbQueries = DbQueries();
+//DbQueries dbQueries = DbQueries();
 
 int counter = 0;
 
-double? primaryTextSize;
+//double? primaryTextSize;
 
 class VersionsPage extends StatefulWidget {
   const VersionsPage({super.key});
@@ -27,7 +25,7 @@ class VersionsPageState extends State<VersionsPage> {
   void initState() {
     counter = 0;
     // primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 
@@ -54,7 +52,7 @@ class VersionsPageState extends State<VersionsPage> {
                   //controlAffinity: ListTileControlAffinity.trailing,
                   title: Text(
                     snapshot.data![index].m!,
-                    style: TextStyle(fontSize: primaryTextSize),
+                    // style: TextStyle(fontSize: primaryTextSize),
                   ),
                   value: snapshot.data![index].a == 1 ? true : false,
                   onChanged: (value) {
@@ -63,7 +61,7 @@ class VersionsPageState extends State<VersionsPage> {
                         .updateActiveState(active, snapshot.data![index].n!)
                         .then(
                       (value) async {
-                        utilities.getDialogeHeight();
+                        Utilities().getDialogeHeight();
                         Globals.activeVersionCount =
                             await vkQueries.getActiveVersionCount();
                         setState(() {});

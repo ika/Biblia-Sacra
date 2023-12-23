@@ -12,7 +12,7 @@ import 'package:numberpicker/numberpicker.dart';
 DbQueries dbQueries = DbQueries();
 SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
-double? primaryTextSize;
+//double? primaryTextSize;
 
 var allBooks = {};
 var filteredBooks = {};
@@ -50,7 +50,7 @@ class _MainSelectorState extends State<MainSelector>
     _currentChapterValue = Globals.bookChapter;
     _currentVerseValue = Globals.chapterVerse;
 
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
     allBooks = bookLists.getBookListByLang(Globals.bibleLang);
     filteredBooks = allBooks;
 
@@ -333,10 +333,10 @@ class _MainSelectorState extends State<MainSelector>
         children: [
           TextField(
             onChanged: (value) => runFilter(value),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Search',
-              labelStyle: TextStyle(fontSize: primaryTextSize),
-              suffixIcon: const Icon(Icons.search),
+              //labelStyle: TextStyle(fontSize: primaryTextSize),
+              suffixIcon: Icon(Icons.search),
             ),
           ),
           const SizedBox(

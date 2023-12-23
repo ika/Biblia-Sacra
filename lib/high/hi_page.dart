@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 HlQueries _hlQueries = HlQueries();
 GetLists _lists = GetLists();
 
-double? primaryTextSize;
+//double? primaryTextSize;
 
 class HighLightsPage extends StatefulWidget {
   const HighLightsPage({super.key});
@@ -31,7 +31,7 @@ class _HighLightsPage extends State<HighLightsPage> {
     //     .state
     //     .themeData
     //     .primaryColor as MaterialColor?;
-    primaryTextSize = Globals.initialTextSize;
+    //primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 
@@ -112,12 +112,12 @@ class _HighLightsPage extends State<HighLightsPage> {
                 color: Theme.of(context).colorScheme.primary),
             title: Text(
               list[index].title,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+              // style: TextStyle(
+              //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
             ),
             subtitle: Text(
               list[index].subtitle,
-              style: TextStyle(fontSize: primaryTextSize),
+              // style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
               BlocProvider.of<ChapterCubit>(context)
