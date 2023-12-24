@@ -1,23 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_search.dart';
-import 'package:bibliasacra/dict/dict_page.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
-import 'package:bibliasacra/main/main_search.dart';
-import 'package:bibliasacra/main/main_selector.dart';
-import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
-import 'package:bibliasacra/vers/vers_page.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 // https://rydmike.com/flexcolorscheme/themesplayground-latest/
@@ -137,7 +131,7 @@ class _BibleAppState extends State<BibleApp> {
           useMaterial3: useMaterial3,
           swapLegacyOnMaterial3: true,
           // To use the Playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
+          fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
         darkTheme: FlexThemeData.dark(
           scheme: FlexScheme.sanJuanBlue,
@@ -154,23 +148,13 @@ class _BibleAppState extends State<BibleApp> {
           useMaterial3: useMaterial3,
           swapLegacyOnMaterial3: true,
           // To use the Playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
+          fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
 // If you do not have a themeMode switch, uncomment this line
 // to let the device system mode control the theme mode:
         themeMode: ThemeMode.system,
 
-        initialRoute: '/MainPage',
-        routes: {
-          '/MainPage': (context) => const MainPage(),
-          '/MainSelector': (context) => const MainSelector(),
-          '/MainSearch': (context) => const MainSearch(),
-          '/DictSearch': (context) => const DictSearch(),
-          '/BookMarksPage': (context) => const BookMarksPage(),
-          '/HighLightsPage': (context) => const HighLightsPage(),
-          '/NotesPage': (context) => const NotesPage(),
-          '/VersionsPage': (context) => const VersionsPage()
-        },
+        home: const MainPage(),
       ),
     );
   }

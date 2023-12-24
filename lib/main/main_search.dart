@@ -7,6 +7,7 @@ import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
+import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/main/search_areas.dart';
 import 'package:flutter/material.dart';
@@ -61,10 +62,13 @@ class _MainSearchState extends State<MainSearch> {
 
   onSearchTap(WriteVarsModel model) {
     writeVars(model).then((value) {
+      Route route = MaterialPageRoute(
+        builder: (context) => const MainPage(),
+      );
       Future.delayed(
         Duration(milliseconds: Globals.navigatorDelay),
         () {
-          Navigator.of(context).pushNamed('/MainPage');
+          Navigator.push(context, route);
         },
       );
     });

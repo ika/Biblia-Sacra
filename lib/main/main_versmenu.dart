@@ -1,5 +1,6 @@
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
+import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
@@ -46,16 +47,13 @@ class AppBarVersions extends StatelessWidget {
   const AppBarVersions({Key? key}) : super(key: key);
 
   backToMainButton(BuildContext context) {
+    Route route = MaterialPageRoute(
+      builder: (context) => const MainPage(),
+    );
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const MainPage(),
-        //   ),
-        // );
-        Navigator.of(context).pushNamed('/MainPage');
+        Navigator.push(context, route);
       },
     );
   }
@@ -93,7 +91,8 @@ class AppBarVersions extends StatelessWidget {
           itemCount: len,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              trailing: Icon(Icons.arrow_right, color: Theme.of(context).colorScheme.primary),
+              trailing: Icon(Icons.arrow_right,
+                  color: Theme.of(context).colorScheme.primary),
               title: Text(
                 snapshot.data![index].m!,
               ),

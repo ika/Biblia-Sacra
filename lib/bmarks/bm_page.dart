@@ -1,6 +1,7 @@
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _BookMarkState extends State<BookMarksPage> {
 
   @override
   void initState() {
-   // primaryTextSize = Globals.initialTextSize;
+    // primaryTextSize = Globals.initialTextSize;
 
     // primarySwatch = BlocProvider.of<SettingsCubit>(context)
     //     .state
@@ -36,20 +37,18 @@ class _BookMarkState extends State<BookMarksPage> {
     super.initState();
   }
 
-  backButton(BuildContext context) {
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.of(context).pushNamed('/MainPage');
-        //Navigator.of(context).pop();
-      },
-    );
-  }
-
   onBookMarkTap(WriteVarsModel model) {
     _lists.updateActiveLists(model.version!);
     writeVars(model).then((value) {
-      backButton(context);
+      Route route = MaterialPageRoute(
+        builder: (context) => const MainPage(),
+      );
+      Future.delayed(
+        Duration(milliseconds: Globals.navigatorDelay),
+        () {
+          Navigator.push(context, route);
+        },
+      );
     });
   }
 
@@ -122,6 +121,8 @@ class _BookMarkState extends State<BookMarksPage> {
               BlocProvider.of<ChapterCubit>(context)
                   .setChapter(list[index].chapter);
 
+              Globals.bibleLang = list[index].lang;
+
               final model = WriteVarsModel(
                 lang: list[index].lang,
                 version: list[index].version,
@@ -144,7 +145,12 @@ class _BookMarkState extends State<BookMarksPage> {
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
-            backButton(context);
+            Future.delayed(
+              Duration(milliseconds: Globals.navigatorDelay),
+              () {
+                Navigator.of(context).pop();
+              },
+            );
           },
         ),
         title: const Text(

@@ -1,23 +1,31 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:bibliasacra/bmarks/bm_model.dart';
+import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
+import 'package:bibliasacra/dict/dict_page.dart';
+import 'package:bibliasacra/fonts/fonts.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_contmenu.dart';
 import 'package:bibliasacra/main/main_dict.dart';
+import 'package:bibliasacra/main/main_search.dart';
+import 'package:bibliasacra/main/main_selector.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
+import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:bibliasacra/main/main_compage.dart';
+import 'package:bibliasacra/vers/vers_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -335,25 +343,14 @@ class MainPageState extends State<MainPage> {
     });
   }
 
-  // void gotoEditNote(NtModel model) {
-  //   Route route = MaterialPageRoute(
-  //     builder: (context) => EditNotePage(model: model, mode: ''),
-  //   );
-  //   Navigator.push(context, route).then((value) {
-  //     setState(() {
-  //       _lists.updateActiveLists(Globals.bibleVersion);
-  //     });
-  //   });
-  // }
-
   Future<void> gotoEditNote(NtModel model) async {
+    Route route = MaterialPageRoute(
+      builder: (context) => EditNotePage(model: model, mode: ''),
+    );
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.of(context)
-            .pushNamed('/EditNotePage',
-                arguments: EditNotePage(mode: '', model: model))
-            .then((v) {
+        Navigator.push(context, route).then((v) {
           setState(() {
             _lists.updateActiveLists(Globals.bibleVersion);
           });
@@ -730,14 +727,15 @@ class MainPageState extends State<MainPage> {
               //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              //Navigator.pop(context);
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const BookMarksPage(),
-              //   ),
-              // );
-              Navigator.of(context).pushNamed('/BookMarksPage');
+              Route route = MaterialPageRoute(
+                builder: (context) => const BookMarksPage(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
             },
           ),
           ListTile(
@@ -751,12 +749,15 @@ class MainPageState extends State<MainPage> {
               //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              //Navigator.pop(context);
-              // Route route = MaterialPageRoute(
-              //   builder: (context) => const HighLightsPage(),
-              // );
-              // Navigator.push(context, route);
-              Navigator.of(context).pushNamed('/HighLightsPage');
+              Route route = MaterialPageRoute(
+                builder: (context) => const HighLightsPage(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
             },
           ),
           ListTile(
@@ -770,31 +771,37 @@ class MainPageState extends State<MainPage> {
               //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              //Navigator.pop(context);
-              //Route route = MaterialPageRoute(
-              //     builder: (context) => const NotesPage(),
-              //   );
-              //   Navigator.push(context, route);
-              Navigator.of(context).pushNamed('/NotesPage');
+              Route route = MaterialPageRoute(
+                builder: (context) => const NotesPage(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
             },
           ),
           ListTile(
             trailing: const Icon(Icons.arrow_right),
             //color: Theme.of(context).colorScheme.primary),
             title: const Text(
-              'Dictionary',
+              'Latin word list',
               // style: TextStyle(
               //     //color: Colors.white,
               //     fontSize: 16.0,
               //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              //Navigator.pop(context);
-              // Route route = MaterialPageRoute(
-              //   builder: (context) => const DictSearch(),
-              // );
-              // Navigator.push(context, route);
-              Navigator.of(context).pushNamed('/DictSearch');
+              Route route = MaterialPageRoute(
+                builder: (context) => const DictSearch(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
             },
           ),
           ListTile(
@@ -808,12 +815,15 @@ class MainPageState extends State<MainPage> {
               //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              //Navigator.pop(context);
-              // Route route = MaterialPageRoute(
-              //   builder: (context) => const MainSearch(),
-              // );
-              // Navigator.push(context, route);
-              Navigator.of(context).pushNamed('/MainSearch');
+              Route route = MaterialPageRoute(
+                builder: (context) => const MainSearch(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
             },
           ),
           ListTile(
@@ -827,12 +837,37 @@ class MainPageState extends State<MainPage> {
               //     fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              //Navigator.pop(context);
-              // Route route = MaterialPageRoute(
-              //   builder: (context) => const VersionsPage(),
-              // );
-              // Navigator.push(context, route);
-              Navigator.of(context).pushNamed('/VersionsPage');
+              Route route = MaterialPageRoute(
+                builder: (context) => const VersionsPage(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
+            },
+          ),
+                    ListTile(
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
+            title: const Text(
+              'Fonts',
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Route route = MaterialPageRoute(
+                builder: (context) => const FontsPage(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
             },
           ),
         ],
@@ -880,6 +915,7 @@ class MainPageState extends State<MainPage> {
         },
       );
     } else {
+      Globals.dictionaryMode = false;
       return Container();
     }
   }
@@ -909,13 +945,15 @@ class MainPageState extends State<MainPage> {
                 //     backgroundColor: theme.colorScheme.secondary
                 //     ),
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const MainSelector(),
-                  //   ),
-                  // );
-                  Navigator.of(context).pushNamed('/MainSelector');
+                  Route route = MaterialPageRoute(
+                    builder: (context) => const MainSelector(),
+                  );
+                  Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.push(context, route);
+                    },
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

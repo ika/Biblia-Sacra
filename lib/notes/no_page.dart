@@ -37,27 +37,14 @@ class NotesPageState extends State<NotesPage> {
     });
   }
 
-  // Future<void> gotoEditNote(NtModel model) async {
-  //   Route route = MaterialPageRoute(
-  //     builder: (context) => EditNotePage(model: model, mode: 'note'),
-  //   );
-  //   Navigator.push(context, route).then(
-  //     (value) {
-  //       setState(() {
-  //         _lists.updateActiveLists(Globals.bibleVersion);
-  //       });
-  //     },
-  //   );
-  // }
-
   Future<void> gotoEditNote(NtModel model) async {
+    Route route = MaterialPageRoute(
+      builder: (context) => EditNotePage(model: model, mode: 'note'),
+    );
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.of(context)
-            .pushNamed('/EditNotePage',
-                arguments: EditNotePage(mode: 'note', model: model))
-            .then((v) {
+        Navigator.push(context, route).then((v) {
           setState(() {
             _lists.updateActiveLists(Globals.bibleVersion);
           });

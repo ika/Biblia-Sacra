@@ -4,6 +4,7 @@ import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
+import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,17 +87,13 @@ class _MainSelectorState extends State<MainSelector>
       // upate Verse
       sharedPrefs.setIntPref('verse', _currentVerseValue).then((v) {
         Globals.chapterVerse = _currentVerseValue;
+        Route route = MaterialPageRoute(
+          builder: (context) => const MainPage(),
+        );
         Future.delayed(
           Duration(milliseconds: Globals.navigatorDelay),
           () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const MainPage(),
-            //   ),
-            // );
-            Navigator.of(context).pushNamed('/MainPage');
-            //arguments: MainPageArgs(_currentChapterValue, _currentVerseValue));
+            Navigator.push(context, route);
           },
         );
       });
@@ -261,7 +258,7 @@ class _MainSelectorState extends State<MainSelector>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                          color: Theme.of(context).colorScheme.primary),
+                          color: Theme.of(context).colorScheme.primary, width: 2.0),
                     ),
                   ),
                 ),
@@ -311,7 +308,7 @@ class _MainSelectorState extends State<MainSelector>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                          color: Theme.of(context).colorScheme.primary),
+                          color: Theme.of(context).colorScheme.primary, width: 2.0),
                     ),
                   ),
                 ),

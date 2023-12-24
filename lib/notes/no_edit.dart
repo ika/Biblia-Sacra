@@ -1,6 +1,7 @@
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
+import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ NtQueries _ntQueries = NtQueries();
 class EditNotePage extends StatefulWidget {
   const EditNotePage({super.key, required this.mode, required this.model});
 
-  final String  mode;
+  final String mode;
   final NtModel model;
 
   @override
@@ -24,8 +25,6 @@ class _EditNotePageState extends State<EditNotePage> {
   final _titleController = TextEditingController();
   final _contentsController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  
 
   @override
   initState() {
@@ -58,17 +57,20 @@ class _EditNotePageState extends State<EditNotePage> {
   }
 
   backButton(BuildContext context) {
+    Route route = MaterialPageRoute(
+      builder: (context) => const MainPage(),
+    );
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        //Navigator.of(context).pop();
-        Navigator.of(context).pushNamed('/MainPage');
+        Navigator.push(context, route);
       },
     );
   }
 
   onGoToVerseTap(WriteVarsModel model) {
     // _lists.updateActiveLists('all', model.version!);
+    Globals.bibleLang = model.lang!;
     writeVars(model).then((value) {
       backButton(context);
     });
