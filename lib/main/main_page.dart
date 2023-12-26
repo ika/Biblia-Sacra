@@ -848,7 +848,7 @@ class MainPageState extends State<MainPage> {
               );
             },
           ),
-                    ListTile(
+          ListTile(
             trailing: const Icon(Icons.arrow_right),
             //color: Theme.of(context).colorScheme.primary),
             title: const Text(

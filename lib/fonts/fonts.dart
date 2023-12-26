@@ -1,5 +1,6 @@
+import 'package:bibliasacra/fonts/font_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_font_picker/flutter_font_picker.dart';
+//import 'package:flutter_font_picker/flutter_font_picker.dart';
 
 class FontsPage extends StatefulWidget {
   const FontsPage({super.key});
@@ -9,7 +10,7 @@ class FontsPage extends StatefulWidget {
 }
 
 class FontsPageState extends State<FontsPage> {
-  String _selectedFont = "Roboto";
+ String _selectedFont = "Roboto";
   TextStyle? _selectedFontTextStyle;
   final List<String> _myGoogleFonts = [
     "Abril Fatface",

@@ -116,7 +116,7 @@ class _BibleAppState extends State<BibleApp> {
         debugShowCheckedModeBanner: false,
         title: 'Bible App',
         theme: FlexThemeData.light(
-          scheme: FlexScheme.sanJuanBlue,
+          scheme: FlexScheme.amber,
           surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
           blendLevel: 7,
           subThemesData: const FlexSubThemesData(
@@ -131,7 +131,7 @@ class _BibleAppState extends State<BibleApp> {
           useMaterial3: useMaterial3,
           swapLegacyOnMaterial3: true,
           // To use the Playground font, add GoogleFonts package and uncomment
-          fontFamily: GoogleFonts.notoSans().fontFamily,
+          fontFamily: GoogleFonts.notoSans().fontFamily
         ),
         darkTheme: FlexThemeData.dark(
           scheme: FlexScheme.sanJuanBlue,
