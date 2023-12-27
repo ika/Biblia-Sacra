@@ -36,4 +36,16 @@ class SharedPrefs {
     final prefs = await sharedPrefs;
     return prefs.getDouble(key);
   }
+
+  // ==================THEME=====================
+
+  Future<void> setTheme(bool theme) async {
+    final prefs = await sharedPrefs;
+    prefs.setBool("theme", theme);
+  }
+
+  Future<bool?> getTheme() async {
+    final prefs = await sharedPrefs;
+    return prefs.getBool("theme");
+  }
 }

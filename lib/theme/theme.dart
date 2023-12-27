@@ -31,12 +31,12 @@ class ThemePageState extends State<ThemePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(
-                  onPressed: () => themeBloc.add(ThemeEvent.toggleDark),
+                  onPressed: () => themeBloc.add(ThemeSwitchEvent()),
                   child: const Text('Dark'),
                 ),
                 const SizedBox(width: 10),
                 FilledButton(
-                  onPressed: () => themeBloc.add(ThemeEvent.toggleLight),
+                  onPressed: () => themeBloc.add(ThemeSwitchEvent()),
                   child: const Text('Light'),
                 ),
               ],

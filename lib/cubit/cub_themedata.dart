@@ -1,7 +1,17 @@
+import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+SharedPrefs sharedPrefs = SharedPrefs();
+
+@immutable
+abstract class ThemeEvent {}
+
+class InitialThemeSetEvent extends ThemeEvent {}
+
+class ThemeSwitchEvent extends ThemeEvent {}
 
 class ThemeState {
   final ThemeData themeData;
@@ -44,20 +54,17 @@ class ThemeState {
       ));
 }
 
-enum ThemeEvent { toggleDark, toggleLight }
-
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  ThemeBloc() : super(ThemeState.lightTheme);
+  ThemeBloc() : super(ThemeState.lightTheme) {
+    on<InitialThemeSetEvent>((event, emit) async {
+      final bool isDark = await sharedPrefs.getTheme() ?? false;
+      (isDark) ? emit(ThemeState.darkTheme) : emit(ThemeState.lightTheme);
+    });
 
-  @override
-  Stream<ThemeState> mapEventToState(ThemeEvent event) async* {
-    switch (event) {
-      case ThemeEvent.toggleDark:
-        yield ThemeState.darkTheme;
-        break;
-      case ThemeEvent.toggleLight:
-        yield ThemeState.lightTheme;
-        break;
-    }
+    on<ThemeSwitchEvent>((event, emit) async {
+      final isDark = await sharedPrefs.getTheme() ?? false;
+      (isDark) ? emit(ThemeState.lightTheme) : emit(ThemeState.darkTheme);
+      sharedPrefs.setTheme(!isDark);
+    });
   }
 }

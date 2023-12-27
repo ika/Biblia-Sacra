@@ -108,19 +108,19 @@ class _BibleAppState extends State<BibleApp> {
         BlocProvider<SearchCubit>(
           create: (context) => SearchCubit()..getSearchAreaKey(),
         ),
-      ],
-      child: BlocProvider(
-        create: (context) => ThemeBloc(),
-        child: BlocBuilder<ThemeBloc, ThemeState>(
-          builder: (context, state) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Bible App',
-              theme: state.themeData,
-              home: const MainPage(),
-            );
-          },
+        BlocProvider<ThemeBloc>(
+          create: (context) => ThemeBloc()..add(InitialThemeSetEvent()),
         ),
+      ],
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Bible App',
+            theme: state.themeData,
+            home: const MainPage(),
+          );
+        },
       ),
     );
   }
