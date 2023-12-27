@@ -21,6 +21,7 @@ import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
+import 'package:bibliasacra/theme/theme.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
@@ -861,6 +862,28 @@ class MainPageState extends State<MainPage> {
             onTap: () {
               Route route = MaterialPageRoute(
                 builder: (context) => const FontsPage(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
+            },
+          ),
+                    ListTile(
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
+            title: const Text(
+              'Theme',
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Route route = MaterialPageRoute(
+                builder: (context) => const ThemePage(),
               );
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),

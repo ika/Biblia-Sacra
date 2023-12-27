@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Globals {
   //----initial read-----------------------
@@ -21,9 +23,6 @@ class Globals {
   static int navigatorLongDelay = 500;
   static int navigatorLongestDelay = 800;
 
-  // appbar font size
-  static double appBarFontSize = 18;
-
   // back Icon
   static const IconData backArrow =
       IconData(0xe791, fontFamily: "MaterialIcons");
@@ -35,7 +34,7 @@ class Globals {
   static String selectorText = bookName;
 
   // colorListNumber
-  static int colorListNumber = 4; // Amber
+  //static int colorListNumber = 4; // Amber
 
   // Dictionary mode
   static bool dictionaryMode = false;
@@ -45,7 +44,7 @@ class Globals {
   //static double initialTextSize = 16;
 
   // Font
-  static String initialFont = 'OpenSans';
+  static String fontFamily = 'Open Sans';
 
   // Active Version count
   static int? activeVersionCount = 0;

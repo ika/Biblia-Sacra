@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bibliasacra/cubit/cub_themedata.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/cubit/cub_chapters.dart';
 import 'package:bibliasacra/cubit/cub_search.dart';
@@ -9,9 +10,7 @@ import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 // https://rydmike.com/flexcolorscheme/themesplayground-latest/
@@ -99,8 +98,6 @@ class BibleApp extends StatefulWidget {
 }
 
 class _BibleAppState extends State<BibleApp> {
-  bool useMaterial3 = false;
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -112,49 +109,18 @@ class _BibleAppState extends State<BibleApp> {
           create: (context) => SearchCubit()..getSearchAreaKey(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Bible App',
-        theme: FlexThemeData.light(
-          scheme: FlexScheme.amber,
-          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-          blendLevel: 7,
-          subThemesData: const FlexSubThemesData(
-            blendOnLevel: 10,
-            blendOnColors: false,
-            useTextTheme: true,
-            useM2StyleDividerInM3: true,
-            alignedDropdown: true,
-            useInputDecoratorThemeInDialogs: true,
-          ),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          useMaterial3: useMaterial3,
-          swapLegacyOnMaterial3: true,
-          // To use the Playground font, add GoogleFonts package and uncomment
-          fontFamily: GoogleFonts.notoSans().fontFamily
+      child: BlocProvider(
+        create: (context) => ThemeBloc(),
+        child: BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Bible App',
+              theme: state.themeData,
+              home: const MainPage(),
+            );
+          },
         ),
-        darkTheme: FlexThemeData.dark(
-          scheme: FlexScheme.sanJuanBlue,
-          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-          blendLevel: 13,
-          subThemesData: const FlexSubThemesData(
-            blendOnLevel: 20,
-            useTextTheme: true,
-            useM2StyleDividerInM3: true,
-            alignedDropdown: true,
-            useInputDecoratorThemeInDialogs: true,
-          ),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          useMaterial3: useMaterial3,
-          swapLegacyOnMaterial3: true,
-          // To use the Playground font, add GoogleFonts package and uncomment
-          fontFamily: GoogleFonts.notoSans().fontFamily,
-        ),
-// If you do not have a themeMode switch, uncomment this line
-// to let the device system mode control the theme mode:
-        themeMode: ThemeMode.system,
-
-        home: const MainPage(),
       ),
     );
   }

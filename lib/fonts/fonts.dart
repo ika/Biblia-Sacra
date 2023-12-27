@@ -1,5 +1,7 @@
+import 'package:bibliasacra/cubit/cub_themedata.dart';
 import 'package:bibliasacra/fonts/font_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 //import 'package:flutter_font_picker/flutter_font_picker.dart';
 
 class FontsPage extends StatefulWidget {
@@ -10,7 +12,8 @@ class FontsPage extends StatefulWidget {
 }
 
 class FontsPageState extends State<FontsPage> {
- String _selectedFont = "Roboto";
+  String _selectedFont = 'Roboto';
+  
   TextStyle? _selectedFontTextStyle;
   final List<String> _myGoogleFonts = [
     "Abril Fatface",
@@ -68,6 +71,7 @@ class FontsPageState extends State<FontsPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    //_selectedFont = BlocProvider.of<ThemeDataCubit>(context).state.themeData;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

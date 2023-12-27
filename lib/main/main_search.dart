@@ -164,10 +164,10 @@ class _MainSearchState extends State<MainSearch> {
         //softWrap: true,
         text: TextSpan(
           text: t.substring(0, idx),
-          style: const TextStyle(
+          //style: const TextStyle(
             //fontSize: primaryTextSize,
-            color: Colors.black,
-          ),
+            //color: Colors.black,
+          //),
           children: [
             TextSpan(
               text: t.substring(idx, idx + m.length),
@@ -178,10 +178,10 @@ class _MainSearchState extends State<MainSearch> {
             ),
             TextSpan(
               text: t.substring(idx + m.length),
-              style: const TextStyle(
+              //style: const TextStyle(
                 //fontSize: primaryTextSize,
-                color: Colors.black,
-              ),
+                //color: Colors.black,
+              //),
             ),
           ],
         ),
