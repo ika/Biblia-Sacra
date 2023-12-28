@@ -42,7 +42,7 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   Future<void> runFilter(String enterdKeyWord) async {
-    int? k = BlocProvider.of<SearchCubit>(context).state;
+    int? k = BlocProvider.of<SearchBloc>(context).state.area;
 
     String sec = areasSections[k];
     var arr = sec.split('|');
@@ -218,8 +218,9 @@ class _MainSearchState extends State<MainSearch> {
           ? highLiteSearchWord(snapshot.data![index].t!, _contents)
           : Container(),
       onTap: () {
-        BlocProvider.of<ChapterCubit>(context)
-            .setChapter(snapshot.data![index].c!);
+        // BlocProvider.of<ChapterCubit>(context)
+        //     .setChapter(snapshot.data![index].c!);
+        BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: snapshot.data![index].c!));
 
         final model = WriteVarsModel(
           lang: Globals.bibleLang,
@@ -265,10 +266,10 @@ class _MainSearchState extends State<MainSearch> {
             // title: Text("${Globals.areaSearchTitle} - ${Globals.versionAbbr}"
             //     //style: TextStyle(fontSize: Globals.appBarFontSize),
             //     ),
-            title: BlocBuilder<SearchCubit, int>(
-              builder: (context, area) {
+            title: BlocBuilder<SearchBloc, SearchState>(
+              builder: (context, state) {
                 return Text(
-                  "${areasList[area]} - ${Globals.versionAbbr}",
+                  "${areasList[state.area]} - ${Globals.versionAbbr}",
                   // style: TextStyle(fontSize: Globals.appBarFontSize),
                 );
               },

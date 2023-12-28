@@ -79,10 +79,10 @@ class _MainSelectorState extends State<MainSelector>
 
   backButton(BuildContext context) {
     // update Chapter
-    sharedPrefs.setIntPref('chapter', _currentChapterValue).then((c) {
+    //sharedPrefs.setIntPref('chapter', _currentChapterValue).then((c) {
       Globals.bookChapter = _currentChapterValue;
 
-      BlocProvider.of<ChapterCubit>(context).setChapter(_currentChapterValue);
+      BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: _currentChapterValue));
 
       // upate Verse
       sharedPrefs.setIntPref('verse', _currentVerseValue).then((v) {
@@ -97,7 +97,7 @@ class _MainSelectorState extends State<MainSelector>
           },
         );
       });
-    });
+    //});
   }
 
   // Widget versesWidget() {

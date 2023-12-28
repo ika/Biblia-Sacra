@@ -20,6 +20,11 @@ class SharedPrefs {
     prefs.setDouble(key, value);
   }
 
+    Future<void> setBoolPref(String key, bool value) async {
+    final prefs = await sharedPrefs;
+    prefs.setBool(key, value);
+  }
+
   // ==================GET=====================
 
   Future<String?> getStringPref(String key) async {
@@ -37,15 +42,8 @@ class SharedPrefs {
     return prefs.getDouble(key);
   }
 
-  // ==================THEME=====================
-
-  Future<void> setTheme(bool theme) async {
+  Future<bool?> getBoolPref(key) async {
     final prefs = await sharedPrefs;
-    prefs.setBool("theme", theme);
-  }
-
-  Future<bool?> getTheme() async {
-    final prefs = await sharedPrefs;
-    return prefs.getBool("theme");
+    return prefs.getBool(key);
   }
 }

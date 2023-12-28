@@ -118,8 +118,7 @@ class _BookMarkState extends State<BookMarksPage> {
               // style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
-              BlocProvider.of<ChapterCubit>(context)
-                  .setChapter(list[index].chapter);
+              BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: list[index].chapter));
 
               Globals.bibleLang = list[index].lang;
 
@@ -128,7 +127,7 @@ class _BookMarkState extends State<BookMarksPage> {
                 version: list[index].version,
                 abbr: list[index].abbr,
                 book: list[index].book,
-                chapter: list[index].chapter,
+                chapter: list[index].chapter, // duplicate save
                 verse: list[index].verse,
                 name: list[index].name,
               );

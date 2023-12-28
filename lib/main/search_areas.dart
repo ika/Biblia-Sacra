@@ -88,17 +88,15 @@ class SearchAreasList extends StatelessWidget {
             searchAreasList[elementKey],
           ),
           onTap: () {
-            sharedPrefs.setIntPref('searchArea', elementKey).then((v) {
-              BlocProvider.of<SearchCubit>(context)
-                  .setSearchAreaKey(elementKey);
+            BlocProvider.of<SearchBloc>(context)
+                .add(UpdateSearchArea(area: elementKey));
 
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.of(context).pop();
-                },
-              );
-            });
+            Future.delayed(
+              Duration(milliseconds: Globals.navigatorDelay),
+              () {
+                Navigator.of(context).pop();
+              },
+            );
           },
         );
       },

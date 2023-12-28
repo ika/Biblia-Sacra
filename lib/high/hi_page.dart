@@ -119,8 +119,7 @@ class _HighLightsPage extends State<HighLightsPage> {
               // style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
-              BlocProvider.of<ChapterCubit>(context)
-                  .setChapter(list[index].chapter);
+              BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: list[index].chapter));
 
               Globals.bibleLang = list[index].lang;
 

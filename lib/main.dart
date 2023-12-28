@@ -31,8 +31,6 @@ Future<void> main() async {
 
   Utilities().getDialogeHeight();
 
-  // _sharedPrefs.getIntPref('searchArea').then((p) {
-  //   Globals.areaSearchTitle = areasList[p ?? 5]; // the Gospels
   _sharedPrefs.getIntPref('version').then(
     (a) {
       Globals.bibleVersion = a ?? 1;
@@ -49,37 +47,20 @@ Future<void> main() async {
               _sharedPrefs.getIntPref('book').then(
                 (d) {
                   Globals.bibleBook = d ?? 43;
-                  // Chapter
-                  _sharedPrefs.getIntPref('chapter').then(
-                    (e) {
-                      Globals.bookChapter = e ?? 1;
-                      // Verse
-                      _sharedPrefs.getIntPref('verse').then((f) {
-                        Globals.chapterVerse = f ?? 1;
-                        // Book Name
-                        BookLists().readBookName(Globals.bibleBook).then(
-                          (g) {
-                            Globals.bookName = g;
-                            getActiveVersionsCount();
-                            // _sharedPrefs
-                            //     .getDoublePref('textSize')
-                            //     .then((t) {
-                            //   Globals.initialTextSize = t ?? 16;
-                            //   _sharedPrefs
-                            //       .getStringPref('fontSel')
-                            //       .then((f) {
-                            //     Globals.initialFont = f ?? 'Roboto';
-                            //     getActiveVersionsCount();
-                            //   });
-                            // });
-                            runApp(
-                              const BibleApp(),
-                            );
-                          },
+                  // Verse
+                  _sharedPrefs.getIntPref('verse').then((f) {
+                    Globals.chapterVerse = f ?? 1;
+                    // Book Name
+                    BookLists().readBookName(Globals.bibleBook).then(
+                      (g) {
+                        Globals.bookName = g;
+                        getActiveVersionsCount();
+                        runApp(
+                          const BibleApp(),
                         );
-                      });
-                    },
-                  );
+                      },
+                    );
+                  });
                 },
               );
             },
@@ -102,11 +83,11 @@ class _BibleAppState extends State<BibleApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ChapterCubit>(
-          create: (context) => ChapterCubit()..getChapter(),
+        BlocProvider<ChapterBloc>(
+          create: (context) => ChapterBloc()..add(GetChapter()),
         ),
-        BlocProvider<SearchCubit>(
-          create: (context) => SearchCubit()..getSearchAreaKey(),
+        BlocProvider<SearchBloc>(
+          create: (context) => SearchBloc()..add(GetSearchArea()),
         ),
         BlocProvider<ThemeBloc>(
           create: (context) => ThemeBloc()..add(InitialThemeSetEvent()),

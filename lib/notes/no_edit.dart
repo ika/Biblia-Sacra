@@ -83,10 +83,7 @@ class _EditNotePageState extends State<EditNotePage> {
         label: const Text('Go to Verse'),
         icon: const Icon(Icons.arrow_circle_right_outlined),
         onPressed: () {
-          //debugPrint('PRESSED');
-          //debugPrint(jsonEncode(widget.model));
-          BlocProvider.of<ChapterCubit>(context)
-              .setChapter(widget.model.chapter!);
+              BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: widget.model.chapter!));
 
           final model = WriteVarsModel(
               lang: widget.model.lang,

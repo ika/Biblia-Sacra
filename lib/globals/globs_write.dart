@@ -42,7 +42,7 @@ Future<void> writeVars(WriteVarsModel model) async {
   // Book
   sharedPrefs.setIntPref('book', model.book!);
   // Chapter
-  sharedPrefs.setIntPref('chapter', model.chapter!);
+  //sharedPrefs.setIntPref('chapter', model.chapter!);
   // Verse
   sharedPrefs.setIntPref('verse', model.verse!);
   // Book name

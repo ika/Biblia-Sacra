@@ -659,17 +659,18 @@ class MainPageState extends State<MainPage> {
               children: chapterCountFunc(context, book, chapterCount),
               onPageChanged: (index) {
                 int c = index + 1;
-                _sharedPrefs.setIntPref('chapter', c).then(
-                  (value) {
+                // _sharedPrefs.setIntPref('chapter', c).then(
+                //   (value) {
                     Globals.bookChapter = c;
-                    BlocProvider.of<ChapterCubit>(context).setChapter(c);
+                    //BlocProvider.of<ChapterCubit>(context).setChapter(c);
+                    BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: c));
                     _sharedPrefs.setIntPref('verse', 1).then(
                       (value) {
                         Globals.chapterVerse = 1; // move to top of next chapter
                       },
                     );
-                  },
-                );
+                //   },
+                // );
               },
             ),
           );
@@ -985,10 +986,10 @@ class MainPageState extends State<MainPage> {
                       '${Globals.bookName}: ',
                       //style: const TextStyle(fontWeight: FontWeight.bold)
                     ),
-                    BlocBuilder<ChapterCubit, int>(
-                      builder: (context, chapter) {
+                    BlocBuilder<ChapterBloc, ChapterState>(
+                      builder: (context, state) {
                         return Text(
-                          chapter.toString(),
+                          state.chapter.toString(),
                           //style: const TextStyle(fontWeight: FontWeight.bold)
                         );
                       },
