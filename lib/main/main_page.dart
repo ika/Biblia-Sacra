@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:bibliasacra/bloc/bloc_globals.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
@@ -68,6 +69,8 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+
+    GetLists().updateActiveLists(Globals.bibleVersion);
 
     initialScrollController = ItemScrollController();
 
@@ -661,14 +664,15 @@ class MainPageState extends State<MainPage> {
                 int c = index + 1;
                 // _sharedPrefs.setIntPref('chapter', c).then(
                 //   (value) {
-                    Globals.bookChapter = c;
-                    //BlocProvider.of<ChapterCubit>(context).setChapter(c);
-                    BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: c));
-                    _sharedPrefs.setIntPref('verse', 1).then(
-                      (value) {
-                        Globals.chapterVerse = 1; // move to top of next chapter
-                      },
-                    );
+                Globals.bookChapter = c;
+                //BlocProvider.of<ChapterCubit>(context).setChapter(c);
+                BlocProvider.of<ChapterBloc>(context)
+                    .add(UpdateChapter(chapter: c));
+                _sharedPrefs.setIntPref('verse', 1).then(
+                  (value) {
+                    Globals.chapterVerse = 1; // move to top of next chapter
+                  },
+                );
                 //   },
                 // );
               },
@@ -872,7 +876,7 @@ class MainPageState extends State<MainPage> {
               );
             },
           ),
-                    ListTile(
+          ListTile(
             trailing: const Icon(Icons.arrow_right),
             //color: Theme.of(context).colorScheme.primary),
             title: const Text(
@@ -950,6 +954,9 @@ class MainPageState extends State<MainPage> {
     // print("${args.currentChapterValue} ${args.currentVerseValue}");
 
     //final ThemeData theme = Theme.of(context);
+
+    // int state = context.read<GlobalsBloc>().state.bibleVersion;
+    // debugPrint("STATE $state");
 
     initialPageScroll = true;
     _dbQueries = DbQueries();

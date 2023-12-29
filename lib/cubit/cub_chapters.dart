@@ -2,19 +2,11 @@ import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// class ChapterCubit extends Cubit<int> {
-//   ChapterCubit() : super(1);
-
-//   void setChapter(int c) => emit(c);
-
-// void getChapter() {
-//   emit(Globals.bookChapter);
-// }
-// }
-
 SharedPrefs sharedPrefs = SharedPrefs();
 
+// -------------------------------------------------
 // Event
+// -------------------------------------------------
 @immutable
 abstract class ChapterEvent {}
 
@@ -25,7 +17,9 @@ class UpdateChapter extends ChapterEvent {
   final int chapter;
 }
 
+// -------------------------------------------------
 // State
+// -------------------------------------------------
 class ChapterState {
   int chapter;
   ChapterState({required this.chapter});
@@ -39,7 +33,9 @@ class UpdateChapterState extends ChapterState {
   UpdateChapterState({required super.chapter});
 }
 
+// -------------------------------------------------
 // Bloc
+// -------------------------------------------------
 class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
   ChapterBloc() : super(GetChapterState(chapter: 1)) {
     

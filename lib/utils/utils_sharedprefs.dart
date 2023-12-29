@@ -1,3 +1,4 @@
+import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
@@ -20,16 +21,21 @@ class SharedPrefs {
     prefs.setDouble(key, value);
   }
 
-    Future<void> setBoolPref(String key, bool value) async {
+  Future<void> setBoolPref(String key, bool value) async {
     final prefs = await sharedPrefs;
     prefs.setBool(key, value);
+  }
+
+  Future<void> setStringListPref(String key, List<String> list) async {
+    final prefs = await sharedPrefs;
+    prefs.setStringList(key, list);
   }
 
   // ==================GET=====================
 
   Future<String?> getStringPref(String key) async {
     final prefs = await sharedPrefs;
-    return prefs.getString(key);
+    return prefs.getString(key) ?? '';
   }
 
   Future<int?> getIntPref(String key) async {
@@ -39,11 +45,16 @@ class SharedPrefs {
 
   Future<double?> getDoublePref(String key) async {
     final prefs = await sharedPrefs;
-    return prefs.getDouble(key);
+    return prefs.getDouble(key) ?? 0;
   }
 
   Future<bool?> getBoolPref(key) async {
     final prefs = await sharedPrefs;
-    return prefs.getBool(key);
+    return prefs.getBool(key) ?? false;
+  }
+
+  Future<List<String>> getStringListPref(key) async {
+    final prefs = await sharedPrefs;
+    return prefs.getStringList(key) ?? [];
   }
 }

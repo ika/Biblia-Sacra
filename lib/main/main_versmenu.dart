@@ -1,3 +1,4 @@
+import 'package:bibliasacra/bloc/bloc_globals.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -6,6 +7,7 @@ import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 VkQueries _vkQueries = VkQueries(); // version key
 SharedPrefs sharedPrefs = SharedPrefs();
@@ -100,15 +102,19 @@ class AppBarVersions extends StatelessWidget {
                 _lists.updateActiveLists(snapshot.data![index].n!);
 
                 Globals.bibleLang = snapshot.data![index].l!;
-                Globals.bibleVersion = snapshot.data![index].n!;
+                //Globals.bibleVersion = snapshot.data![index].n!;
                 Globals.versionAbbr = snapshot.data![index].r!;
                 //Globals.chapterVerse = 0; //reset verse number
 
                 Globals.dictionaryMode = false;
 
                 sharedPrefs.setStringPref('language', Globals.bibleLang);
-                sharedPrefs.setIntPref('version', Globals.bibleVersion);
+                //sharedPrefs.setIntPref('version', Globals.bibleVersion);
                 sharedPrefs.setStringPref('verabbr', Globals.versionAbbr);
+
+                context
+                    .read<GlobalsBloc>()
+                    .add(UpdateGlobals(bibleVersion: snapshot.data![index].n!));
 
                 bookLists.readBookName(Globals.bibleBook).then(
                   (value) {

@@ -6,6 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 SharedPrefs sharedPrefs = SharedPrefs();
 
+// -------------------------------------------------
+// Event
+// -------------------------------------------------
 @immutable
 abstract class ThemeEvent {}
 
@@ -13,6 +16,9 @@ class InitialThemeSetEvent extends ThemeEvent {}
 
 class ThemeSwitchEvent extends ThemeEvent {}
 
+// -------------------------------------------------
+// State
+// -------------------------------------------------
 class ThemeState {
   final ThemeData themeData;
 
@@ -54,6 +60,9 @@ class ThemeState {
       ));
 }
 
+// -------------------------------------------------
+// Bloc
+// -------------------------------------------------
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(ThemeState.lightTheme) {
 

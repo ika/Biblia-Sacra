@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 SharedPrefs sharedPrefs = SharedPrefs();
 
+// -------------------------------------------------
 // Event
+// -------------------------------------------------
 @immutable
 abstract class SearchEvent {}
 
@@ -15,27 +17,31 @@ class UpdateSearchArea extends SearchEvent {
   final int area;
 }
 
+// -------------------------------------------------
 // State
+// -------------------------------------------------
 class SearchState {
   int area;
   SearchState({required this.area});
 }
 
-class InitialSearchState extends SearchState {
-  InitialSearchState({required super.area});
+class GetSearchState extends SearchState {
+  GetSearchState({required super.area});
 }
 
 class UpdateSearchState extends SearchState {
   UpdateSearchState({required super.area});
 }
 
+// -------------------------------------------------
 // Bloc
+// -------------------------------------------------
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  SearchBloc() : super(InitialSearchState(area: 0)) {
+  SearchBloc() : super(GetSearchState(area: 0)) {
 
     on<GetSearchArea>((GetSearchArea event, Emitter<SearchState> emit) async {
       sharedPrefs.getIntPref('searchArea').then((value) {
-        emit(InitialSearchState(area: value ?? 5));
+        emit(GetSearchState(area: value ?? 5));
       });
     });
 
