@@ -1,4 +1,4 @@
-import 'package:bibliasacra/cubit/cub_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -118,7 +118,9 @@ class _BookMarkState extends State<BookMarksPage> {
               // style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
-              BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: list[index].chapter));
+              context
+                  .read<ChapterBloc>()
+                  .add(UpdateChapter(chapter: list[index].chapter));
 
               Globals.bibleLang = list[index].lang;
 
@@ -127,7 +129,7 @@ class _BookMarkState extends State<BookMarksPage> {
                 version: list[index].version,
                 abbr: list[index].abbr,
                 book: list[index].book,
-                chapter: list[index].chapter, // duplicate save
+                //chapter: list[index].chapter, // duplicate save
                 verse: list[index].verse,
                 name: list[index].name,
               );

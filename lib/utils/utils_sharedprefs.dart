@@ -35,7 +35,7 @@ class SharedPrefs {
 
   Future<String?> getStringPref(String key) async {
     final prefs = await sharedPrefs;
-    return prefs.getString(key) ?? '';
+    return prefs.getString(key);
   }
 
   Future<int?> getIntPref(String key) async {
@@ -45,16 +45,16 @@ class SharedPrefs {
 
   Future<double?> getDoublePref(String key) async {
     final prefs = await sharedPrefs;
-    return prefs.getDouble(key) ?? 0;
+    return prefs.getDouble(key);
   }
 
   Future<bool?> getBoolPref(key) async {
     final prefs = await sharedPrefs;
-    return prefs.getBool(key) ?? false;
+    return prefs.getBool(key);
   }
 
-  Future<List<String>> getStringListPref(key) async {
+  Future<List<String>?> getStringListPref(key) async {
     final prefs = await sharedPrefs;
-    return prefs.getStringList(key) ?? [];
+    return prefs.getStringList(key);
   }
 }

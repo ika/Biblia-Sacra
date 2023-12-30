@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:bibliasacra/bloc/bloc_globals.dart';
-import 'package:bibliasacra/cubit/cub_themedata.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
+import 'package:bibliasacra/bloc/bloc_themedata.dart';
 import 'package:flutter/material.dart';
-import 'package:bibliasacra/cubit/cub_chapters.dart';
-import 'package:bibliasacra/cubit/cub_search.dart';
+import 'package:bibliasacra/bloc/bloc_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_search.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -31,10 +31,6 @@ Future<void> main() async {
 
   Utilities().getDialogeHeight();
 
-  // _sharedPrefs.getIntPref('bibleVersion').then(
-  //   (a) {
-  //     Globals.bibleVersion = a ?? 1;
-  //     GetLists().updateActiveLists(Globals.bibleVersion);
   // language
   _sharedPrefs.getStringPref('language').then(
     (b) {
@@ -67,8 +63,6 @@ Future<void> main() async {
       );
     },
   );
-  //   },
-  // );
 }
 
 class BibleApp extends StatefulWidget {
@@ -84,16 +78,16 @@ class _BibleAppState extends State<BibleApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ChapterBloc>(
-          create: (context) => ChapterBloc()..add(GetChapter()),
+          create: (context) => ChapterBloc()..add(InitiateChapter()),
         ),
         BlocProvider<SearchBloc>(
-          create: (context) => SearchBloc()..add(GetSearchArea()),
+          create: (context) => SearchBloc()..add(InitiateSearchArea()),
         ),
         BlocProvider<ThemeBloc>(
-          create: (context) => ThemeBloc()..add(InitialThemeSetEvent()),
+          create: (context) => ThemeBloc()..add(InitiateTheme()),
         ),
-        BlocProvider<GlobalsBloc>(
-          create: (context) => GlobalsBloc()..add(GetGlobals()),
+        BlocProvider<VersionBloc>(
+          create: (context) => VersionBloc()..add(InitiateVersion()),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(

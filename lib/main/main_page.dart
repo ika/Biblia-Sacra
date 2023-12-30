@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:bibliasacra/bloc/bloc_globals.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
-import 'package:bibliasacra/cubit/cub_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/dict/dict_page.dart';
 import 'package:bibliasacra/fonts/fonts.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
@@ -662,10 +661,7 @@ class MainPageState extends State<MainPage> {
               children: chapterCountFunc(context, book, chapterCount),
               onPageChanged: (index) {
                 int c = index + 1;
-                // _sharedPrefs.setIntPref('chapter', c).then(
-                //   (value) {
-                Globals.bookChapter = c;
-                //BlocProvider.of<ChapterCubit>(context).setChapter(c);
+                context.read<ChapterBloc>().add(UpdateChapter(chapter: c));
                 BlocProvider.of<ChapterBloc>(context)
                     .add(UpdateChapter(chapter: c));
                 _sharedPrefs.setIntPref('verse', 1).then(
@@ -673,8 +669,6 @@ class MainPageState extends State<MainPage> {
                     Globals.chapterVerse = 1; // move to top of next chapter
                   },
                 );
-                //   },
-                // );
               },
             ),
           );

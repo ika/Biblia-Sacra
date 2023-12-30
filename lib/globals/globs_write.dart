@@ -30,7 +30,7 @@ Future<void> writeVars(WriteVarsModel model) async {
   Globals.bibleLang = model.lang!;
   Globals.versionAbbr = model.abbr!;
   Globals.bibleBook = model.book!;
-  Globals.bookChapter = model.chapter!;
+  //Globals.bookChapter = model.chapter!;
   Globals.chapterVerse = model.verse!;
   Globals.bookName = model.name!;
   // version

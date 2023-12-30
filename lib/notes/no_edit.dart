@@ -1,4 +1,4 @@
-import 'package:bibliasacra/cubit/cub_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -83,14 +83,16 @@ class _EditNotePageState extends State<EditNotePage> {
         label: const Text('Go to Verse'),
         icon: const Icon(Icons.arrow_circle_right_outlined),
         onPressed: () {
-              BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: widget.model.chapter!));
+          context
+              .read<ChapterBloc>()
+              .add(UpdateChapter(chapter: widget.model.chapter!));
 
           final model = WriteVarsModel(
               lang: widget.model.lang,
               version: widget.model.version,
               abbr: widget.model.abbr,
               book: widget.model.book,
-              chapter: widget.model.chapter,
+              //chapter: widget.model.chapter,
               verse: widget.model.verse,
               name: widget.model.name);
           onGoToVerseTap(model);

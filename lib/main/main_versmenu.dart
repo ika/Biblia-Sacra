@@ -1,4 +1,4 @@
-import 'package:bibliasacra/bloc/bloc_globals.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -113,8 +113,8 @@ class AppBarVersions extends StatelessWidget {
                 sharedPrefs.setStringPref('verabbr', Globals.versionAbbr);
 
                 context
-                    .read<GlobalsBloc>()
-                    .add(UpdateGlobals(bibleVersion: snapshot.data![index].n!));
+                    .read<VersionBloc>()
+                    .add(UpdateVersion(bibleVersion: snapshot.data![index].n!));
 
                 bookLists.readBookName(Globals.bibleBook).then(
                   (value) {

@@ -24,8 +24,6 @@ class VersionsPageState extends State<VersionsPage> {
   @override
   void initState() {
     counter = 0;
-    // primarySwatch = BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
-    //primaryTextSize = Globals.initialTextSize;
     super.initState();
   }
 

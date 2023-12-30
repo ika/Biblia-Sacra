@@ -10,7 +10,7 @@ SharedPrefs sharedPrefs = SharedPrefs();
 @immutable
 abstract class SearchEvent {}
 
-class GetSearchArea extends SearchEvent {}
+class InitiateSearchArea extends SearchEvent {}
 
 class UpdateSearchArea extends SearchEvent {
   UpdateSearchArea({required this.area});
@@ -25,8 +25,8 @@ class SearchState {
   SearchState({required this.area});
 }
 
-class GetSearchState extends SearchState {
-  GetSearchState({required super.area});
+class InitiateSearchState extends SearchState {
+  InitiateSearchState({required super.area});
 }
 
 class UpdateSearchState extends SearchState {
@@ -37,11 +37,11 @@ class UpdateSearchState extends SearchState {
 // Bloc
 // -------------------------------------------------
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  SearchBloc() : super(GetSearchState(area: 0)) {
+  SearchBloc() : super(InitiateSearchState(area: 5)) {
 
-    on<GetSearchArea>((GetSearchArea event, Emitter<SearchState> emit) async {
+    on<InitiateSearchArea>((InitiateSearchArea event, Emitter<SearchState> emit) async {
       sharedPrefs.getIntPref('searchArea').then((value) {
-        emit(GetSearchState(area: value ?? 5));
+        emit(InitiateSearchState(area: value ?? 5));
       });
     });
 

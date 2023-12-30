@@ -1,4 +1,4 @@
-import 'package:bibliasacra/cubit/cub_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/high/hl_model.dart';
@@ -119,7 +119,7 @@ class _HighLightsPage extends State<HighLightsPage> {
               // style: TextStyle(fontSize: primaryTextSize),
             ),
             onTap: () {
-              BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: list[index].chapter));
+              context.read<ChapterBloc>().add(UpdateChapter(chapter: list[index].chapter));
 
               Globals.bibleLang = list[index].lang;
 
@@ -128,7 +128,7 @@ class _HighLightsPage extends State<HighLightsPage> {
                 version: list[index].version,
                 abbr: list[index].abbr,
                 book: list[index].book,
-                chapter: list[index].chapter,
+                //chapter: list[index].chapter,
                 verse: list[index].verse,
                 name: list[index].name,
               );

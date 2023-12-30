@@ -1,4 +1,4 @@
-import 'package:bibliasacra/cubit/cub_search.dart';
+import 'package:bibliasacra/bloc/bloc_search.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
@@ -88,8 +88,7 @@ class SearchAreasList extends StatelessWidget {
             searchAreasList[elementKey],
           ),
           onTap: () {
-            BlocProvider.of<SearchBloc>(context)
-                .add(UpdateSearchArea(area: elementKey));
+            context.read<SearchBloc>().add(UpdateSearchArea(area: elementKey));
 
             Future.delayed(
               Duration(milliseconds: Globals.navigatorDelay),

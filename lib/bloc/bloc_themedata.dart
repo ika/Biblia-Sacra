@@ -12,16 +12,18 @@ SharedPrefs sharedPrefs = SharedPrefs();
 @immutable
 abstract class ThemeEvent {}
 
-class InitialThemeSetEvent extends ThemeEvent {}
+class InitiateTheme extends ThemeEvent {}
 
-class ThemeSwitchEvent extends ThemeEvent {}
+class ChangeTheme extends ThemeEvent {
+  final ThemeData themeData;
+  ChangeTheme(this.themeData);
+}
 
 // -------------------------------------------------
 // State
 // -------------------------------------------------
 class ThemeState {
-  final ThemeData themeData;
-
+  ThemeData themeData;
   ThemeState(this.themeData);
 
   static ThemeState get lightTheme => ThemeState(FlexThemeData.light(
@@ -65,13 +67,12 @@ class ThemeState {
 // -------------------------------------------------
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(ThemeState.lightTheme) {
-
-    on<InitialThemeSetEvent>((event, emit) async {
+    on<InitiateTheme>((event, emit) async {
       final bool isDark = await sharedPrefs.getBoolPref('theme') ?? false;
-      (isDark) ? emit(ThemeState.darkTheme) : emit(ThemeState.lightTheme);
+      (isDark) ? emit : emit(ThemeState.lightTheme);
     });
 
-    on<ThemeSwitchEvent>((event, emit) async {
+    on<ChangeTheme>((event, emit) async {
       final bool isDark = await sharedPrefs.getBoolPref('theme') ?? false;
       (isDark) ? emit(ThemeState.lightTheme) : emit(ThemeState.darkTheme);
       sharedPrefs.setBoolPref('theme', !isDark);

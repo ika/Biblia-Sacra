@@ -1,7 +1,6 @@
-import 'package:bibliasacra/cubit/cub_themedata.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bibliasacra/bloc/bloc_themedata.dart';
 
 class ThemePage extends StatefulWidget {
   const ThemePage({super.key});
@@ -13,8 +12,6 @@ class ThemePage extends StatefulWidget {
 class ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
-    final themeBloc = BlocProvider.of<ThemeBloc>(context);
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -25,20 +22,24 @@ class ThemePageState extends State<ThemePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Switch between Dark and Light Themes:',
+              'Switch between Light and Dark Themes:',
             ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(
-                  onPressed: () => themeBloc.add(ThemeSwitchEvent()),
-                  child: const Text('Dark'),
+                  onPressed: () => context
+                      .read<ThemeBloc>()
+                      .add(ChangeTheme(ThemeData.light())),
+                  child: const Text('Light'),
                 ),
                 const SizedBox(width: 10),
                 FilledButton(
-                  onPressed: () => themeBloc.add(ThemeSwitchEvent()),
-                  child: const Text('Light'),
+                  onPressed: () => context
+                      .read<ThemeBloc>()
+                      .add(ChangeTheme(ThemeData.dark())),
+                  child: const Text('Dark'),
                 ),
               ],
             ),

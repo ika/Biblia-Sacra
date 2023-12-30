@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bibliasacra/cubit/cub_chapters.dart';
-import 'package:bibliasacra/cubit/cub_search.dart';
+import 'package:bibliasacra/bloc/bloc_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_search.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/main/db_model.dart';
@@ -218,16 +218,15 @@ class _MainSearchState extends State<MainSearch> {
           ? highLiteSearchWord(snapshot.data![index].t!, _contents)
           : Container(),
       onTap: () {
-        // BlocProvider.of<ChapterCubit>(context)
-        //     .setChapter(snapshot.data![index].c!);
-        BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: snapshot.data![index].c!));
+
+        context.read<ChapterBloc>().add(UpdateChapter(chapter: snapshot.data![index].c!));
 
         final model = WriteVarsModel(
           lang: Globals.bibleLang,
           version: Globals.bibleVersion,
           abbr: Globals.versionAbbr,
           book: snapshot.data![index].b,
-          chapter: snapshot.data![index].c,
+          //chapter: snapshot.data![index].c,
           verse: snapshot.data![index].v,
           name: bookName,
         );

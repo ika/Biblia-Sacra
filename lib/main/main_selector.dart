@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:bibliasacra/cubit/cub_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
@@ -78,25 +78,19 @@ class _MainSelectorState extends State<MainSelector>
   }
 
   backButton(BuildContext context) {
-    // update Chapter
-    //sharedPrefs.setIntPref('chapter', _currentChapterValue).then((c) {
-      Globals.bookChapter = _currentChapterValue;
-
-      BlocProvider.of<ChapterBloc>(context).add(UpdateChapter(chapter: _currentChapterValue));
-
-      // upate Verse
-      sharedPrefs.setIntPref('verse', _currentVerseValue).then((v) {
-        Globals.chapterVerse = _currentVerseValue;
-        Route route = MaterialPageRoute(
-          builder: (context) => const MainPage(),
-        );
-        Future.delayed(
-          Duration(milliseconds: Globals.navigatorDelay),
-          () {
-            Navigator.push(context, route);
-          },
-        );
-      });
+    // upate Verse
+    sharedPrefs.setIntPref('verse', _currentVerseValue).then((v) {
+      Globals.chapterVerse = _currentVerseValue;
+      Route route = MaterialPageRoute(
+        builder: (context) => const MainPage(),
+      );
+      Future.delayed(
+        Duration(milliseconds: Globals.navigatorDelay),
+        () {
+          Navigator.push(context, route);
+        },
+      );
+    });
     //});
   }
 
@@ -258,7 +252,8 @@ class _MainSelectorState extends State<MainSelector>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                          color: Theme.of(context).colorScheme.primary, width: 2.0),
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2.0),
                     ),
                   ),
                 ),
@@ -303,12 +298,17 @@ class _MainSelectorState extends State<MainSelector>
                     onChanged: (value) {
                       setState(() {
                         _currentChapterValue = value;
+                        // update Chapter
+                        context
+                            .read<ChapterBloc>()
+                            .add(UpdateChapter(chapter: _currentChapterValue));
                       });
                     },
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                          color: Theme.of(context).colorScheme.primary, width: 2.0),
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2.0),
                     ),
                   ),
                 ),
@@ -359,6 +359,9 @@ class _MainSelectorState extends State<MainSelector>
                           (v) {
                             setState(() {
                               _currentChapterValue = _currentVerseValue = 1;
+                              // update Chapter
+                              context.read<ChapterBloc>().add(
+                                  UpdateChapter(chapter: _currentChapterValue));
                             });
 
                             tabController!.animateTo(1);
