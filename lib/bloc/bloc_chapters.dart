@@ -1,4 +1,3 @@
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,16 +42,12 @@ class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
     on<InitiateChapter>(
         (InitiateChapter event, Emitter<ChapterState> emit) async {
       sharedPrefs.getChapterPref().then((value) {
-        //Globals.bibleBookChapter = value!;
-        //debugPrint('InitiateChapter $value');
         emit(InitiateChapterState(chapter: value!));
       });
     });
 
     on<UpdateChapter>((UpdateChapter event, Emitter<ChapterState> emit) async {
       sharedPrefs.setChapterPref(event.chapter).then((v) {
-        //Globals.bibleBookChapter = event.chapter;
-        //debugPrint('UpdateChapter ${event.chapter}');
         emit(UpdateChapterState(chapter: event.chapter));
       });
     });

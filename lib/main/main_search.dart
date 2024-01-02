@@ -48,7 +48,7 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   Future<void> runFilter(String enterdKeyWord) async {
-    int? k = BlocProvider.of<SearchBloc>(context).state.area;
+    int? k = context.read<SearchBloc>().state.area;
 
     String sec = areasSections[k];
     var arr = sec.split('|');
