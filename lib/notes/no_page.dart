@@ -1,16 +1,16 @@
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
 GetLists _lists = GetLists();
 
-//final DateFormat formatter = DateFormat('E d MMM y H:mm:ss');
-
-//double? primaryTextSize;
+late int bibleVersion;
 
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
@@ -22,12 +22,13 @@ class NotesPage extends StatefulWidget {
 class NotesPageState extends State<NotesPage> {
   @override
   void initState() {
-    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
-    //     .state
-    //     .themeData
-    //     .primaryColor as MaterialColor?;
-    //primaryTextSize = Globals.initialTextSize;
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+      },
+    );
   }
 
   Future<void> addPage(NtModel model) async {
@@ -46,7 +47,7 @@ class NotesPageState extends State<NotesPage> {
       () {
         Navigator.push(context, route).then((v) {
           setState(() {
-            _lists.updateActiveLists(Globals.bibleVersion);
+            _lists.updateActiveLists(bibleVersion);
           });
         });
       },
@@ -100,7 +101,7 @@ class NotesPageState extends State<NotesPage> {
     confirmDialog(arr).then((value) {
       if (value) {
         _ntQueries.deleteNote(list[index].id).then((value) {
-          _lists.updateActiveLists(Globals.bibleVersion);
+          _lists.updateActiveLists(bibleVersion);
           setState(() {});
         });
       }

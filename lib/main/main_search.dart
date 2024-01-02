@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_search.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/main/db_model.dart';
@@ -35,10 +36,15 @@ class MainSearch extends StatefulWidget {
 class _MainSearchState extends State<MainSearch> {
   @override
   initState() {
+    super.initState();
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
 
-    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+      },
+    );
   }
 
   Future<void> runFilter(String enterdKeyWord) async {
@@ -165,8 +171,8 @@ class _MainSearchState extends State<MainSearch> {
         text: TextSpan(
           text: t.substring(0, idx),
           //style: const TextStyle(
-            //fontSize: primaryTextSize,
-            //color: Colors.black,
+          //fontSize: primaryTextSize,
+          //color: Colors.black,
           //),
           children: [
             TextSpan(
@@ -179,8 +185,8 @@ class _MainSearchState extends State<MainSearch> {
             TextSpan(
               text: t.substring(idx + m.length),
               //style: const TextStyle(
-                //fontSize: primaryTextSize,
-                //color: Colors.black,
+              //fontSize: primaryTextSize,
+              //color: Colors.black,
               //),
             ),
           ],
@@ -218,12 +224,13 @@ class _MainSearchState extends State<MainSearch> {
           ? highLiteSearchWord(snapshot.data![index].t!, _contents)
           : Container(),
       onTap: () {
-
-        context.read<ChapterBloc>().add(UpdateChapter(chapter: snapshot.data![index].c!));
+        context
+            .read<ChapterBloc>()
+            .add(UpdateChapter(chapter: snapshot.data![index].c!));
 
         final model = WriteVarsModel(
           lang: Globals.bibleLang,
-          version: Globals.bibleVersion,
+          version: bibleVersion,
           abbr: Globals.versionAbbr,
           book: snapshot.data![index].b,
           //chapter: snapshot.data![index].c,

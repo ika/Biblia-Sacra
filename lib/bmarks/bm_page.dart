@@ -14,8 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 BmQueries _bmQueries = BmQueries();
 GetLists _lists = GetLists();
 
-//double? primaryTextSize;
-
 class BookMarksPage extends StatefulWidget {
   const BookMarksPage({super.key});
 
@@ -26,16 +24,10 @@ class BookMarksPage extends StatefulWidget {
 class _BookMarkState extends State<BookMarksPage> {
   List<BmModel> list = List<BmModel>.empty();
 
-  @override
-  void initState() {
-    // primaryTextSize = Globals.initialTextSize;
-
-    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
-    //     .state
-    //     .themeData
-    //     .primaryColor as MaterialColor?;
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   onBookMarkTap(WriteVarsModel model) {
     _lists.updateActiveLists(model.version!);
@@ -98,87 +90,6 @@ class _BookMarkState extends State<BookMarksPage> {
     );
   }
 
-  Widget bookMarksList(list, context) {
-    GestureDetector makeListTile(list, int index) => GestureDetector(
-          onHorizontalDragEnd: (DragEndDetails details) {
-            if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
-              deleteWrapper(context, list, index);
-            }
-          },
-          child: ListTile(
-            trailing: Icon(Icons.arrow_right,
-                color: Theme.of(context).colorScheme.primary),
-            title: Text(
-              list[index].title,
-              // style: TextStyle(
-              //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-            ),
-            subtitle: Text(
-              list[index].subtitle,
-              // style: TextStyle(fontSize: primaryTextSize),
-            ),
-            onTap: () {
-              context
-                  .read<ChapterBloc>()
-                  .add(UpdateChapter(chapter: list[index].chapter));
-
-              Globals.bibleLang = list[index].lang;
-
-              final model = WriteVarsModel(
-                lang: list[index].lang,
-                version: list[index].version,
-                abbr: list[index].abbr,
-                book: list[index].book,
-                //chapter: list[index].chapter, // duplicate save
-                verse: list[index].verse,
-                name: list[index].name,
-              );
-              onBookMarkTap(model);
-            },
-          ),
-        );
-
-    return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.primary,
-        centerTitle: true,
-        leading: GestureDetector(
-          child: const Icon(Globals.backArrow),
-          onTap: () {
-            Future.delayed(
-              Duration(milliseconds: Globals.navigatorDelay),
-              () {
-                Navigator.of(context).pop();
-              },
-            );
-          },
-        ),
-        title: const Text(
-          'Bookmarks',
-          //style: TextStyle(fontSize: Globals.appBarFontSize),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            ListView.separated(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: list == null ? 0 : list.length,
-              itemBuilder: (BuildContext context, int index) {
-                return makeListTile(list, index);
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<BmModel>>(
@@ -186,7 +97,87 @@ class _BookMarkState extends State<BookMarksPage> {
       builder: (context, AsyncSnapshot<List<BmModel>> snapshot) {
         if (snapshot.hasData) {
           list = snapshot.data!;
-          return bookMarksList(list, context);
+          //return bookMarksList(list, context);
+          return Scaffold(
+            //backgroundColor: Theme.of(context).colorScheme.background,
+            appBar: AppBar(
+              //backgroundColor: Theme.of(context).colorScheme.primary,
+              centerTitle: true,
+              leading: GestureDetector(
+                child: const Icon(Globals.backArrow),
+                onTap: () {
+                  Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ),
+              title: const Text(
+                'Bookmarks',
+                //style: TextStyle(fontSize: Globals.appBarFontSize),
+              ),
+            ),
+            body: BlocBuilder<ChapterBloc, ChapterState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: list.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onHorizontalDragEnd: (DragEndDetails details) {
+                              if (details.primaryVelocity! > 0 ||
+                                  details.primaryVelocity! < 0) {
+                                deleteWrapper(context, list, index);
+                              }
+                            },
+                            child: ListTile(
+                              trailing: Icon(Icons.arrow_right,
+                                  color: Theme.of(context).colorScheme.primary),
+                              title: Text(
+                                list[index].title!,
+                                // style: TextStyle(
+                                //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+                              ),
+                              subtitle: Text(
+                                list[index].subtitle!,
+                                // style: TextStyle(fontSize: primaryTextSize),
+                              ),
+                              onTap: () {
+                                context.read<ChapterBloc>().add(UpdateChapter(
+                                    chapter: list[index].chapter!));
+
+                                Globals.bibleLang = list[index].lang!;
+
+                                final model = WriteVarsModel(
+                                  lang: list[index].lang,
+                                  version: list[index].version,
+                                  abbr: list[index].abbr,
+                                  book: list[index].book,
+                                  //chapter: list[index].chapter, // duplicate save
+                                  verse: list[index].verse,
+                                  name: list[index].name,
+                                );
+                                onBookMarkTap(model);
+                              },
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
         }
         return const Center(
           child: CircularProgressIndicator(),

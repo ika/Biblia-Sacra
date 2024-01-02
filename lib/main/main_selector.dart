@@ -20,18 +20,8 @@ var filteredBooks = {};
 var results = {};
 List<String> tabNames = ['Books', 'Chapters', 'Verses'];
 
-late int _currentChapterValue; // = Globals.bookChapter;
+late int _currentChapterValue;
 late int _currentVerseValue; // = Globals.chapterVerse;
-
-// // Chapter
-// sharedPrefs.getIntPref('chapter').then((c) {
-//   _currentChapterValue = c ?? 0;
-// });
-
-// // Verse
-// sharedPrefs.getIntPref('verse').then((v) {
-//   _currentVerseValue = v ?? 0;
-// });
 
 class MainSelector extends StatefulWidget {
   const MainSelector({super.key});
@@ -48,7 +38,7 @@ class _MainSelectorState extends State<MainSelector>
   initState() {
     super.initState();
 
-    _currentChapterValue = Globals.bookChapter;
+    //_currentChapterValue = Globals.bibleBookChapter;
     _currentVerseValue = Globals.chapterVerse;
 
     //primaryTextSize = Globals.initialTextSize;
@@ -389,6 +379,9 @@ class _MainSelectorState extends State<MainSelector>
 
   @override
   Widget build(BuildContext context) {
+    
+    _currentChapterValue = context.read<ChapterBloc>().state.chapter;
+
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
@@ -57,6 +58,9 @@ int verseNumber = 0;
 bool? initialPageScroll;
 bool isShowing = true;
 
+late int bibleBookChapter;
+late int bibleVersion;
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -66,24 +70,18 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   @override
-  void initState() {
+  initState() {
     super.initState();
 
     GetLists().updateActiveLists(Globals.bibleVersion);
 
     initialScrollController = ItemScrollController();
 
-    pageController = PageController(initialPage: Globals.bookChapter - 1);
-    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
-    //     .state
-    //     .themeData
-    //     .primaryColor as MaterialColor?;
-
-    //primaryTextSize = Globals.initialTextSize;
-
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        //scrollToIndex();
+        //bibleBookChapter = context.read<ChapterBloc>().state.chapter;
+        bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+
         Future.delayed(
           Duration(milliseconds: Globals.navigatorLongDelay),
           () {
@@ -100,14 +98,14 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Future<List<Bible>> getBookText(int book, int ch) async {
-    return await _dbQueries.getBookChapter(book, ch);
+  Future<List<Bible>> getBookText(int ch) async {
+    return await _dbQueries.getBookChapter(Globals.bibleBook, ch);
   }
 
-  Future<List<Bible>> getVersionText(int book, int ch) async {
+  Future<List<Bible>> getVersionText(int ch) async {
     List<Bible> bible = List<Bible>.empty();
 
-    Future<List<Bible>> futureBibleList = getBookText(book, ch);
+    Future<List<Bible>> futureBibleList = getBookText(ch);
     bible = await futureBibleList;
     return bible;
   }
@@ -225,7 +223,7 @@ class MainPageState extends State<MainPage> {
           _hlQueries.deleteHighLight(bid).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
             setState(() {
-              _lists.updateActiveLists(Globals.bibleVersion);
+              _lists.updateActiveLists(bibleVersion);
             });
           });
         }
@@ -244,7 +242,7 @@ class MainPageState extends State<MainPage> {
           _bmQueries.deleteBookMarkbyBid(bid).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
             setState(() {
-              _lists.updateActiveLists(Globals.bibleVersion);
+              _lists.updateActiveLists(bibleVersion);
             });
           });
         }
@@ -258,7 +256,7 @@ class MainPageState extends State<MainPage> {
       ' ',
       Globals.bookName,
       ' ',
-      '${Globals.bookChapter}',
+      '$bibleBookChapter',
       ':',
       '$verseNumber'
     ];
@@ -267,10 +265,10 @@ class MainPageState extends State<MainPage> {
         title: stringTitle.join(),
         subtitle: verseText,
         lang: Globals.bibleLang,
-        version: Globals.bibleVersion,
+        version: bibleVersion,
         abbr: Globals.versionAbbr,
         book: Globals.bibleBook,
-        chapter: Globals.bookChapter,
+        chapter: bibleBookChapter,
         verse: verseNumber,
         name: Globals.bookName,
         bid: bid);
@@ -278,7 +276,7 @@ class MainPageState extends State<MainPage> {
       (value) {
         ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
         setState(() {
-          _lists.updateActiveLists(Globals.bibleVersion);
+          _lists.updateActiveLists(bibleVersion);
         });
       },
     );
@@ -290,7 +288,7 @@ class MainPageState extends State<MainPage> {
       ' ',
       Globals.bookName,
       ' ',
-      '${Globals.bookChapter}',
+      '$bibleBookChapter',
       ':',
       '$verseNumber'
     ];
@@ -299,10 +297,10 @@ class MainPageState extends State<MainPage> {
         title: stringTitle.join(),
         subtitle: verseText,
         lang: Globals.bibleLang,
-        version: Globals.bibleVersion,
+        version: bibleVersion,
         abbr: Globals.versionAbbr,
         book: Globals.bibleBook,
-        chapter: Globals.bookChapter,
+        chapter: bibleBookChapter,
         verse: verseNumber,
         name: Globals.bookName,
         bid: bid);
@@ -310,7 +308,7 @@ class MainPageState extends State<MainPage> {
     _hlQueries.saveHighLight(model).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(hiLightAddedSnackBar);
       setState(() {
-        _lists.updateActiveLists(Globals.bibleVersion);
+        _lists.updateActiveLists(bibleVersion);
       });
     });
   }
@@ -321,7 +319,7 @@ class MainPageState extends State<MainPage> {
       ' ',
       Globals.bookName,
       ' ',
-      '${Globals.bookChapter}',
+      '$bibleBookChapter',
       ':',
       '$verseNumber'
     ];
@@ -330,10 +328,10 @@ class MainPageState extends State<MainPage> {
         title: stringTitle.join(),
         contents: verseText,
         lang: Globals.bibleLang,
-        version: Globals.bibleVersion,
+        version: bibleVersion,
         abbr: Globals.versionAbbr,
         book: Globals.bibleBook,
-        chapter: Globals.bookChapter,
+        chapter: bibleBookChapter,
         verse: verseNumber,
         name: Globals.bookName,
         bid: bid);
@@ -355,7 +353,7 @@ class MainPageState extends State<MainPage> {
       () {
         Navigator.push(context, route).then((v) {
           setState(() {
-            _lists.updateActiveLists(Globals.bibleVersion);
+            _lists.updateActiveLists(bibleVersion);
           });
         });
       },
@@ -608,11 +606,11 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Widget showListView(BuildContext context, int book, int ch) {
+  Widget showListView(BuildContext context, int ch) {
     return Container(
       padding: const EdgeInsets.all(15.0),
       child: FutureBuilder<List<Bible>>(
-        future: getVersionText(book, ch),
+        future: getVersionText(ch),
         builder: (context, AsyncSnapshot<List<Bible>> snapshot) {
           if (snapshot.hasData) {
             return ScrollablePositionedList.builder(
@@ -633,49 +631,13 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  List<Widget> chapterCountFunc(
-      BuildContext context, int book, int chapterCount) {
+  List<Widget> chapterCountFunc(BuildContext context, int chapterCount) {
+    //debugPrint("CHAPTER $chapterCount");
     List<Widget> pagesList = [];
     for (int ch = 1; ch <= chapterCount; ch++) {
-      pagesList.add(showListView(context, book, ch));
+      pagesList.add(showListView(context, ch));
     }
     return pagesList;
-  }
-
-  Widget chaptersList(BuildContext context, int book) {
-    return FutureBuilder<int>(
-      future: _dbQueries.getChapterCount(book),
-      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-        if (snapshot.hasData) {
-          int chapterCount = snapshot.data!.toInt();
-          return ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-              PointerDeviceKind.touch,
-              PointerDeviceKind.mouse,
-            }),
-            child: PageView(
-              controller: pageController,
-              scrollDirection: Axis.horizontal,
-              pageSnapping: true,
-              physics: const BouncingScrollPhysics(),
-              children: chapterCountFunc(context, book, chapterCount),
-              onPageChanged: (index) {
-                int c = index + 1;
-                context.read<ChapterBloc>().add(UpdateChapter(chapter: c));
-                BlocProvider.of<ChapterBloc>(context)
-                    .add(UpdateChapter(chapter: c));
-                _sharedPrefs.setIntPref('verse', 1).then(
-                  (value) {
-                    Globals.chapterVerse = 1; // move to top of next chapter
-                  },
-                );
-              },
-            ),
-          );
-        }
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
   }
 
   void showVersionsDialog(BuildContext context) {
@@ -942,16 +904,13 @@ class MainPageState extends State<MainPage> {
     }
   }
 
+  PageController getPageController() {
+    bibleBookChapter = context.read<ChapterBloc>().state.chapter;
+    return PageController(initialPage: bibleBookChapter - 1);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final args = ModalRoute.of(context)!.settings.arguments as MainPageArgs;
-    // print("${args.currentChapterValue} ${args.currentVerseValue}");
-
-    //final ThemeData theme = Theme.of(context);
-
-    // int state = context.read<GlobalsBloc>().state.bibleVersion;
-    // debugPrint("STATE $state");
-
     initialPageScroll = true;
     _dbQueries = DbQueries();
     return Scaffold(
@@ -1020,7 +979,38 @@ class MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      body: chaptersList(context, Globals.bibleBook),
+      body: FutureBuilder<int>(
+        future: _dbQueries.getChapterCount(Globals.bibleBook),
+        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+          if (snapshot.hasData) {
+            int chapterCount = snapshot.data!.toInt();
+            return ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                PointerDeviceKind.touch,
+                PointerDeviceKind.mouse,
+              }),
+              child: PageView(
+                controller: getPageController(), //pageController,
+                scrollDirection: Axis.horizontal,
+                pageSnapping: true,
+                physics: const BouncingScrollPhysics(),
+                children: chapterCountFunc(context, chapterCount),
+                onPageChanged: (index) {
+                  context
+                      .read<ChapterBloc>()
+                      .add(UpdateChapter(chapter: index + 1));
+                  _sharedPrefs.setIntPref('verse', 1).then(
+                    (v) {
+                      Globals.chapterVerse = 1; // move to top of next chapter
+                    },
+                  );
+                },
+              ),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
       floatingActionButton: showModes(),
     );
   }

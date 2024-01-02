@@ -1,4 +1,3 @@
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
@@ -56,5 +55,27 @@ class SharedPrefs {
   Future<List<String>?> getStringListPref(key) async {
     final prefs = await sharedPrefs;
     return prefs.getStringList(key);
+  }
+
+  // Chapter
+  Future<void> setChapterPref(int value) async {
+    final prefs = await sharedPrefs;
+    prefs.setInt("chapter", value);
+  }
+
+  Future<int?> getChapterPref() async {
+    final prefs = await sharedPrefs;
+    return prefs.getInt("chapter") ?? 1;
+  }
+
+  // Bible Version
+  Future<void> setVersionPref(int value) async {
+    final prefs = await sharedPrefs;
+    prefs.setInt("chapter", value);
+  }
+
+  Future<int?> getVersionPref() async {
+    final prefs = await sharedPrefs;
+    return prefs.getInt("chapter") ?? 1;
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
@@ -40,17 +39,16 @@ class UpdateGlobalsState extends VersionState {
 // -------------------------------------------------
 class VersionBloc extends Bloc<VersionEvent, VersionState> {
   VersionBloc() : super(InitialVersionState(bibleVersion: 1)) {
-
-    on<InitiateVersion>((InitiateVersion event, Emitter<VersionState> emit) async {
-      sharedPrefs.getIntPref('bibleVersion').then((value) {
-        value ??= 1;
-        Globals.bibleVersion = value;
+    on<InitiateVersion>(
+        (InitiateVersion event, Emitter<VersionState> emit) async {
+      sharedPrefs.getVersionPref().then((value) {
+        Globals.bibleVersion = value!;
         emit(InitialVersionState(bibleVersion: value));
       });
     });
 
     on<UpdateVersion>((UpdateVersion event, Emitter<VersionState> emit) async {
-      sharedPrefs.setIntPref('bibleVersion', event.bibleVersion).then((value) {
+      sharedPrefs.setVersionPref(event.bibleVersion).then((value) {
         Globals.bibleVersion = event.bibleVersion;
         emit(UpdateGlobalsState(bibleVersion: event.bibleVersion));
       });

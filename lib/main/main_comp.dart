@@ -4,7 +4,6 @@ import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
-import 'package:path/path.dart';
 
 class CompareModel {
   String a; // abbr
