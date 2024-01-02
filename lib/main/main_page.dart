@@ -1001,11 +1001,6 @@ class MainPageState extends State<MainPage> {
                   context
                       .read<ChapterBloc>()
                       .add(UpdateChapter(chapter: index + 1));
-                  // _sharedPrefs.setIntPref('verse', 1).then(
-                  //   (v) {
-                  //     Globals.chapterVerse = 1; 
-                  //   },
-                  // );
                   // move to top of next chapter
                   context.read<VerseBloc>().add(UpdateVerse(verse: 1));
                 },

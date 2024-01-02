@@ -41,16 +41,12 @@ class VerseBloc extends Bloc<VerseEvent, VerseState> {
 
     on<InitiateVerse>((InitiateVerse event, Emitter<VerseState> emit) async {
       sharedPrefs.getVersePref().then((value) {
-        //Globals.bibleBookChapter = value!;
-        //debugPrint('InitiateChapter $value');
         emit(InitiateVerseState(verse: value!));
       });
     });
 
     on<UpdateVerse>((UpdateVerse event, Emitter<VerseState> emit) async {
       sharedPrefs.setVersePref(event.verse).then((v) {
-        //Globals.bibleBookChapter = event.chapter;
-        //debugPrint('UpdateChapter ${event.chapter}');
         emit(UpdateVerseState(verse: event.verse));
       });
     });
