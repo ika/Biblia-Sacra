@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bloc/bloc_themedata.dart';
 import 'package:flutter/material.dart';
@@ -43,20 +44,16 @@ Future<void> main() async {
           _sharedPrefs.getIntPref('book').then(
             (d) {
               Globals.bibleBook = d ?? 43;
-              // Verse
-              _sharedPrefs.getIntPref('verse').then((f) {
-                Globals.chapterVerse = f ?? 1;
-                // Book Name
-                BookLists().readBookName(Globals.bibleBook).then(
-                  (g) {
-                    Globals.bookName = g;
-                    getActiveVersionsCount();
-                    runApp(
-                      const BibleApp(),
-                    );
-                  },
-                );
-              });
+              // Book Name
+              BookLists().readBookName(Globals.bibleBook).then(
+                (g) {
+                  Globals.bookName = g;
+                  getActiveVersionsCount();
+                  runApp(
+                    const BibleApp(),
+                  );
+                },
+              );
             },
           );
         },
@@ -77,27 +74,30 @@ class _BibleAppState extends State<BibleApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ChapterBloc>(
-          create: (context) => ChapterBloc()..add(InitiateChapter()),
+        BlocProvider<ThemeBloc>(
+          create: (context) => ThemeBloc()..add(InitiateTheme()),
         ),
         BlocProvider<SearchBloc>(
           create: (context) => SearchBloc()..add(InitiateSearchArea()),
         ),
-        BlocProvider<ThemeBloc>(
-          create: (context) => ThemeBloc()..add(InitiateTheme()),
-        ),
         BlocProvider<VersionBloc>(
           create: (context) => VersionBloc()..add(InitiateVersion()),
+        ),
+        BlocProvider<ChapterBloc>(
+          create: (context) => ChapterBloc()..add(InitiateChapter()),
+        ),
+        BlocProvider<VerseBloc>(
+          create: (context) => VerseBloc()..add(InitiateVerse()),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
           return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Bible App',
-              theme: state.themeData,
-              home: const MainPage(),
-            );
+            debugShowCheckedModeBanner: false,
+            title: 'Bible App',
+            theme: state.themeData,
+            home: const MainPage(),
+          );
         },
       ),
     );

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
@@ -21,7 +22,7 @@ var results = {};
 List<String> tabNames = ['Books', 'Chapters', 'Verses'];
 
 late int _currentChapterValue;
-late int _currentVerseValue; // = Globals.chapterVerse;
+late int _currentVerseValue;
 
 class MainSelector extends StatefulWidget {
   const MainSelector({super.key});
@@ -39,7 +40,7 @@ class _MainSelectorState extends State<MainSelector>
     super.initState();
 
     //_currentChapterValue = Globals.bibleBookChapter;
-    _currentVerseValue = Globals.chapterVerse;
+    //_currentVerseValue = Globals.chapterVerse;
 
     //primaryTextSize = Globals.initialTextSize;
     allBooks = bookLists.getBookListByLang(Globals.bibleLang);
@@ -68,20 +69,15 @@ class _MainSelectorState extends State<MainSelector>
   }
 
   backButton(BuildContext context) {
-    // upate Verse
-    sharedPrefs.setIntPref('verse', _currentVerseValue).then((v) {
-      Globals.chapterVerse = _currentVerseValue;
-      Route route = MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      );
-      Future.delayed(
-        Duration(milliseconds: Globals.navigatorDelay),
-        () {
-          Navigator.push(context, route);
-        },
-      );
-    });
-    //});
+    Route route = MaterialPageRoute(
+      builder: (context) => const MainPage(),
+    );
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.push(context, route);
+      },
+    );
   }
 
   // Widget versesWidget() {
@@ -238,6 +234,7 @@ class _MainSelectorState extends State<MainSelector>
                       setState(() {
                         _currentVerseValue = value;
                       });
+                      context.read<VerseBloc>().add(UpdateVerse(verse: value));
                     },
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
@@ -288,11 +285,10 @@ class _MainSelectorState extends State<MainSelector>
                     onChanged: (value) {
                       setState(() {
                         _currentChapterValue = value;
-                        // update Chapter
-                        context
-                            .read<ChapterBloc>()
-                            .add(UpdateChapter(chapter: _currentChapterValue));
                       });
+                      context
+                          .read<ChapterBloc>()
+                          .add(UpdateChapter(chapter: value));
                     },
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
@@ -379,8 +375,8 @@ class _MainSelectorState extends State<MainSelector>
 
   @override
   Widget build(BuildContext context) {
-    
     _currentChapterValue = context.read<ChapterBloc>().state.chapter;
+    _currentVerseValue = context.read<VerseBloc>().state.verse;
 
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,

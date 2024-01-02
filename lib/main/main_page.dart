@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_page.dart';
@@ -60,6 +61,7 @@ bool isShowing = true;
 
 late int bibleBookChapter;
 late int bibleVersion;
+late int chapterVerse;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -79,15 +81,15 @@ class MainPageState extends State<MainPage> {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        //bibleBookChapter = context.read<ChapterBloc>().state.chapter;
         bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+        chapterVerse = context.read<VerseBloc>().state.verse;
 
         Future.delayed(
           Duration(milliseconds: Globals.navigatorLongDelay),
           () {
             if (initialScrollController!.isAttached) {
               initialScrollController!.scrollTo(
-                index: Globals.chapterVerse - 1, // from verse selector
+                index: chapterVerse - 1, // from verse selector
                 duration: Duration(milliseconds: Globals.navigatorLongDelay),
                 curve: Curves.easeInOutCubic,
               );
@@ -999,11 +1001,13 @@ class MainPageState extends State<MainPage> {
                   context
                       .read<ChapterBloc>()
                       .add(UpdateChapter(chapter: index + 1));
-                  _sharedPrefs.setIntPref('verse', 1).then(
-                    (v) {
-                      Globals.chapterVerse = 1; // move to top of next chapter
-                    },
-                  );
+                  // _sharedPrefs.setIntPref('verse', 1).then(
+                  //   (v) {
+                  //     Globals.chapterVerse = 1; 
+                  //   },
+                  // );
+                  // move to top of next chapter
+                  context.read<VerseBloc>().add(UpdateVerse(verse: 1));
                 },
               ),
             );

@@ -78,4 +78,15 @@ class SharedPrefs {
     final prefs = await sharedPrefs;
     return prefs.getInt("chapter") ?? 1;
   }
+
+  // Verse
+  Future<void> setVersePref(int value) async {
+    final prefs = await sharedPrefs;
+    prefs.setInt("verse", value);
+  }
+
+  Future<int?> getVersePref() async {
+    final prefs = await sharedPrefs;
+    return prefs.getInt("verse") ?? 1;
+  }
 }

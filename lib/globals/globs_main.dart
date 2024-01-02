@@ -10,7 +10,7 @@ class Globals {
   static int bibleBook = 43; // Gospel of John
   //static int bookNameIndex = 42; // index is one less that book number
   //static int bibleBookChapter = 1; // used for Block cubit
-  static int chapterVerse = 1; // Verse
+  //static int chapterVerse = 1; // Verse
   static String bookName = 'John'; // Book name
   //--------------------------------------
 

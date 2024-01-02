@@ -10,8 +10,7 @@ import 'package:sqflite/sqflite.dart';
 String dataBaseName = '';
 
 String getBVFileName() {
-
-  String dbName = Constants.kjvbDbname;
+  String dbName = '';
 
   switch (Globals.bibleVersion) {
     case 1:
@@ -44,6 +43,8 @@ String getBVFileName() {
     case 10:
       dbName = Constants.asvbDbname;
       break;
+    default:
+      dbName = Constants.kjvbDbname;
   }
 
   return dbName;
