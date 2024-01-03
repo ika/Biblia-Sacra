@@ -42,7 +42,7 @@ class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
     on<InitiateChapter>(
         (InitiateChapter event, Emitter<ChapterState> emit) async {
       sharedPrefs.getChapterPref().then((value) {
-        emit(InitiateChapterState(chapter: value!));
+        emit(InitiateChapterState(chapter: value));
       });
     });
 

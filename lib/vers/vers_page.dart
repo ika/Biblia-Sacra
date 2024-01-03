@@ -1,12 +1,15 @@
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Versions
 
-VkQueries vkQueries = VkQueries();
+late VkQueries vkQueries;
+late int bibleVersion;
 //DbQueries dbQueries = DbQueries();
 
 int counter = 0;
@@ -59,7 +62,7 @@ class VersionsPageState extends State<VersionsPage> {
                         .updateActiveState(active, snapshot.data![index].n!)
                         .then(
                       (value) async {
-                        Utilities().getDialogeHeight();
+                        Utilities(bibleVersion).getDialogeHeight();
                         Globals.activeVersionCount =
                             await vkQueries.getActiveVersionCount();
                         setState(() {});
@@ -82,6 +85,8 @@ class VersionsPageState extends State<VersionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    vkQueries = VkQueries(bibleVersion);
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(

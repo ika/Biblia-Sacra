@@ -1,67 +1,64 @@
 import 'dart:async';
 import 'dart:io' as io;
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
-import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 String dataBaseName = '';
 
-String getBVFileName() {
-  String dbName = '';
+// String getBVFileName() {
+//   String dbName = '';
 
-  switch (Globals.bibleVersion) {
-    case 1:
-      dbName = Constants.kjvbDbname;
-      break;
-    case 2:
-      dbName = Constants.clemDbname;
-      break;
-    case 3:
-      dbName = Constants.cpdvDbname;
-      break;
-    case 4:
-      dbName = Constants.nvulDbname;
-      break;
-    case 5:
-    // _dbName = Constants.af53Dbname;
-    // break;
-    case 6:
-    // _dbName = Constants.dn33Dbname;
-    // break;
-    case 7:
-      dbName = Constants.ukjvDbname;
-      break;
-    case 8:
-      dbName = Constants.webbDbname;
-      break;
-    // case 9:
-    //   dbName = Constants.af83Dbname;
-    //   break;
-    case 10:
-      dbName = Constants.asvbDbname;
-      break;
-    default:
-      dbName = Constants.kjvbDbname;
-  }
+//   switch (Globals.bibleVersion) {
+//     case 1:
+//       dbName = Constants.kjvbDbname;
+//       break;
+//     case 2:
+//       dbName = Constants.clemDbname;
+//       break;
+//     case 3:
+//       dbName = Constants.cpdvDbname;
+//       break;
+//     case 4:
+//       dbName = Constants.nvulDbname;
+//       break;
+//     case 5:
+//     // _dbName = Constants.af53Dbname;
+//     // break;
+//     case 6:
+//     // _dbName = Constants.dn33Dbname;
+//     // break;
+//     case 7:
+//       dbName = Constants.ukjvDbname;
+//       break;
+//     case 8:
+//       dbName = Constants.webbDbname;
+//       break;
+//     // case 9:
+//     //   dbName = Constants.af83Dbname;
+//     //   break;
+//     case 10:
+//       dbName = Constants.asvbDbname;
+//       break;
+//     default:
+//       dbName = Constants.kjvbDbname;
+//   }
 
-  return dbName;
-}
+//   return dbName;
+// }
 
 class DbProvider {
+  String dbName = '';
   static String? dataBaseName;
   static DbProvider? _dbProvider;
   static Database? _database;
 
   DbProvider._createInstance();
 
-  factory DbProvider() {
-    dataBaseName = getBVFileName();
-
+  DbProvider(this.dbName) {
+    dataBaseName = dbName;
     _dbProvider ??= DbProvider._createInstance();
-    return _dbProvider!;
   }
 
   Future<Database> get database async {

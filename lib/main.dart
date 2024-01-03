@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bloc/bloc_themedata.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_search.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
@@ -18,9 +18,9 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 SharedPrefs _sharedPrefs = SharedPrefs();
 
-void getActiveVersionsCount() async {
-  Globals.activeVersionCount = await VkQueries().getActiveVersionCount();
-}
+// void getActiveVersionsCount() async {
+//   Globals.activeVersionCount = await VkQueries().getActiveVersionCount();
+// }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,8 +30,6 @@ Future<void> main() async {
     databaseFactory = databaseFactoryFfi;
   }
 
-  Utilities().getDialogeHeight();
-
   // language
   _sharedPrefs.getStringPref('language').then(
     (b) {
@@ -40,21 +38,10 @@ Future<void> main() async {
       _sharedPrefs.getStringPref('verabbr').then(
         (c) {
           Globals.versionAbbr = c ?? 'KVJ';
-          // Book
-          _sharedPrefs.getIntPref('book').then(
-            (d) {
-              Globals.bibleBook = d ?? 43;
-              // Book Name
-              BookLists().readBookName(Globals.bibleBook).then(
-                (g) {
-                  Globals.bookName = g;
-                  getActiveVersionsCount();
-                  runApp(
-                    const BibleApp(),
-                  );
-                },
-              );
-            },
+
+          //getActiveVersionsCount();
+          runApp(
+            const BibleApp(),
           );
         },
       );
@@ -82,6 +69,9 @@ class _BibleAppState extends State<BibleApp> {
         ),
         BlocProvider<VersionBloc>(
           create: (context) => VersionBloc()..add(InitiateVersion()),
+        ),
+        BlocProvider<BookBloc>(
+          create: (context) => BookBloc()..add(InitiateBook()),
         ),
         BlocProvider<ChapterBloc>(
           create: (context) => ChapterBloc()..add(InitiateChapter()),

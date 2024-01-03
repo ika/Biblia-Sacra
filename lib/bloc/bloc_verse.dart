@@ -41,7 +41,7 @@ class VerseBloc extends Bloc<VerseEvent, VerseState> {
 
     on<InitiateVerse>((InitiateVerse event, Emitter<VerseState> emit) async {
       sharedPrefs.getVersePref().then((value) {
-        emit(InitiateVerseState(verse: value!));
+        emit(InitiateVerseState(verse: value));
       });
     });
 

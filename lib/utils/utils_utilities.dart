@@ -1,9 +1,10 @@
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 
-VkQueries vkQueries = VkQueries();
-
 class Utilities {
+  final int bibleVersion;
+  Utilities(this.bibleVersion);
+
   String reduceLength(int l, String t) {
     return (t.length > l) ? t.substring(0, l) : t;
   }
@@ -13,7 +14,7 @@ class Utilities {
   }
 
   void getDialogeHeight() {
-    vkQueries.getActiveVersionCount().then(
+    VkQueries(bibleVersion).getActiveVersionCount().then(
       (value) {
         double dialogHeight = (value!.toDouble() * 50.00);
         if (dialogHeight > 400.00) {

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
@@ -12,6 +13,7 @@ import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
+import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_contmenu.dart';
@@ -25,10 +27,11 @@ import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/theme/theme.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:bibliasacra/main/main_compage.dart';
+import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_page.dart';
+import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,8 +49,7 @@ ItemScrollController? initialScrollController;
 
 //double? primaryTextSize;
 
-DbQueries _dbQueries = DbQueries();
-SharedPrefs _sharedPrefs = SharedPrefs();
+late DbQueries _dbQueries;
 BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
 NtQueries _ntQueries = NtQueries();
@@ -62,6 +64,7 @@ bool isShowing = true;
 late int bibleBookChapter;
 late int bibleVersion;
 late int chapterVerse;
+late int bibleBook;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -75,14 +78,27 @@ class MainPageState extends State<MainPage> {
   initState() {
     super.initState();
 
-    GetLists().updateActiveLists(Globals.bibleVersion);
-
     initialScrollController = ItemScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+        //bibleVersion = context.read<VersionBloc>().state.bibleVersion;
         chapterVerse = context.read<VerseBloc>().state.verse;
+        //bibleBook = context.read<BookBloc>().state.book;
+
+        GetLists().updateActiveLists(bibleVersion);
+
+        VkQueries(bibleVersion).getActiveVersionCount().then((c) {
+          Globals.activeVersionCount = c;
+        });
+
+        Utilities(bibleVersion).getDialogeHeight();
+
+        BookLists().readBookName(bibleBook).then((g) {
+          Globals.bookName = g;
+        });
+
+        // _dbQueries = DbQueries(bibleVersion);
 
         Future.delayed(
           Duration(milliseconds: Globals.navigatorLongDelay),
@@ -101,7 +117,7 @@ class MainPageState extends State<MainPage> {
   }
 
   Future<List<Bible>> getBookText(int ch) async {
-    return await _dbQueries.getBookChapter(Globals.bibleBook, ch);
+    return await _dbQueries.getBookChapter(bibleBook, ch);
   }
 
   Future<List<Bible>> getVersionText(int ch) async {
@@ -269,7 +285,7 @@ class MainPageState extends State<MainPage> {
         lang: Globals.bibleLang,
         version: bibleVersion,
         abbr: Globals.versionAbbr,
-        book: Globals.bibleBook,
+        book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
         name: Globals.bookName,
@@ -301,7 +317,7 @@ class MainPageState extends State<MainPage> {
         lang: Globals.bibleLang,
         version: bibleVersion,
         abbr: Globals.versionAbbr,
-        book: Globals.bibleBook,
+        book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
         name: Globals.bookName,
@@ -332,7 +348,7 @@ class MainPageState extends State<MainPage> {
         lang: Globals.bibleLang,
         version: bibleVersion,
         abbr: Globals.versionAbbr,
-        book: Globals.bibleBook,
+        book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
         name: Globals.bookName,
@@ -914,7 +930,10 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     initialPageScroll = true;
-    _dbQueries = DbQueries();
+    bibleBook = context.read<BookBloc>().state.book;
+    bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    _dbQueries = DbQueries(bibleVersion);
+
     return Scaffold(
       //backgroundColor: theme.colorScheme.background,
       drawer: showDrawer(context),
@@ -982,7 +1001,7 @@ class MainPageState extends State<MainPage> {
         ],
       ),
       body: FutureBuilder<int>(
-        future: _dbQueries.getChapterCount(Globals.bibleBook),
+        future: _dbQueries.getChapterCount(bibleBook),
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           if (snapshot.hasData) {
             int chapterCount = snapshot.data!.toInt();

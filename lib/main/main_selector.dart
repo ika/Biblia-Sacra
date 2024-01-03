@@ -1,20 +1,21 @@
 import 'dart:ui';
 
+import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_page.dart';
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-DbQueries dbQueries = DbQueries();
-SharedPrefs sharedPrefs = SharedPrefs();
+late DbQueries dbQueries;
+//SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
-//double? primaryTextSize;
+late int bibleBook;
 
 var allBooks = {};
 var filteredBooks = {};
@@ -50,6 +51,14 @@ class _MainSelectorState extends State<MainSelector>
     tabController!.addListener(() {
       setState(() {});
     });
+
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) {
+    //     //bibleBook = context.read<BookBloc>().state.book;
+    //     //bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    //     //dbQueries = DbQueries(bibleVersion);
+    //   },
+    // );
   }
 
   @override
@@ -207,8 +216,7 @@ class _MainSelectorState extends State<MainSelector>
     return Container(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder<int>(
-        future:
-            dbQueries.getVerseCount(Globals.bibleBook, _currentChapterValue),
+        future: dbQueries.getVerseCount(bibleBook, _currentChapterValue),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             int lastVerse = snapshot.data!.toInt();
@@ -235,6 +243,7 @@ class _MainSelectorState extends State<MainSelector>
                         _currentVerseValue = value;
                       });
                       context.read<VerseBloc>().add(UpdateVerse(verse: value));
+                      //backButton(context);
                     },
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
@@ -259,7 +268,7 @@ class _MainSelectorState extends State<MainSelector>
     return Container(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder<int>(
-        future: dbQueries.getChapterCount(Globals.bibleBook),
+        future: dbQueries.getChapterCount(bibleBook),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             int lastChapter = snapshot.data!.toInt();
@@ -338,21 +347,21 @@ class _MainSelectorState extends State<MainSelector>
                   onTap: () {
                     int book = key + 1;
                     //Globals.bookChapter = 1;
-                    sharedPrefs.setIntPref('book', book).then(
-                      (v) {
-                        Globals.bibleBook = book;
-                        bookLists.writeBookName(book).then(
-                          (v) {
-                            setState(() {
-                              _currentChapterValue = _currentVerseValue = 1;
-                              // update Chapter
-                              context.read<ChapterBloc>().add(
-                                  UpdateChapter(chapter: _currentChapterValue));
-                            });
 
-                            tabController!.animateTo(1);
-                          },
-                        );
+                    context.read<BookBloc>().add(UpdateBook(book: book));
+                    bookLists.writeBookName(book).then(
+                      (v) {
+                        setState(() {
+                          _currentChapterValue = _currentVerseValue = 1;
+                        });
+                        // update Chapter
+                        context
+                            .read<ChapterBloc>()
+                            .add(UpdateChapter(chapter: 1));
+
+                        context.read<VerseBloc>().add(UpdateVerse(verse: 1));
+
+                        tabController!.animateTo(1);
                       },
                     );
                     FocusScope.of(context).requestFocus(FocusNode());
@@ -375,6 +384,10 @@ class _MainSelectorState extends State<MainSelector>
 
   @override
   Widget build(BuildContext context) {
+    bibleBook = context.read<BookBloc>().state.book;
+    bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    dbQueries = DbQueries(bibleVersion);
+
     _currentChapterValue = context.read<ChapterBloc>().state.chapter;
     _currentVerseValue = context.read<VerseBloc>().state.verse;
 

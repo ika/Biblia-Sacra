@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_provider.dart';
@@ -7,11 +8,54 @@ import 'package:bibliasacra/main/db_provider.dart';
 
 DbProvider? _dbProvider;
 
+String getBVFileName(int bibleVersion) {
+  String dbName = '';
+
+  switch (bibleVersion) {
+    case 1:
+      dbName = Constants.kjvbDbname;
+      break;
+    case 2:
+      dbName = Constants.clemDbname;
+      break;
+    case 3:
+      dbName = Constants.cpdvDbname;
+      break;
+    case 4:
+      dbName = Constants.nvulDbname;
+      break;
+    case 5:
+    // _dbName = Constants.af53Dbname;
+    // break;
+    case 6:
+    // _dbName = Constants.dn33Dbname;
+    // break;
+    case 7:
+      dbName = Constants.ukjvDbname;
+      break;
+    case 8:
+      dbName = Constants.webbDbname;
+      break;
+    // case 9:
+    //   dbName = Constants.af83Dbname;
+    //   break;
+    case 10:
+      dbName = Constants.asvbDbname;
+      break;
+    default:
+      dbName = Constants.kjvbDbname;
+  }
+
+  return dbName;
+}
+
 class DbQueries {
   final String tableName = 'bible';
+  int bibleVersion;
 
-  DbQueries() {
-    _dbProvider = DbProvider();
+  DbQueries(this.bibleVersion) {
+    String dbName = getBVFileName(bibleVersion);
+    _dbProvider = DbProvider(dbName);
   }
 
   Future<List<Bible>> getBookChapter(int b, int c) async {
@@ -93,20 +137,4 @@ class DbQueries {
     );
     return cnt ?? 0;
   }
-
-// returns number of affected rows
-  // Future<int> updateHighlightId(int h, int id) async {
-  //   final db = await _dbProvider.database;
-
-  //   return await db.rawUpdate('''UPDATE $tableName SET h=? WHERE id=?''',
-  //       [h, id]); // highlight id and bible verse id
-  // }
-
-  // returns number of affected rows
-  // Future<int> updateNoteId(int n, int id) async {
-  //   final db = await _dbProvider.database;
-
-  //   return await db.rawUpdate('''UPDATE $tableName SET n=? WHERE id=?''',
-  //       [n, id]); // note id and bible verse id
-  // }
 }

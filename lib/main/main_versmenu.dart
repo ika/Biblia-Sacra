@@ -1,3 +1,4 @@
+import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
@@ -9,12 +10,13 @@ import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-VkQueries _vkQueries = VkQueries(); // version key
+late VkQueries _vkQueries; // version key
 SharedPrefs sharedPrefs = SharedPrefs();
 GetLists _lists = GetLists();
 BookLists bookLists = BookLists();
 
 String returnPath = 'main';
+late int bibleBook;
 
 Future<dynamic> versionsDialog(BuildContext context, String ret) {
   returnPath = ret;
@@ -45,46 +47,66 @@ Future<dynamic> versionsDialog(BuildContext context, String ret) {
   );
 }
 
-class AppBarVersions extends StatelessWidget {
+class AppBarVersions extends StatefulWidget {
   const AppBarVersions({Key? key}) : super(key: key);
 
-  backToMainButton(BuildContext context) {
-    Route route = MaterialPageRoute(
-      builder: (context) => const MainPage(),
-    );
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.push(context, route);
-      },
-    );
-  }
+  @override
+  State<StatefulWidget> createState() => AppBarVersionsPage();
+}
 
-  // void backToSearchButton(BuildContext context) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => const MainSearch(),
-  //     ),
+backToMainButton(BuildContext context) {
+  Route route = MaterialPageRoute(
+    builder: (context) => const MainPage(),
+  );
+  Future.delayed(
+    Duration(milliseconds: Globals.navigatorDelay),
+    () {
+      Navigator.push(context, route);
+    },
+  );
+}
+
+// void backToSearchButton(BuildContext context) {
+//   Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) => const MainSearch(),
+//     ),
+//   );
+//   //Navigator.pop(context);
+// }
+
+void versionChangeSnackBar(BuildContext context, String snackBarText) {
+  Future.delayed(
+    Duration(milliseconds: Globals.navigatorLongestDelay),
+    () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(snackBarText),
+        ),
+      );
+    },
+  );
+}
+
+class AppBarVersionsPage extends State<AppBarVersions> {
+  
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   WidgetsBinding.instance.addPostFrameCallback(
+  //     (_) {
+  //       bibleBook = context.read<BookBloc>().state.book;
+  //     },
   //   );
-  //   //Navigator.pop(context);
   // }
-
-  void versionChangeSnackBar(BuildContext context, String snackBarText) {
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorLongestDelay),
-      () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(snackBarText),
-          ),
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
+    bibleBook = context.read<BookBloc>().state.book;
+    bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    _vkQueries = VkQueries(bibleVersion);
     return FutureBuilder<List<VkModel>>(
       future: _vkQueries.getActiveVersions(),
       builder: (BuildContext context, AsyncSnapshot<List<VkModel>> snapshot) {
@@ -116,7 +138,7 @@ class AppBarVersions extends StatelessWidget {
                     .read<VersionBloc>()
                     .add(UpdateVersion(bibleVersion: snapshot.data![index].n!));
 
-                bookLists.readBookName(Globals.bibleBook).then(
+                bookLists.readBookName(bibleBook).then(
                   (value) {
                     Globals.bookName = value;
                     backToMainButton(context);

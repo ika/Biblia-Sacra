@@ -42,14 +42,12 @@ class VersionBloc extends Bloc<VersionEvent, VersionState> {
     on<InitiateVersion>(
         (InitiateVersion event, Emitter<VersionState> emit) async {
       sharedPrefs.getVersionPref().then((value) {
-        Globals.bibleVersion = value!;
         emit(InitialVersionState(bibleVersion: value));
       });
     });
 
     on<UpdateVersion>((UpdateVersion event, Emitter<VersionState> emit) async {
       sharedPrefs.setVersionPref(event.bibleVersion).then((value) {
-        Globals.bibleVersion = event.bibleVersion;
         emit(UpdateGlobalsState(bibleVersion: event.bibleVersion));
       });
     });

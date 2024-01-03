@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/vers/vers_provider.dart';
 import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -10,8 +9,9 @@ VkProvider? _vkProvider;
 
 class VkQueries {
   final String tableName = 'version_key';
+  final int bibleVersion;
 
-  VkQueries() {
+  VkQueries(this.bibleVersion) {
     _vkProvider = VkProvider();
   }
 
@@ -33,7 +33,7 @@ class VkQueries {
 
     var res = await db.rawQuery(
         '''SELECT * FROM $tableName WHERE number <> ?''',
-        [Globals.bibleVersion]);
+        [bibleVersion]);
 
     List<VkModel> list = res.isNotEmpty
         ? res.map((tableName) => VkModel.fromJson(tableName)).toList()
@@ -56,7 +56,7 @@ class VkQueries {
 
     var res = await db.rawQuery(
         '''SELECT * FROM $tableName WHERE active=? and number <> ?''',
-        ['1', Globals.bibleVersion]);
+        ['1', bibleVersion]);
 
     List<VkModel> list = res.isNotEmpty
         ? res.map((tableName) => VkModel.fromJson(tableName)).toList()

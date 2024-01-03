@@ -57,36 +57,49 @@ class SharedPrefs {
     return prefs.getStringList(key);
   }
 
+  // =====================================
+
   // Chapter
   Future<void> setChapterPref(int value) async {
     final prefs = await sharedPrefs;
-    prefs.setInt("chapter", value);
+    prefs.setInt("chapterNumber", value);
   }
 
-  Future<int?> getChapterPref() async {
+  Future<int> getChapterPref() async {
     final prefs = await sharedPrefs;
-    return prefs.getInt("chapter") ?? 1;
+    return prefs.getInt("chapterNumber") ?? 1;
   }
 
   // Bible Version
   Future<void> setVersionPref(int value) async {
     final prefs = await sharedPrefs;
-    prefs.setInt("chapter", value);
+    prefs.setInt("versionNumber", value);
   }
 
-  Future<int?> getVersionPref() async {
+  Future<int> getVersionPref() async {
     final prefs = await sharedPrefs;
-    return prefs.getInt("chapter") ?? 1;
+    return prefs.getInt("versionNumber") ?? 1;
   }
 
   // Verse
   Future<void> setVersePref(int value) async {
     final prefs = await sharedPrefs;
-    prefs.setInt("verse", value);
+    prefs.setInt("verseNumber", value);
   }
 
-  Future<int?> getVersePref() async {
+  Future<int> getVersePref() async {
     final prefs = await sharedPrefs;
-    return prefs.getInt("verse") ?? 1;
+    return prefs.getInt("verseNumber") ?? 1;
+  }
+
+  // Book
+  Future<void> setBookPref(int value) async {
+    final prefs = await sharedPrefs;
+    prefs.setInt("bookNumber", value);
+  }
+
+  Future<int> getBookPref() async {
+    final prefs = await sharedPrefs;
+    return prefs.getInt("bookNumber") ?? 43;
   }
 }

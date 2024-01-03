@@ -1,11 +1,64 @@
-import 'package:bibliasacra/main/main_comp.dart';
+import 'package:bibliasacra/bloc/bloc_book.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/main/db_model.dart';
+import 'package:bibliasacra/main/db_queries.dart';
+import 'package:bibliasacra/main/main_versmenu.dart';
+import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Compare versions
 
-Compare _compare = Compare();
-//double? primaryTextSize;
+late int bibleBook;
+late int bibleVersion;
+
+class CompareModel {
+  String a; // abbr
+  String b; // book name
+  int c; // chapter
+  int v; // verse
+  String t; // text
+
+  CompareModel(
+      {required this.a,
+      required this.b,
+      required this.c,
+      required this.v,
+      required this.t});
+}
+
+class Compare {
+  Future<List<CompareModel>> activeVersions(Bible model) async {
+    List<CompareModel> compareList = [];
+
+    List activeVersions = await VkQueries(bibleVersion).getActiveVersionNumbers();
+
+    for (int x = 0; x < activeVersions.length; x++) {
+      int bibleVersion = activeVersions[x]['number'];
+
+      String bookName =
+          bookLists.getBookByNumber(bibleBook, activeVersions[x]['lang']);
+
+      String abbr = activeVersions[x]['abbr'];
+
+      List<Bible> verse =
+          await DbQueries(bibleVersion).getVerse(model.b!, model.c!, model.v!);
+
+      abbr = (abbr.isNotEmpty) ? abbr : 'Unknown';
+      bookName = (bookName.isNotEmpty) ? bookName : 'Unknown';
+
+      int c = verse.first.c ?? 0;
+      int v = verse.first.v ?? 0;
+      String t = verse.first.t ?? 'Unknown';
+
+      final cModel = CompareModel(a: abbr, b: bookName, c: c, v: v, t: t);
+
+      compareList.add(cModel);
+    }
+
+    return compareList;
+  }
+}
 
 Future<dynamic> mainCompareDialog(BuildContext context, Bible bible) {
   return showDialog(
@@ -49,44 +102,45 @@ class _ComparePage extends State<ComparePage> {
 
   @override
   void initState() {
-    //primaryTextSize = Globals.initialTextSize;
     super.initState();
-  }
 
-  Widget compareList(list, context) {
-    makeListTile(list, int index) {
-      return ListTile(
-        title: Text(
-          "${list[index].a} - ${list[index].b} ${list[index].c}:${list[index].v}",
-          // style:
-          //     TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-        ),
-        subtitle: Text(
-          list[index].t,
-          // style: TextStyle(fontSize: primaryTextSize),
-        ),
-      );
-    }
-
-    return ListView.separated(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: list == null ? 0 : list.length,
-      itemBuilder: (BuildContext context, int index) {
-        return makeListTile(list, index);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        bibleBook = context.read<BookBloc>().state.book;
+        bibleVersion = context.read<VersionBloc>().state.bibleVersion;
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<CompareModel>>(
-      future: _compare.activeVersions(widget.model),
+      future: Compare().activeVersions(widget.model),
       builder: (context, AsyncSnapshot<List<CompareModel>> snapshot) {
         if (snapshot.hasData) {
           list = snapshot.data!;
-          return compareList(list, context);
+          //return compareList(list, context);
+          return ListView.separated(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: list.length,
+            itemBuilder: (BuildContext context, int index) {
+              //return makeListTile(list, index);
+              return ListTile(
+                title: Text(
+                  "${list[index].a} - ${list[index].b} ${list[index].c}:${list[index].v}",
+                  // style:
+                  //     TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+                ),
+                subtitle: Text(
+                  list[index].t,
+                  // style: TextStyle(fontSize: primaryTextSize),
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+          );
         }
         return const Center(
           child: CircularProgressIndicator(),

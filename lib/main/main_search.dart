@@ -56,7 +56,7 @@ class _MainSearchState extends State<MainSearch> {
     enterdKeyWord.isEmpty
         ? results = blankSearch
         : results =
-            DbQueries().getSearchedValues(enterdKeyWord, arr[0], arr[1]);
+            DbQueries(bibleVersion).getSearchedValues(enterdKeyWord, arr[0], arr[1]);
 
     // Refresh the UI
     setState(
