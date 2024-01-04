@@ -1,7 +1,5 @@
-import 'package:bibliasacra/bloc/bloc_themedata.dart';
 import 'package:bibliasacra/fonts/font_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 //import 'package:flutter_font_picker/flutter_font_picker.dart';
 
 class FontsPage extends StatefulWidget {

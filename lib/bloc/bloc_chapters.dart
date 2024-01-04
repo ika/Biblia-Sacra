@@ -37,19 +37,16 @@ class UpdateChapterState extends ChapterState {
 // Bloc
 // -------------------------------------------------
 class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
-
   ChapterBloc() : super(InitiateChapterState(chapter: 1)) {
-    on<InitiateChapter>(
-        (InitiateChapter event, Emitter<ChapterState> emit) async {
+    on<InitiateChapter>((InitiateChapter event, Emitter<ChapterState> emit) {
       sharedPrefs.getChapterPref().then((value) {
         emit(InitiateChapterState(chapter: value));
       });
     });
 
-    on<UpdateChapter>((UpdateChapter event, Emitter<ChapterState> emit) async {
-      sharedPrefs.setChapterPref(event.chapter).then((v) {
-        emit(UpdateChapterState(chapter: event.chapter));
-      });
+    on<UpdateChapter>((UpdateChapter event, Emitter<ChapterState> emit) {
+      sharedPrefs.setChapterPref(event.chapter);
+      emit(UpdateChapterState(chapter: event.chapter));
     });
   }
 }

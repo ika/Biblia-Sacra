@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class Globals {
   //----initial read-----------------------
   //static int bibleVersion = 1; // KJV bible version
-  static String bibleLang = 'eng'; // Bible language
-  static String versionAbbr = 'KJV'; // version abbreviation KJV
+  //static String bibleLang = 'eng'; // Bible language
+  //static String versionAbbr = 'KJV'; // version abbreviation KJV
   //static String versionName = 'King James Version';  // version full name
   //static int bibleBook = 43; // Gospel of John
   //static int bookNameIndex = 42; // index is one less that book number
@@ -27,10 +27,10 @@ class Globals {
       IconData(0xe791, fontFamily: "MaterialIcons");
 
   // Dialog height
-  static double dialogHeight = 0.0;
+ // static double dialogHeight = 0.0;
 
   // SelectorCubit
-  static String selectorText = bookName;
+  //static String selectorText = bookName;
 
   // colorListNumber
   //static int colorListNumber = 4; // Amber

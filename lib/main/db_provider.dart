@@ -5,48 +5,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-String dataBaseName = '';
-
-// String getBVFileName() {
-//   String dbName = '';
-
-//   switch (Globals.bibleVersion) {
-//     case 1:
-//       dbName = Constants.kjvbDbname;
-//       break;
-//     case 2:
-//       dbName = Constants.clemDbname;
-//       break;
-//     case 3:
-//       dbName = Constants.cpdvDbname;
-//       break;
-//     case 4:
-//       dbName = Constants.nvulDbname;
-//       break;
-//     case 5:
-//     // _dbName = Constants.af53Dbname;
-//     // break;
-//     case 6:
-//     // _dbName = Constants.dn33Dbname;
-//     // break;
-//     case 7:
-//       dbName = Constants.ukjvDbname;
-//       break;
-//     case 8:
-//       dbName = Constants.webbDbname;
-//       break;
-//     // case 9:
-//     //   dbName = Constants.af83Dbname;
-//     //   break;
-//     case 10:
-//       dbName = Constants.asvbDbname;
-//       break;
-//     default:
-//       dbName = Constants.kjvbDbname;
-//   }
-
-//   return dbName;
-// }
+late String dataBaseName;
 
 class DbProvider {
   String dbName = '';

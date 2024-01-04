@@ -27,18 +27,18 @@ class WriteVarsModel {
 
 Future<void> writeVars(WriteVarsModel model) async {
   //Globals.bibleVersion = model.version!;
-  Globals.bibleLang = model.lang!;
-  Globals.versionAbbr = model.abbr!;
+  //Globals.bibleLang = model.lang!;
+  //Globals.versionAbbr = model.abbr!;
   //Globals.bibleBook = model.book!;
   //Globals.bookChapter = model.chapter!;
   //Globals.chapterVerse = model.verse!;
-  Globals.bookName = model.name!;
+  //Globals.bookName = model.name!;
   // version
   //sharedPrefs.setIntPref('version', model.version!);
   // language
-  sharedPrefs.setStringPref('language', model.lang!);
+  //sharedPrefs.setStringPref('language', model.lang!);
   // version abbreviation
-  sharedPrefs.setStringPref('verabbr', model.abbr!);
+  //sharedPrefs.setStringPref('verabbr', model.abbr!);
   // Book
   //sharedPrefs.setIntPref('book', model.book!);
   // Chapter
@@ -46,5 +46,5 @@ Future<void> writeVars(WriteVarsModel model) async {
   // Verse
   //sharedPrefs.setIntPref('verse', model.verse!);
   // Book name
-  sharedPrefs.setStringPref('bookname', model.name!);
+  //sharedPrefs.setStringPref('bookname', model.name!);
 }

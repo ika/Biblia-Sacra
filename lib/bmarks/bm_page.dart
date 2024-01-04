@@ -153,7 +153,7 @@ class _BookMarkState extends State<BookMarksPage> {
                                 context.read<ChapterBloc>().add(UpdateChapter(
                                     chapter: list[index].chapter!));
 
-                                Globals.bibleLang = list[index].lang!;
+                                //Globals.bibleLang = list[index].lang!;
 
                                 final model = WriteVarsModel(
                                   lang: list[index].lang,

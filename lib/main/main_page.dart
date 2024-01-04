@@ -65,6 +65,8 @@ late int bibleBookChapter;
 late int bibleVersion;
 late int chapterVerse;
 late int bibleBook;
+late String bibleLang;
+late String versionAbbr;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -92,7 +94,7 @@ class MainPageState extends State<MainPage> {
           Globals.activeVersionCount = c;
         });
 
-        Utilities(bibleVersion).getDialogeHeight();
+        //Utilities(bibleVersion).getDialogeHeight();
 
         BookLists().readBookName(bibleBook).then((g) {
           Globals.bookName = g;
@@ -105,7 +107,7 @@ class MainPageState extends State<MainPage> {
           () {
             if (initialScrollController!.isAttached) {
               initialScrollController!.scrollTo(
-                index: chapterVerse - 1, // from verse selector
+                index: chapterVerse - 1,
                 duration: Duration(milliseconds: Globals.navigatorLongDelay),
                 curve: Curves.easeInOutCubic,
               );
@@ -164,7 +166,7 @@ class MainPageState extends State<MainPage> {
     final list = <String>[
       snapshot.data[index].t,
       ' ',
-      Globals.versionAbbr,
+      versionAbbr,
       ' ',
       Globals.bookName,
       ' ',
@@ -270,7 +272,7 @@ class MainPageState extends State<MainPage> {
 
   void insertBookMark(int bid) {
     List<String> stringTitle = [
-      Globals.versionAbbr,
+      versionAbbr,
       ' ',
       Globals.bookName,
       ' ',
@@ -282,9 +284,9 @@ class MainPageState extends State<MainPage> {
     final model = BmModel(
         title: stringTitle.join(),
         subtitle: verseText,
-        lang: Globals.bibleLang,
+        lang: bibleLang,
         version: bibleVersion,
-        abbr: Globals.versionAbbr,
+        abbr: versionAbbr,
         book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
@@ -302,7 +304,7 @@ class MainPageState extends State<MainPage> {
 
   void insertHighLight(int bid) async {
     List<String> stringTitle = [
-      Globals.versionAbbr,
+      versionAbbr,
       ' ',
       Globals.bookName,
       ' ',
@@ -314,9 +316,9 @@ class MainPageState extends State<MainPage> {
     final model = HlModel(
         title: stringTitle.join(),
         subtitle: verseText,
-        lang: Globals.bibleLang,
+        lang: bibleLang,
         version: bibleVersion,
-        abbr: Globals.versionAbbr,
+        abbr: versionAbbr,
         book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
@@ -333,7 +335,7 @@ class MainPageState extends State<MainPage> {
 
   void saveNote(int bid) {
     List<String> stringTitle = [
-      Globals.versionAbbr,
+      versionAbbr,
       ' ',
       Globals.bookName,
       ' ',
@@ -345,9 +347,9 @@ class MainPageState extends State<MainPage> {
     final model = NtModel(
         title: stringTitle.join(),
         contents: verseText,
-        lang: Globals.bibleLang,
+        lang: bibleLang,
         version: bibleVersion,
-        abbr: Globals.versionAbbr,
+        abbr: versionAbbr,
         book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
@@ -905,7 +907,7 @@ class MainPageState extends State<MainPage> {
   // }
 
   Widget showModes() {
-    if (Globals.bibleLang == 'lat') {
+    if (bibleLang == 'lat') {
       String modeText =
           Globals.dictionaryMode ? 'Dictionary Mode' : 'Normal Mode';
       return FloatingActionButton.extended(
@@ -932,6 +934,9 @@ class MainPageState extends State<MainPage> {
     initialPageScroll = true;
     bibleBook = context.read<BookBloc>().state.book;
     bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    versionAbbr = Utilities(bibleVersion).getVersionAbbr();
+    bibleLang = Utilities(bibleVersion).getLanguage();
+
     _dbQueries = DbQueries(bibleVersion);
 
     return Scaffold(
@@ -951,7 +956,7 @@ class MainPageState extends State<MainPage> {
                 //     ),
                 onPressed: () {
                   Route route = MaterialPageRoute(
-                    builder: (context) => const MainSelector(),
+                    builder: (context) => MainSelector(bibleLang: bibleLang),
                   );
                   Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
@@ -984,13 +989,13 @@ class MainPageState extends State<MainPage> {
               FilledButton(
                 // style: ElevatedButton.styleFrom(
                 //     backgroundColor: theme.colorScheme.secondary),
+                child: Text(
+                  versionAbbr,
+                  //style: const TextStyle(fontWeight: FontWeight.bold)
+                ),
                 onPressed: () {
                   showVersionsDialog(context);
                 },
-                child: Text(
-                  Globals.versionAbbr,
-                  //style: const TextStyle(fontWeight: FontWeight.bold)
-                ),
               ),
               const SizedBox(
                 // right side border width

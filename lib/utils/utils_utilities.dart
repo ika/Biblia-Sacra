@@ -1,27 +1,60 @@
-import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/vers/vers_queries.dart';
 
 class Utilities {
-  final int bibleVersion;
   Utilities(this.bibleVersion);
+  final int bibleVersion;
 
-  String reduceLength(int l, String t) {
-    return (t.length > l) ? t.substring(0, l) : t;
+  // void getDialogeHeight() {
+  //   VkQueries(bibleVersion).getActiveVersionCount().then(
+  //     (value) {
+  //       double dialogHeight = (value!.toDouble() * 50.00);
+  //       if (dialogHeight > 400.00) {
+  //         dialogHeight = 400.00;
+  //       }
+  //       Globals.dialogHeight = dialogHeight;
+  //     },
+  //   );
+  // }
+
+  String getLanguage() {
+    return (bibleVersion == 2 || bibleVersion == 4) ? 'lat' : 'eng';
   }
 
-  int getTime() {
-    return DateTime.now().microsecondsSinceEpoch;
-  }
-
-  void getDialogeHeight() {
-    VkQueries(bibleVersion).getActiveVersionCount().then(
-      (value) {
-        double dialogHeight = (value!.toDouble() * 50.00);
-        if (dialogHeight > 400.00) {
-          dialogHeight = 400.00;
-        }
-        Globals.dialogHeight = dialogHeight;
-      },
-    );
+  String getVersionAbbr() {
+    String abbr = '';
+    switch (bibleVersion) {
+      case 1:
+        abbr = 'KJV';
+        break;
+      case 2:
+        abbr = 'CLEM';
+        break;
+      case 3:
+        abbr = 'CPDV';
+        break;
+      case 4:
+        abbr = 'NVUL';
+        break;
+      case 5:
+        abbr = '';
+        break;
+      case 6:
+        abbr = '';
+        break;
+      case 7:
+        abbr = 'UKVJ';
+        break;
+      case 8:
+        abbr = 'WEB';
+        break;
+      case 9:
+        abbr = '';
+        break;
+      case 10:
+        abbr = 'ASV';
+        break;
+      default:
+        abbr = '';
+    }
+    return abbr;
   }
 }

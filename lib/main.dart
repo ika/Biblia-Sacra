@@ -6,21 +6,11 @@ import 'package:bibliasacra/bloc/bloc_themedata.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_search.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/main_page.dart';
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
-import 'package:bibliasacra/utils/utils_utilities.dart';
-import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 // https://rydmike.com/flexcolorscheme/themesplayground-latest/
-
-SharedPrefs _sharedPrefs = SharedPrefs();
-
-// void getActiveVersionsCount() async {
-//   Globals.activeVersionCount = await VkQueries().getActiveVersionCount();
-// }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,22 +20,8 @@ Future<void> main() async {
     databaseFactory = databaseFactoryFfi;
   }
 
-  // language
-  _sharedPrefs.getStringPref('language').then(
-    (b) {
-      Globals.bibleLang = b ?? 'eng';
-      // version abbreviation
-      _sharedPrefs.getStringPref('verabbr').then(
-        (c) {
-          Globals.versionAbbr = c ?? 'KVJ';
-
-          //getActiveVersionsCount();
-          runApp(
-            const BibleApp(),
-          );
-        },
-      );
-    },
+  runApp(
+    const BibleApp(),
   );
 }
 

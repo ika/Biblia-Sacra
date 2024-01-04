@@ -11,6 +11,7 @@ import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/main/search_areas.dart';
+import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
@@ -24,7 +25,8 @@ Future<List<Bible>>? results;
 
 String _contents = '';
 
-//double? primaryTextSize;
+late String bibleLang;
+late String versionAbbr;
 
 class MainSearch extends StatefulWidget {
   const MainSearch({super.key});
@@ -43,6 +45,8 @@ class _MainSearchState extends State<MainSearch> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+        bibleLang = Utilities(bibleVersion).getLanguage();
+        versionAbbr = Utilities(bibleVersion).getVersionAbbr();
       },
     );
   }
@@ -55,8 +59,8 @@ class _MainSearchState extends State<MainSearch> {
 
     enterdKeyWord.isEmpty
         ? results = blankSearch
-        : results =
-            DbQueries(bibleVersion).getSearchedValues(enterdKeyWord, arr[0], arr[1]);
+        : results = DbQueries(bibleVersion)
+            .getSearchedValues(enterdKeyWord, arr[0], arr[1]);
 
     // Refresh the UI
     setState(
@@ -209,8 +213,7 @@ class _MainSearchState extends State<MainSearch> {
   ListTile listTileMethod(AsyncSnapshot<List<Bible>> snapshot, int index) {
     bool emptySearchResult = (snapshot.data![index].b == 0) ? true : false;
     String bookName = (!emptySearchResult)
-        ? BookLists()
-            .getBookByNumber(snapshot.data![index].b!, Globals.bibleLang)
+        ? BookLists().getBookByNumber(snapshot.data![index].b!, bibleLang)
         : '';
     return ListTile(
       title: Text(
@@ -229,9 +232,9 @@ class _MainSearchState extends State<MainSearch> {
             .add(UpdateChapter(chapter: snapshot.data![index].c!));
 
         final model = WriteVarsModel(
-          lang: Globals.bibleLang,
+          lang: bibleLang,
           version: bibleVersion,
-          abbr: Globals.versionAbbr,
+          abbr: versionAbbr,
           book: snapshot.data![index].b,
           //chapter: snapshot.data![index].c,
           verse: snapshot.data![index].v,
@@ -275,7 +278,7 @@ class _MainSearchState extends State<MainSearch> {
             title: BlocBuilder<SearchBloc, SearchState>(
               builder: (context, state) {
                 return Text(
-                  "${areasList[state.area]} - ${Globals.versionAbbr}",
+                  "${areasList[state.area]} - $versionAbbr",
                   // style: TextStyle(fontSize: Globals.appBarFontSize),
                 );
               },

@@ -4,19 +4,20 @@ import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
+import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-late VkQueries _vkQueries; // version key
 SharedPrefs sharedPrefs = SharedPrefs();
 GetLists _lists = GetLists();
 BookLists bookLists = BookLists();
 
 String returnPath = 'main';
 late int bibleBook;
+late String versionAbbr;
 
 Future<dynamic> versionsDialog(BuildContext context, String ret) {
   returnPath = ret;
@@ -27,7 +28,7 @@ Future<dynamic> versionsDialog(BuildContext context, String ret) {
       return SimpleDialog(
         children: [
           SizedBox(
-            height: Globals.dialogHeight,
+            height: 300, //Globals.dialogHeight,
             width: MediaQuery.of(context).size.width,
             child: const Padding(
               padding: EdgeInsets.all(20.0),
@@ -90,7 +91,6 @@ void versionChangeSnackBar(BuildContext context, String snackBarText) {
 }
 
 class AppBarVersionsPage extends State<AppBarVersions> {
-  
   // @override
   // void initState() {
   //   super.initState();
@@ -104,11 +104,13 @@ class AppBarVersionsPage extends State<AppBarVersions> {
 
   @override
   Widget build(BuildContext context) {
+    
     bibleBook = context.read<BookBloc>().state.book;
     bibleVersion = context.read<VersionBloc>().state.bibleVersion;
-    _vkQueries = VkQueries(bibleVersion);
+    versionAbbr = Utilities(bibleVersion).getVersionAbbr();
+
     return FutureBuilder<List<VkModel>>(
-      future: _vkQueries.getActiveVersions(),
+      future: VkQueries(bibleVersion).getActiveVersions(),
       builder: (BuildContext context, AsyncSnapshot<List<VkModel>> snapshot) {
         int len = (snapshot.data != null) ? snapshot.data!.length : 0;
         return ListView.separated(
@@ -123,16 +125,16 @@ class AppBarVersionsPage extends State<AppBarVersions> {
               onTap: () {
                 _lists.updateActiveLists(snapshot.data![index].n!);
 
-                Globals.bibleLang = snapshot.data![index].l!;
+                //Globals.bibleLang = snapshot.data![index].l!;
                 //Globals.bibleVersion = snapshot.data![index].n!;
-                Globals.versionAbbr = snapshot.data![index].r!;
+                versionAbbr = snapshot.data![index].r!;
                 //Globals.chapterVerse = 0; //reset verse number
 
                 Globals.dictionaryMode = false;
 
-                sharedPrefs.setStringPref('language', Globals.bibleLang);
+                //sharedPrefs.setStringPref('language', Globals.bibleLang);
                 //sharedPrefs.setIntPref('version', Globals.bibleVersion);
-                sharedPrefs.setStringPref('verabbr', Globals.versionAbbr);
+                //sharedPrefs.setStringPref('verabbr', versionAbbr);
 
                 context
                     .read<VersionBloc>()

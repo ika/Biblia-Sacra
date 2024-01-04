@@ -70,7 +70,7 @@ class _EditNotePageState extends State<EditNotePage> {
 
   onGoToVerseTap(WriteVarsModel model) {
     // _lists.updateActiveLists('all', model.version!);
-    Globals.bibleLang = model.lang!;
+    //Globals.bibleLang = model.lang!;
     writeVars(model).then((value) {
       backButton(context);
     });

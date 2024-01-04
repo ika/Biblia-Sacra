@@ -62,7 +62,7 @@ class VersionsPageState extends State<VersionsPage> {
                         .updateActiveState(active, snapshot.data![index].n!)
                         .then(
                       (value) async {
-                        Utilities(bibleVersion).getDialogeHeight();
+                        //Utilities(bibleVersion).getDialogeHeight();
                         Globals.activeVersionCount =
                             await vkQueries.getActiveVersionCount();
                         setState(() {});

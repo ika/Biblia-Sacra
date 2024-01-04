@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 late DbQueries dbQueries;
-//SharedPrefs sharedPrefs = SharedPrefs();
 BookLists bookLists = BookLists();
 late int bibleBook;
 
@@ -26,7 +25,8 @@ late int _currentChapterValue;
 late int _currentVerseValue;
 
 class MainSelector extends StatefulWidget {
-  const MainSelector({super.key});
+  const MainSelector({super.key, required this.bibleLang});
+  final String bibleLang;
 
   @override
   State<MainSelector> createState() => _MainSelectorState();
@@ -44,7 +44,7 @@ class _MainSelectorState extends State<MainSelector>
     //_currentVerseValue = Globals.chapterVerse;
 
     //primaryTextSize = Globals.initialTextSize;
-    allBooks = bookLists.getBookListByLang(Globals.bibleLang);
+    allBooks = bookLists.getBookListByLang(widget.bibleLang);
     filteredBooks = allBooks;
 
     tabController = TabController(length: 3, vsync: this);
@@ -70,7 +70,7 @@ class _MainSelectorState extends State<MainSelector>
   void runFilter(String keyWord) {
     (keyWord.isEmpty)
         ? results = allBooks
-        : results = bookLists.searchList(keyWord, Globals.bibleLang);
+        : results = bookLists.searchList(keyWord, widget.bibleLang);
 
     setState(() {
       filteredBooks = results;
@@ -294,6 +294,7 @@ class _MainSelectorState extends State<MainSelector>
                     onChanged: (value) {
                       setState(() {
                         _currentChapterValue = value;
+                        _currentVerseValue = 1;
                       });
                       context
                           .read<ChapterBloc>()

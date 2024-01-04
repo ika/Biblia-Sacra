@@ -4,6 +4,7 @@ import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_eng.dart';
 import 'package:bibliasacra/langs/lang_latin.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
+import 'package:bibliasacra/utils/utils_utilities.dart';
 
 final sharedPrefs = SharedPrefs();
 
@@ -60,7 +61,7 @@ class BookLists {
   }
 
   Future<String> readBookName(int book) async {
-    return getBookByNumber(book, Globals.bibleLang);
+    return getBookByNumber(book, Utilities(book).getLanguage());
   }
 
   Future<void> writeBookName(int book) async {
