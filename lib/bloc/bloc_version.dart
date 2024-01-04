@@ -39,10 +39,8 @@ class UpdateGlobalsState extends VersionState {
 // -------------------------------------------------
 class VersionBloc extends Bloc<VersionEvent, VersionState> {
   VersionBloc() : super(InitialVersionState(bibleVersion: 1)) {
-    on<InitiateVersion>((InitiateVersion event, Emitter<VersionState> emit) {
-      sharedPrefs.getVersionPref().then((value) {
-        emit(InitialVersionState(bibleVersion: value));
-      });
+    on<InitiateVersion>((InitiateVersion event, Emitter<VersionState> emit) async {
+        emit(InitialVersionState(bibleVersion: await sharedPrefs.getVersionPref()));
     });
 
     on<UpdateVersion>((UpdateVersion event, Emitter<VersionState> emit) {

@@ -23,8 +23,8 @@ class Loaded extends BookEvent {}
 // State
 // -------------------------------------------------
 class BookState {
-  int book;
   BookState({required this.book});
+  int book;
 }
 
 class InitiateBookState extends BookState {
@@ -41,9 +41,7 @@ class UpdateBookState extends BookState {
 class BookBloc extends Bloc<BookEvent, BookState> {
   BookBloc() : super(InitiateBookState(book: 43)) {
     on<InitiateBook>((InitiateBook event, Emitter<BookState> emit) async {
-      sharedPrefs.getBookPref().then((value) {
-        emit(InitiateBookState(book: value));
-      });
+      emit(InitiateBookState(book: await sharedPrefs.getBookPref()));
     });
 
     on<UpdateBook>((UpdateBook event, Emitter<BookState> emit) {

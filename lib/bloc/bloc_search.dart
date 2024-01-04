@@ -39,14 +39,12 @@ class UpdateSearchState extends SearchState {
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc() : super(InitiateSearchState(area: 5)) {
     on<InitiateSearchArea>(
-        (InitiateSearchArea event, Emitter<SearchState> emit) {
-      sharedPrefs.getIntPref('searchArea').then((value) async {
-        emit(InitiateSearchState(area: value ?? 5));
-      });
+        (InitiateSearchArea event, Emitter<SearchState> emit) async {
+      emit(InitiateSearchState(area: await sharedPrefs.getSearchAreaPref()));
     });
 
     on<UpdateSearchArea>((UpdateSearchArea event, Emitter<SearchState> emit) {
-      sharedPrefs.setIntPref('searchArea', event.area);
+      sharedPrefs.setSearchAreaPref(event.area);
       emit(UpdateSearchState(area: event.area));
     });
   }

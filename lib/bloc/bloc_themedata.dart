@@ -15,8 +15,8 @@ abstract class ThemeEvent {}
 class InitiateTheme extends ThemeEvent {}
 
 class ChangeTheme extends ThemeEvent {
-  final ThemeData themeData;
   ChangeTheme(this.themeData);
+  final ThemeData themeData;
 }
 
 // -------------------------------------------------

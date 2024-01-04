@@ -102,4 +102,15 @@ class SharedPrefs {
     final prefs = await sharedPrefs;
     return prefs.getInt("bookNumber") ?? 43;
   }
+
+  // Search Area
+  Future<void> setSearchAreaPref(int value) async {
+    final prefs = await sharedPrefs;
+    prefs.setInt("searchArea", value);
+  }
+
+  Future<int> getSearchAreaPref() async {
+    final prefs = await sharedPrefs;
+    return prefs.getInt("searchArea") ?? 5;
+  }
 }

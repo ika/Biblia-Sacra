@@ -38,10 +38,8 @@ class UpdateVerseState extends VerseState {
 // -------------------------------------------------
 class VerseBloc extends Bloc<VerseEvent, VerseState> {
   VerseBloc() : super(InitiateVerseState(verse: 1)) {
-    on<InitiateVerse>((InitiateVerse event, Emitter<VerseState> emit) {
-      sharedPrefs.getVersePref().then((value) async {
-        emit(InitiateVerseState(verse: value));
-      });
+    on<InitiateVerse>((InitiateVerse event, Emitter<VerseState> emit) async {
+        emit(InitiateVerseState(verse: await sharedPrefs.getVersePref()));
     });
 
     on<UpdateVerse>((UpdateVerse event, Emitter<VerseState> emit) {
