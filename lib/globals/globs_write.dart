@@ -1,4 +1,3 @@
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 
 SharedPrefs sharedPrefs = SharedPrefs();

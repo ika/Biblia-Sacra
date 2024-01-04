@@ -1,4 +1,3 @@
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
