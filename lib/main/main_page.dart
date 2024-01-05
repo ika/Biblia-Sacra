@@ -38,16 +38,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
 
-// class MainPageArgs {
-//   final int currentChapterValue;
-//   final int currentVerseValue;
-//   MainPageArgs(this.currentChapterValue, this.currentVerseValue);
-// }
-
 PageController? pageController;
 ItemScrollController? initialScrollController;
-
-//double? primaryTextSize;
 
 late DbQueries _dbQueries;
 BmQueries _bmQueries = BmQueries();
@@ -61,10 +53,10 @@ int verseNumber = 0;
 bool? initialPageScroll;
 bool isShowing = true;
 
-late int bibleBookChapter;
 late int bibleVersion;
-late int chapterVerse;
 late int bibleBook;
+late int bibleBookChapter;
+//late int chapterVerse;
 late String bibleLang;
 late String versionAbbr;
 late String bookName;
@@ -81,30 +73,25 @@ class MainPageState extends State<MainPage> {
   initState() {
     super.initState();
 
-    initialScrollController = ItemScrollController();
+//    initialScrollController = ItemScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        //bibleVersion = context.read<VersionBloc>().state.bibleVersion;
-        chapterVerse = context.read<VerseBloc>().state.verse;
-        //bibleBook = context.read<BookBloc>().state.book;
-
+        
         GetLists().updateActiveLists(bibleVersion);
 
         VkQueries(bibleVersion).getActiveVersionCount().then((c) {
           Globals.activeVersionCount = c;
         });
 
-        //Utilities(bibleVersion).getDialogeHeight();
-
-        // _dbQueries = DbQueries(bibleVersion);
+        initialScrollController = ItemScrollController();
 
         Future.delayed(
           Duration(milliseconds: Globals.navigatorLongDelay),
           () {
             if (initialScrollController!.isAttached) {
               initialScrollController!.scrollTo(
-                index: chapterVerse - 1,
+                index: context.read<VerseBloc>().state.verse - 1,
                 duration: Duration(milliseconds: Globals.navigatorLongDelay),
                 curve: Curves.easeInOutCubic,
               );
@@ -665,17 +652,18 @@ class MainPageState extends State<MainPage> {
 
   Widget showDrawer(BuildContext context) {
     return Drawer(
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       child: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-                //color: Theme.of(context).colorScheme.primary,
-                // image: DecorationImage(
-                //   fit: BoxFit.fill,
-                //   image: AssetImage('path/to/header_background.png'),
-                // ),
-                ),
+          DrawerHeader(
+            //decoration: const BoxDecoration(
+            //color: Theme.of(context).colorScheme.secondaryContainer,
+            // image: DecorationImage(
+            //   fit: BoxFit.fill,
+            //   image: AssetImage('path/to/header_background.png'),
+            // ),
+            // ),
             child: Stack(
               children: [
                 Positioned(
@@ -684,7 +672,7 @@ class MainPageState extends State<MainPage> {
                   child: Text(
                     "Biblia Sacra",
                     style: TextStyle(
-                        //color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.primary,
                         fontSize: 32.0),
                     //fontWeight: FontWeight.w500),
                   ),
@@ -928,10 +916,11 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     initialPageScroll = true;
     bibleBook = context.read<BookBloc>().state.book;
+    debugPrint("BIBLEBOOK $bibleBook");
     bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+
     versionAbbr = Utilities(bibleVersion).getVersionAbbr();
     bibleLang = Utilities(bibleVersion).getLanguage();
     bookName = BookLists().readBookName(bibleBook, bibleVersion);

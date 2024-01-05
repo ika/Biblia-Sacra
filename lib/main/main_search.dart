@@ -180,7 +180,7 @@ class _MainSearchState extends State<MainSearch> {
             TextSpan(
               text: t.substring(idx, idx + m.length),
               style: TextStyle(
-                backgroundColor: Theme.of(context).colorScheme.onErrorContainer,
+                backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
               ),
             ),
             TextSpan(

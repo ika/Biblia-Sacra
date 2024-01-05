@@ -240,11 +240,10 @@ class _MainSelectorState extends State<MainSelector>
                     itemHeight: 100,
                     axis: Axis.horizontal,
                     onChanged: (value) {
+                      context.read<VerseBloc>().add(UpdateVerse(verse: value));
                       setState(() {
                         _currentVerseValue = value;
                       });
-                      context.read<VerseBloc>().add(UpdateVerse(verse: value));
-                      //backButton(context);
                     },
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
@@ -347,21 +346,26 @@ class _MainSelectorState extends State<MainSelector>
                     //style: TextStyle(fontSize: primaryTextSize),
                   ),
                   onTap: () {
-                    int book = key + 1;
-
-                    context.read<BookBloc>().add(UpdateBook(book: book));
-                    setState(() {
-                      _currentChapterValue = _currentVerseValue = 1;
-                    });
+                    context.read<BookBloc>().add(UpdateBook(book: key + 1));
+                    //debugPrint("KEY $key");
 
                     context.read<ChapterBloc>().add(UpdateChapter(chapter: 1));
 
                     context.read<VerseBloc>().add(UpdateVerse(verse: 1));
 
-                    tabController!.animateTo(1);
+                    setState(() {
+                      _currentChapterValue = _currentVerseValue = 1;
+                    });
 
                     FocusScope.of(context).requestFocus(FocusNode());
                     filteredBooks = allBooks; // restore full list
+
+                    Future.delayed(
+                      Duration(milliseconds: Globals.navigatorDelay),
+                      () {
+                        tabController!.animateTo(1);
+                      },
+                    );
                   },
                   trailing: Icon(
                     Icons.arrow_right,

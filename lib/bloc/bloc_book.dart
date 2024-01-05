@@ -13,11 +13,9 @@ abstract class BookEvent {}
 class InitiateBook extends BookEvent {}
 
 class UpdateBook extends BookEvent {
-  final int book;
   UpdateBook({required this.book});
+  final int book;
 }
-
-class Loaded extends BookEvent {}
 
 // -------------------------------------------------
 // State
@@ -48,5 +46,11 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       sharedPrefs.setBookPref(event.book);
       emit(UpdateBookState(book: event.book));
     });
+
+    // on<UpdateBook>((UpdateBook event, Emitter<BookState> emit) {
+    //   sharedPrefs.setBookPref(event.book).then((value) {
+    //     emit(UpdateBookState(book: event.book));
+    //   });
+    // });
   }
 }
