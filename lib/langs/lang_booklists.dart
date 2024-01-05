@@ -1,12 +1,10 @@
 // BookLists
 
-import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/langs/lang_eng.dart';
 import 'package:bibliasacra/langs/lang_latin.dart';
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 
-final sharedPrefs = SharedPrefs();
+
 
 List<String> langListSelector(String lang) {
   List<String> langList = [];
@@ -60,20 +58,20 @@ class BookLists {
     return listMap;
   }
 
-  Future<String> readBookName(int book) async {
-    return getBookByNumber(book, Utilities(book).getLanguage());
+  String readBookName(int bibleBook, int bibleVersion) {
+    return getBookByNumber(bibleBook, Utilities(bibleVersion).getLanguage());
   }
 
-  Future<void> writeBookName(int book) async {
-    readBookName(book).then(
-      (name) {
-        sharedPrefs.setStringPref('bookname', name).then(
-          (v) {
-            Globals.bookName = name;
-            //Globals.selectorText = "$name: 1:1";
-          },
-        );
-      },
-    );
-  }
+  // Future<void> writeBookNameXX(int book) async {
+  //   readBookName(book).then(
+  //     (name) {
+  //       sharedPrefs.setStringPref('bookname', name).then(
+  //         (v) {
+  //           Globals.bookName = name;
+  //           //Globals.selectorText = "$name: 1:1";
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 }

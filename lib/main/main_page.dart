@@ -67,6 +67,7 @@ late int chapterVerse;
 late int bibleBook;
 late String bibleLang;
 late String versionAbbr;
+late String bookName;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -95,10 +96,6 @@ class MainPageState extends State<MainPage> {
         });
 
         //Utilities(bibleVersion).getDialogeHeight();
-
-        BookLists().readBookName(bibleBook).then((g) {
-          Globals.bookName = g;
-        });
 
         // _dbQueries = DbQueries(bibleVersion);
 
@@ -168,7 +165,7 @@ class MainPageState extends State<MainPage> {
       ' ',
       versionAbbr,
       ' ',
-      Globals.bookName,
+      bookName,
       ' ',
       snapshot.data[index].c.toString(),
       ':',
@@ -274,7 +271,7 @@ class MainPageState extends State<MainPage> {
     List<String> stringTitle = [
       versionAbbr,
       ' ',
-      Globals.bookName,
+      bookName,
       ' ',
       '$bibleBookChapter',
       ':',
@@ -290,7 +287,7 @@ class MainPageState extends State<MainPage> {
         book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
-        name: Globals.bookName,
+        name: bookName,
         bid: bid);
     _bmQueries.saveBookMark(model).then(
       (value) {
@@ -306,7 +303,7 @@ class MainPageState extends State<MainPage> {
     List<String> stringTitle = [
       versionAbbr,
       ' ',
-      Globals.bookName,
+      bookName,
       ' ',
       '$bibleBookChapter',
       ':',
@@ -322,7 +319,7 @@ class MainPageState extends State<MainPage> {
         book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
-        name: Globals.bookName,
+        name: bookName,
         bid: bid);
 
     _hlQueries.saveHighLight(model).then((value) {
@@ -337,7 +334,7 @@ class MainPageState extends State<MainPage> {
     List<String> stringTitle = [
       versionAbbr,
       ' ',
-      Globals.bookName,
+      bookName,
       ' ',
       '$bibleBookChapter',
       ':',
@@ -353,7 +350,7 @@ class MainPageState extends State<MainPage> {
         book: bibleBook,
         chapter: bibleBookChapter,
         verse: verseNumber,
-        name: Globals.bookName,
+        name: bookName,
         bid: bid);
     _ntQueries.insertNote(model).then((noteid) {
       // setState(() {
@@ -931,11 +928,13 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     initialPageScroll = true;
     bibleBook = context.read<BookBloc>().state.book;
     bibleVersion = context.read<VersionBloc>().state.bibleVersion;
     versionAbbr = Utilities(bibleVersion).getVersionAbbr();
     bibleLang = Utilities(bibleVersion).getLanguage();
+    bookName = BookLists().readBookName(bibleBook, bibleVersion);
 
     _dbQueries = DbQueries(bibleVersion);
 
@@ -969,7 +968,7 @@ class MainPageState extends State<MainPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      '${Globals.bookName}: ',
+                      '$bookName: ',
                       //style: const TextStyle(fontWeight: FontWeight.bold)
                     ),
                     BlocBuilder<ChapterBloc, ChapterState>(

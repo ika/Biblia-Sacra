@@ -104,7 +104,6 @@ class AppBarVersionsPage extends State<AppBarVersions> {
 
   @override
   Widget build(BuildContext context) {
-    
     bibleBook = context.read<BookBloc>().state.book;
     bibleVersion = context.read<VersionBloc>().state.bibleVersion;
     versionAbbr = Utilities(bibleVersion).getVersionAbbr();
@@ -140,12 +139,7 @@ class AppBarVersionsPage extends State<AppBarVersions> {
                     .read<VersionBloc>()
                     .add(UpdateVersion(bibleVersion: snapshot.data![index].n!));
 
-                bookLists.readBookName(bibleBook).then(
-                  (value) {
-                    Globals.bookName = value;
-                    backToMainButton(context);
-                  },
-                );
+                backToMainButton(context);
 
                 // (returnPath == 'main')
                 //     ? backToMainButton(context)

@@ -15,6 +15,7 @@ import 'package:numberpicker/numberpicker.dart';
 late DbQueries dbQueries;
 BookLists bookLists = BookLists();
 late int bibleBook;
+late String bookName;
 
 var allBooks = {};
 var filteredBooks = {};
@@ -347,24 +348,18 @@ class _MainSelectorState extends State<MainSelector>
                   ),
                   onTap: () {
                     int book = key + 1;
-                    //Globals.bookChapter = 1;
 
                     context.read<BookBloc>().add(UpdateBook(book: book));
-                    bookLists.writeBookName(book).then(
-                      (v) {
-                        setState(() {
-                          _currentChapterValue = _currentVerseValue = 1;
-                        });
-                        // update Chapter
-                        context
-                            .read<ChapterBloc>()
-                            .add(UpdateChapter(chapter: 1));
+                    setState(() {
+                      _currentChapterValue = _currentVerseValue = 1;
+                    });
 
-                        context.read<VerseBloc>().add(UpdateVerse(verse: 1));
+                    context.read<ChapterBloc>().add(UpdateChapter(chapter: 1));
 
-                        tabController!.animateTo(1);
-                      },
-                    );
+                    context.read<VerseBloc>().add(UpdateVerse(verse: 1));
+
+                    tabController!.animateTo(1);
+
                     FocusScope.of(context).requestFocus(FocusNode());
                     filteredBooks = allBooks; // restore full list
                   },
@@ -387,6 +382,8 @@ class _MainSelectorState extends State<MainSelector>
   Widget build(BuildContext context) {
     bibleBook = context.read<BookBloc>().state.book;
     bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    bookName = BookLists().readBookName(bibleBook, bibleVersion);
+
     dbQueries = DbQueries(bibleVersion);
 
     _currentChapterValue = context.read<ChapterBloc>().state.chapter;
@@ -406,7 +403,7 @@ class _MainSelectorState extends State<MainSelector>
         title: Text(
             //Globals.selectorText,
             //style: TextStyle(fontSize: Globals.appBarFontSize),
-            "${Globals.bookName} $_currentChapterValue : $_currentVerseValue"),
+            "$bookName: $_currentChapterValue : $_currentVerseValue"),
         bottom: TabBar(
           controller: tabController,
           //labelStyle: Theme.of(context).tabBarTheme.labelStyle?.copyWith(color: Colors.white),

@@ -11,11 +11,8 @@ class Globals {
   //static int bookNameIndex = 42; // index is one less that book number
   //static int bibleBookChapter = 1; // used for Block cubit
   //static int chapterVerse = 1; // Verse
-  static String bookName = 'John'; // Book name
+  //static String bookName = 'John'; // Book name
   //--------------------------------------
-
-  // Main Search
-  //static String areaSearchTitle = '';
 
   // Navigarot delay
   static int navigatorDelay = 200;
@@ -26,24 +23,9 @@ class Globals {
   static const IconData backArrow =
       IconData(0xe791, fontFamily: "MaterialIcons");
 
-  // Dialog height
- // static double dialogHeight = 0.0;
-
-  // SelectorCubit
-  //static String selectorText = bookName;
-
-  // colorListNumber
-  //static int colorListNumber = 4; // Amber
-
   // Dictionary mode
   static bool dictionaryMode = false;
   static String dictionaryLookup = '';
-
-  // Text Size
-  //static double initialTextSize = 16;
-
-  // Font
-  //static String fontFamily = 'Open Sans';
 
   // Active Version count
   static int? activeVersionCount = 0;

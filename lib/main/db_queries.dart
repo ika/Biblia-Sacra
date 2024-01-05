@@ -100,6 +100,7 @@ class DbQueries {
 
   Future<List<Bible>> getSearchedValues(
       String search, String low, String high) async {
+
     final db = await _dbProvider!.database;
 
     //debugPrint("TEXT $search LOW $low HIGH $high");
@@ -109,8 +110,8 @@ class DbQueries {
     returnList.add(defList);
 
     var res = await db.rawQuery(
-        '''SELECT * FROM $tableName WHERE t LIKE ? AND b BETWEEN ? AND ? ORDER BY id ASC''',
-        ['%$search%', low, high]);
+        '''SELECT * FROM $tableName WHERE t LIKE '%$search%' AND b BETWEEN ? AND ? ORDER BY id ASC''',
+        [low, high]);
 
     List<Bible> list = res.isNotEmpty
         ? res.map((tableName) => Bible.fromJson(tableName)).toList()
