@@ -346,8 +346,8 @@ class _MainSelectorState extends State<MainSelector>
                     //style: TextStyle(fontSize: primaryTextSize),
                   ),
                   onTap: () {
-                    context.read<BookBloc>().add(UpdateBook(book: key + 1));
-                    //debugPrint("KEY $key");
+                    debugPrint("INDEX ${index + 1}");
+                    context.read<BookBloc>().add(UpdateBook(book: index + 1));
 
                     context.read<ChapterBloc>().add(UpdateChapter(chapter: 1));
 
@@ -363,6 +363,7 @@ class _MainSelectorState extends State<MainSelector>
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
+                        debugPrint("BOOKBLOC STATE ${context.read<BookBloc>().state.book}");
                         tabController!.animateTo(1);
                       },
                     );

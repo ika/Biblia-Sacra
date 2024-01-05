@@ -35,11 +35,11 @@ import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+//import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
 
 PageController? pageController;
-ItemScrollController? initialScrollController;
+//ItemScrollController? initialScrollController;
 
 late DbQueries _dbQueries;
 BmQueries _bmQueries = BmQueries();
@@ -73,55 +73,53 @@ class MainPageState extends State<MainPage> {
   initState() {
     super.initState();
 
-//    initialScrollController = ItemScrollController();
-
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        
         GetLists().updateActiveLists(bibleVersion);
 
         VkQueries(bibleVersion).getActiveVersionCount().then((c) {
           Globals.activeVersionCount = c;
         });
 
-        initialScrollController = ItemScrollController();
+        // initialScrollController = ItemScrollController();
 
-        Future.delayed(
-          Duration(milliseconds: Globals.navigatorLongDelay),
-          () {
-            if (initialScrollController!.isAttached) {
-              initialScrollController!.scrollTo(
-                index: context.read<VerseBloc>().state.verse - 1,
-                duration: Duration(milliseconds: Globals.navigatorLongDelay),
-                curve: Curves.easeInOutCubic,
-              );
-            }
-          },
-        );
+        // Future.delayed(
+        //   Duration(milliseconds: Globals.navigatorLongDelay),
+        //   () {
+        //     if (initialScrollController!.isAttached) {
+        //       initialScrollController!.scrollTo(
+        //         index: context.read<VerseBloc>().state.verse - 1,
+        //         duration: Duration(milliseconds: Globals.navigatorLongDelay),
+        //         curve: Curves.easeInOutCubic,
+        //       );
+        //     }
+        //   },
+        // );
       },
     );
   }
 
-  Future<List<Bible>> getBookText(int ch) async {
-    return await _dbQueries.getBookChapter(bibleBook, ch);
-  }
+  // Future<List<Bible>> getBookText(int ch) async {
+  //   return await _dbQueries.getBookChapter(bibleBook, ch);
+  // }
 
-  Future<List<Bible>> getVersionText(int ch) async {
-    List<Bible> bible = List<Bible>.empty();
+  // Future<List<Bible>> getVersionText(int ch) async {
+  //   //List<Bible> bible = List<Bible>.empty();
 
-    Future<List<Bible>> futureBibleList = getBookText(ch);
-    bible = await futureBibleList;
-    return bible;
-  }
+  //   //Future<List<Bible>> futureBibleList = getBookText(ch);
+  //   return await _dbQueries.getBookChapter(bibleBook, ch);
+  //   // bible = await futureBibleList;
+  //   // return bible;
+  // }
 
-  ItemScrollController? itemScrollControllerSelector() {
-    if (initialPageScroll!) {
-      initialPageScroll = false;
-      return initialScrollController; // initial scroll
-    } else {
-      return ItemScrollController(); // PageView scroll
-    }
-  }
+  // ItemScrollController? itemScrollControllerSelector() {
+  //   if (initialPageScroll!) {
+  //     initialPageScroll = false;
+  //     return initialScrollController; // initial scroll
+  //   } else {
+  //     return ItemScrollController(); // PageView scroll
+  //   }
+  // }
 
   Future confirmDialog(arr) async {
     return await showDialog(
@@ -610,39 +608,39 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Widget showListView(BuildContext context, int ch) {
-    return Container(
-      padding: const EdgeInsets.all(15.0),
-      child: FutureBuilder<List<Bible>>(
-        future: getVersionText(ch),
-        builder: (context, AsyncSnapshot<List<Bible>> snapshot) {
-          if (snapshot.hasData) {
-            return ScrollablePositionedList.builder(
-              itemCount: snapshot.data!.length,
-              itemScrollController: itemScrollControllerSelector(),
-              itemBuilder: (context, index) {
-                return (Globals.dictionaryMode)
-                    ? dictionaryMode(context, snapshot, index)
-                    : normalMode(context, snapshot, index);
-              },
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
-    );
-  }
+  // Widget showListView(BuildContext context, int ch) {
+  //   return Container(
+  //     padding: const EdgeInsets.all(15.0),
+  //     child: FutureBuilder<List<Bible>>(
+  //       future: getVersionText(ch),
+  //       builder: (context, AsyncSnapshot<List<Bible>> snapshot) {
+  //         if (snapshot.hasData) {
+  //           return ScrollablePositionedList.builder(
+  //             itemCount: snapshot.data!.length,
+  //             itemScrollController: itemScrollControllerSelector(),
+  //             itemBuilder: (context, index) {
+  //               return (Globals.dictionaryMode)
+  //                   ? dictionaryMode(context, snapshot, index)
+  //                   : normalMode(context, snapshot, index);
+  //             },
+  //           );
+  //         }
+  //         return const Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
-  List<Widget> chapterCountFunc(BuildContext context, int chapterCount) {
-    //debugPrint("CHAPTER $chapterCount");
-    List<Widget> pagesList = [];
-    for (int ch = 1; ch <= chapterCount; ch++) {
-      pagesList.add(showListView(context, ch));
-    }
-    return pagesList;
-  }
+  // List<Widget> chapterCountFunc(BuildContext context, int chapterCount) {
+  //   //debugPrint("CHAPTER $chapterCount");
+  //   List<Widget> pagesList = [];
+  //   for (int ch = 1; ch <= chapterCount; ch++) {
+  //     pagesList.add(showListView(context, ch));
+  //   }
+  //   return pagesList;
+  // }
 
   void showVersionsDialog(BuildContext context) {
     (Globals.activeVersionCount! > 1)
@@ -993,6 +991,35 @@ class MainPageState extends State<MainPage> {
           ),
         ],
       ),
+      // body: FutureBuilder<int>(
+      //   future: _dbQueries.getChapterCount(bibleBook),
+      //   builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+      //     if (snapshot.hasData) {
+      //       int chapterCount = snapshot.data!.toInt();
+      //       return ScrollConfiguration(
+      //         behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+      //           PointerDeviceKind.touch,
+      //           PointerDeviceKind.mouse,
+      //         }),
+      //         child: PageView(
+      //           controller: getPageController(), //pageController,
+      //           scrollDirection: Axis.horizontal,
+      //           pageSnapping: true,
+      //           physics: const BouncingScrollPhysics(),
+      //           children: chapterCountFunc(context, chapterCount),
+      //           onPageChanged: (index) {
+      //             context
+      //                 .read<ChapterBloc>()
+      //                 .add(UpdateChapter(chapter: index + 1));
+      //             // move to top of next chapter
+      //             context.read<VerseBloc>().add(UpdateVerse(verse: 1));
+      //           },
+      //         ),
+      //       );
+      //     }
+      //     return const Center(child: CircularProgressIndicator());
+      //   },
+      // ),
       body: FutureBuilder<int>(
         future: _dbQueries.getChapterCount(bibleBook),
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -1003,18 +1030,42 @@ class MainPageState extends State<MainPage> {
                 PointerDeviceKind.touch,
                 PointerDeviceKind.mouse,
               }),
-              child: PageView(
-                controller: getPageController(), //pageController,
-                scrollDirection: Axis.horizontal,
-                pageSnapping: true,
+              child: PageView.builder(
+                controller: getPageController(),
+                itemCount: chapterCount,
                 physics: const BouncingScrollPhysics(),
-                children: chapterCountFunc(context, chapterCount),
+                pageSnapping: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: FutureBuilder<List<Bible>>(
+                      future: _dbQueries.getBookChapter(bibleBook, index + 1),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<Bible>> snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              return (Globals.dictionaryMode)
+                                  ? dictionaryMode(context, snapshot, index)
+                                  : normalMode(context, snapshot, index);
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  );
+                },
                 onPageChanged: (index) {
                   context
                       .read<ChapterBloc>()
                       .add(UpdateChapter(chapter: index + 1));
                   // move to top of next chapter
                   context.read<VerseBloc>().add(UpdateVerse(verse: 1));
+                  //debugPrint("ONCHANGED $index");
                 },
               ),
             );

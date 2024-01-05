@@ -38,6 +38,7 @@ class UpdateBookState extends BookState {
 // -------------------------------------------------
 class BookBloc extends Bloc<BookEvent, BookState> {
   BookBloc() : super(InitiateBookState(book: 43)) {
+
     on<InitiateBook>((InitiateBook event, Emitter<BookState> emit) async {
       emit(InitiateBookState(book: await sharedPrefs.getBookPref()));
     });
