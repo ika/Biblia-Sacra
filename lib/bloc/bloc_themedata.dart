@@ -67,15 +67,16 @@ class ThemeState {
 // -------------------------------------------------
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(ThemeState.lightTheme) {
+    
     on<InitiateTheme>((event, emit) async {
-      final bool isDark = await sharedPrefs.getBoolPref('theme') ?? false;
+      final bool isDark = await sharedPrefs.getThemePref();
       (isDark) ? emit : emit(ThemeState.lightTheme);
     });
 
     on<ChangeTheme>((event, emit) async {
-      final bool isDark = await sharedPrefs.getBoolPref('theme') ?? false;
+      final bool isDark = await sharedPrefs.getThemePref();
       (isDark) ? emit(ThemeState.lightTheme) : emit(ThemeState.darkTheme);
-      sharedPrefs.setBoolPref('theme', !isDark);
+      sharedPrefs.setThemePref(!isDark);
     });
   }
 }
