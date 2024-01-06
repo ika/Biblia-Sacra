@@ -106,8 +106,8 @@ class _ComparePage extends State<ComparePage> {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        bibleBook = context.read<BookBloc>().state.book;
-        bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+        bibleBook = context.read<BookBloc>().state;
+        bibleVersion = context.read<VersionBloc>().state;
       },
     );
   }

@@ -104,8 +104,8 @@ class AppBarVersionsPage extends State<AppBarVersions> {
 
   @override
   Widget build(BuildContext context) {
-    bibleBook = context.read<BookBloc>().state.book;
-    bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    bibleBook = context.read<BookBloc>().state;
+    bibleVersion = context.read<VersionBloc>().state;
     versionAbbr = Utilities(bibleVersion).getVersionAbbr();
 
     return FutureBuilder<List<VkModel>>(

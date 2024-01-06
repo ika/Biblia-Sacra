@@ -26,7 +26,7 @@ class NotesPageState extends State<NotesPage> {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+        bibleVersion = context.read<VersionBloc>().state;
       },
     );
   }

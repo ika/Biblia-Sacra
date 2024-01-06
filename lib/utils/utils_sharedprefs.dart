@@ -102,7 +102,7 @@ class SharedPrefs {
 
   Future<int> getBookPref() async {
     final prefs = await sharedPrefs;
-    return prefs.getInt("bookNumber") ?? 44;
+    return prefs.getInt("bookNumber") ?? 43;
   }
 
   // Search Area

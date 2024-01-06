@@ -1,8 +1,5 @@
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-SharedPrefs sharedPrefs = SharedPrefs();
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // -------------------------------------------------
 // Event
@@ -20,31 +17,36 @@ class UpdateVersion extends VersionEvent {
 // -------------------------------------------------
 // State
 // -------------------------------------------------
-abstract class VersionState {
-  int bibleVersion;
-  VersionState({required this.bibleVersion});
-}
+// abstract class VersionState {
+//   int bibleVersion;
+//   VersionState({required this.bibleVersion});
+// }
 
-class InitialVersionState extends VersionState {
-  InitialVersionState({required super.bibleVersion});
-}
+// class InitialVersionState extends VersionState {
+//   InitialVersionState({required super.bibleVersion});
+// }
 
-class UpdateGlobalsState extends VersionState {
-  UpdateGlobalsState({required super.bibleVersion});
-}
+// class UpdateGlobalsState extends VersionState {
+//   UpdateGlobalsState({required super.bibleVersion});
+// }
 
 // -------------------------------------------------
 // Bloc
 // -------------------------------------------------
-class VersionBloc extends Bloc<VersionEvent, VersionState> {
-  VersionBloc() : super(InitialVersionState(bibleVersion: 1)) {
-    on<InitiateVersion>((InitiateVersion event, Emitter<VersionState> emit) async {
-        emit(InitialVersionState(bibleVersion: await sharedPrefs.getVersionPref()));
+class VersionBloc extends HydratedBloc<VersionEvent, int> {
+  VersionBloc() : super(1) {
+    on<InitiateVersion>((event, emit) async {
+      emit(state);
     });
 
-    on<UpdateVersion>((UpdateVersion event, Emitter<VersionState> emit) {
-      sharedPrefs.setVersionPref(event.bibleVersion);
-      emit(UpdateGlobalsState(bibleVersion: event.bibleVersion));
+    on<UpdateVersion>((event, emit) {
+      emit(event.bibleVersion);
     });
   }
+
+  @override
+  int? fromJson(Map<String, dynamic> json) => json['bibleVersion'] as int;
+
+  @override
+  Map<String, dynamic>? toJson(int state) => {'bibleVersion': state};
 }

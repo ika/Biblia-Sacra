@@ -84,7 +84,7 @@ class VersionsPageState extends State<VersionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    bibleVersion = context.read<VersionBloc>().state;
     vkQueries = VkQueries(bibleVersion);
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,

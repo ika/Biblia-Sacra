@@ -119,7 +119,7 @@ class _BookMarkState extends State<BookMarksPage> {
                 //style: TextStyle(fontSize: Globals.appBarFontSize),
               ),
             ),
-            body: BlocBuilder<ChapterBloc, ChapterState>(
+            body: BlocBuilder<ChapterBloc, int>(
               builder: (context, state) {
                 return Padding(
                   padding: const EdgeInsets.all(20.0),

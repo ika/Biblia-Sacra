@@ -363,7 +363,7 @@ class _MainSelectorState extends State<MainSelector>
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
-                        debugPrint("BOOKBLOC STATE ${context.read<BookBloc>().state.book}");
+                        debugPrint("BOOKBLOC STATE ${context.read<BookBloc>().state}");
                         tabController!.animateTo(1);
                       },
                     );
@@ -385,14 +385,14 @@ class _MainSelectorState extends State<MainSelector>
 
   @override
   Widget build(BuildContext context) {
-    bibleBook = context.read<BookBloc>().state.book;
-    bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    bibleBook = context.read<BookBloc>().state;
+    bibleVersion = context.read<VersionBloc>().state;
     bookName = BookLists().readBookName(bibleBook, bibleVersion);
 
     dbQueries = DbQueries(bibleVersion);
 
-    _currentChapterValue = context.read<ChapterBloc>().state.chapter;
-    _currentVerseValue = context.read<VerseBloc>().state.verse;
+    _currentChapterValue = context.read<ChapterBloc>().state;
+    _currentVerseValue = context.read<VerseBloc>().state;
 
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,

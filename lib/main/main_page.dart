@@ -27,6 +27,7 @@ import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/theme/theme.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
+import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:bibliasacra/main/main_compage.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
@@ -35,11 +36,12 @@ import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
 
-PageController? pageController;
-//ItemScrollController? initialScrollController;
+late PageController? pageController;
+ItemScrollController? initialScrollController;
+//ItemScrollController? itemScrollController;
 
 late DbQueries _dbQueries;
 BmQueries _bmQueries = BmQueries();
@@ -81,20 +83,20 @@ class MainPageState extends State<MainPage> {
           Globals.activeVersionCount = c;
         });
 
-        // initialScrollController = ItemScrollController();
+        initialScrollController = ItemScrollController();
 
-        // Future.delayed(
-        //   Duration(milliseconds: Globals.navigatorLongDelay),
-        //   () {
-        //     if (initialScrollController!.isAttached) {
-        //       initialScrollController!.scrollTo(
-        //         index: context.read<VerseBloc>().state.verse - 1,
-        //         duration: Duration(milliseconds: Globals.navigatorLongDelay),
-        //         curve: Curves.easeInOutCubic,
-        //       );
-        //     }
-        //   },
-        // );
+        Future.delayed(
+          Duration(milliseconds: Globals.navigatorLongDelay),
+          () {
+            if (initialScrollController!.isAttached) {
+              initialScrollController!.scrollTo(
+                index: context.read<VerseBloc>().state - 1,
+                duration: Duration(milliseconds: Globals.navigatorLongDelay),
+                curve: Curves.easeInOutCubic,
+              );
+            }
+          },
+        );
       },
     );
   }
@@ -112,14 +114,14 @@ class MainPageState extends State<MainPage> {
   //   // return bible;
   // }
 
-  // ItemScrollController? itemScrollControllerSelector() {
-  //   if (initialPageScroll!) {
-  //     initialPageScroll = false;
-  //     return initialScrollController; // initial scroll
-  //   } else {
-  //     return ItemScrollController(); // PageView scroll
-  //   }
-  // }
+  ItemScrollController? itemScrollControllerSelector() {
+    if (initialPageScroll!) {
+      initialPageScroll = false;
+      return initialScrollController; // initial scroll
+    } else {
+      return ItemScrollController(); // PageView scroll
+    }
+  }
 
   Future confirmDialog(arr) async {
     return await showDialog(
@@ -907,23 +909,40 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  PageController getPageController() {
-    bibleBookChapter = context.read<ChapterBloc>().state.chapter;
-    return PageController(initialPage: bibleBookChapter - 1);
+  getPageController() {
+    bibleBookChapter = context.read<ChapterBloc>().state;
+    pageController = PageController(initialPage: bibleBookChapter - 1);
+  }
+
+  Future<void> getBookSharedPref() async {
+    SharedPrefs sharedPrefs = SharedPrefs();
+    sharedPrefs.getBookPref().then((value) {
+      debugPrint("getBookPref $value");
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     initialPageScroll = true;
-    bibleBook = context.read<BookBloc>().state.book;
+
+    bibleBook = context.read<BookBloc>().state;
     debugPrint("BIBLEBOOK $bibleBook");
-    bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+    getBookSharedPref();
+
+    bibleVersion = context.read<VersionBloc>().state;
 
     versionAbbr = Utilities(bibleVersion).getVersionAbbr();
     bibleLang = Utilities(bibleVersion).getLanguage();
     bookName = BookLists().readBookName(bibleBook, bibleVersion);
 
+    getPageController();
+
     _dbQueries = DbQueries(bibleVersion);
+
+    // itemScrollController.scrollTo(
+    //     index: 5,
+    //     duration: const Duration(seconds: 2),
+    //     curve: Curves.easeInOutCubic);
 
     return Scaffold(
       //backgroundColor: theme.colorScheme.background,
@@ -958,10 +977,10 @@ class MainPageState extends State<MainPage> {
                       '$bookName: ',
                       //style: const TextStyle(fontWeight: FontWeight.bold)
                     ),
-                    BlocBuilder<ChapterBloc, ChapterState>(
+                    BlocBuilder<ChapterBloc, int>(
                       builder: (context, state) {
                         return Text(
-                          state.chapter.toString(),
+                          state.toString(),
                           //style: const TextStyle(fontWeight: FontWeight.bold)
                         );
                       },
@@ -1031,7 +1050,7 @@ class MainPageState extends State<MainPage> {
                 PointerDeviceKind.mouse,
               }),
               child: PageView.builder(
-                controller: getPageController(),
+                controller: pageController,
                 itemCount: chapterCount,
                 physics: const BouncingScrollPhysics(),
                 pageSnapping: true,
@@ -1043,8 +1062,10 @@ class MainPageState extends State<MainPage> {
                       builder: (BuildContext context,
                           AsyncSnapshot<List<Bible>> snapshot) {
                         if (snapshot.hasData) {
-                          return ListView.builder(
+                          return ScrollablePositionedList.builder(
                             itemCount: snapshot.data!.length,
+                            itemScrollController:
+                                itemScrollControllerSelector(),
                             itemBuilder: (context, index) {
                               return (Globals.dictionaryMode)
                                   ? dictionaryMode(context, snapshot, index)

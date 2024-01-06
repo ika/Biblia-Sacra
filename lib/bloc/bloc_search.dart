@@ -1,8 +1,5 @@
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-SharedPrefs sharedPrefs = SharedPrefs();
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // -------------------------------------------------
 // Event
@@ -20,32 +17,35 @@ class UpdateSearchArea extends SearchEvent {
 // -------------------------------------------------
 // State
 // -------------------------------------------------
-class SearchState {
-  int area;
-  SearchState({required this.area});
-}
+// class SearchState {
+//   int area;
+//   SearchState({required this.area});
+// }
 
-class InitiateSearchState extends SearchState {
-  InitiateSearchState({required super.area});
-}
+// class InitiateSearchState extends SearchState {
+//   InitiateSearchState({required super.area});
+// }
 
-class UpdateSearchState extends SearchState {
-  UpdateSearchState({required super.area});
-}
+// class UpdateSearchState extends SearchState {
+//   UpdateSearchState({required super.area});
+// }
 
 // -------------------------------------------------
 // Bloc
 // -------------------------------------------------
-class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  SearchBloc() : super(InitiateSearchState(area: 5)) {
-    on<InitiateSearchArea>(
-        (InitiateSearchArea event, Emitter<SearchState> emit) async {
-      emit(InitiateSearchState(area: await sharedPrefs.getSearchAreaPref()));
+class SearchBloc extends HydratedBloc<SearchEvent, int> {
+  SearchBloc() : super(5) {
+    on<InitiateSearchArea>((event, emit) {
+      emit(state);
     });
 
-    on<UpdateSearchArea>((UpdateSearchArea event, Emitter<SearchState> emit) {
-      sharedPrefs.setSearchAreaPref(event.area);
-      emit(UpdateSearchState(area: event.area));
+    on<UpdateSearchArea>((event, emit) {
+      emit(event.area);
     });
   }
+  @override
+  int? fromJson(Map<String, dynamic> json) => json['area'] as int;
+
+  @override
+  Map<String, dynamic>? toJson(int state) => {'area': state};
 }

@@ -1,8 +1,5 @@
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-SharedPrefs sharedPrefs = SharedPrefs();
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // -------------------------------------------------
 // Event
@@ -20,31 +17,36 @@ class UpdateVerse extends VerseEvent {
 // -------------------------------------------------
 // State
 // -------------------------------------------------
-class VerseState {
-  int verse;
-  VerseState({required this.verse});
-}
+// class VerseState {
+//   int verse;
+//   VerseState({required this.verse});
+// }
 
-class InitiateVerseState extends VerseState {
-  InitiateVerseState({required super.verse});
-}
+// class InitiateVerseState extends VerseState {
+//   InitiateVerseState({required super.verse});
+// }
 
-class UpdateVerseState extends VerseState {
-  UpdateVerseState({required super.verse});
-}
+// class UpdateVerseState extends VerseState {
+//   UpdateVerseState({required super.verse});
+// }
 
 // -------------------------------------------------
 // Bloc
 // -------------------------------------------------
-class VerseBloc extends Bloc<VerseEvent, VerseState> {
-  VerseBloc() : super(InitiateVerseState(verse: 1)) {
-    on<InitiateVerse>((InitiateVerse event, Emitter<VerseState> emit) async {
-        emit(InitiateVerseState(verse: await sharedPrefs.getVersePref()));
+class VerseBloc extends HydratedBloc<VerseEvent, int> {
+  VerseBloc() : super(1) {
+    on<InitiateVerse>((event, emit) async {
+      emit(state);
     });
 
-    on<UpdateVerse>((UpdateVerse event, Emitter<VerseState> emit) {
-      sharedPrefs.setVersePref(event.verse);
-      emit(UpdateVerseState(verse: event.verse));
+    on<UpdateVerse>((event, emit) {
+      emit(event.verse);
     });
   }
+
+  @override
+  int? fromJson(Map<String, dynamic> json) => json['verse'] as int;
+
+  @override
+  Map<String, dynamic>? toJson(int state) => {'verse': state};
 }

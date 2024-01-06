@@ -44,14 +44,14 @@ class _MainSearchState extends State<MainSearch> {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        bibleVersion = context.read<VersionBloc>().state.bibleVersion;
+        bibleVersion = context.read<VersionBloc>().state;
         bibleLang = Utilities(bibleVersion).getLanguage();
       },
     );
   }
 
   Future<void> runFilter(String enterdKeyWord) async {
-    int? k = context.read<SearchBloc>().state.area;
+    int? k = context.read<SearchBloc>().state;
 
     String sec = areasSections[k];
     var arr = sec.split('|');
@@ -271,10 +271,10 @@ class _MainSearchState extends State<MainSearch> {
         // title: Text("${Globals.areaSearchTitle} - ${Globals.versionAbbr}"
         //     //style: TextStyle(fontSize: Globals.appBarFontSize),
         //     ),
-        title: BlocBuilder<SearchBloc, SearchState>(
+        title: BlocBuilder<SearchBloc, int>(
           builder: (context, state) {
             return Text(
-              "${areasList[state.area]} - $versionAbbr",
+              "${areasList[state]} - $versionAbbr",
               // style: TextStyle(fontSize: Globals.appBarFontSize),
             );
           },
