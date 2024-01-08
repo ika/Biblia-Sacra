@@ -7,11 +7,11 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 @immutable
 abstract class VerseEvent {}
 
-class InitiateVerse extends VerseEvent {}
+// class InitiateVerse extends VerseEvent {}
 
 class UpdateVerse extends VerseEvent {
-  final int verse;
   UpdateVerse({required this.verse});
+  final int verse;
 }
 
 // -------------------------------------------------

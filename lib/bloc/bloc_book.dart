@@ -7,7 +7,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 @immutable
 abstract class BookEvent {}
 
-class InitiateBook extends BookEvent {}
+// class InitiateBook extends BookEvent {}
 
 class UpdateBook extends BookEvent {
   UpdateBook({required this.book});

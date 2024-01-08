@@ -7,7 +7,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 @immutable
 abstract class ChapterEvent {}
 
-class InitiateChapter extends ChapterEvent {}
+// class InitiateChapter extends ChapterEvent {}
 
 class UpdateChapter extends ChapterEvent {
   UpdateChapter({required this.chapter});

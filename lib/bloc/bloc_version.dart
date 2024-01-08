@@ -7,11 +7,11 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 @immutable
 abstract class VersionEvent {}
 
-class InitiateVersion extends VersionEvent {}
+// class InitiateVersion extends VersionEvent {}
 
 class UpdateVersion extends VersionEvent {
-  final int bibleVersion;
   UpdateVersion({required this.bibleVersion});
+  final int bibleVersion;
 }
 
 // -------------------------------------------------

@@ -7,7 +7,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 @immutable
 abstract class ThemeEvent {}
 
-class InitiateTheme extends ThemeEvent {}
+// class InitiateTheme extends ThemeEvent {}
 
 class ChangeTheme extends ThemeEvent {
   ChangeTheme(this.isDark);

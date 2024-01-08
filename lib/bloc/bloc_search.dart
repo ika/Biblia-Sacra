@@ -7,7 +7,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 @immutable
 abstract class SearchEvent {}
 
-class InitiateSearchArea extends SearchEvent {}
+// class InitiateSearchArea extends SearchEvent {}
 
 class UpdateSearchArea extends SearchEvent {
   UpdateSearchArea({required this.area});
