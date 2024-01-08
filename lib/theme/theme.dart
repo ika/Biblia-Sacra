@@ -38,13 +38,13 @@ class ThemePageState extends State<ThemePage> {
               children: [
                 FilledButton(
                   onPressed: () =>
-                      context.read<ThemeBloc>().add(ChangeTheme(true)),
+                      context.read<ThemeBloc>().add(ChangeTheme(false)),
                   child: const Text('Light'),
                 ),
                 const SizedBox(width: 10),
                 FilledButton(
                   onPressed: () =>
-                      context.read<ThemeBloc>().add(ChangeTheme(false)),
+                      context.read<ThemeBloc>().add(ChangeTheme(true)),
                   child: const Text('Dark'),
                 ),
               ],

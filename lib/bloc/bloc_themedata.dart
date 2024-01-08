@@ -18,21 +18,21 @@ class ChangeTheme extends ThemeEvent {
 // -------------------------------------------------
 // Bloc
 // -------------------------------------------------
-class ThemeBloc extends Bloc<ThemeEvent, ThemeMode> {
-  ThemeBloc() : super(ThemeMode.light) {
+class ThemeBloc extends HydratedBloc<ThemeEvent, bool> {
+  ThemeBloc() : super(true) {
 
     // on<InitiateTheme>((event, emit) {
     //   emit(state);
     // });
 
     on<ChangeTheme>((event, emit) {
-      emit(event.isDark ? ThemeMode.light : ThemeMode.dark);
+      emit(event.isDark ? false : true);
     });
   }
 
-  // @override
-  // ThemeMode? fromJson(Map<String, dynamic> json) => json['theme'] as ThemeMode;
+  @override
+  bool? fromJson(Map<String, dynamic> json) => json['theme'] as bool;
 
-  // @override
-  // Map<String, dynamic>? toJson(ThemeMode state) => {'theme': state};
+  @override
+  Map<String, dynamic>? toJson(bool state) => {'theme': state};
 }

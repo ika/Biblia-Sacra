@@ -55,14 +55,14 @@ class _BibleAppState extends State<BibleApp> {
         BlocProvider<VerseBloc>(
           create: (context) => VerseBloc()),
       ],
-      child: BlocBuilder<ThemeBloc, ThemeMode>(
+      child: BlocBuilder<ThemeBloc, bool>(
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Bible App',
             theme: lightTheme,
             darkTheme: darkTheme,
-            themeMode: state,
+            themeMode: state ? ThemeMode.light : ThemeMode.dark,
             home: const MainPage(),
           );
         },

@@ -564,7 +564,9 @@ class MainPageState extends State<MainPage>
       onTap: () {
         verseNumber = snapshot.data[index].v;
         verseText = snapshot.data[index].t;
-        animationController.forward();
+        if (!Globals.dictionaryMode) {
+          animationController.forward();
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(left: 5, bottom: 6.0),
