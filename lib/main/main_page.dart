@@ -4,13 +4,9 @@ import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
-import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
-import 'package:bibliasacra/dict/dict_page.dart';
-import 'package:bibliasacra/fonts/fonts.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
@@ -18,30 +14,26 @@ import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_contmenu.dart';
 import 'package:bibliasacra/main/main_dict.dart';
-import 'package:bibliasacra/main/main_search.dart';
 import 'package:bibliasacra/main/main_selector.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
-import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
-import 'package:bibliasacra/theme/theme.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:bibliasacra/main/main_compage.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
-import 'package:bibliasacra/vers/vers_page.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
+import 'package:bibliasacra/main/main_drawer.dart';
 
 late PageController? pageController;
 ItemScrollController? initialScrollController;
-//ItemScrollController? itemScrollController;
 
 late DbQueries _dbQueries;
 BmQueries _bmQueries = BmQueries();
@@ -53,15 +45,17 @@ String verseText = '';
 int verseNumber = 0;
 
 bool? initialPageScroll;
-bool isShowing = true;
 
 late int bibleVersion;
 late int bibleBook;
 late int bibleBookChapter;
-//late int chapterVerse;
 late String bibleLang;
 late String versionAbbr;
 late String bookName;
+
+int _selectedIndex = 0;
+
+late AnimationController animationController;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -70,10 +64,14 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => MainPageState();
 }
 
-class MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage>
+    with SingleTickerProviderStateMixin {
   @override
   initState() {
     super.initState();
+
+    animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -101,18 +99,11 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  // Future<List<Bible>> getBookText(int ch) async {
-  //   return await _dbQueries.getBookChapter(bibleBook, ch);
-  // }
-
-  // Future<List<Bible>> getVersionText(int ch) async {
-  //   //List<Bible> bible = List<Bible>.empty();
-
-  //   //Future<List<Bible>> futureBibleList = getBookText(ch);
-  //   return await _dbQueries.getBookChapter(bibleBook, ch);
-  //   // bible = await futureBibleList;
-  //   // return bible;
-  // }
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   ItemScrollController? itemScrollControllerSelector() {
     if (initialPageScroll!) {
@@ -168,53 +159,6 @@ class MainPageState extends State<MainPage> {
       ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
     });
   }
-
-  // void copyVerseWrapper(BuildContext context, snapshot, index) {
-  //   var arr = List.filled(2, '');
-  //   arr[0] = "Copy";
-  //   arr[1] = "Do you want to copy this verse?";
-
-  //   confirmDialog(arr).then(
-  //     (value) {
-  //       if (value) {
-  //         final list = <String>[
-  //           snapshot.data[index].t,
-  //           ' ',
-  //           Globals.versionAbbr,
-  //           ' ',
-  //           Globals.bookName,
-  //           ' ',
-  //           snapshot.data[index].c.toString(),
-  //           ':',
-  //           snapshot.data[index].v.toString()
-  //         ];
-
-  //         final sb = StringBuffer();
-  //         sb.writeAll(list);
-
-  //         Clipboard.setData(
-  //           ClipboardData(text: sb.toString()),
-  //         ).then((_) {
-  //           ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
-  //         });
-  //       }
-  //     }, //_deleteWrapper,
-  //   );
-  // }
-
-  // exitWrapper(BuildContext context) {
-  //   var arr = List.filled(4, '');
-  //   arr[0] = "Exit";
-  //   arr[1] = "Are you sure you want to exit?";
-
-  //   confirmDialog(arr).then(
-  //     (value) {
-  //       if (value) {
-  //         SystemNavigator.pop();
-  //       }
-  //     },
-  //   );
-  // }
 
   void deleteHighLightWrapper(int bid) {
     var arr = List.filled(4, '');
@@ -340,9 +284,6 @@ class MainPageState extends State<MainPage> {
         name: bookName,
         bid: bid);
     _ntQueries.insertNote(model).then((noteid) {
-      // setState(() {
-      //   _lists.updateActiveLists('notes', Globals.bibleVersion);
-      // });
       model.id = noteid;
       gotoEditNote(model);
     });
@@ -479,22 +420,6 @@ class MainPageState extends State<MainPage> {
     }
   }
 
-  Widget normalModeContainer(snapshot, index) {
-    return Container(
-      margin: const EdgeInsets.only(left: 5, bottom: 6.0),
-      child: Row(
-        children: [
-          Flexible(
-            fit: FlexFit.loose,
-            child: normalVerseText(snapshot, index),
-          ),
-          showNoteIcon(snapshot, index),
-          showBookMarkIcon(snapshot, index)
-        ],
-      ),
-    );
-  }
-
   SizedBox showNoteIcon(snapshot, index) {
     if (getNotesMatch(snapshot.data[index].id)) {
       return SizedBox(
@@ -537,359 +462,143 @@ class MainPageState extends State<MainPage> {
     }
   }
 
+  // Widget normalMode(BuildContext context, snapshot, index) {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       verseNumber = snapshot.data[index].v;
+  //       verseText = snapshot.data[index].t;
+  //       contextMenuDialog(context).then(
+  //         (value) {
+  //           switch (value) {
+  //             case 0: // compare
+  //               final model = Bible(
+  //                   id: 0,
+  //                   b: snapshot.data[index].b,
+  //                   c: snapshot.data[index].c,
+  //                   v: snapshot.data[index].v,
+  //                   t: '');
+
+  //               (Globals.activeVersionCount! > 1)
+  //                   ? mainCompareDialog(context, model)
+  //                   : ScaffoldMessenger.of(context)
+  //                       .showSnackBar(moreVersionsSnackBar);
+
+  //               break;
+
+  //             case 1: // bookmarks
+
+  //               int bid = snapshot.data[index].id;
+
+  //               (!getBookMarksMatch(bid))
+  //                   ? insertBookMark(bid)
+  //                   : deleteBookMarkWrapper(bid);
+
+  //               break;
+
+  //             case 2: // highlight
+
+  //               int bid = snapshot.data[index].id;
+
+  //               (!getHighLightMatch(bid))
+  //                   ? insertHighLight(bid)
+  //                   : deleteHighLightWrapper(bid);
+
+  //               break;
+
+  //             case 3: // notes
+
+  //               int bid = snapshot.data[index].id;
+
+  //               if (getNotesMatch(bid)) {
+  //                 getNoteModel(bid).then((model) {
+  //                   gotoEditNote(model);
+  //                 });
+  //               } else {
+  //                 saveNote(bid);
+  //               }
+
+  //               break;
+
+  //             case 4: // copy
+
+  //               copyVerseWrapper(context, snapshot, index);
+
+  //               break;
+
+  //             default:
+  //               break;
+  //           }
+  //         },
+  //       );
+  //     },
+  //     child: Container(
+  //       margin: const EdgeInsets.only(left: 5, bottom: 6.0),
+  //       child: Row(
+  //         children: [
+  //           Flexible(
+  //             fit: FlexFit.loose,
+  //             child: (snapshot.data[index].v != 0)
+  //                 ? Text(
+  //                     "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+  //                     style: TextStyle(
+  //                         //fontSize: primaryTextSize,
+  //                         backgroundColor:
+  //                             (getHighLightMatch(snapshot.data[index].id))
+  //                                 ? Theme.of(context)
+  //                                     .colorScheme
+  //                                     .primaryContainer
+  //                                 : null),
+  //                   )
+  //                 : const Text(''),
+  //           ),
+  //           showNoteIcon(snapshot, index),
+  //           showBookMarkIcon(snapshot, index)
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Widget normalMode(BuildContext context, snapshot, index) {
     return GestureDetector(
       onTap: () {
         verseNumber = snapshot.data[index].v;
         verseText = snapshot.data[index].t;
-        contextMenuDialog(context).then(
-          (value) {
-            switch (value) {
-              case 0: // compare
-                final model = Bible(
-                    id: 0,
-                    b: snapshot.data[index].b,
-                    c: snapshot.data[index].c,
-                    v: snapshot.data[index].v,
-                    t: '');
-
-                (Globals.activeVersionCount! > 1)
-                    ? mainCompareDialog(context, model)
-                    : ScaffoldMessenger.of(context)
-                        .showSnackBar(moreVersionsSnackBar);
-
-                break;
-
-              case 1: // bookmarks
-
-                int bid = snapshot.data[index].id;
-
-                (!getBookMarksMatch(bid))
-                    ? insertBookMark(bid)
-                    : deleteBookMarkWrapper(bid);
-
-                break;
-
-              case 2: // highlight
-
-                int bid = snapshot.data[index].id;
-
-                (!getHighLightMatch(bid))
-                    ? insertHighLight(bid)
-                    : deleteHighLightWrapper(bid);
-
-                break;
-
-              case 3: // notes
-
-                int bid = snapshot.data[index].id;
-
-                if (getNotesMatch(bid)) {
-                  getNoteModel(bid).then((model) {
-                    gotoEditNote(model);
-                  });
-                } else {
-                  saveNote(bid);
-                }
-
-                break;
-
-              case 4: // copy
-
-                copyVerseWrapper(context, snapshot, index);
-
-                break;
-
-              default:
-                break;
-            }
-          },
-        );
+        animationController.forward();
       },
-      child: normalModeContainer(snapshot, index),
+      child: Container(
+        margin: const EdgeInsets.only(left: 5, bottom: 6.0),
+        child: Row(
+          children: [
+            Flexible(
+              fit: FlexFit.loose,
+              child: (snapshot.data[index].v != 0)
+                  ? Text(
+                      "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+                      style: TextStyle(
+                          //fontSize: primaryTextSize,
+                          backgroundColor:
+                              (getHighLightMatch(snapshot.data[index].id))
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer
+                                  : null),
+                    )
+                  : const Text(''),
+            ),
+            showNoteIcon(snapshot, index),
+            showBookMarkIcon(snapshot, index)
+          ],
+        ),
+      ),
     );
   }
-
-  // Widget showListView(BuildContext context, int ch) {
-  //   return Container(
-  //     padding: const EdgeInsets.all(15.0),
-  //     child: FutureBuilder<List<Bible>>(
-  //       future: getVersionText(ch),
-  //       builder: (context, AsyncSnapshot<List<Bible>> snapshot) {
-  //         if (snapshot.hasData) {
-  //           return ScrollablePositionedList.builder(
-  //             itemCount: snapshot.data!.length,
-  //             itemScrollController: itemScrollControllerSelector(),
-  //             itemBuilder: (context, index) {
-  //               return (Globals.dictionaryMode)
-  //                   ? dictionaryMode(context, snapshot, index)
-  //                   : normalMode(context, snapshot, index);
-  //             },
-  //           );
-  //         }
-  //         return const Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
-  // List<Widget> chapterCountFunc(BuildContext context, int chapterCount) {
-  //   //debugPrint("CHAPTER $chapterCount");
-  //   List<Widget> pagesList = [];
-  //   for (int ch = 1; ch <= chapterCount; ch++) {
-  //     pagesList.add(showListView(context, ch));
-  //   }
-  //   return pagesList;
-  // }
 
   void showVersionsDialog(BuildContext context) {
     (Globals.activeVersionCount! > 1)
         ? versionsDialog(context, 'main')
         : ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
   }
-
-  Widget showDrawer(BuildContext context) {
-    return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
-      child: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          DrawerHeader(
-            //decoration: const BoxDecoration(
-            //color: Theme.of(context).colorScheme.secondaryContainer,
-            // image: DecorationImage(
-            //   fit: BoxFit.fill,
-            //   image: AssetImage('path/to/header_background.png'),
-            // ),
-            // ),
-            child: Stack(
-              children: [
-                Positioned(
-                  bottom: 20.0,
-                  //left: 16.0,
-                  child: Text(
-                    "Biblia Sacra",
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 32.0),
-                    //fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Bookmarks',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => const BookMarksPage(),
-              );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.push(context, route);
-                },
-              );
-            },
-          ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Highlights',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => const HighLightsPage(),
-              );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.push(context, route);
-                },
-              );
-            },
-          ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Notes',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => const NotesPage(),
-              );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.push(context, route);
-                },
-              );
-            },
-          ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Latin word list',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => const DictSearch(),
-              );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.push(context, route);
-                },
-              );
-            },
-          ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Search',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => const MainSearch(),
-              );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.push(context, route);
-                },
-              );
-            },
-          ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Bibles',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => const VersionsPage(),
-              );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.push(context, route);
-                },
-              );
-            },
-          ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Fonts',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => const FontsPage(),
-              );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.push(context, route);
-                },
-              );
-            },
-          ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Theme',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => const ThemePage(),
-              );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.push(context, route);
-                },
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  // void changeNotice(BuildContext context) {
-  //   Future.delayed(
-  //     Duration(milliseconds: Globals.navigatorDelay),
-  //     () {
-  //       (Globals.dictionaryMode)
-  //           ? ScaffoldMessenger.of(context).showSnackBar(dicModeOnSnackBar)
-  //           : ScaffoldMessenger.of(context).showSnackBar(dicModeOffSnackBar);
-  //     },
-  //   );
-  // }
-
-  // Padding showIconButton(BuildContext context) {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(right: 20),
-  //     child: IconButton(
-  //       color: (isShowing) ? Colors.white : Colors.transparent,
-  //       icon: const Icon(Icons.change_circle),
-  //       iconSize: 30,
-  //       onPressed: () {
-  //         Globals.dictionaryMode = (Globals.dictionaryMode) ? false : true;
-  //         changeNotice(context);
-  //         setState(() {});
-  //       },
-  //     ),
-  //   );
-  // }
 
   Widget showModes() {
     if (bibleLang == 'lat') {
@@ -914,20 +623,95 @@ class MainPageState extends State<MainPage> {
     pageController = PageController(initialPage: bibleBookChapter - 1);
   }
 
-  Future<void> getBookSharedPref() async {
-    SharedPrefs sharedPrefs = SharedPrefs();
-    sharedPrefs.getBookPref().then((value) {
-      debugPrint("getBookPref $value");
-    });
-  }
+  // Future<void> getBookSharedPref() async {
+  //   SharedPrefs sharedPrefs = SharedPrefs();
+  //   sharedPrefs.getBookPref().then((value) {
+  //     debugPrint("getBookPref $value");
+  //   });
+  // }
+
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
+
+  //BottomNavigationBar bottomNavigationBar() {
+  // return BottomNavigationBar(
+  //   items: const <BottomNavigationBarItem>[
+  //     //New
+  //     BottomNavigationBarItem(
+  //       icon: Icon(Icons.compare),
+  //       label: 'Compare',
+  //     ),
+  //     BottomNavigationBarItem(
+  //       icon: Icon(Icons.bookmark),
+  //       label: 'Bookmark',
+  //     ),
+  //     BottomNavigationBarItem(
+  //       icon: Icon(Icons.highlight),
+  //       label: 'Highlight',
+  //     ),
+  //     BottomNavigationBarItem(
+  //       icon: Icon(Icons.note),
+  //       label: 'Notes',
+  //     ),
+  //     BottomNavigationBarItem(
+  //       icon: Icon(Icons.copy),
+  //       label: 'Copy',
+  //     ),
+  //   ],
+  //   currentIndex: _selectedIndex,
+  //   selectedItemColor: Colors.amber[800],
+  //   //onTap: _onItemTapped,
+  //   onTap: (int index) {
+  //     setState(() {
+  //       _selectedIndex = index;
+  //     });
+  //     switch (index) {
+  //       case 0:
+  //         debugPrint("one");
+  //         break;
+  //       case 1:
+  //         debugPrint("two");
+  //         break;
+  //       case 2:
+  //         debugPrint("three");
+  //         break;
+  //       case 3:
+  //         debugPrint("four");
+  //         break;
+  //       case 4:
+  //         copyVerseWrapper(context, snapshot, index);
+  //         break;
+  //     }
+  //   },
+  // );
+  //}
+
+  // static const List<int> _pages = [
+  //   // Icon(
+  //   //   Icons.call,
+  //   //   size: 150,
+  //   // ),
+  //   // Icon(
+  //   //   Icons.camera,
+  //   //   size: 150,
+  //   // ),
+  //   // Icon(
+  //   //   Icons.chat,
+  //   //   size: 150,
+  //   // ),
+  //   1, 2, 3, 4, 5
+  // ];
 
   @override
   Widget build(BuildContext context) {
     initialPageScroll = true;
 
     bibleBook = context.read<BookBloc>().state;
-    debugPrint("BIBLEBOOK $bibleBook");
-    getBookSharedPref();
+    //debugPrint("BIBLEBOOK $bibleBook");
+    //getBookSharedPref();
 
     bibleVersion = context.read<VersionBloc>().state;
 
@@ -939,10 +723,7 @@ class MainPageState extends State<MainPage> {
 
     _dbQueries = DbQueries(bibleVersion);
 
-    // itemScrollController.scrollTo(
-    //     index: 5,
-    //     duration: const Duration(seconds: 2),
-    //     curve: Curves.easeInOutCubic);
+    //debugPrint("PAGE ${_pages.elementAt(_selectedIndex)}");
 
     return Scaffold(
       //backgroundColor: theme.colorScheme.background,
@@ -1010,35 +791,6 @@ class MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      // body: FutureBuilder<int>(
-      //   future: _dbQueries.getChapterCount(bibleBook),
-      //   builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-      //     if (snapshot.hasData) {
-      //       int chapterCount = snapshot.data!.toInt();
-      //       return ScrollConfiguration(
-      //         behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-      //           PointerDeviceKind.touch,
-      //           PointerDeviceKind.mouse,
-      //         }),
-      //         child: PageView(
-      //           controller: getPageController(), //pageController,
-      //           scrollDirection: Axis.horizontal,
-      //           pageSnapping: true,
-      //           physics: const BouncingScrollPhysics(),
-      //           children: chapterCountFunc(context, chapterCount),
-      //           onPageChanged: (index) {
-      //             context
-      //                 .read<ChapterBloc>()
-      //                 .add(UpdateChapter(chapter: index + 1));
-      //             // move to top of next chapter
-      //             context.read<VerseBloc>().add(UpdateVerse(verse: 1));
-      //           },
-      //         ),
-      //       );
-      //     }
-      //     return const Center(child: CircularProgressIndicator());
-      //   },
-      // ),
       body: FutureBuilder<int>(
         future: _dbQueries.getChapterCount(bibleBook),
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
@@ -1081,12 +833,11 @@ class MainPageState extends State<MainPage> {
                   );
                 },
                 onPageChanged: (index) {
+                  // move to top of next chapter
                   context
                       .read<ChapterBloc>()
                       .add(UpdateChapter(chapter: index + 1));
-                  // move to top of next chapter
                   context.read<VerseBloc>().add(UpdateVerse(verse: 1));
-                  //debugPrint("ONCHANGED $index");
                 },
               ),
             );
@@ -1095,6 +846,92 @@ class MainPageState extends State<MainPage> {
         },
       ),
       floatingActionButton: showModes(),
+      bottomNavigationBar: SizeTransition(
+        sizeFactor: animationController,
+        axisAlignment: -1.0,
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          //backgroundColor: Colors.blueAccent,
+          //elevation: 0,
+          //iconSize: 40,
+          //selectedFontSize: 20,
+          //selectedIconTheme: const IconThemeData(color: Colors.redAccent, size: 40),
+          selectedItemColor: Theme.of(context).colorScheme.primaryContainer,
+          //selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          //  unselectedIconTheme: IconThemeData(
+          //   color: Colors.deepOrangeAccent,
+          // ),
+          // unselectedItemColor: Colors.deepOrangeAccent,
+          // showSelectedLabels: false,
+          // showUnselectedLabels: false,
+          items: const <BottomNavigationBarItem>[
+            //New
+            BottomNavigationBarItem(
+              icon: Icon(Icons.compare),
+              label: 'Compare',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bookmark),
+              label: 'Bookmark',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.highlight),
+              label: 'Highlight',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.note),
+              label: 'Notes',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.copy),
+              label: 'Copy',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          //onTap: _onItemTapped,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+            switch (index) {
+              case 0:
+                // debugPrint("compare");
+                final model = Bible(
+                    id: 0,
+                    b: bibleBook,
+                    c: context.read<ChapterBloc>().state,
+                    v: verseNumber,
+                    t: '');
+
+                debugPrint(model.v.toString());
+                animationController.reverse();
+
+                // (Globals.activeVersionCount! > 1)
+                //     ? mainCompareDialog(context, model)
+                //     : ScaffoldMessenger.of(context)
+                //         .showSnackBar(moreVersionsSnackBar);
+
+                break;
+              case 1:
+                debugPrint("bookmark");
+                animationController.reverse();
+                break;
+              case 2:
+                debugPrint("highlight");
+                animationController.reverse();
+                break;
+              case 3:
+                debugPrint("note");
+                animationController.reverse();
+                break;
+              case 4:
+                debugPrint("copy");
+                animationController.reverse();
+                break;
+            }
+          },
+        ),
+      ),
     );
   }
 }
