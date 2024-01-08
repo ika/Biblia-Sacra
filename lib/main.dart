@@ -3,6 +3,7 @@ import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bloc/bloc_themedata.dart';
+import 'package:bibliasacra/theme/apptheme.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_search.dart';
@@ -11,8 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-
-// https://rydmike.com/flexcolorscheme/themesplayground-latest/
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,30 +43,26 @@ class _BibleAppState extends State<BibleApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeBloc>(
-          create: (context) => ThemeBloc()..add(InitiateTheme()),
-        ),
+          create: (context) => ThemeBloc()),
         BlocProvider<SearchBloc>(
-          create: (context) => SearchBloc()..add(InitiateSearchArea()),
-        ),
+          create: (context) => SearchBloc()),
         BlocProvider<VersionBloc>(
-          create: (context) => VersionBloc()..add(InitiateVersion()),
-        ),
+          create: (context) => VersionBloc()),
         BlocProvider<BookBloc>(
-          create: (context) => BookBloc()..add(InitiateBook()),
-        ),
+          create: (context) => BookBloc()),
         BlocProvider<ChapterBloc>(
-          create: (context) => ChapterBloc()..add(InitiateChapter()),
-        ),
+          create: (context) => ChapterBloc()),
         BlocProvider<VerseBloc>(
-          create: (context) => VerseBloc()..add(InitiateVerse()),
-        ),
+          create: (context) => VerseBloc()),
       ],
-      child: BlocBuilder<ThemeBloc, ThemeState>(
+      child: BlocBuilder<ThemeBloc, ThemeMode>(
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Bible App',
-            theme: state.themeData,
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: state,
             home: const MainPage(),
           );
         },

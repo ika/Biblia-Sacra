@@ -103,66 +103,66 @@ class _MainSearchState extends State<MainSearch> {
   }
 
   //Widget searchWidget() {
-    // return Container(
-    //   padding: const EdgeInsets.all(20.0),
-    //   child: Column(
-    //     children: [
-    //       TextFormField(
-    //         initialValue: '',
-    //         maxLength: 40,
-    //         maxLines: 1,
-    //         autofocus: false,
-    //         onTap: () {
-    //           filteredSearch = Future.value([]);
-    //         },
-    //         onChanged: (value) {
-    //           _contents = value;
-    //         },
-    //         decoration: InputDecoration(
-    //           labelText: 'Search',
-    //           //labelStyle: TextStyle(fontSize: primaryTextSize),
-    //           suffixIcon: IconButton(
-    //             icon: const Icon(Icons.search),
-    //             onPressed: () {
-    //               FocusScope.of(context).unfocus();
-    //               Future.delayed(
-    //                 Duration(milliseconds: Globals.navigatorDelay),
-    //                 () {
-    //                   _contents.isEmpty
-    //                       ? emptyInputDialog(context)
-    //                       : runFilter(_contents);
-    //                 },
-    //               );
-    //             },
-    //           ),
-    //         ),
-    //       ),
-    //       // const SizedBox(
-    //       //   height: 20,
-    //       // ),
-    //       Expanded(
-    //         child: FutureBuilder<List<Bible>>(
-    //           future: filteredSearch,
-    //           builder: (BuildContext context, snapshot) {
-    //             if (snapshot.hasData) {
-    //               return ListView.separated(
-    //                 itemCount: snapshot.data!.length,
-    //                 itemBuilder: (context, index) {
-    //                   return listTileMethod(snapshot, index);
-    //                 },
-    //                 separatorBuilder: (BuildContext context, int index) =>
-    //                     const Divider(),
-    //               );
-    //             }
-    //             return const Center(
-    //               child: CircularProgressIndicator(),
-    //             );
-    //           },
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
+  // return Container(
+  //   padding: const EdgeInsets.all(20.0),
+  //   child: Column(
+  //     children: [
+  //       TextFormField(
+  //         initialValue: '',
+  //         maxLength: 40,
+  //         maxLines: 1,
+  //         autofocus: false,
+  //         onTap: () {
+  //           filteredSearch = Future.value([]);
+  //         },
+  //         onChanged: (value) {
+  //           _contents = value;
+  //         },
+  //         decoration: InputDecoration(
+  //           labelText: 'Search',
+  //           //labelStyle: TextStyle(fontSize: primaryTextSize),
+  //           suffixIcon: IconButton(
+  //             icon: const Icon(Icons.search),
+  //             onPressed: () {
+  //               FocusScope.of(context).unfocus();
+  //               Future.delayed(
+  //                 Duration(milliseconds: Globals.navigatorDelay),
+  //                 () {
+  //                   _contents.isEmpty
+  //                       ? emptyInputDialog(context)
+  //                       : runFilter(_contents);
+  //                 },
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //       ),
+  //       // const SizedBox(
+  //       //   height: 20,
+  //       // ),
+  //       Expanded(
+  //         child: FutureBuilder<List<Bible>>(
+  //           future: filteredSearch,
+  //           builder: (BuildContext context, snapshot) {
+  //             if (snapshot.hasData) {
+  //               return ListView.separated(
+  //                 itemCount: snapshot.data!.length,
+  //                 itemBuilder: (context, index) {
+  //                   return listTileMethod(snapshot, index);
+  //                 },
+  //                 separatorBuilder: (BuildContext context, int index) =>
+  //                     const Divider(),
+  //               );
+  //             }
+  //             return const Center(
+  //               child: CircularProgressIndicator(),
+  //             );
+  //           },
+  //         ),
+  //       ),
+  //     ],
+  //   ),
+  // );
   //}
 
   RichText highLiteSearchWord(String t, String m) {
@@ -174,20 +174,19 @@ class _MainSearchState extends State<MainSearch> {
         text: TextSpan(
           text: t.substring(0, idx),
           style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           children: [
             TextSpan(
               text: t.substring(idx, idx + m.length),
               style: TextStyle(
-                backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
               ),
             ),
             TextSpan(
               text: t.substring(idx + m.length),
-              style: TextStyle(
-              color: Theme.of(context).colorScheme.primary
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
           ],
         ),

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 Widget showDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       child: ListView(
         padding: const EdgeInsets.all(20),
         children: [

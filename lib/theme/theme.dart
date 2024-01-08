@@ -1,6 +1,6 @@
+import 'package:bibliasacra/bloc/bloc_themedata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bibliasacra/bloc/bloc_themedata.dart';
 
 class ThemePage extends StatefulWidget {
   const ThemePage({super.key});
@@ -16,6 +16,14 @@ class ThemePageState extends State<ThemePage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Theme Switcher'),
+        // actions: [
+        //   Switch(
+        //     value: (context.read<ThemeBloc>()) ? true : false,
+        //     onChanged: (bool value) {
+        //       context.read<ThemeBloc>().add(ChangeTheme(value));
+        //     },
+        //   ),
+        // ],
       ),
       body: Center(
         child: Column(
@@ -29,16 +37,14 @@ class ThemePageState extends State<ThemePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(
-                  onPressed: () => context
-                      .read<ThemeBloc>()
-                      .add(ChangeTheme(ThemeData.light())),
+                  onPressed: () =>
+                      context.read<ThemeBloc>().add(ChangeTheme(true)),
                   child: const Text('Light'),
                 ),
                 const SizedBox(width: 10),
                 FilledButton(
-                  onPressed: () => context
-                      .read<ThemeBloc>()
-                      .add(ChangeTheme(ThemeData.dark())),
+                  onPressed: () =>
+                      context.read<ThemeBloc>().add(ChangeTheme(false)),
                   child: const Text('Dark'),
                 ),
               ],

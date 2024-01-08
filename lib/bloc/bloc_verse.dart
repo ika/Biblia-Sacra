@@ -35,9 +35,9 @@ class UpdateVerse extends VerseEvent {
 // -------------------------------------------------
 class VerseBloc extends HydratedBloc<VerseEvent, int> {
   VerseBloc() : super(1) {
-    on<InitiateVerse>((event, emit) async {
-      emit(state);
-    });
+    // on<InitiateVerse>((event, emit) async {
+    //   emit(state);
+    // });
 
     on<UpdateVerse>((event, emit) {
       emit(event.verse);

@@ -35,9 +35,9 @@ class UpdateVersion extends VersionEvent {
 // -------------------------------------------------
 class VersionBloc extends HydratedBloc<VersionEvent, int> {
   VersionBloc() : super(1) {
-    on<InitiateVersion>((event, emit) async {
-      emit(state);
-    });
+    // on<InitiateVersion>((event, emit) async {
+    //   emit(state);
+    // });
 
     on<UpdateVersion>((event, emit) {
       emit(event.bibleVersion);

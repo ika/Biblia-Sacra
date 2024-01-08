@@ -729,7 +729,7 @@ class MainPageState extends State<MainPage>
       //backgroundColor: theme.colorScheme.background,
       drawer: showDrawer(context),
       appBar: AppBar(
-        // backgroundColor: theme.colorScheme.primary,
+        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           // (Globals.bibleLang == 'lat')
           //     ? showIconButton(context)
