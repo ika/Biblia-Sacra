@@ -47,56 +47,6 @@ class VkProvider {
     return await databaseFactory.openDatabase(path);
   }
 
-  // Future<Database> initDB() async {
-  //   io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-  //   String path = p.join(documentsDirectory.path, dataBaseName);
-
-  //   //   var databaseFactory = databaseFactoryFfi;
-  //   //  var db = await databaseFactory.openDatabase(path);
-
-  //   var db = await openDatabase(path);
-
-  //   await db.execute('''
-  //               CREATE TABLE IF NOT EXISTS $tableName(
-  //                   id INTEGER PRIMARY KEY,
-  //                   number INTEGER DEFAULT 0,
-  //                   active INTEGER DEFAULT 0,
-  //                   abbr TEXT DEFAULT '',
-  //                   lang TEXT DEFAULT '',
-  //                   name TEXT DEFAULT ''
-  //               )
-  //           ''');
-  //   await db.execute(
-  //       '''INSERT INTO $tableName ('number', 'active', 'abbr', 'lang', 'name')
-  //           values (?, ?, ?, ?, ?)''',
-  //       [1, 1, 'KJV', 'eng', 'King James Version']);
-  //   await db.execute(
-  //       '''INSERT INTO $tableName ('number', 'active', 'abbr', 'lang', 'name')
-  //           values (?, ?, ?, ?, ?)''',
-  //       [2, 1, 'CLVUL', 'lat', 'Vulgata Clementina']);
-  //   await db.execute(
-  //       '''INSERT INTO $tableName ('number', 'active', 'abbr', 'lang', 'name')
-  //           values (?, ?, ?, ?, ?)''',
-  //       [3, 1, 'CPDV', 'eng', 'Catholic Pub Domain version']);
-  //   await db.execute(
-  //       '''INSERT INTO $tableName ('number', 'active', 'abbr', 'lang', 'name')
-  //           values (?, ?, ?, ?, ?)''', [4, 1, 'NVUL', 'lat', 'Nova Vulgata']);
-  //   await db.execute(
-  //       '''INSERT INTO $tableName ('number', 'active', 'abbr', 'lang', 'name')
-  //           values (?, ?, ?, ?, ?)''',
-  //       [7, 1, 'UKJV', 'eng', 'Updated King James version']);
-  //   await db.execute(
-  //       '''INSERT INTO $tableName ('number', 'active', 'abbr', 'lang', 'name')
-  //           values (?, ?, ?, ?, ?)''',
-  //       [8, 1, 'WEBBE', 'eng', 'World English Bible']);
-  //   await db.execute(
-  //       '''INSERT INTO $tableName ('number', 'active', 'abbr', 'lang', 'name')
-  //           values (?, ?, ?, ?, ?)''',
-  //       [10, 1, 'ASV', 'eng', 'American Standard Version']);
-
-  //   return db;
-  // }
-
   Future close() async {
     return _database!.close();
   }

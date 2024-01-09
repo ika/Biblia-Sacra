@@ -42,18 +42,12 @@ class _BibleAppState extends State<BibleApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ThemeBloc>(
-          create: (context) => ThemeBloc()),
-        BlocProvider<SearchBloc>(
-          create: (context) => SearchBloc()),
-        BlocProvider<VersionBloc>(
-          create: (context) => VersionBloc()),
-        BlocProvider<BookBloc>(
-          create: (context) => BookBloc()),
-        BlocProvider<ChapterBloc>(
-          create: (context) => ChapterBloc()),
-        BlocProvider<VerseBloc>(
-          create: (context) => VerseBloc()),
+        BlocProvider<ThemeBloc>(create: (context) => ThemeBloc()),
+        BlocProvider<SearchBloc>(create: (context) => SearchBloc()),
+        BlocProvider<VersionBloc>(create: (context) => VersionBloc()),
+        BlocProvider<BookBloc>(create: (context) => BookBloc()),
+        BlocProvider<ChapterBloc>(create: (context) => ChapterBloc()),
+        BlocProvider<VerseBloc>(create: (context) => VerseBloc()),
       ],
       child: BlocBuilder<ThemeBloc, bool>(
         builder: (context, state) {

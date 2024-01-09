@@ -109,7 +109,7 @@ class AppBarVersionsPage extends State<AppBarVersions> {
     versionAbbr = Utilities(bibleVersion).getVersionAbbr();
 
     return FutureBuilder<List<VkModel>>(
-      future: VkQueries(bibleVersion).getActiveVersions(),
+      future: VkQueries().getActiveVersions(bibleVersion),
       builder: (BuildContext context, AsyncSnapshot<List<VkModel>> snapshot) {
         int len = (snapshot.data != null) ? snapshot.data!.length : 0;
         return ListView.separated(

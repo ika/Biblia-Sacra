@@ -9,9 +9,8 @@ VkProvider? _vkProvider;
 
 class VkQueries {
   final String tableName = 'version_key';
-  final int bibleVersion;
 
-  VkQueries(this.bibleVersion) {
+  VkQueries() {
     _vkProvider = VkProvider();
   }
 
@@ -28,7 +27,7 @@ class VkQueries {
         .rawUpdate('''UPDATE $tableName SET active=? WHERE number=?''', [a, i]);
   }
 
-  Future<List<VkModel>> getAllVersions() async {
+  Future<List<VkModel>> getAllVersions(int bibleVersion) async {
     final db = await _vkProvider!.database;
 
     var res = await db.rawQuery(
@@ -51,7 +50,7 @@ class VkQueries {
     return values;
   }
 
-  Future<List<VkModel>> getActiveVersions() async {
+  Future<List<VkModel>> getActiveVersions(int bibleVersion) async {
     final db = await _vkProvider!.database;
 
     var res = await db.rawQuery(

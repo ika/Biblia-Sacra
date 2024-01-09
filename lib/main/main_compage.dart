@@ -1,5 +1,4 @@
 import 'package:bibliasacra/bloc/bloc_book.dart';
-import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
@@ -10,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Compare versions
 
 late int bibleBook;
-late int bibleVersion;
+//late int bibleVersion;
 
 class CompareModel {
   String a; // abbr
@@ -31,10 +30,13 @@ class Compare {
   Future<List<CompareModel>> activeVersions(Bible model) async {
     List<CompareModel> compareList = [];
 
-    List activeVersions = await VkQueries(bibleVersion).getActiveVersionNumbers();
+    List activeVersions =
+        await VkQueries().getActiveVersionNumbers();
+
+    //debugPrint("ACTIVE VERSIONS ${activeVersions.length}");
 
     for (int x = 0; x < activeVersions.length; x++) {
-      int bibleVersion = activeVersions[x]['number'];
+      int bibleVer = activeVersions[x]['number'];
 
       String bookName =
           bookLists.getBookByNumber(bibleBook, activeVersions[x]['lang']);
@@ -42,7 +44,7 @@ class Compare {
       String abbr = activeVersions[x]['abbr'];
 
       List<Bible> verse =
-          await DbQueries(bibleVersion).getVerse(model.b!, model.c!, model.v!);
+          await DbQueries(bibleVer).getVerse(model.b!, model.c!, model.v!);
 
       abbr = (abbr.isNotEmpty) ? abbr : 'Unknown';
       bookName = (bookName.isNotEmpty) ? bookName : 'Unknown';
@@ -71,7 +73,7 @@ Future<dynamic> mainCompareDialog(BuildContext context, Bible bible) {
             height: 300,
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -104,12 +106,14 @@ class _ComparePage extends State<ComparePage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        bibleBook = context.read<BookBloc>().state;
-        bibleVersion = context.read<VersionBloc>().state;
-      },
-    );
+    bibleBook = context.read<BookBloc>().state;
+
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) {
+    //     bibleBook = context.read<BookBloc>().state;
+    //     //bibleVersion = context.read<VersionBloc>().state;
+    //   },
+    // );
   }
 
   @override

@@ -42,7 +42,7 @@ class VersionsPageState extends State<VersionsPage> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: FutureBuilder<List<VkModel>>(
-        future: vkQueries.getAllVersions(),
+        future: vkQueries.getAllVersions(bibleVersion),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.separated(
@@ -85,7 +85,7 @@ class VersionsPageState extends State<VersionsPage> {
   @override
   Widget build(BuildContext context) {
     bibleVersion = context.read<VersionBloc>().state;
-    vkQueries = VkQueries(bibleVersion);
+    vkQueries = VkQueries();
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
