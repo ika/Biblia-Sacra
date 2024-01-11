@@ -1,4 +1,5 @@
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -56,25 +57,25 @@ class _EditNotePageState extends State<EditNotePage> {
     }
   }
 
-  backButton(BuildContext context) {
-    Route route = MaterialPageRoute(
-      builder: (context) => const MainPage(),
-    );
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.push(context, route);
-      },
-    );
-  }
+  // backButton(BuildContext context) {
+  //   Route route = MaterialPageRoute(
+  //     builder: (context) => const MainPage(),
+  //   );
+  //   Future.delayed(
+  //     Duration(milliseconds: Globals.navigatorDelay),
+  //     () {
+  //       Navigator.push(context, route);
+  //     },
+  //   );
+  // }
 
-  onGoToVerseTap(WriteVarsModel model) {
-    // _lists.updateActiveLists('all', model.version!);
-    //Globals.bibleLang = model.lang!;
-    writeVars(model).then((value) {
-      backButton(context);
-    });
-  }
+  // onGoToVerseTap(WriteVarsModel model) {
+  //   // _lists.updateActiveLists('all', model.version!);
+  //   //Globals.bibleLang = model.lang!;
+  //   writeVars(model).then((value) {
+  //     backButton(context);
+  //   });
+  // }
 
   Widget showGotoVerse() {
     if (widget.model.bid! > 0 && widget.mode.isNotEmpty) {
@@ -87,15 +88,27 @@ class _EditNotePageState extends State<EditNotePage> {
               .read<ChapterBloc>()
               .add(UpdateChapter(chapter: widget.model.chapter!));
 
-          final model = WriteVarsModel(
-              lang: widget.model.lang,
-              version: widget.model.version,
-              abbr: widget.model.abbr,
-              book: widget.model.book,
-              //chapter: widget.model.chapter,
-              verse: widget.model.verse,
-              name: widget.model.name);
-          onGoToVerseTap(model);
+          context.read<VerseBloc>().add(UpdateVerse(verse: widget.model.verse!));
+
+          Route route = MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          );
+          Future.delayed(
+            Duration(milliseconds: Globals.navigatorDelay),
+            () {
+              Navigator.push(context, route);
+            },
+          );
+
+          // final model = WriteVarsModel(
+          //     lang: widget.model.lang,
+          //     version: widget.model.version,
+          //     abbr: widget.model.abbr,
+          //     book: widget.model.book,
+          //     //chapter: widget.model.chapter,
+          //     verse: widget.model.verse,
+          //     name: widget.model.name);
+          // onGoToVerseTap(model);
         },
       );
     } else {

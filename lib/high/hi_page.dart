@@ -1,12 +1,15 @@
+import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_verse.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Highlights
 
@@ -35,20 +38,20 @@ class _HighLightsPage extends State<HighLightsPage> {
     super.initState();
   }
 
-  onHilightTap(WriteVarsModel model) {
-    _lists.updateActiveLists(model.version!);
-    writeVars(model).then((value) {
-      Route route = MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      );
-      Future.delayed(
-        Duration(milliseconds: Globals.navigatorDelay),
-        () {
-          Navigator.push(context, route);
-        },
-      );
-    });
-  }
+  // onHilightTap(WriteVarsModel model) {
+  //   _lists.updateActiveLists(model.version!);
+  //   writeVars(model).then((value) {
+  //     Route route = MaterialPageRoute(
+  //       builder: (context) => const MainPage(),
+  //     );
+  //     Future.delayed(
+  //       Duration(milliseconds: Globals.navigatorDelay),
+  //       () {
+  //         Navigator.push(context, route);
+  //       },
+  //     );
+  //   });
+  // }
 
   Future confirmDialog(arr) async {
     return await showDialog(
@@ -98,85 +101,109 @@ class _HighLightsPage extends State<HighLightsPage> {
     );
   }
 
-  Widget highLightList(list, context) {
-    GestureDetector makeListTile(list, int index) => GestureDetector(
-          onHorizontalDragEnd: (DragEndDetails details) {
-            if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
-              deleteWrapper(context, list, index);
-            }
-          },
-          child: ListTile(
-            trailing: Icon(Icons.arrow_right,
-                color: Theme.of(context).colorScheme.primary),
-            title: Text(
-              list[index].title,
-              // style: TextStyle(
-              //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-            ),
-            subtitle: Text(
-              list[index].subtitle,
-              // style: TextStyle(fontSize: primaryTextSize),
-            ),
-            onTap: () {
-              context.read<ChapterBloc>().add(UpdateChapter(chapter: list[index].chapter));
+  //Widget highLightList(list, context) {
+    // GestureDetector makeListTile(list, int index) => GestureDetector(
+    //       onHorizontalDragEnd: (DragEndDetails details) {
+    //         if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
+    //           deleteWrapper(context, list, index);
+    //         }
+    //       },
+    //       child: ListTile(
+    //         trailing: Icon(Icons.arrow_right,
+    //             color: Theme.of(context).colorScheme.primary),
+    //         title: Text(
+    //           list[index].title,
+    //           // style: TextStyle(
+    //           //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+    //         ),
+    //         subtitle: Text(
+    //           list[index].subtitle,
+    //           // style: TextStyle(fontSize: primaryTextSize),
+    //         ),
+    //         onTap: () {
+    //           context
+    //               .read<VersionBloc>()
+    //               .add(UpdateVersion(bibleVersion: list[index].version!));
 
-              //Globals.bibleLang = list[index].lang;
+    //           context.read<BookBloc>().add(UpdateBook(book: list[index].book!));
 
-              final model = WriteVarsModel(
-                lang: list[index].lang,
-                version: list[index].version,
-                abbr: list[index].abbr,
-                book: list[index].book,
-                //chapter: list[index].chapter,
-                verse: list[index].verse,
-                name: list[index].name,
-              );
-              onHilightTap(model);
-            },
-          ),
-        );
+    //           context
+    //               .read<ChapterBloc>()
+    //               .add(UpdateChapter(chapter: list[index].chapter));
 
-    return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.primary,
-        centerTitle: true,
-        leading: GestureDetector(
-          child: const Icon(Globals.backArrow),
-          onTap: () {
-            Future.delayed(
-              Duration(milliseconds: Globals.navigatorDelay),
-              () {
-                Navigator.of(context).pop();
-              },
-            );
-          },
-        ),
-        //elevation: 0.1,
-        title: const Text(
-          'Highlights',
-          //style: TextStyle(fontSize: Globals.appBarFontSize),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            ListView.separated(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: list == null ? 0 : list.length,
-              itemBuilder: (BuildContext context, int index) {
-                return makeListTile(list, index);
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    //           context
+    //               .read<VerseBloc>()
+    //               .add(UpdateVerse(verse: list[index].verse!));
+
+    //           //Globals.bibleLang = list[index].lang;
+
+    //           // final model = WriteVarsModel(
+    //           //   lang: list[index].lang,
+    //           //   version: list[index].version,
+    //           //   abbr: list[index].abbr,
+    //           //   book: list[index].book,
+    //           //   //chapter: list[index].chapter,
+    //           //   verse: list[index].verse,
+    //           //   name: list[index].name,
+    //           // );
+    //           // onHilightTap(model);
+
+    //           // _lists.updateActiveLists(list[index].version!).then((value) {
+    //           Route route = MaterialPageRoute(
+    //             builder: (context) => const MainPage(),
+    //           );
+    //           Future.delayed(
+    //             Duration(milliseconds: Globals.navigatorDelay),
+    //             () {
+    //               Navigator.push(context, route);
+    //             },
+    //           );
+    //           //  });
+    //         },
+    //       ),
+    //     );
+
+    // return Scaffold(
+    //   //backgroundColor: Theme.of(context).colorScheme.background,
+    //   appBar: AppBar(
+    //     //backgroundColor: Theme.of(context).colorScheme.primary,
+    //     centerTitle: true,
+    //     leading: GestureDetector(
+    //       child: const Icon(Globals.backArrow),
+    //       onTap: () {
+    //         Future.delayed(
+    //           Duration(milliseconds: Globals.navigatorDelay),
+    //           () {
+    //             Navigator.of(context).pop();
+    //           },
+    //         );
+    //       },
+    //     ),
+    //     //elevation: 0.1,
+    //     title: const Text(
+    //       'Highlights',
+    //       //style: TextStyle(fontSize: Globals.appBarFontSize),
+    //     ),
+    //   ),
+    //   body: Padding(
+    //     padding: const EdgeInsets.all(20),
+    //     child: Column(
+    //       children: [
+    //         ListView.separated(
+    //           scrollDirection: Axis.vertical,
+    //           shrinkWrap: true,
+    //           itemCount: list == null ? 0 : list.length,
+    //           itemBuilder: (BuildContext context, int index) {
+    //             return makeListTile(list, index);
+    //           },
+    //           separatorBuilder: (BuildContext context, int index) =>
+    //               const Divider(),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+  //}
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +212,106 @@ class _HighLightsPage extends State<HighLightsPage> {
       builder: (context, AsyncSnapshot<List<HlModel>> snapshot) {
         if (snapshot.hasData) {
           list = snapshot.data!;
-          return highLightList(list, context);
+          return Scaffold(
+            //backgroundColor: Theme.of(context).colorScheme.background,
+            appBar: AppBar(
+              //backgroundColor: Theme.of(context).colorScheme.primary,
+              centerTitle: true,
+              leading: GestureDetector(
+                child: const Icon(Globals.backArrow),
+                onTap: () {
+                  Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ),
+              //elevation: 0.1,
+              title: const Text(
+                'Highlights',
+                //style: TextStyle(fontSize: Globals.appBarFontSize),
+              ),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  ListView.separated(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: list.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onHorizontalDragEnd: (DragEndDetails details) {
+                          if (details.primaryVelocity! > 0 ||
+                              details.primaryVelocity! < 0) {
+                            deleteWrapper(context, list, index);
+                          }
+                        },
+                        child: ListTile(
+                          trailing: Icon(Icons.arrow_right,
+                              color: Theme.of(context).colorScheme.primary),
+                          title: Text(
+                            list[index].title!,
+                            // style: TextStyle(
+                            //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+                          ),
+                          subtitle: Text(
+                            list[index].subtitle!,
+                            // style: TextStyle(fontSize: primaryTextSize),
+                          ),
+                          onTap: () {
+                            context.read<VersionBloc>().add(UpdateVersion(
+                                bibleVersion: list[index].version!));
+
+                            context.read<BookBloc>().add(UpdateBook(
+                                book: list[index].book!)); // UpdateBook
+
+                            context.read<ChapterBloc>().add(
+                                UpdateChapter(chapter: list[index].chapter!));
+
+                            context.read<VerseBloc>().add(UpdateVerse(
+                                verse: list[index].verse!)); // UpdateVerse
+
+                            //Globals.bibleLang = list[index].lang!;
+
+                            // final model = WriteVarsModel(
+                            //   lang: list[index].lang,
+                            //   version: list[index].version,
+                            //   abbr: list[index].abbr,
+                            //   book: list[index].book,
+                            //   //chapter: list[index].chapter, // duplicate save
+                            //   verse: list[index].verse,
+                            //   name: list[index].name,
+                            // );
+                            // onBookMarkTap(model);
+
+                            // _lists
+                            //     .updateActiveLists(list[index].version!)
+                            //     .then((value) {
+                            Route route = MaterialPageRoute(
+                              builder: (context) => const MainPage(),
+                            );
+                            Future.delayed(
+                              Duration(milliseconds: Globals.navigatorDelay),
+                              () {
+                                Navigator.push(context, route);
+                              },
+                            );
+                            //});
+                          },
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
         return const Center(
           child: CircularProgressIndicator(),

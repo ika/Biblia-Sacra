@@ -93,12 +93,6 @@ class MainPageState extends State<MainPage>
             );
           }
         });
-
-        // Future.delayed(Duration(milliseconds: Globals.navigatorLongestDelay), () {
-        //   //if (animationController.status == AnimationStatus.forward) {
-        //     animationController.reverse();
-        //   //}
-        // });
       },
     );
   }
@@ -160,7 +154,9 @@ class MainPageState extends State<MainPage>
     Clipboard.setData(
       ClipboardData(text: sb.toString()),
     ).then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
+      Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
+        ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
+      });
     });
   }
 
@@ -173,10 +169,15 @@ class MainPageState extends State<MainPage>
       (value) {
         if (value) {
           _hlQueries.deleteHighLight(bid).then((value) {
-            ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
-            setState(() {
-              _lists.updateActiveLists(bibleVersion);
+            Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay),
+                () {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(hiLightDeletedSnackBar);
             });
+            // ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
+            // setState(() {
+            //   _lists.updateActiveLists(bibleVersion);
+            // });
           });
         }
       }, //_deleteWrapper,
@@ -192,10 +193,14 @@ class MainPageState extends State<MainPage>
       (value) {
         if (value) {
           _bmQueries.deleteBookMarkbyBid(bid).then((value) {
-            ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
-            setState(() {
-              _lists.updateActiveLists(bibleVersion);
+            Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay),
+                () {
+              ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
             });
+
+            // setState(() {
+            //   _lists.updateActiveLists(bibleVersion);
+            // });
           });
         }
       }, //_deleteWrapper,
@@ -226,10 +231,13 @@ class MainPageState extends State<MainPage>
         bid: bid);
     _bmQueries.saveBookMark(model).then(
       (value) {
-        ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
-        setState(() {
-          _lists.updateActiveLists(bibleVersion);
+        Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
+          ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
         });
+
+        // setState(() {
+        //   _lists.updateActiveLists(bibleVersion);
+        // });
       },
     );
   }
@@ -258,10 +266,12 @@ class MainPageState extends State<MainPage>
         bid: bid);
 
     _hlQueries.saveHighLight(model).then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(hiLightAddedSnackBar);
-      setState(() {
-        _lists.updateActiveLists(bibleVersion);
+      Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
+        ScaffoldMessenger.of(context).showSnackBar(hiLightAddedSnackBar);
       });
+      // setState(() {
+      //   _lists.updateActiveLists(bibleVersion);
+      // });
     });
   }
 
@@ -301,9 +311,9 @@ class MainPageState extends State<MainPage>
       Duration(milliseconds: Globals.navigatorDelay),
       () {
         Navigator.push(context, route).then((v) {
-          setState(() {
-            _lists.updateActiveLists(bibleVersion);
-          });
+          // setState(() {
+          //   _lists.updateActiveLists(bibleVersion);
+          // });
         });
       },
     );
@@ -474,7 +484,12 @@ class MainPageState extends State<MainPage>
           verseNumber = snapshot.data[index].v;
           verseText = snapshot.data[index].t;
           verseBid = snapshot.data[index].id;
+
           animationController.forward();
+
+          Future.delayed(const Duration(milliseconds: 5000), () {
+            animationController.reverse();
+          });
         }
       },
       child: Container(
@@ -508,7 +523,10 @@ class MainPageState extends State<MainPage>
   void showVersionsDialog(BuildContext context) {
     (Globals.activeVersionCount! > 1)
         ? versionsDialog(context, 'main')
-        : ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
+        : Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay),
+            () {
+            ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
+          });
   }
 
   Widget showModes() {
@@ -718,10 +736,10 @@ class MainPageState extends State<MainPage>
             setState(() {
               _selectedIndex = index;
             });
+
             switch (index) {
               case 0:
                 // Compare
-                animationController.reverse();
 
                 final model = Bible(
                     id: 0,
@@ -732,13 +750,15 @@ class MainPageState extends State<MainPage>
 
                 (Globals.activeVersionCount! > 1)
                     ? mainCompareDialog(context, model)
-                    : ScaffoldMessenger.of(context)
-                        .showSnackBar(moreVersionsSnackBar);
+                    : Future.delayed(
+                        Duration(milliseconds: Globals.navigatorLongDelay), () {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(moreVersionsSnackBar);
+                      });
 
                 break;
               case 1:
                 // Bookmark
-                animationController.reverse();
 
                 (!getBookMarksMatch(verseBid))
                     ? insertBookMark(verseBid)
@@ -747,7 +767,6 @@ class MainPageState extends State<MainPage>
                 break;
               case 2:
                 // Highlight
-                animationController.reverse();
 
                 (!getHighLightMatch(verseBid))
                     ? insertHighLight(verseBid)
@@ -756,7 +775,7 @@ class MainPageState extends State<MainPage>
                 break;
               case 3:
                 // Note
-                animationController.reverse();
+                //animationController.reverse();
 
                 if (getNotesMatch(verseBid)) {
                   getNoteModel(verseBid).then((model) {
@@ -769,7 +788,7 @@ class MainPageState extends State<MainPage>
                 break;
               case 4:
                 // Copy
-                animationController.reverse();
+                //animationController.reverse();
 
                 copyVerseWrapper(context);
                 break;

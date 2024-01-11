@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_search.dart';
+import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
@@ -69,19 +71,19 @@ class _MainSearchState extends State<MainSearch> {
     );
   }
 
-  onSearchTap(WriteVarsModel model) {
-    writeVars(model).then((value) {
-      Route route = MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      );
-      Future.delayed(
-        Duration(milliseconds: Globals.navigatorDelay),
-        () {
-          Navigator.push(context, route);
-        },
-      );
-    });
-  }
+  // onSearchTap(WriteVarsModel model) {
+  //   writeVars(model).then((value) {
+  //     Route route = MaterialPageRoute(
+  //       builder: (context) => const MainPage(),
+  //     );
+  //     Future.delayed(
+  //       Duration(milliseconds: Globals.navigatorDelay),
+  //       () {
+  //         Navigator.push(context, route);
+  //       },
+  //     );
+  //   });
+  // }
 
   Future emptyInputDialog(context) async {
     return showDialog<void>(
@@ -222,20 +224,41 @@ class _MainSearchState extends State<MainSearch> {
           ? highLiteSearchWord(snapshot.data![index].t!, _contents)
           : Container(),
       onTap: () {
+        // Book
+        context
+            .read<BookBloc>()
+            .add(UpdateBook(book: snapshot.data![index].b!));
+
+        // Chapter
         context
             .read<ChapterBloc>()
             .add(UpdateChapter(chapter: snapshot.data![index].c!));
 
-        final model = WriteVarsModel(
-          lang: bibleLang,
-          version: bibleVersion,
-          abbr: versionAbbr,
-          book: snapshot.data![index].b,
-          //chapter: snapshot.data![index].c,
-          verse: snapshot.data![index].v,
-          name: bookName,
+        // Verse
+        context
+            .read<VerseBloc>()
+            .add(UpdateVerse(verse: snapshot.data![index].v!));
+
+        // final model = WriteVarsModel(
+        //   lang: bibleLang,
+        //   version: bibleVersion,
+        //   abbr: versionAbbr,
+        //   book: snapshot.data![index].b,
+        //   //chapter: snapshot.data![index].c,
+        //   verse: snapshot.data![index].v,
+        //   name: bookName,
+        // );
+        // onSearchTap(model);
+
+        Route route = MaterialPageRoute(
+          builder: (context) => const MainPage(),
         );
-        onSearchTap(model);
+        Future.delayed(
+          Duration(milliseconds: Globals.navigatorDelay),
+          () {
+            Navigator.push(context, route);
+          },
+        );
       },
     );
   }

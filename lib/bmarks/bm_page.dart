@@ -1,4 +1,7 @@
+import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
+import 'package:bibliasacra/bloc/bloc_verse.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globs_write.dart';
 import 'package:bibliasacra/globals/globs_main.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -29,20 +32,20 @@ class _BookMarkState extends State<BookMarksPage> {
   //   super.initState();
   // }
 
-  onBookMarkTap(WriteVarsModel model) {
-    _lists.updateActiveLists(model.version!);
-    writeVars(model).then((value) {
-      Route route = MaterialPageRoute(
-        builder: (context) => const MainPage(),
-      );
-      Future.delayed(
-        Duration(milliseconds: Globals.navigatorDelay),
-        () {
-          Navigator.push(context, route);
-        },
-      );
-    });
-  }
+  // onBookMarkTap(WriteVarsModel model) {
+  //   _lists.updateActiveLists(model.version!);
+  //   writeVars(model).then((value) {
+  //     Route route = MaterialPageRoute(
+  //       builder: (context) => const MainPage(),
+  //     );
+  //     Future.delayed(
+  //       Duration(milliseconds: Globals.navigatorDelay),
+  //       () {
+  //         Navigator.push(context, route);
+  //       },
+  //     );
+  //   });
+  // }
 
   Future confirmDialog(arr) async {
     return await showDialog(
@@ -119,63 +122,83 @@ class _BookMarkState extends State<BookMarksPage> {
                 //style: TextStyle(fontSize: Globals.appBarFontSize),
               ),
             ),
-            body: BlocBuilder<ChapterBloc, int>(
-              builder: (context, state) {
-                return Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: list.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onHorizontalDragEnd: (DragEndDetails details) {
-                              if (details.primaryVelocity! > 0 ||
-                                  details.primaryVelocity! < 0) {
-                                deleteWrapper(context, list, index);
-                              }
-                            },
-                            child: ListTile(
-                              trailing: Icon(Icons.arrow_right,
-                                  color: Theme.of(context).colorScheme.primary),
-                              title: Text(
-                                list[index].title!,
-                                // style: TextStyle(
-                                //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-                              ),
-                              subtitle: Text(
-                                list[index].subtitle!,
-                                // style: TextStyle(fontSize: primaryTextSize),
-                              ),
-                              onTap: () {
-                                context.read<ChapterBloc>().add(UpdateChapter(
-                                    chapter: list[index].chapter!));
-
-                                //Globals.bibleLang = list[index].lang!;
-
-                                final model = WriteVarsModel(
-                                  lang: list[index].lang,
-                                  version: list[index].version,
-                                  abbr: list[index].abbr,
-                                  book: list[index].book,
-                                  //chapter: list[index].chapter, // duplicate save
-                                  verse: list[index].verse,
-                                  name: list[index].name,
-                                );
-                                onBookMarkTap(model);
-                              },
-                            ),
-                          );
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  ListView.separated(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: list.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onHorizontalDragEnd: (DragEndDetails details) {
+                          if (details.primaryVelocity! > 0 ||
+                              details.primaryVelocity! < 0) {
+                            deleteWrapper(context, list, index);
+                          }
                         },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                      ),
-                    ],
+                        child: ListTile(
+                          trailing: Icon(Icons.arrow_right,
+                              color: Theme.of(context).colorScheme.primary),
+                          title: Text(
+                            list[index].title!,
+                            // style: TextStyle(
+                            //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+                          ),
+                          subtitle: Text(
+                            list[index].subtitle!,
+                            // style: TextStyle(fontSize: primaryTextSize),
+                          ),
+                          onTap: () {
+                            context.read<VersionBloc>().add(UpdateVersion(
+                                bibleVersion: list[index].version!));
+            
+                            context.read<BookBloc>().add(UpdateBook(
+                                book: list[index].book!)); // UpdateBook
+            
+                            context.read<ChapterBloc>().add(UpdateChapter(
+                                chapter: list[index].chapter!));
+            
+                            context.read<VerseBloc>().add(UpdateVerse(
+                                verse: list[index].verse!)); // UpdateVerse
+            
+                            //Globals.bibleLang = list[index].lang!;
+            
+                            // final model = WriteVarsModel(
+                            //   lang: list[index].lang,
+                            //   version: list[index].version,
+                            //   abbr: list[index].abbr,
+                            //   book: list[index].book,
+                            //   //chapter: list[index].chapter, // duplicate save
+                            //   verse: list[index].verse,
+                            //   name: list[index].name,
+                            // );
+                            // onBookMarkTap(model);
+            
+                            // _lists
+                            //     .updateActiveLists(list[index].version!)
+                            //     .then((value) {
+                            Route route = MaterialPageRoute(
+                              builder: (context) => const MainPage(),
+                            );
+                            Future.delayed(
+                              Duration(
+                                  milliseconds: Globals.navigatorDelay),
+                              () {
+                                Navigator.push(context, route);
+                              },
+                            );
+                            //});
+                          },
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                   ),
-                );
-              },
+                ],
+              ),
             ),
           );
         }
