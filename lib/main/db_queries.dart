@@ -65,7 +65,7 @@ class DbQueries {
     List<Bible> emptyList = [];
 
     final mod = Bible(id: 0, b: 0, c: 0, v: 0, t: ' ');
-    for (int l = 1; l <= 30; l++) {
+    for (int l = 1; l <= 35; l++) {
       emptyList.add(mod);
     }
 

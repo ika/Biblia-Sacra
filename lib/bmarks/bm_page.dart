@@ -2,7 +2,7 @@ import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
@@ -83,6 +83,7 @@ class _BookMarkState extends State<BookMarksPage> {
         if (value) {
           _bmQueries.deleteBookMark(list[index].id).then(
             (value) {
+              _lists.updateActiveBookMarkList(list[index].version!);
               ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
               setState(() {});
             },
@@ -152,18 +153,18 @@ class _BookMarkState extends State<BookMarksPage> {
                           onTap: () {
                             context.read<VersionBloc>().add(UpdateVersion(
                                 bibleVersion: list[index].version!));
-            
+
                             context.read<BookBloc>().add(UpdateBook(
                                 book: list[index].book!)); // UpdateBook
-            
-                            context.read<ChapterBloc>().add(UpdateChapter(
-                                chapter: list[index].chapter!));
-            
+
+                            context.read<ChapterBloc>().add(
+                                UpdateChapter(chapter: list[index].chapter!));
+
                             context.read<VerseBloc>().add(UpdateVerse(
                                 verse: list[index].verse!)); // UpdateVerse
-            
+
                             //Globals.bibleLang = list[index].lang!;
-            
+
                             // final model = WriteVarsModel(
                             //   lang: list[index].lang,
                             //   version: list[index].version,
@@ -174,7 +175,7 @@ class _BookMarkState extends State<BookMarksPage> {
                             //   name: list[index].name,
                             // );
                             // onBookMarkTap(model);
-            
+
                             // _lists
                             //     .updateActiveLists(list[index].version!)
                             //     .then((value) {
@@ -182,8 +183,7 @@ class _BookMarkState extends State<BookMarksPage> {
                               builder: (context) => const MainPage(),
                             );
                             Future.delayed(
-                              Duration(
-                                  milliseconds: Globals.navigatorDelay),
+                              Duration(milliseconds: Globals.navigatorDelay),
                               () {
                                 Navigator.push(context, route);
                               },

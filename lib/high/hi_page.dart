@@ -2,7 +2,7 @@ import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -92,7 +92,7 @@ class _HighLightsPage extends State<HighLightsPage> {
             (value) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(hiLightDeletedSnackBar);
-              _lists.updateActiveLists(list[index].version);
+              _lists.updateActiveHighLightList(list[index].version!);
               setState(() {});
             },
           );

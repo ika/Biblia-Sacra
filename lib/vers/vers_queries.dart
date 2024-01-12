@@ -41,12 +41,12 @@ class VkQueries {
     return list;
   }
 
-  Future<List> getActiveVersionNumbers() async {
+  Future<List> getActiveVersionNumbers(int bibleVersion) async {
     final db = await _vkProvider!.database;
 
     final List values = await db.rawQuery(
-        '''SELECT number,abbr,lang FROM $tableName WHERE active=?''',
-        ['1']);
+        '''SELECT number,abbr,lang FROM $tableName WHERE active=1 ORDER BY number=? DESC''',
+        ['$bibleVersion']);
     return values;
   }
 

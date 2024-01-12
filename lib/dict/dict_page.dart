@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bibliasacra/dict/dict_queries.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 
 DictQueries _dictQueries = DictQueries();

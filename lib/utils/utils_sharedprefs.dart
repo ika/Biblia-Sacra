@@ -1,7 +1,7 @@
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPrefs {
-  final Future<SharedPreferences> sharedPrefs = SharedPreferences.getInstance();
+// class SharedPrefs {
+//   final Future<SharedPreferences> sharedPrefs = SharedPreferences.getInstance();
 
   // ==================SET=====================
 
@@ -51,68 +51,68 @@ class SharedPrefs {
 
   // Theme
 
-  Future<void> setThemePref(bool value) async {
-    final prefs = await sharedPrefs;
-    prefs.setBool("theme", value);
-  }
+//   Future<void> setThemePref(bool value) async {
+//     final prefs = await sharedPrefs;
+//     prefs.setBool("theme", value);
+//   }
 
-  Future<bool> getThemePref() async {
-    final prefs = await sharedPrefs;
-    return prefs.getBool("theme") ?? false;
-  }
+//   Future<bool> getThemePref() async {
+//     final prefs = await sharedPrefs;
+//     return prefs.getBool("theme") ?? false;
+//   }
 
-  // Chapter
-  Future<void> setChapterPref(int value) async {
-    final prefs = await sharedPrefs;
-    prefs.setInt("chapterNumber", value);
-  }
+//   // Chapter
+//   Future<void> setChapterPref(int value) async {
+//     final prefs = await sharedPrefs;
+//     prefs.setInt("chapterNumber", value);
+//   }
 
-  Future<int> getChapterPref() async {
-    final prefs = await sharedPrefs;
-    return prefs.getInt("chapterNumber") ?? 1;
-  }
+//   Future<int> getChapterPref() async {
+//     final prefs = await sharedPrefs;
+//     return prefs.getInt("chapterNumber") ?? 1;
+//   }
 
-  // Bible Version
-  Future<void> setVersionPref(int value) async {
-    final prefs = await sharedPrefs;
-    prefs.setInt("versionNumber", value);
-  }
+//   // Bible Version
+//   Future<void> setVersionPref(int value) async {
+//     final prefs = await sharedPrefs;
+//     prefs.setInt("versionNumber", value);
+//   }
 
-  Future<int> getVersionPref() async {
-    final prefs = await sharedPrefs;
-    return prefs.getInt("versionNumber") ?? 1;
-  }
+//   Future<int> getVersionPref() async {
+//     final prefs = await sharedPrefs;
+//     return prefs.getInt("versionNumber") ?? 1;
+//   }
 
-  // Verse
-  Future<void> setVersePref(int value) async {
-    final prefs = await sharedPrefs;
-    prefs.setInt("verseNumber", value);
-  }
+//   // Verse
+//   Future<void> setVersePref(int value) async {
+//     final prefs = await sharedPrefs;
+//     prefs.setInt("verseNumber", value);
+//   }
 
-  Future<int> getVersePref() async {
-    final prefs = await sharedPrefs;
-    return prefs.getInt("verseNumber") ?? 1;
-  }
+//   Future<int> getVersePref() async {
+//     final prefs = await sharedPrefs;
+//     return prefs.getInt("verseNumber") ?? 1;
+//   }
 
-  // Book
-  Future<void> setBookPref(int value) async {
-    final prefs = await sharedPrefs;
-    prefs.setInt("bookNumber", value);
-  }
+//   // Book
+//   Future<void> setBookPref(int value) async {
+//     final prefs = await sharedPrefs;
+//     prefs.setInt("bookNumber", value);
+//   }
 
-  Future<int> getBookPref() async {
-    final prefs = await sharedPrefs;
-    return prefs.getInt("bookNumber") ?? 43;
-  }
+//   Future<int> getBookPref() async {
+//     final prefs = await sharedPrefs;
+//     return prefs.getInt("bookNumber") ?? 43;
+//   }
 
-  // Search Area
-  Future<void> setSearchAreaPref(int value) async {
-    final prefs = await sharedPrefs;
-    prefs.setInt("searchArea", value);
-  }
+//   // Search Area
+//   Future<void> setSearchAreaPref(int value) async {
+//     final prefs = await sharedPrefs;
+//     prefs.setInt("searchArea", value);
+//   }
 
-  Future<int> getSearchAreaPref() async {
-    final prefs = await sharedPrefs;
-    return prefs.getInt("searchArea") ?? 5;
-  }
-}
+//   Future<int> getSearchAreaPref() async {
+//     final prefs = await sharedPrefs;
+//     return prefs.getInt("searchArea") ?? 5;
+//   }
+// }

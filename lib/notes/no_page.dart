@@ -1,5 +1,5 @@
 import 'package:bibliasacra/bloc/bloc_version.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
@@ -46,9 +46,9 @@ class NotesPageState extends State<NotesPage> {
       Duration(milliseconds: Globals.navigatorDelay),
       () {
         Navigator.push(context, route).then((v) {
-          setState(() {
-            _lists.updateActiveLists(bibleVersion);
-          });
+          // setState(() {
+          //   _lists.updateActiveLists(bibleVersion);
+          // });
         });
       },
     );
@@ -101,7 +101,7 @@ class NotesPageState extends State<NotesPage> {
     confirmDialog(arr).then((value) {
       if (value) {
         _ntQueries.deleteNote(list[index].id).then((value) {
-          _lists.updateActiveLists(bibleVersion);
+          _lists.updateActiveNotesList(bibleVersion);
           setState(() {});
         });
       }

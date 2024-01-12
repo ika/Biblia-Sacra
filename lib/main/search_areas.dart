@@ -1,11 +1,10 @@
 import 'package:bibliasacra/bloc/bloc_search.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 var searchAreasList = {};
-SharedPrefs sharedPrefs = SharedPrefs();
+//SharedPrefs sharedPrefs = SharedPrefs();
 
 Future<dynamic> searchAreasDialog(BuildContext context) {
   return showDialog(

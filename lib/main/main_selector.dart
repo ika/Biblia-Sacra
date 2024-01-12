@@ -4,7 +4,7 @@ import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_page.dart';
@@ -346,8 +346,8 @@ class _MainSelectorState extends State<MainSelector>
                     //style: TextStyle(fontSize: primaryTextSize),
                   ),
                   onTap: () {
-                    debugPrint("INDEX ${index + 1}");
-                    context.read<BookBloc>().add(UpdateBook(book: index + 1));
+                    //debugPrint("filteredBooks ${filteredBooks.keys.elementAt(index) +1}");
+                    context.read<BookBloc>().add(UpdateBook(book: key + 1));
 
                     context.read<ChapterBloc>().add(UpdateChapter(chapter: 1));
 
@@ -363,7 +363,7 @@ class _MainSelectorState extends State<MainSelector>
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
-                        debugPrint("BOOKBLOC STATE ${context.read<BookBloc>().state}");
+                        //debugPrint("BOOKBLOC STATE ${context.read<BookBloc>().state}");
                         tabController!.animateTo(1);
                       },
                     );

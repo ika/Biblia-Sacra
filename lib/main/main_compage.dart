@@ -1,4 +1,5 @@
 import 'package:bibliasacra/bloc/bloc_book.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
@@ -8,8 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Compare versions
 
-late int bibleBook;
-//late int bibleVersion;
+// late int bibleBook;
+late int bibleVersion;
 
 class CompareModel {
   String a; // abbr
@@ -30,16 +31,13 @@ class Compare {
   Future<List<CompareModel>> activeVersions(Bible model) async {
     List<CompareModel> compareList = [];
 
-    List activeVersions =
-        await VkQueries().getActiveVersionNumbers();
-
-    //debugPrint("ACTIVE VERSIONS ${activeVersions.length}");
+    List activeVersions = await VkQueries().getActiveVersionNumbers(bibleVersion);
 
     for (int x = 0; x < activeVersions.length; x++) {
       int bibleVer = activeVersions[x]['number'];
 
       String bookName =
-          bookLists.getBookByNumber(bibleBook, activeVersions[x]['lang']);
+          bookLists.getBookByNumber(model.b!, activeVersions[x]['lang']);
 
       String abbr = activeVersions[x]['abbr'];
 
@@ -58,11 +56,13 @@ class Compare {
       compareList.add(cModel);
     }
 
+    DbQueries(bibleVersion); // resotre version
+
     return compareList;
   }
 }
 
-Future<dynamic> mainCompareDialog(BuildContext context, Bible bible) {
+Future<dynamic> mainCompareDialog(BuildContext context, Bible model) {
   return showDialog(
     context: context,
     barrierDismissible: true,
@@ -78,7 +78,7 @@ Future<dynamic> mainCompareDialog(BuildContext context, Bible bible) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: ComparePage(model: bible),
+                    child: ComparePage(model: model),
                   ),
                 ],
               ),
@@ -106,11 +106,9 @@ class _ComparePage extends State<ComparePage> {
   void initState() {
     super.initState();
 
-    bibleBook = context.read<BookBloc>().state;
-
     // WidgetsBinding.instance.addPostFrameCallback(
     //   (_) {
-    //     bibleBook = context.read<BookBloc>().state;
+    //     //bibleBook = context.read<BookBloc>().state;
     //     //bibleVersion = context.read<VersionBloc>().state;
     //   },
     // );
@@ -118,6 +116,7 @@ class _ComparePage extends State<ComparePage> {
 
   @override
   Widget build(BuildContext context) {
+    bibleVersion = context.read<VersionBloc>().state;
     return FutureBuilder<List<CompareModel>>(
       future: Compare().activeVersions(widget.model),
       builder: (context, AsyncSnapshot<List<CompareModel>> snapshot) {

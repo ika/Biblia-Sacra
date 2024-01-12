@@ -1,6 +1,8 @@
+import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/bloc/bloc_version.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
@@ -84,10 +86,18 @@ class _EditNotePageState extends State<EditNotePage> {
         icon: const Icon(Icons.arrow_circle_right_outlined),
         onPressed: () {
           context
+              .read<VersionBloc>()
+              .add(UpdateVersion(bibleVersion: widget.model.version!));
+
+          context.read<BookBloc>().add(UpdateBook(book: widget.model.book!));
+
+          context
               .read<ChapterBloc>()
               .add(UpdateChapter(chapter: widget.model.chapter!));
 
-          context.read<VerseBloc>().add(UpdateVerse(verse: widget.model.verse!));
+          context
+              .read<VerseBloc>()
+              .add(UpdateVerse(verse: widget.model.verse!));
 
           Route route = MaterialPageRoute(
             builder: (context) => const MainPage(),

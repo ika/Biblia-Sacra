@@ -4,8 +4,6 @@ import 'package:bibliasacra/langs/lang_eng.dart';
 import 'package:bibliasacra/langs/lang_latin.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 
-
-
 List<String> langListSelector(String lang) {
   List<String> langList = [];
   switch (lang) {
@@ -20,7 +18,6 @@ List<String> langListSelector(String lang) {
 }
 
 class BookLists {
-
   String getBookByNumber(int number, String lang) {
     List<String> langList = [];
 

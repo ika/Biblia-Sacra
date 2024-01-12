@@ -20,11 +20,26 @@ class GetLists {
     booksList = [];
   }
 
-  Future<void> updateActiveLists(int v) async {
-    notesList = await NtQueries().getAllVersionNotes(v);
-    highsList = await HlQueries().getHighVersionList(v);
-    booksList = await BmQueries().getBookMarksVersionList(v);
+  // Future<void> updateActiveLists(int v) async {
+  //   notesList = await NtQueries().getAllVersionNotes(v);
+  //   highsList = await HlQueries().getHighVersionList(v);
+  //   booksList = await BmQueries().getBookMarksVersionList(v);
 
+  //   //debugPrint(jsonEncode(booksList));
+  // }
+
+  Future<void> updateActiveNotesList(int bibleVersion) async {
+    notesList = await NtQueries().getAllVersionNotes(bibleVersion);
+    //debugPrint(jsonEncode(notesList));
+  }
+
+  Future<void> updateActiveBookMarkList(int bibleVersion) async {
+    booksList = await BmQueries().getBookMarksVersionList(bibleVersion);
     //debugPrint(jsonEncode(booksList));
+  }
+
+  Future<void> updateActiveHighLightList(int bibleVersion) async {
+    highsList = await HlQueries().getHighVersionList(bibleVersion);
+    //debugPrint(jsonEncode(highsList));
   }
 }

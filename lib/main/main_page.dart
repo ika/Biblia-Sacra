@@ -4,9 +4,11 @@ import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
+import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globals.dart';
+import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
@@ -76,7 +78,7 @@ class MainPageState extends State<MainPage>
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        GetLists().updateActiveLists(bibleVersion);
+        //GetLists().updateActiveLists(bibleVersion);
 
         VkQueries().getActiveVersionCount().then((c) {
           Globals.activeVersionCount = c;
@@ -160,52 +162,52 @@ class MainPageState extends State<MainPage>
     });
   }
 
-  void deleteHighLightWrapper(int bid) {
-    var arr = List.filled(4, '');
-    arr[0] = "Delete";
-    arr[1] = "Do you want to delete this highlight?";
+  // void deleteHighLightWrapper(int bid) {
+  //   var arr = List.filled(4, '');
+  //   arr[0] = "Delete";
+  //   arr[1] = "Do you want to delete this highlight?";
 
-    confirmDialog(arr).then(
-      (value) {
-        if (value) {
-          _hlQueries.deleteHighLight(bid).then((value) {
-            Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay),
-                () {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(hiLightDeletedSnackBar);
-            });
-            // ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
-            // setState(() {
-            //   _lists.updateActiveLists(bibleVersion);
-            // });
-          });
-        }
-      }, //_deleteWrapper,
-    );
-  }
+  //   confirmDialog(arr).then(
+  //     (value) {
+  //       if (value) {
+  //         _hlQueries.deleteHighLight(bid).then((value) {
+  //           Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay),
+  //               () {
+  //             ScaffoldMessenger.of(context)
+  //                 .showSnackBar(hiLightDeletedSnackBar);
+  //           });
+  //           // ScaffoldMessenger.of(context).showSnackBar(hiLightDeletedSnackBar);
+  //           // setState(() {
+  //           //   _lists.updateActiveLists(bibleVersion);
+  //           // });
+  //         });
+  //       }
+  //     }, //_deleteWrapper,
+  //   );
+  // }
 
-  void deleteBookMarkWrapper(int bid) {
-    var arr = List.filled(4, '');
-    arr[0] = 'Delete';
-    arr[1] = "Do you want to delete this bookmark?";
+  // void deleteBookMarkWrapper(int bid) {
+  //   var arr = List.filled(4, '');
+  //   arr[0] = 'Delete';
+  //   arr[1] = "Do you want to delete this bookmark?";
 
-    confirmDialog(arr).then(
-      (value) {
-        if (value) {
-          _bmQueries.deleteBookMarkbyBid(bid).then((value) {
-            Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay),
-                () {
-              ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
-            });
+  //   confirmDialog(arr).then(
+  //     (value) {
+  //       if (value) {
+  //         _bmQueries.deleteBookMarkbyBid(bid).then((value) {
+  //           Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay),
+  //               () {
+  //             ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
+  //           });
 
-            // setState(() {
-            //   _lists.updateActiveLists(bibleVersion);
-            // });
-          });
-        }
-      }, //_deleteWrapper,
-    );
-  }
+  //           // setState(() {
+  //           //   _lists.updateActiveLists(bibleVersion);
+  //           // });
+  //         });
+  //       }
+  //     }, //_deleteWrapper,
+  //   );
+  // }
 
   void insertBookMark(int bid) {
     List<String> stringTitle = [
@@ -231,13 +233,10 @@ class MainPageState extends State<MainPage>
         bid: bid);
     _bmQueries.saveBookMark(model).then(
       (value) {
+        _lists.updateActiveBookMarkList(bibleVersion);
         Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
           ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
         });
-
-        // setState(() {
-        //   _lists.updateActiveLists(bibleVersion);
-        // });
       },
     );
   }
@@ -266,12 +265,10 @@ class MainPageState extends State<MainPage>
         bid: bid);
 
     _hlQueries.saveHighLight(model).then((value) {
+      _lists.updateActiveHighLightList(bibleVersion);
       Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
         ScaffoldMessenger.of(context).showSnackBar(hiLightAddedSnackBar);
       });
-      // setState(() {
-      //   _lists.updateActiveLists(bibleVersion);
-      // });
     });
   }
 
@@ -311,9 +308,7 @@ class MainPageState extends State<MainPage>
       Duration(milliseconds: Globals.navigatorDelay),
       () {
         Navigator.push(context, route).then((v) {
-          // setState(() {
-          //   _lists.updateActiveLists(bibleVersion);
-          // });
+          _lists.updateActiveNotesList(bibleVersion);
         });
       },
     );
@@ -762,7 +757,17 @@ class MainPageState extends State<MainPage>
 
                 (!getBookMarksMatch(verseBid))
                     ? insertBookMark(verseBid)
-                    : deleteBookMarkWrapper(verseBid);
+                    : Future.delayed(
+                        Duration(milliseconds: Globals.navigatorDelay),
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const BookMarksPage(),
+                            ),
+                          );
+                        },
+                      );
 
                 break;
               case 2:
@@ -770,7 +775,17 @@ class MainPageState extends State<MainPage>
 
                 (!getHighLightMatch(verseBid))
                     ? insertHighLight(verseBid)
-                    : deleteHighLightWrapper(verseBid);
+                    : Future.delayed(
+                        Duration(milliseconds: Globals.navigatorDelay),
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HighLightsPage(),
+                            ),
+                          );
+                        },
+                      );
 
                 break;
               case 3:

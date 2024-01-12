@@ -5,7 +5,7 @@ import 'package:bibliasacra/bloc/bloc_chapters.dart';
 import 'package:bibliasacra/bloc/bloc_search.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
@@ -16,9 +16,8 @@ import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
-import 'package:bibliasacra/utils/utils_sharedprefs.dart';
 
-SharedPrefs sharedPrefs = SharedPrefs();
+//SharedPrefs sharedPrefs = SharedPrefs();
 
 Future<List<Bible>>? blankSearch;
 Future<List<Bible>>? filteredSearch;

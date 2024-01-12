@@ -1,7 +1,7 @@
 import 'package:bibliasacra/bmarks/bm_page.dart';
 import 'package:bibliasacra/dict/dict_page.dart';
 import 'package:bibliasacra/fonts/fonts.dart';
-import 'package:bibliasacra/globals/globs_main.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/high/hi_page.dart';
 import 'package:bibliasacra/main/main_search.dart';
 import 'package:bibliasacra/notes/no_page.dart';
