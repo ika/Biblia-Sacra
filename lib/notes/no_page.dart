@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
-GetLists _lists = GetLists();
 
 late int bibleVersion;
 
@@ -101,7 +100,7 @@ class NotesPageState extends State<NotesPage> {
     confirmDialog(arr).then((value) {
       if (value) {
         _ntQueries.deleteNote(list[index].id).then((value) {
-          _lists.updateActiveNotesList(bibleVersion);
+          //ActiveNotesList().updateActiveNotesList(bibleVersion);
           setState(() {});
         });
       }

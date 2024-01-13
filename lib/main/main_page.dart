@@ -39,7 +39,6 @@ late DbQueries _dbQueries;
 BmQueries _bmQueries = BmQueries();
 HlQueries _hlQueries = HlQueries();
 NtQueries _ntQueries = NtQueries();
-GetLists _lists = GetLists();
 
 String verseText = '';
 int verseNumber = 0;
@@ -78,8 +77,6 @@ class MainPageState extends State<MainPage>
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        //GetLists().updateActiveLists(bibleVersion);
-
         VkQueries().getActiveVersionCount().then((c) {
           Globals.activeVersionCount = c;
         });
@@ -233,15 +230,17 @@ class MainPageState extends State<MainPage>
         bid: bid);
     _bmQueries.saveBookMark(model).then(
       (value) {
-        _lists.updateActiveBookMarkList(bibleVersion);
-        Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
-          ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
-        });
+        //ActiveBookMarkList().updateActiveBookMarkList(bibleVersion);
+        // Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
+        //   ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
+        // });
+        Globals.listReadCompleted = false;
+        setState(() {});
       },
     );
   }
 
-  void insertHighLight(int bid) async {
+  Future<void> insertHighLight(int bid) async {
     List<String> stringTitle = [
       versionAbbr,
       ' ',
@@ -264,12 +263,16 @@ class MainPageState extends State<MainPage>
         name: bookName,
         bid: bid);
 
-    _hlQueries.saveHighLight(model).then((value) {
-      _lists.updateActiveHighLightList(bibleVersion);
-      Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
-        ScaffoldMessenger.of(context).showSnackBar(hiLightAddedSnackBar);
-      });
-    });
+    _hlQueries.saveHighLight(model);
+
+    // _hlQueries.saveHighLight(model).then((value) {
+    // setState(() {
+    //   ActiveHighLightList().updateActiveHighLightList(bibleVersion);
+    // });
+    // Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
+    //   ScaffoldMessenger.of(context).showSnackBar(hiLightAddedSnackBar);
+    // });
+    //});
   }
 
   void saveNote(int bid) {
@@ -308,7 +311,7 @@ class MainPageState extends State<MainPage>
       Duration(milliseconds: Globals.navigatorDelay),
       () {
         Navigator.push(context, route).then((v) {
-          _lists.updateActiveNotesList(bibleVersion);
+          // ActiveNotesList().updateActiveNotesList(bibleVersion);
         });
       },
     );
@@ -474,18 +477,16 @@ class MainPageState extends State<MainPage>
   Widget normalMode(BuildContext context, snapshot, index) {
     return GestureDetector(
       onTap: () {
-        if (!Globals.dictionaryMode) {
-          chapterNumber = snapshot.data[index].c;
-          verseNumber = snapshot.data[index].v;
-          verseText = snapshot.data[index].t;
-          verseBid = snapshot.data[index].id;
+        chapterNumber = snapshot.data[index].c;
+        verseNumber = snapshot.data[index].v;
+        verseText = snapshot.data[index].t;
+        verseBid = snapshot.data[index].id;
 
-          animationController.forward();
+        animationController.forward();
 
-          Future.delayed(const Duration(milliseconds: 5000), () {
-            animationController.reverse();
-          });
-        }
+        Future.delayed(const Duration(milliseconds: 5000), () {
+          animationController.reverse();
+        });
       },
       child: Container(
         margin: const EdgeInsets.only(left: 5, bottom: 6.0),
@@ -499,7 +500,7 @@ class MainPageState extends State<MainPage>
                       style: TextStyle(
                           //fontSize: primaryTextSize,
                           backgroundColor:
-                              (getHighLightMatch(snapshot.data[index].id))
+                              getHighLightMatch(snapshot.data[index].id)
                                   ? Theme.of(context)
                                       .colorScheme
                                       .primaryContainer
@@ -562,6 +563,11 @@ class MainPageState extends State<MainPage>
     getPageController();
 
     _dbQueries = DbQueries(bibleVersion);
+
+    if (!Globals.listReadCompleted) {
+      GetLists().updateActiveLists(bibleVersion);
+      Globals.listReadCompleted = true;
+    }
 
     return Scaffold(
       //backgroundColor: theme.colorScheme.background,
@@ -774,16 +780,22 @@ class MainPageState extends State<MainPage>
                 // Highlight
 
                 (!getHighLightMatch(verseBid))
-                    ? insertHighLight(verseBid)
+                    ? insertHighLight(verseBid).then((value) {
+                        // ActiveHighLightList()
+                        //     .updateActiveHighLightList(bibleVersion);
+                        Globals.listReadCompleted = false;
+                        setState(() {});
+                      })
                     : Future.delayed(
                         Duration(milliseconds: Globals.navigatorDelay),
                         () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const HighLightsPage(),
-                            ),
-                          );
+                                builder: (context) => const HighLightsPage()),
+                          ).then((value) {
+                            setState(() {});
+                          });
                         },
                       );
 
@@ -798,6 +810,7 @@ class MainPageState extends State<MainPage>
                   });
                 } else {
                   saveNote(verseBid);
+                  //setState(() {});
                 }
 
                 break;

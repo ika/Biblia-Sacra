@@ -4,7 +4,6 @@ import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/main_page.dart';
-import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
@@ -14,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Bookmarks
 
 BmQueries _bmQueries = BmQueries();
-GetLists _lists = GetLists();
 
 class BookMarksPage extends StatefulWidget {
   const BookMarksPage({super.key});
@@ -83,8 +81,8 @@ class _BookMarkState extends State<BookMarksPage> {
         if (value) {
           _bmQueries.deleteBookMark(list[index].id).then(
             (value) {
-              _lists.updateActiveBookMarkList(list[index].version!);
-              ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
+              // ActiveBookMarkList().updateActiveBookMarkList(list[index].version!);
+              // ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
               setState(() {});
             },
           );

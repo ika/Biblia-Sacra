@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Highlights
 
 HlQueries _hlQueries = HlQueries();
-GetLists _lists = GetLists();
 
 //double? primaryTextSize;
 
@@ -76,7 +75,7 @@ class _HighLightsPage extends State<HighLightsPage> {
     );
   }
 
-  deleteWrapper(context, list, index) {
+  void deleteWrapper(context, list, index) {
     final buffer = <String>[list[index].title, "\n", list[index].subtitle];
     final sb = StringBuffer();
     sb.writeAll(buffer);
@@ -90,9 +89,11 @@ class _HighLightsPage extends State<HighLightsPage> {
         if (value) {
           _hlQueries.deleteHighLight(list[index].bid).then(
             (value) {
+              Globals.listReadCompleted = false;
               ScaffoldMessenger.of(context)
                   .showSnackBar(hiLightDeletedSnackBar);
-              _lists.updateActiveHighLightList(list[index].version!);
+              // ActiveHighLightList()
+              //     .updateActiveHighLightList(list[index].version!);
               setState(() {});
             },
           );
@@ -102,107 +103,107 @@ class _HighLightsPage extends State<HighLightsPage> {
   }
 
   //Widget highLightList(list, context) {
-    // GestureDetector makeListTile(list, int index) => GestureDetector(
-    //       onHorizontalDragEnd: (DragEndDetails details) {
-    //         if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
-    //           deleteWrapper(context, list, index);
-    //         }
-    //       },
-    //       child: ListTile(
-    //         trailing: Icon(Icons.arrow_right,
-    //             color: Theme.of(context).colorScheme.primary),
-    //         title: Text(
-    //           list[index].title,
-    //           // style: TextStyle(
-    //           //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-    //         ),
-    //         subtitle: Text(
-    //           list[index].subtitle,
-    //           // style: TextStyle(fontSize: primaryTextSize),
-    //         ),
-    //         onTap: () {
-    //           context
-    //               .read<VersionBloc>()
-    //               .add(UpdateVersion(bibleVersion: list[index].version!));
+  // GestureDetector makeListTile(list, int index) => GestureDetector(
+  //       onHorizontalDragEnd: (DragEndDetails details) {
+  //         if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
+  //           deleteWrapper(context, list, index);
+  //         }
+  //       },
+  //       child: ListTile(
+  //         trailing: Icon(Icons.arrow_right,
+  //             color: Theme.of(context).colorScheme.primary),
+  //         title: Text(
+  //           list[index].title,
+  //           // style: TextStyle(
+  //           //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+  //         ),
+  //         subtitle: Text(
+  //           list[index].subtitle,
+  //           // style: TextStyle(fontSize: primaryTextSize),
+  //         ),
+  //         onTap: () {
+  //           context
+  //               .read<VersionBloc>()
+  //               .add(UpdateVersion(bibleVersion: list[index].version!));
 
-    //           context.read<BookBloc>().add(UpdateBook(book: list[index].book!));
+  //           context.read<BookBloc>().add(UpdateBook(book: list[index].book!));
 
-    //           context
-    //               .read<ChapterBloc>()
-    //               .add(UpdateChapter(chapter: list[index].chapter));
+  //           context
+  //               .read<ChapterBloc>()
+  //               .add(UpdateChapter(chapter: list[index].chapter));
 
-    //           context
-    //               .read<VerseBloc>()
-    //               .add(UpdateVerse(verse: list[index].verse!));
+  //           context
+  //               .read<VerseBloc>()
+  //               .add(UpdateVerse(verse: list[index].verse!));
 
-    //           //Globals.bibleLang = list[index].lang;
+  //           //Globals.bibleLang = list[index].lang;
 
-    //           // final model = WriteVarsModel(
-    //           //   lang: list[index].lang,
-    //           //   version: list[index].version,
-    //           //   abbr: list[index].abbr,
-    //           //   book: list[index].book,
-    //           //   //chapter: list[index].chapter,
-    //           //   verse: list[index].verse,
-    //           //   name: list[index].name,
-    //           // );
-    //           // onHilightTap(model);
+  //           // final model = WriteVarsModel(
+  //           //   lang: list[index].lang,
+  //           //   version: list[index].version,
+  //           //   abbr: list[index].abbr,
+  //           //   book: list[index].book,
+  //           //   //chapter: list[index].chapter,
+  //           //   verse: list[index].verse,
+  //           //   name: list[index].name,
+  //           // );
+  //           // onHilightTap(model);
 
-    //           // _lists.updateActiveLists(list[index].version!).then((value) {
-    //           Route route = MaterialPageRoute(
-    //             builder: (context) => const MainPage(),
-    //           );
-    //           Future.delayed(
-    //             Duration(milliseconds: Globals.navigatorDelay),
-    //             () {
-    //               Navigator.push(context, route);
-    //             },
-    //           );
-    //           //  });
-    //         },
-    //       ),
-    //     );
+  //           // _lists.updateActiveLists(list[index].version!).then((value) {
+  //           Route route = MaterialPageRoute(
+  //             builder: (context) => const MainPage(),
+  //           );
+  //           Future.delayed(
+  //             Duration(milliseconds: Globals.navigatorDelay),
+  //             () {
+  //               Navigator.push(context, route);
+  //             },
+  //           );
+  //           //  });
+  //         },
+  //       ),
+  //     );
 
-    // return Scaffold(
-    //   //backgroundColor: Theme.of(context).colorScheme.background,
-    //   appBar: AppBar(
-    //     //backgroundColor: Theme.of(context).colorScheme.primary,
-    //     centerTitle: true,
-    //     leading: GestureDetector(
-    //       child: const Icon(Globals.backArrow),
-    //       onTap: () {
-    //         Future.delayed(
-    //           Duration(milliseconds: Globals.navigatorDelay),
-    //           () {
-    //             Navigator.of(context).pop();
-    //           },
-    //         );
-    //       },
-    //     ),
-    //     //elevation: 0.1,
-    //     title: const Text(
-    //       'Highlights',
-    //       //style: TextStyle(fontSize: Globals.appBarFontSize),
-    //     ),
-    //   ),
-    //   body: Padding(
-    //     padding: const EdgeInsets.all(20),
-    //     child: Column(
-    //       children: [
-    //         ListView.separated(
-    //           scrollDirection: Axis.vertical,
-    //           shrinkWrap: true,
-    //           itemCount: list == null ? 0 : list.length,
-    //           itemBuilder: (BuildContext context, int index) {
-    //             return makeListTile(list, index);
-    //           },
-    //           separatorBuilder: (BuildContext context, int index) =>
-    //               const Divider(),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
+  // return Scaffold(
+  //   //backgroundColor: Theme.of(context).colorScheme.background,
+  //   appBar: AppBar(
+  //     //backgroundColor: Theme.of(context).colorScheme.primary,
+  //     centerTitle: true,
+  //     leading: GestureDetector(
+  //       child: const Icon(Globals.backArrow),
+  //       onTap: () {
+  //         Future.delayed(
+  //           Duration(milliseconds: Globals.navigatorDelay),
+  //           () {
+  //             Navigator.of(context).pop();
+  //           },
+  //         );
+  //       },
+  //     ),
+  //     //elevation: 0.1,
+  //     title: const Text(
+  //       'Highlights',
+  //       //style: TextStyle(fontSize: Globals.appBarFontSize),
+  //     ),
+  //   ),
+  //   body: Padding(
+  //     padding: const EdgeInsets.all(20),
+  //     child: Column(
+  //       children: [
+  //         ListView.separated(
+  //           scrollDirection: Axis.vertical,
+  //           shrinkWrap: true,
+  //           itemCount: list == null ? 0 : list.length,
+  //           itemBuilder: (BuildContext context, int index) {
+  //             return makeListTile(list, index);
+  //           },
+  //           separatorBuilder: (BuildContext context, int index) =>
+  //               const Divider(),
+  //         ),
+  //       ],
+  //     ),
+  //   ),
+  // );
   //}
 
   @override
@@ -220,12 +221,22 @@ class _HighLightsPage extends State<HighLightsPage> {
               leading: GestureDetector(
                 child: const Icon(Globals.backArrow),
                 onTap: () {
+                  Route route = MaterialPageRoute(
+                    builder: (context) => const MainPage(),
+                  );
                   Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      Navigator.of(context).pop();
+                      Navigator.push(context, route);
+                      //Navigator.of(context).pop();
                     },
                   );
+                  // Future.delayed(
+                  //   Duration(milliseconds: Globals.navigatorDelay),
+                  //   () {
+                  //     Navigator.of(context).pop();
+                  //   },
+                  // );
                 },
               ),
               //elevation: 0.1,

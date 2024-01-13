@@ -3,15 +3,12 @@ import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
-import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_model.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-//SharedPrefs sharedPrefs = SharedPrefs();
-GetLists _lists = GetLists();
 BookLists bookLists = BookLists();
 
 String returnPath = 'main';
@@ -129,6 +126,8 @@ class AppBarVersionsPage extends State<AppBarVersions> {
                 //Globals.chapterVerse = 0; //reset verse number
 
                 Globals.dictionaryMode = false;
+
+                Globals.listReadCompleted = false;
 
                 //sharedPrefs.setStringPref('language', Globals.bibleLang);
                 //sharedPrefs.setIntPref('version', Globals.bibleVersion);

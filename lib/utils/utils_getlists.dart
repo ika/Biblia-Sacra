@@ -1,13 +1,10 @@
+
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
-
-// final NtQueries _ntQueries = NtQueries();
-// final HlQueries _hlQueries = HlQueries();
-// final BmQueries _bmQueries = BmQueries();
 
 class GetLists {
   static List<NtModel>? notesList;
@@ -20,22 +17,48 @@ class GetLists {
     booksList = [];
   }
 
-  // Future<void> updateActiveLists(int v) async {
-  //   notesList = await NtQueries().getAllVersionNotes(v);
-  //   highsList = await HlQueries().getHighVersionList(v);
-  //   booksList = await BmQueries().getBookMarksVersionList(v);
-
-  //   //debugPrint(jsonEncode(booksList));
-  // }
-
-  Future<void> updateActiveNotesList(int bibleVersion) async {
+  Future<void> updateActiveLists(int bibleVersion) async {
     notesList = await NtQueries().getAllVersionNotes(bibleVersion);
-    //debugPrint(jsonEncode(notesList));
-  }
-
-  Future<void> updateActiveBookMarkList(int bibleVersion) async {
+    highsList = await HlQueries().getHighVersionList(bibleVersion);
     booksList = await BmQueries().getBookMarksVersionList(bibleVersion);
     //debugPrint(jsonEncode(booksList));
+  }
+}
+
+// Notes
+// class ActiveNotesList {
+//   static List<NtModel>? notesList;
+
+//   ActiveNotesList() {
+//     notesList = [];
+//   }
+
+//   Future<void> updateActiveNotesList(int bibleVersion) async {
+//     notesList = await NtQueries().getAllVersionNotes(bibleVersion);
+//     //debugPrint(jsonEncode(notesList));
+//   }
+// }
+
+// BookMarks
+// class ActiveBookMarkList {
+//   static List<BmModel>? booksList;
+
+//   ActiveBookMarkList() {
+//     booksList = [];
+//   }
+
+//   Future<void> updateActiveBookMarkList(int bibleVersion) async {
+//     booksList = await BmQueries().getBookMarksVersionList(bibleVersion);
+//     //debugPrint(jsonEncode(booksList));
+//   }
+// }
+
+// HighLights
+class ActiveHighLightList {
+  static List<HlModel>? highsList;
+
+  ActiveHighLightList() {
+    highsList = [];
   }
 
   Future<void> updateActiveHighLightList(int bibleVersion) async {

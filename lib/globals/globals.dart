@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class Globals {
@@ -29,4 +28,7 @@ class Globals {
 
   // Active Version count
   static int? activeVersionCount = 0;
+
+  // Initial run - prevent re-reading GetLists
+  static bool listReadCompleted = false;
 }
