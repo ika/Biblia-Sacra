@@ -1,4 +1,3 @@
-import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
