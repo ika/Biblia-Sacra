@@ -18,7 +18,6 @@ import 'package:bibliasacra/main/main_compage.dart';
 import 'package:bibliasacra/main/main_dict.dart';
 import 'package:bibliasacra/main/main_selector.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
-import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
