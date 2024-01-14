@@ -81,8 +81,9 @@ class _BookMarkState extends State<BookMarksPage> {
         if (value) {
           _bmQueries.deleteBookMark(list[index].id).then(
             (value) {
+              Globals.listReadCompleted = false;
               // ActiveBookMarkList().updateActiveBookMarkList(list[index].version!);
-              // ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
+              ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
               setState(() {});
             },
           );
@@ -107,12 +108,22 @@ class _BookMarkState extends State<BookMarksPage> {
               leading: GestureDetector(
                 child: const Icon(Globals.backArrow),
                 onTap: () {
+                  Route route = MaterialPageRoute(
+                    builder: (context) => const MainPage(),
+                  );
                   Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      Navigator.of(context).pop();
+                      Navigator.push(context, route);
+                      //Navigator.of(context).pop();
                     },
                   );
+                  // Future.delayed(
+                  //   Duration(milliseconds: Globals.navigatorDelay),
+                  //   () {
+                  //     Navigator.of(context).pop();
+                  //   },
+                  // );
                 },
               ),
               title: const Text(

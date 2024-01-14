@@ -1,4 +1,3 @@
-import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/main/db_model.dart';
 import 'package:bibliasacra/main/db_queries.dart';

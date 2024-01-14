@@ -54,15 +54,15 @@ class GetLists {
 // }
 
 // HighLights
-class ActiveHighLightList {
-  static List<HlModel>? highsList;
+// class ActiveHighLightList {
+//   static List<HlModel>? highsList;
 
-  ActiveHighLightList() {
-    highsList = [];
-  }
+//   ActiveHighLightList() {
+//     highsList = [];
+//   }
 
-  Future<void> updateActiveHighLightList(int bibleVersion) async {
-    highsList = await HlQueries().getHighVersionList(bibleVersion);
-    //debugPrint(jsonEncode(highsList));
-  }
-}
+//   Future<void> updateActiveHighLightList(int bibleVersion) async {
+//     highsList = await HlQueries().getHighVersionList(bibleVersion);
+//     //debugPrint(jsonEncode(highsList));
+//   }
+// }

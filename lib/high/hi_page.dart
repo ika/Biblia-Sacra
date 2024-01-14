@@ -6,7 +6,6 @@ import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_queries.dart';
 import 'package:bibliasacra/main/main_page.dart';
-import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

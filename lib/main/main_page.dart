@@ -20,6 +20,7 @@ import 'package:bibliasacra/main/main_selector.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
+import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
@@ -206,7 +207,7 @@ class MainPageState extends State<MainPage>
   //   );
   // }
 
-  void insertBookMark(int bid) {
+  Future<void> insertBookMark(int bid) async {
     List<String> stringTitle = [
       versionAbbr,
       ' ',
@@ -228,16 +229,17 @@ class MainPageState extends State<MainPage>
         verse: verseNumber,
         name: bookName,
         bid: bid);
-    _bmQueries.saveBookMark(model).then(
-      (value) {
-        //ActiveBookMarkList().updateActiveBookMarkList(bibleVersion);
-        // Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
-        //   ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
-        // });
-        Globals.listReadCompleted = false;
-        setState(() {});
-      },
-    );
+    _bmQueries.saveBookMark(model);
+    // _bmQueries.saveBookMark(model).then(
+    //   (value) {
+    //     //ActiveBookMarkList().updateActiveBookMarkList(bibleVersion);
+    //     // Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
+    //     //   ScaffoldMessenger.of(context).showSnackBar(bookMarkSnackBar);
+    //     // });
+    //     Globals.listReadCompleted = false;
+    //     setState(() {});
+    //   },
+    // );
   }
 
   Future<void> insertHighLight(int bid) async {
@@ -275,7 +277,7 @@ class MainPageState extends State<MainPage>
     //});
   }
 
-  void saveNote(int bid) {
+  Future<void> saveNote(int bid) async {
     List<String> stringTitle = [
       versionAbbr,
       ' ',
@@ -297,10 +299,13 @@ class MainPageState extends State<MainPage>
         verse: verseNumber,
         name: bookName,
         bid: bid);
-    _ntQueries.insertNote(model).then((noteid) {
-      model.id = noteid;
-      gotoEditNote(model);
+    _ntQueries.insertNote(model).then((value) {
+      Globals.listReadCompleted = false;
     });
+    // _ntQueries.insertNote(model).then((noteid) {
+    //   model.id = noteid;
+    //   gotoEditNote(model);
+    // });
   }
 
   Future<void> gotoEditNote(NtModel model) async {
@@ -762,7 +767,10 @@ class MainPageState extends State<MainPage>
                 // Bookmark
 
                 (!getBookMarksMatch(verseBid))
-                    ? insertBookMark(verseBid)
+                    ? insertBookMark(verseBid).then((value) {
+                        Globals.listReadCompleted = false;
+                        setState(() {});
+                      })
                     : Future.delayed(
                         Duration(milliseconds: Globals.navigatorDelay),
                         () {
@@ -771,7 +779,9 @@ class MainPageState extends State<MainPage>
                             MaterialPageRoute(
                               builder: (context) => const BookMarksPage(),
                             ),
-                          );
+                          ).then((value) {
+                            setState(() {});
+                          });
                         },
                       );
 
@@ -804,14 +814,36 @@ class MainPageState extends State<MainPage>
                 // Note
                 //animationController.reverse();
 
-                if (getNotesMatch(verseBid)) {
-                  getNoteModel(verseBid).then((model) {
-                    gotoEditNote(model);
-                  });
-                } else {
-                  saveNote(verseBid);
-                  //setState(() {});
-                }
+                // if (getNotesMatch(verseBid)) {
+                //   // getNoteModel(verseBid).then((model) {
+                //   //   gotoEditNote(model);
+                //   // });
+                // } else {
+                //   saveNote(verseBid).then((value) {
+                //     Globals.listReadCompleted = false;
+                //     setState(() {});
+                //   });
+                // }
+
+                (getNotesMatch(verseBid))
+                    ? Future.delayed(
+                        Duration(milliseconds: Globals.navigatorDelay),
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const NotesPage(),
+                            ),
+                          ).then((value) {
+                            //Globals.listReadCompleted = false;
+                            setState(() {});
+                          });
+                        },
+                      )
+                    : saveNote(verseBid).then((value) {
+                        //Globals.listReadCompleted = false;
+                        setState(() {});
+                      });
 
                 break;
               case 4:
