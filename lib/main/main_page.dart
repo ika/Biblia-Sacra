@@ -229,7 +229,9 @@ class MainPageState extends State<MainPage>
         verse: verseNumber,
         name: bookName,
         bid: bid);
-    _bmQueries.saveBookMark(model);
+    _bmQueries.saveBookMark(model).then((value) {
+      Globals.listReadCompleted = false;
+    });
     // _bmQueries.saveBookMark(model).then(
     //   (value) {
     //     //ActiveBookMarkList().updateActiveBookMarkList(bibleVersion);
@@ -265,7 +267,9 @@ class MainPageState extends State<MainPage>
         name: bookName,
         bid: bid);
 
-    _hlQueries.saveHighLight(model);
+    _hlQueries.saveHighLight(model).then((value) {
+      Globals.listReadCompleted = false;
+    });
 
     // _hlQueries.saveHighLight(model).then((value) {
     // setState(() {
@@ -308,51 +312,51 @@ class MainPageState extends State<MainPage>
     // });
   }
 
-  Future<void> gotoEditNote(NtModel model) async {
-    Route route = MaterialPageRoute(
-      builder: (context) => EditNotePage(model: model, mode: ''),
-    );
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.push(context, route).then((v) {
-          // ActiveNotesList().updateActiveNotesList(bibleVersion);
-        });
-      },
-    );
-  }
+  // Future<void> gotoEditNote(NtModel model) async {
+  //   Route route = MaterialPageRoute(
+  //     builder: (context) => EditNotePage(model: model, mode: ''),
+  //   );
+  //   Future.delayed(
+  //     Duration(milliseconds: Globals.navigatorDelay),
+  //     () {
+  //       Navigator.push(context, route).then((v) {
+  //         // ActiveNotesList().updateActiveNotesList(bibleVersion);
+  //       });
+  //     },
+  //   );
+  // }
 
-  Future<NtModel> getNoteModel(int id) async {
-    List<NtModel> vars = await _ntQueries.getNoteByBid(id);
+  // Future<NtModel> getNoteModel(int id) async {
+  //   List<NtModel> vars = await _ntQueries.getNoteByBid(id);
 
-    if ((vars.isNotEmpty)) {
-      return NtModel(
-          id: vars[0].id,
-          title: vars[0].title,
-          contents: vars[0].contents,
-          lang: vars[0].lang,
-          version: vars[0].version,
-          abbr: vars[0].abbr,
-          book: vars[0].book,
-          chapter: vars[0].chapter,
-          verse: vars[0].verse,
-          name: vars[0].name,
-          bid: vars[0].bid);
-    } else {
-      return NtModel(
-          id: 0,
-          title: '',
-          contents: '',
-          lang: '',
-          version: 0,
-          abbr: '',
-          book: 0,
-          chapter: 0,
-          verse: 0,
-          name: '',
-          bid: id);
-    }
-  }
+  //   if ((vars.isNotEmpty)) {
+  //     return NtModel(
+  //         id: vars[0].id,
+  //         title: vars[0].title,
+  //         contents: vars[0].contents,
+  //         lang: vars[0].lang,
+  //         version: vars[0].version,
+  //         abbr: vars[0].abbr,
+  //         book: vars[0].book,
+  //         chapter: vars[0].chapter,
+  //         verse: vars[0].verse,
+  //         name: vars[0].name,
+  //         bid: vars[0].bid);
+  //   } else {
+  //     return NtModel(
+  //         id: 0,
+  //         title: '',
+  //         contents: '',
+  //         lang: '',
+  //         version: 0,
+  //         abbr: '',
+  //         book: 0,
+  //         chapter: 0,
+  //         verse: 0,
+  //         name: '',
+  //         bid: id);
+  //   }
+  // }
 
   bool getBookMarksMatch(int bid) {
     bool match = false;
@@ -444,11 +448,26 @@ class MainPageState extends State<MainPage>
         width: 30,
         child: IconButton(
           icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
-          onPressed: () => getNoteModel(snapshot.data[index].id).then(
-            (model) {
-              gotoEditNote(model);
-            },
-          ),
+          // onPressed: () => getNoteModel(snapshot.data[index].id).then(
+          //   (model) {
+          //     gotoEditNote(model);
+          //   },
+          // ),
+          onPressed: () {
+            Future.delayed(
+              Duration(milliseconds: Globals.navigatorDelay),
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotesPage(),
+                  ),
+                ).then((value) {
+                  setState(() {});
+                });
+              },
+            );
+          },
         ),
       );
     } else {
@@ -465,13 +484,20 @@ class MainPageState extends State<MainPage>
           icon: Icon(Icons.bookmark_border_outlined,
               color: Theme.of(context).colorScheme.primary),
           onPressed: () {
-            debugPrint('BOOKMARK PRESSES');
+            Future.delayed(
+              Duration(milliseconds: Globals.navigatorDelay),
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BookMarksPage(),
+                  ),
+                ).then((value) {
+                  setState(() {});
+                });
+              },
+            );
           },
-          // onPressed: () => getNoteModel(snapshot.data[index].id).then(
-          //   (model) {
-          //     gotoEditNote(model);
-          //   },
-          // ),
         ),
       );
     } else {
@@ -768,7 +794,6 @@ class MainPageState extends State<MainPage>
 
                 (!getBookMarksMatch(verseBid))
                     ? insertBookMark(verseBid).then((value) {
-                        Globals.listReadCompleted = false;
                         setState(() {});
                       })
                     : Future.delayed(
@@ -793,7 +818,6 @@ class MainPageState extends State<MainPage>
                     ? insertHighLight(verseBid).then((value) {
                         // ActiveHighLightList()
                         //     .updateActiveHighLightList(bibleVersion);
-                        Globals.listReadCompleted = false;
                         setState(() {});
                       })
                     : Future.delayed(
@@ -835,13 +859,11 @@ class MainPageState extends State<MainPage>
                               builder: (context) => const NotesPage(),
                             ),
                           ).then((value) {
-                            //Globals.listReadCompleted = false;
                             setState(() {});
                           });
                         },
                       )
                     : saveNote(verseBid).then((value) {
-                        //Globals.listReadCompleted = false;
                         setState(() {});
                       });
 
