@@ -7,38 +7,17 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 @immutable
 abstract class VersionEvent {}
 
-// class InitiateVersion extends VersionEvent {}
-
 class UpdateVersion extends VersionEvent {
   UpdateVersion({required this.bibleVersion});
   final int bibleVersion;
 }
 
 // -------------------------------------------------
-// State
-// -------------------------------------------------
-// abstract class VersionState {
-//   int bibleVersion;
-//   VersionState({required this.bibleVersion});
-// }
-
-// class InitialVersionState extends VersionState {
-//   InitialVersionState({required super.bibleVersion});
-// }
-
-// class UpdateGlobalsState extends VersionState {
-//   UpdateGlobalsState({required super.bibleVersion});
-// }
-
-// -------------------------------------------------
 // Bloc
 // -------------------------------------------------
 class VersionBloc extends HydratedBloc<VersionEvent, int> {
   VersionBloc() : super(1) {
-    // on<InitiateVersion>((event, emit) async {
-    //   emit(state);
-    // });
-
+    
     on<UpdateVersion>((event, emit) {
       emit(event.bibleVersion);
     });

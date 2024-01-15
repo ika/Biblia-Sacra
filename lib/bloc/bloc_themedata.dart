@@ -7,8 +7,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 @immutable
 abstract class ThemeEvent {}
 
-// class InitiateTheme extends ThemeEvent {}
-
 class ChangeTheme extends ThemeEvent {
   ChangeTheme(this.isDark);
   final bool isDark;
@@ -19,9 +17,6 @@ class ChangeTheme extends ThemeEvent {
 // -------------------------------------------------
 class ThemeBloc extends HydratedBloc<ThemeEvent, bool> {
   ThemeBloc() : super(true) {
-    // on<InitiateTheme>((event, emit) {
-    //   emit(state);
-    // });
 
     on<ChangeTheme>((event, emit) {
       emit(event.isDark ? false : true);

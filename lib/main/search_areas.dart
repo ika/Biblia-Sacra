@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 var searchAreasList = {};
-//SharedPrefs sharedPrefs = SharedPrefs();
 
 Future<dynamic> searchAreasDialog(BuildContext context) {
   return showDialog(

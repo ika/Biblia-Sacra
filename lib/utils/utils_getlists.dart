@@ -1,4 +1,3 @@
-
 import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:bibliasacra/high/hl_model.dart';
@@ -24,45 +23,3 @@ class GetLists {
     //debugPrint(jsonEncode(booksList));
   }
 }
-
-// Notes
-// class ActiveNotesList {
-//   static List<NtModel>? notesList;
-
-//   ActiveNotesList() {
-//     notesList = [];
-//   }
-
-//   Future<void> updateActiveNotesList(int bibleVersion) async {
-//     notesList = await NtQueries().getAllVersionNotes(bibleVersion);
-//     //debugPrint(jsonEncode(notesList));
-//   }
-// }
-
-// BookMarks
-// class ActiveBookMarkList {
-//   static List<BmModel>? booksList;
-
-//   ActiveBookMarkList() {
-//     booksList = [];
-//   }
-
-//   Future<void> updateActiveBookMarkList(int bibleVersion) async {
-//     booksList = await BmQueries().getBookMarksVersionList(bibleVersion);
-//     //debugPrint(jsonEncode(booksList));
-//   }
-// }
-
-// HighLights
-// class ActiveHighLightList {
-//   static List<HlModel>? highsList;
-
-//   ActiveHighLightList() {
-//     highsList = [];
-//   }
-
-//   Future<void> updateActiveHighLightList(int bibleVersion) async {
-//     highsList = await HlQueries().getHighVersionList(bibleVersion);
-//     //debugPrint(jsonEncode(highsList));
-//   }
-// }

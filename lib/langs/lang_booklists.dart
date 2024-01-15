@@ -59,16 +59,5 @@ class BookLists {
     return getBookByNumber(bibleBook, Utilities(bibleVersion).getLanguage());
   }
 
-  // Future<void> writeBookNameXX(int book) async {
-  //   readBookName(book).then(
-  //     (name) {
-  //       sharedPrefs.setStringPref('bookname', name).then(
-  //         (v) {
-  //           Globals.bookName = name;
-  //           //Globals.selectorText = "$name: 1:1";
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
+
 }

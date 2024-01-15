@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 
 NtQueries _ntQueries = NtQueries();
 
-//late int bibleVersion;
-
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
 
@@ -45,28 +43,11 @@ class NotesPageState extends State<NotesPage> {
       Duration(milliseconds: Globals.navigatorDelay),
       () {
         Navigator.push(context, route).then((v) {
-          setState(() {
-          });
+          setState(() {});
         });
       },
     );
   }
-
-  // backButton(BuildContext context) {
-  //   Future.delayed(
-  //     Duration(milliseconds: Globals.navigatorDelay),
-  //     () {
-  //       Navigator.of(context).pop();
-  //     },
-  //   );
-  // }
-
-  // onIconButtonPress(WriteVarsModel model) {
-  //   _lists.updateActiveLists('notes', model.version);
-  //   writeVars(model).then((value) {
-  //     backButton(context);
-  //   });
-  // }
 
   Future confirmDialog(arr) async {
     return await showDialog(
@@ -106,124 +87,6 @@ class NotesPageState extends State<NotesPage> {
       }
     });
   }
-
-  //Widget notesList(list, context) {
-  // GestureDetector makeListTile(list, int index) => GestureDetector(
-  //       onHorizontalDragEnd: (DragEndDetails details) {
-  //         if (details.primaryVelocity! > 0 || details.primaryVelocity! < 0) {
-  //           deleteWrapper(context, list, index);
-  //         }
-  //       },
-  //       child: ListTile(
-  //         trailing: Icon(Icons.arrow_right,
-  //             color: Theme.of(context).colorScheme.primary),
-  //         title: Text(
-  //           "${list[index].title}",
-  //           // style: TextStyle(
-  //           //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-  //         ),
-  //         subtitle: Text(
-  //           list[index].contents,
-  //           //style: TextStyle(fontSize: primaryTextSize),
-  //         ),
-  //         onTap: () {
-  //           final model = NtModel(
-  //               id: list[index].id,
-  //               title: list[index].title,
-  //               contents: list[index].contents,
-  //               lang: list[index].lang,
-  //               version: list[index].version,
-  //               abbr: list[index].abbr,
-  //               book: list[index].book,
-  //               chapter: list[index].chapter,
-  //               verse: list[index].verse,
-  //               name: list[index].name,
-  //               bid: list[index].bid);
-  //           gotoEditNote(model);
-  //         },
-  //       ),
-  //     );
-
-  // final makeBody = Padding(
-  //   padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
-  //   child: Column(
-  //     children: [
-  //       ListView.separated(
-  //         scrollDirection: Axis.vertical,
-  //         shrinkWrap: true,
-  //         itemCount: list == null ? 0 : list.length,
-  //         itemBuilder: (BuildContext context, int index) {
-  //           return makeListTile(list, index);
-  //         },
-  //         separatorBuilder: (BuildContext context, int index) =>
-  //             const Divider(),
-  //       ),
-  //     ],
-  //   ),
-  // );
-
-  // return Scaffold(
-  //   //backgroundColor: Theme.of(context).colorScheme.background,
-  //   appBar: AppBar(
-  //     //backgroundColor: Theme.of(context).colorScheme.primary,
-  //     centerTitle: true,
-  //     leading: GestureDetector(
-  //       child: const Icon(Globals.backArrow),
-  //       onTap: () {
-  //         Route route = MaterialPageRoute(
-  //           builder: (context) => const MainPage(),
-  //         );
-  //         Future.delayed(
-  //           Duration(milliseconds: Globals.navigatorDelay),
-  //           () {
-  //             Navigator.push(context, route);
-  //             //Navigator.of(context).pop();
-  //           },
-  //         );
-  //       },
-  //     ),
-  //     title: const Text(
-  //       'Notes',
-  //       //style: TextStyle(fontSize: Globals.appBarFontSize),
-  //     ),
-  //   ),
-  //   body: Padding(
-  //     padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
-  //     child: Column(
-  //       children: [
-  //         ListView.separated(
-  //           scrollDirection: Axis.vertical,
-  //           shrinkWrap: true,
-  //           itemCount: list.length,
-  //           itemBuilder: (BuildContext context, int index) {
-  //             return makeListTile(list, index);
-  //           },
-  //           separatorBuilder: (BuildContext context, int index) =>
-  //               const Divider(),
-  //         ),
-  //       ],
-  //     ),
-  //   ),
-  //   floatingActionButton: FloatingActionButton(
-  //     //backgroundColor: Theme.of(context).colorScheme.primary,
-  //     onPressed: () {
-  //       final model = NtModel(
-  //           title: '',
-  //           contents: '',
-  //           lang: '',
-  //           version: 0,
-  //           abbr: '',
-  //           book: 0,
-  //           chapter: 0,
-  //           verse: 0,
-  //           name: '',
-  //           bid: 0);
-  //       addPage(model);
-  //     },
-  //     child: const Icon(Icons.add),
-  //   ),
-  // );
-  //}
 
   @override
   Widget build(BuildContext context) {

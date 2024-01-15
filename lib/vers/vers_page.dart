@@ -29,15 +29,6 @@ class VersionsPageState extends State<VersionsPage> {
     super.initState();
   }
 
-  backButton(BuildContext context) {
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.of(context).pop();
-      },
-    );
-  }
-
   Widget versionsWidget() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -94,7 +85,12 @@ class VersionsPageState extends State<VersionsPage> {
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
-            backButton(context);
+            Future.delayed(
+              Duration(milliseconds: Globals.navigatorDelay),
+              () {
+                Navigator.of(context).pop();
+              },
+            );
           },
         ),
         title: const Text(

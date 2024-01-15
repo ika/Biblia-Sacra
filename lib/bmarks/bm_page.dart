@@ -24,26 +24,6 @@ class BookMarksPage extends StatefulWidget {
 class _BookMarkState extends State<BookMarksPage> {
   List<BmModel> list = List<BmModel>.empty();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
-
-  // onBookMarkTap(WriteVarsModel model) {
-  //   _lists.updateActiveLists(model.version!);
-  //   writeVars(model).then((value) {
-  //     Route route = MaterialPageRoute(
-  //       builder: (context) => const MainPage(),
-  //     );
-  //     Future.delayed(
-  //       Duration(milliseconds: Globals.navigatorDelay),
-  //       () {
-  //         Navigator.push(context, route);
-  //       },
-  //     );
-  //   });
-  // }
-
   Future confirmDialog(arr) async {
     return await showDialog(
       context: context,
@@ -82,7 +62,6 @@ class _BookMarkState extends State<BookMarksPage> {
           _bmQueries.deleteBookMark(list[index].id).then(
             (value) {
               Globals.listReadCompleted = false;
-              // ActiveBookMarkList().updateActiveBookMarkList(list[index].version!);
               ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
               setState(() {});
             },
@@ -118,12 +97,6 @@ class _BookMarkState extends State<BookMarksPage> {
                       //Navigator.of(context).pop();
                     },
                   );
-                  // Future.delayed(
-                  //   Duration(milliseconds: Globals.navigatorDelay),
-                  //   () {
-                  //     Navigator.of(context).pop();
-                  //   },
-                  // );
                 },
               ),
               title: const Text(
@@ -172,22 +145,6 @@ class _BookMarkState extends State<BookMarksPage> {
                             context.read<VerseBloc>().add(UpdateVerse(
                                 verse: list[index].verse!)); // UpdateVerse
 
-                            //Globals.bibleLang = list[index].lang!;
-
-                            // final model = WriteVarsModel(
-                            //   lang: list[index].lang,
-                            //   version: list[index].version,
-                            //   abbr: list[index].abbr,
-                            //   book: list[index].book,
-                            //   //chapter: list[index].chapter, // duplicate save
-                            //   verse: list[index].verse,
-                            //   name: list[index].name,
-                            // );
-                            // onBookMarkTap(model);
-
-                            // _lists
-                            //     .updateActiveLists(list[index].version!)
-                            //     .then((value) {
                             Route route = MaterialPageRoute(
                               builder: (context) => const MainPage(),
                             );

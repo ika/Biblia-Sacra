@@ -78,141 +78,6 @@ class _MainSelectorState extends State<MainSelector>
     });
   }
 
-  backButton(BuildContext context) {
-    Route route = MaterialPageRoute(
-      builder: (context) => const MainPage(),
-    );
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.push(context, route);
-      },
-    );
-  }
-
-  // Widget versesWidget() {
-  //   return Container(
-  //     padding: const EdgeInsets.all(20.0),
-  //     child: FutureBuilder<int>(
-  //       future: dbQueries.getVerseCount(Globals.bibleBook, Globals.bookChapter),
-  //       builder: (context, snapshot) {
-  //         if (snapshot.hasData) {
-  //           return GridView.count(
-  //             crossAxisCount: 5,
-  //             children: List.generate(
-  //               snapshot.data!,
-  //               (index) {
-  //                 int verse = index + 1;
-  //                 return Center(
-  //                   child: GestureDetector(
-  //                     onTap: () {
-  //                       Globals.chapterVerse = index;
-  //                       backButton(context);
-  //                     },
-  //                     child: Container(
-  //                       padding: const EdgeInsets.all(15),
-  //                       decoration: BoxDecoration(
-  //                         color: Colors.grey[300],
-  //                         borderRadius: BorderRadius.circular(5),
-  //                         shape: BoxShape.rectangle,
-  //                         boxShadow: [
-  //                           BoxShadow(
-  //                               // Bottom right
-  //                               color: Colors.grey.shade600,
-  //                               offset: const Offset(3, 3),
-  //                               blurRadius: 5,
-  //                               spreadRadius: 1),
-  //                           const BoxShadow(
-  //                               // Top left
-  //                               color: Colors.white,
-  //                               offset: Offset(-3, -3),
-  //                               blurRadius: 5,
-  //                               spreadRadius: 1)
-  //                         ],
-  //                       ),
-  //                       child: Text(
-  //                         verse.toString(),
-  //                         style: TextStyle(fontSize: primaryTextSize),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 );
-  //               },
-  //             ),
-  //           );
-  //         }
-  //         return const Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
-  // Widget chaptersWidget() {
-  //   return Container(
-  //     padding: const EdgeInsets.all(20.0),
-  //     child: FutureBuilder<int>(
-  //       future: dbQueries.getChapterCount(Globals.bibleBook),
-  //       builder: (context, snapshot) {
-  //         if (snapshot.hasData) {
-  //           return GridView.count(
-  //             crossAxisCount: 5,
-  //             children: List.generate(
-  //               snapshot.data!,
-  //               (index) {
-  //                 int chap = index + 1;
-  //                 return Center(
-  //                   child: GestureDetector(
-  //                     onTap: () {
-  //                       Globals.bookChapter = chap;
-  //                       Globals.selectorText = "${Globals.bookName}: $chap:1";
-  //                       sharedPrefs.setIntPref('chapter', chap).then((value) {
-  //                         BlocProvider.of<ChapterCubit>(context)
-  //                             .setChapter(chap);
-  //                         tabController!.animateTo(2);
-  //                       });
-  //                     },
-  //                     child: Container(
-  //                       padding: const EdgeInsets.all(15),
-  //                       decoration: BoxDecoration(
-  //                         color: Colors.grey[300],
-  //                         borderRadius: BorderRadius.circular(5),
-  //                         shape: BoxShape.rectangle,
-  //                         boxShadow: [
-  //                           BoxShadow(
-  //                               // Bottom right
-  //                               color: Colors.grey.shade600,
-  //                               offset: const Offset(3, 3),
-  //                               blurRadius: 5,
-  //                               spreadRadius: 1),
-  //                           const BoxShadow(
-  //                               // Top left
-  //                               color: Colors.white,
-  //                               offset: Offset(-3, -3),
-  //                               blurRadius: 5,
-  //                               spreadRadius: 1)
-  //                         ],
-  //                       ),
-  //                       child: Text(
-  //                         chap.toString(),
-  //                         style: TextStyle(fontSize: primaryTextSize),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 );
-  //               },
-  //             ),
-  //           );
-  //         }
-  //         return const Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
   Widget versesWidget() {
     return Container(
       padding: const EdgeInsets.all(20.0),
@@ -402,7 +267,15 @@ class _MainSelectorState extends State<MainSelector>
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
-            backButton(context);
+            Route route = MaterialPageRoute(
+              builder: (context) => const MainPage(),
+            );
+            Future.delayed(
+              Duration(milliseconds: Globals.navigatorDelay),
+              () {
+                Navigator.push(context, route);
+              },
+            );
           },
         ),
         title: Text(

@@ -11,8 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 NtQueries _ntQueries = NtQueries();
 
-//double? primaryTextSize;
-
 class EditNotePage extends StatefulWidget {
   const EditNotePage({super.key, required this.mode, required this.model});
 
@@ -31,11 +29,6 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   initState() {
     super.initState();
-    // primarySwatch = BlocProvider.of<SettingsCubit>(context)
-    //     .state
-    //     .themeData
-    //     .primaryColor as MaterialColor?;
-    //primaryTextSize = Globals.initialTextSize;
 
     _titleController.text = widget.model.title!;
     _contentsController.text = widget.model.contents!;
@@ -57,26 +50,6 @@ class _EditNotePageState extends State<EditNotePage> {
       await _ntQueries.updateNote(widget.model);
     }
   }
-
-  // backButton(BuildContext context) {
-  //   Route route = MaterialPageRoute(
-  //     builder: (context) => const MainPage(),
-  //   );
-  //   Future.delayed(
-  //     Duration(milliseconds: Globals.navigatorDelay),
-  //     () {
-  //       Navigator.push(context, route);
-  //     },
-  //   );
-  // }
-
-  // onGoToVerseTap(WriteVarsModel model) {
-  //   // _lists.updateActiveLists('all', model.version!);
-  //   //Globals.bibleLang = model.lang!;
-  //   writeVars(model).then((value) {
-  //     backButton(context);
-  //   });
-  // }
 
   Widget showGotoVerse() {
     if (widget.model.bid! > 0 && widget.mode.isNotEmpty) {
@@ -108,16 +81,6 @@ class _EditNotePageState extends State<EditNotePage> {
               Navigator.push(context, route);
             },
           );
-
-          // final model = WriteVarsModel(
-          //     lang: widget.model.lang,
-          //     version: widget.model.version,
-          //     abbr: widget.model.abbr,
-          //     book: widget.model.book,
-          //     //chapter: widget.model.chapter,
-          //     verse: widget.model.verse,
-          //     name: widget.model.name);
-          // onGoToVerseTap(model);
         },
       );
     } else {

@@ -17,8 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 
-//SharedPrefs sharedPrefs = SharedPrefs();
-
 Future<List<Bible>>? blankSearch;
 Future<List<Bible>>? filteredSearch;
 Future<List<Bible>>? results;
@@ -69,20 +67,6 @@ class _MainSearchState extends State<MainSearch> {
     );
   }
 
-  // onSearchTap(WriteVarsModel model) {
-  //   writeVars(model).then((value) {
-  //     Route route = MaterialPageRoute(
-  //       builder: (context) => const MainPage(),
-  //     );
-  //     Future.delayed(
-  //       Duration(milliseconds: Globals.navigatorDelay),
-  //       () {
-  //         Navigator.push(context, route);
-  //       },
-  //     );
-  //   });
-  // }
-
   Future emptyInputDialog(context) async {
     return showDialog<void>(
       context: context,
@@ -101,69 +85,6 @@ class _MainSearchState extends State<MainSearch> {
       },
     );
   }
-
-  //Widget searchWidget() {
-  // return Container(
-  //   padding: const EdgeInsets.all(20.0),
-  //   child: Column(
-  //     children: [
-  //       TextFormField(
-  //         initialValue: '',
-  //         maxLength: 40,
-  //         maxLines: 1,
-  //         autofocus: false,
-  //         onTap: () {
-  //           filteredSearch = Future.value([]);
-  //         },
-  //         onChanged: (value) {
-  //           _contents = value;
-  //         },
-  //         decoration: InputDecoration(
-  //           labelText: 'Search',
-  //           //labelStyle: TextStyle(fontSize: primaryTextSize),
-  //           suffixIcon: IconButton(
-  //             icon: const Icon(Icons.search),
-  //             onPressed: () {
-  //               FocusScope.of(context).unfocus();
-  //               Future.delayed(
-  //                 Duration(milliseconds: Globals.navigatorDelay),
-  //                 () {
-  //                   _contents.isEmpty
-  //                       ? emptyInputDialog(context)
-  //                       : runFilter(_contents);
-  //                 },
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //       ),
-  //       // const SizedBox(
-  //       //   height: 20,
-  //       // ),
-  //       Expanded(
-  //         child: FutureBuilder<List<Bible>>(
-  //           future: filteredSearch,
-  //           builder: (BuildContext context, snapshot) {
-  //             if (snapshot.hasData) {
-  //               return ListView.separated(
-  //                 itemCount: snapshot.data!.length,
-  //                 itemBuilder: (context, index) {
-  //                   return listTileMethod(snapshot, index);
-  //                 },
-  //                 separatorBuilder: (BuildContext context, int index) =>
-  //                     const Divider(),
-  //               );
-  //             }
-  //             return const Center(
-  //               child: CircularProgressIndicator(),
-  //             );
-  //           },
-  //         ),
-  //       ),
-  //     ],
-  //   ),
-  // );
-  //}
 
   RichText highLiteSearchWord(String t, String m) {
     int idx = t.toLowerCase().indexOf(m.toLowerCase());
@@ -236,17 +157,6 @@ class _MainSearchState extends State<MainSearch> {
         context
             .read<VerseBloc>()
             .add(UpdateVerse(verse: snapshot.data![index].v!));
-
-        // final model = WriteVarsModel(
-        //   lang: bibleLang,
-        //   version: bibleVersion,
-        //   abbr: versionAbbr,
-        //   book: snapshot.data![index].b,
-        //   //chapter: snapshot.data![index].c,
-        //   verse: snapshot.data![index].v,
-        //   name: bookName,
-        // );
-        // onSearchTap(model);
 
         Route route = MaterialPageRoute(
           builder: (context) => const MainPage(),

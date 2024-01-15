@@ -11,9 +11,6 @@ Future<List<DicModel>>? results;
 
 String _contents = '';
 
-MaterialColor? primarySwatch;
-//double? primaryTextSize;
-
 class DictSearch extends StatefulWidget {
   const DictSearch({super.key});
 
@@ -24,12 +21,9 @@ class DictSearch extends StatefulWidget {
 class _DicSearchState extends State<DictSearch> {
   @override
   initState() {
+    super.initState();
     blankSearch = Future.value([]);
     filteredSearch = blankSearch;
-    // primarySwatch =
-    //     BlocProvider.of<SettingsCubit>(context).state.themeData.primaryColor as MaterialColor?;
-    //primaryTextSize = Globals.initialTextSize;
-    super.initState();
   }
 
   Future<List<DicModel>> repeatSearch(String enterdKeyWord) async {
@@ -37,10 +31,7 @@ class _DicSearchState extends State<DictSearch> {
 
     enterdKeyWord = enterdKeyWord.trim();
 
-    //enterdKeyWord = enterdKeyWord.replaceAll(RegExp(r'[^\w\s]+'), '');
-
     do {
-      //debugPrint("ENTEREDKEYWORD $enterdKeyWord");
       searchList = await _dictQueries.getSearchedValues(enterdKeyWord);
       enterdKeyWord = enterdKeyWord.characters.skipLast(1).toString();
     } while (searchList.first.trans!.isEmpty);
@@ -56,15 +47,6 @@ class _DicSearchState extends State<DictSearch> {
     setState(
       () {
         filteredSearch = results;
-      },
-    );
-  }
-
-  backButton(BuildContext context) {
-    Future.delayed(
-      Duration(milliseconds: Globals.navigatorDelay),
-      () {
-        Navigator.of(context).pop();
       },
     );
   }
@@ -176,7 +158,12 @@ class _DicSearchState extends State<DictSearch> {
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
-                backButton(context);
+                Future.delayed(
+                  Duration(milliseconds: Globals.navigatorDelay),
+                  () {
+                    Navigator.of(context).pop();
+                  },
+                );
               },
             ),
             title: const Text(

@@ -40,7 +40,6 @@ Future<List<DicModel>> repeatSearch() async {
   word = Globals.dictionaryLookup.replaceAll(RegExp(r'[^\w\s]+'), '');
 
   do {
-    //debugPrint("MAIN_DIC_WORD $word");
     searchList = await _dictQueries.getSearchedValues(word);
     word = word.characters.skipLast(1).toString();
   } while (searchList.first.trans!.isEmpty);

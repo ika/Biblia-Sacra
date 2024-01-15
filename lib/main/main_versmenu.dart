@@ -51,28 +51,6 @@ class AppBarVersions extends StatefulWidget {
   State<StatefulWidget> createState() => AppBarVersionsPage();
 }
 
-backToMainButton(BuildContext context) {
-  Route route = MaterialPageRoute(
-    builder: (context) => const MainPage(),
-  );
-  Future.delayed(
-    Duration(milliseconds: Globals.navigatorDelay),
-    () {
-      Navigator.push(context, route);
-    },
-  );
-}
-
-// void backToSearchButton(BuildContext context) {
-//   Navigator.push(
-//     context,
-//     MaterialPageRoute(
-//       builder: (context) => const MainSearch(),
-//     ),
-//   );
-//   //Navigator.pop(context);
-// }
-
 void versionChangeSnackBar(BuildContext context, String snackBarText) {
   Future.delayed(
     Duration(milliseconds: Globals.navigatorLongestDelay),
@@ -118,30 +96,25 @@ class AppBarVersionsPage extends State<AppBarVersions> {
                 snapshot.data![index].m!,
               ),
               onTap: () {
-                //_lists.updateActiveLists(snapshot.data![index].n!);
-
-                //Globals.bibleLang = snapshot.data![index].l!;
-                //Globals.bibleVersion = snapshot.data![index].n!;
                 versionAbbr = snapshot.data![index].r!;
-                //Globals.chapterVerse = 0; //reset verse number
 
                 Globals.dictionaryMode = false;
 
                 Globals.listReadCompleted = false;
 
-                //sharedPrefs.setStringPref('language', Globals.bibleLang);
-                //sharedPrefs.setIntPref('version', Globals.bibleVersion);
-                //sharedPrefs.setStringPref('verabbr', versionAbbr);
-
                 context
                     .read<VersionBloc>()
                     .add(UpdateVersion(bibleVersion: snapshot.data![index].n!));
 
-                backToMainButton(context);
-
-                // (returnPath == 'main')
-                //     ? backToMainButton(context)
-                //     : backToSearchButton(context);
+                Route route = MaterialPageRoute(
+                  builder: (context) => const MainPage(),
+                );
+                Future.delayed(
+                  Duration(milliseconds: Globals.navigatorDelay),
+                  () {
+                    Navigator.push(context, route);
+                  },
+                );
               },
             );
           },

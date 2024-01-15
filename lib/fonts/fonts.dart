@@ -1,6 +1,5 @@
 import 'package:bibliasacra/fonts/font_picker.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_font_picker/flutter_font_picker.dart';
 
 class FontsPage extends StatefulWidget {
   const FontsPage({super.key});
@@ -105,83 +104,6 @@ class FontsPageState extends State<FontsPage> {
                   );
                 },
               ),
-              // ElevatedButton(
-              //   child: const Text('Pick a font (with a dialog)'),
-              //   onPressed: () {
-              //     showDialog(
-              //       context: context,
-              //       builder: (context) {
-              //         return AlertDialog(
-              //           content: SingleChildScrollView(
-              //             child: SizedBox(
-              //               width: double.maxFinite,
-              //               child: FontPicker(
-              //                 showInDialog: true,
-              //                 initialFontFamily: 'Anton',
-              //                 onFontChanged: (font) {
-              //                   setState(() {
-              //                     _selectedFont = font.fontFamily;
-              //                     _selectedFontTextStyle = font.toTextStyle();
-              //                   });
-              //                   debugPrint(
-              //                     "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
-              //                   );
-              //                 },
-              //                 googleFonts: _myGoogleFonts,
-              //               ),
-              //             ),
-              //           ),
-              //         );
-              //       },
-              //     );
-              //   },
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   mainAxisSize: MainAxisSize.min,
-              //   children: [
-              //     const Expanded(
-              //       child: Padding(
-              //         padding: EdgeInsets.all(8.0),
-              //         child: Text(
-              //           'Pick a font: ',
-              //           textAlign: TextAlign.right,
-              //           style: TextStyle(fontWeight: FontWeight.w700),
-              //         ),
-              //       ),
-              //     ),
-              //     Expanded(
-              //       child: TextField(
-              //         readOnly: true,
-              //         textAlign: TextAlign.center,
-              //         decoration: InputDecoration(
-              //           suffixIcon: const Icon(Icons.arrow_drop_down_sharp),
-              //           hintText: _selectedFont,
-              //           border: InputBorder.none,
-              //         ),
-              //         onTap: () {
-              //           Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //               builder: (context) => FontPicker(
-              //                 onFontChanged: (font) {
-              //                   setState(() {
-              //                     _selectedFont = font.fontFamily;
-              //                     _selectedFontTextStyle = font.toTextStyle();
-              //                   });
-              //                   debugPrint(
-              //                     "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
-              //                   );
-              //                 },
-              //                 googleFonts: _myGoogleFonts,
-              //               ),
-              //             ),
-              //           );
-              //         },
-              //       ),
-              //     ),
-              //   ],
-              // ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
