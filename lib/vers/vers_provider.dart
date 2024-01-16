@@ -13,7 +13,7 @@ class VkProvider {
   static Database? _database;
 
   final String dataBaseName = Constants.vkeyDbname;
-  //final String tableName = 'versions';
+  //final String tableName = 'version_key';
 
   VkProvider._createInstance();
 
@@ -46,6 +46,26 @@ class VkProvider {
 
     return await databaseFactory.openDatabase(path);
   }
+
+  //   Future<Database> initDB() async {
+  //   io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+  //   String path = join(documentsDirectory.path, dataBaseName);
+
+  //   var db = await databaseFactory.openDatabase(path);
+
+  //   await db.execute('''
+  //               CREATE TABLE IF NOT EXISTS $tableName (
+  //                   id INTEGER PRIMARY KEY,
+  //                   number INTEGER DEFAULT 0,
+  //                   active INTEGER DEFAULT 0,
+  //                   abbr TEXT DEFAULT '',
+  //                   lang TEXT DEFAULT '',
+  //                   name TEXT DEFAULT ''
+  //               )
+  //           ''');
+
+  //   return db;
+  // }
 
   Future close() async {
     return _database!.close();

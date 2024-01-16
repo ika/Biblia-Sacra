@@ -1,146 +1,95 @@
-import 'package:bibliasacra/fonts/font_picker.dart';
+import 'package:bibliasacra/bloc/bloc_font.dart';
+import 'package:bibliasacra/globals/globals.dart';
+import 'package:bibliasacra/main/main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:bibliasacra/fonts/list.dart';
+
+late int selectedFont;
 
 class FontsPage extends StatefulWidget {
-  const FontsPage({super.key});
+  const FontsPage({Key? key}) : super(key: key);
 
   @override
-  FontsPageState createState() => FontsPageState();
+  State<FontsPage> createState() => _FontsPageState();
 }
 
-class FontsPageState extends State<FontsPage> {
-  String _selectedFont = 'Roboto';
-  
-  TextStyle? _selectedFontTextStyle;
-  final List<String> _myGoogleFonts = [
-    "Abril Fatface",
-    "Aclonica",
-    "Alegreya Sans",
-    "Architects Daughter",
-    "Archivo",
-    "Archivo Narrow",
-    "Bebas Neue",
-    "Bitter",
-    "Bree Serif",
-    "Bungee",
-    "Cabin",
-    "Cairo",
-    "Coda",
-    "Comfortaa",
-    "Comic Neue",
-    "Cousine",
-    "Croissant One",
-    "Faster One",
-    "Forum",
-    "Great Vibes",
-    "Heebo",
-    "Inconsolata",
-    "Josefin Slab",
-    "Lato",
-    "Libre Baskerville",
-    "Lobster",
-    "Lora",
-    "Merriweather",
-    "Montserrat",
-    "Mukta",
-    "Nunito",
-    "Offside",
-    "Open Sans",
-    "Oswald",
-    "Overlock",
-    "Pacifico",
-    "Playfair Display",
-    "Poppins",
-    "Raleway",
-    "Roboto",
-    "Roboto Mono",
-    "Source Sans Pro",
-    "Space Mono",
-    "Spicy Rice",
-    "Squada One",
-    "Sue Ellen Francisco",
-    "Trade Winds",
-    "Ubuntu",
-    "Varela",
-    "Vollkorn",
-    "Work Sans",
-    "Zilla Slab",
-  ];
+class _FontsPageState extends State<FontsPage> {
+  @override
+  void initState() {
+    super.initState();
+    selectedFont = context.read<FontBloc>().state;
+  }
+
+  // backButton(BuildContext context) {
+  //   Route route = MaterialPageRoute(
+  //     builder: (context) => const MainPage(),
+  //   );
+  //   Future.delayed(
+  //     Duration(milliseconds: Globals.navigatorDelay),
+  //     () {
+  //       Navigator.push(context, route);
+  //       //Navigator.of(context).pop();
+  //     },
+  //   );
+  // }
+
+  backButton(BuildContext context) {
+    Future.delayed(
+      Duration(milliseconds: Globals.navigatorDelay),
+      () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    //_selectedFont = BlocProvider.of<ThemeDataCubit>(context).state.themeData;
     return Scaffold(
+      //backgroundColor: Colors.grey,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Fonts'),
+        actions: const [],
+        leading: GestureDetector(
+          child: const Icon(Globals.backArrow),
+          onTap: () {
+            backButton(context);
+          },
+        ),
+        //elevation: 16,
+        title: const Text(
+          'Font Selector',
+          //style: TextStyle(fontSize: Globals.appBarFontSize),
+        ),
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                child: const Text('Pick a font'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FontPicker(
-                        showFontInfo: true,
-                        recentsCount: 10,
-                        onFontChanged: (font) {
-                          setState(() {
-                            _selectedFont = font.fontFamily;
-                            _selectedFontTextStyle = font.toTextStyle();
-                          });
-                          debugPrint(
-                            "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
-                          );
-                        },
-                        googleFonts: _myGoogleFonts,
-                      ),
-                    ),
-                  );
+        child: ListView(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            for (int i = 0; i < fontsList.length; i++)
+              InkWell(
+                onTap: () {
+                  context.read<FontBloc>().add(UpdateFont(font: i));
                 },
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.blueGrey,
-                        width: 2.0,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Font Selected: $_selectedFont',
-                              style: _selectedFontTextStyle,
-                            ),
-                            Text(
-                              'The quick brown fox jumped',
-                              style: _selectedFontTextStyle,
-                            ),
-                            Text(
-                              'over the lazy dog',
-                              style: _selectedFontTextStyle,
-                            ),
-                          ],
-                        ),
-                      ),
+                child: Container(
+                  color: (i == selectedFont)
+                      ? Theme.of(context).colorScheme.inversePrimary
+                      : null,
+                  margin: const EdgeInsets.only(bottom: 8, left: 20, right: 20),
+                  height: 55,
+                  //color: primarySwatch![300],
+                  child: Center(
+                    child: Text(
+                      'For God so loved the world ...',
+                      style: GoogleFonts.getFont(fontsList[i]),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );

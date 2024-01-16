@@ -1,7 +1,7 @@
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// class SharedPrefs {
-//   final Future<SharedPreferences> sharedPrefs = SharedPreferences.getInstance();
+class SharedPrefs {
+  final Future<SharedPreferences> sharedPrefs = SharedPreferences.getInstance();
 
   // ==================SET=====================
 
@@ -105,14 +105,14 @@
 //     return prefs.getInt("bookNumber") ?? 43;
 //   }
 
-//   // Search Area
-//   Future<void> setSearchAreaPref(int value) async {
-//     final prefs = await sharedPrefs;
-//     prefs.setInt("searchArea", value);
-//   }
+  // Font List Number
+  Future<void> setFontListNumber(int value) async {
+    final prefs = await sharedPrefs;
+    prefs.setInt("fontNumber", value);
+  }
 
-//   Future<int> getSearchAreaPref() async {
-//     final prefs = await sharedPrefs;
-//     return prefs.getInt("searchArea") ?? 5;
-//   }
-// }
+  Future<int> getFontListNumber() async {
+    final prefs = await sharedPrefs;
+    return prefs.getInt("fontNumber") ?? 38;
+  }
+}
