@@ -143,7 +143,12 @@ class _EditNotePageState extends State<EditNotePage> {
                 //Navigator.of(context).pop();
                 // if (_formKey.currentState!.validate()) {
                 updateEdit().then((value) {
-                  Navigator.of(context).pop();
+                  Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.of(context).pop();
+                    },
+                  );
                 });
                 // }
               },

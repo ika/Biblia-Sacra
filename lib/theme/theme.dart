@@ -1,4 +1,5 @@
 import 'package:bibliasacra/bloc/bloc_themedata.dart';
+import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +16,17 @@ class ThemePageState extends State<ThemePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        leading: GestureDetector(
+          child: const Icon(Globals.backArrow),
+          onTap: () {
+            Future.delayed(
+              Duration(milliseconds: Globals.navigatorDelay),
+              () {
+                Navigator.of(context).pop();
+              },
+            );
+          },
+        ),
         title: const Text('Theme Switcher'),
         // actions: [
         //   Switch(

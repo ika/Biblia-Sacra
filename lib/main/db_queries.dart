@@ -80,6 +80,21 @@ class DbQueries {
     return list;
   }
 
+  Future<List<Bible>> getSampleChapter(int b, int c) async {
+    final db = await _dbProvider!.database;
+
+    List<Bible> list = [];
+
+    var res = await db
+        .rawQuery('''SELECT * FROM $tableName WHERE b=? AND c=?''', [b, c]);
+
+    if (res.isNotEmpty) {
+      list = res.map((tableName) => Bible.fromJson(tableName)).toList();
+    }
+
+    return list;
+  }
+
   Future<List<Bible>> getVerse(int book, int chap, int verse) async {
     final db = await _dbProvider!.database;
 
@@ -100,7 +115,6 @@ class DbQueries {
 
   Future<List<Bible>> getSearchedValues(
       String search, String low, String high) async {
-
     final db = await _dbProvider!.database;
 
     //debugPrint("TEXT $search LOW $low HIGH $high");

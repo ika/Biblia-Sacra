@@ -119,28 +119,28 @@ class MainPageState extends State<MainPage>
     }
   }
 
-  Future confirmDialog(arr) async {
-    return await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(arr[0].toString()),
-        content: Text(arr[1].toString()),
-        actions: [
-          TextButton(
-            child:
-                const Text('NO', style: TextStyle(fontWeight: FontWeight.bold)),
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-          TextButton(
-            child: const Text('YES',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            onPressed: () => Navigator.of(context).pop(true),
-          ),
-        ],
-      ),
-    );
-  }
+  // Future confirmDialog(arr) async {
+  //   return await showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (context) => AlertDialog(
+  //       title: Text(arr[0].toString()),
+  //       content: Text(arr[1].toString()),
+  //       actions: [
+  //         TextButton(
+  //           child:
+  //               const Text('NO', style: TextStyle(fontWeight: FontWeight.bold)),
+  //           onPressed: () => Navigator.of(context).pop(false),
+  //         ),
+  //         TextButton(
+  //           child: const Text('YES',
+  //               style: TextStyle(fontWeight: FontWeight.bold)),
+  //           onPressed: () => Navigator.of(context).pop(true),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void copyVerseWrapper(BuildContext context) {
     final list = <String>[

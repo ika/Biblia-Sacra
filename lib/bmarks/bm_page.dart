@@ -87,14 +87,14 @@ class _BookMarkState extends State<BookMarksPage> {
               leading: GestureDetector(
                 child: const Icon(Globals.backArrow),
                 onTap: () {
-                  Route route = MaterialPageRoute(
-                    builder: (context) => const MainPage(),
-                  );
+                  // Route route = MaterialPageRoute(
+                  //   builder: (context) => const MainPage(),
+                  // );
                   Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      Navigator.push(context, route);
-                      //Navigator.of(context).pop();
+                      //Navigator.push(context, route);
+                      Navigator.of(context).pop();
                     },
                   );
                 },
