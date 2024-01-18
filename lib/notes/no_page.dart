@@ -1,5 +1,4 @@
 import 'package:bibliasacra/globals/globals.dart';
-import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/notes/no_edit.dart';
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';

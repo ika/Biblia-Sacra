@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_font.dart';
+import 'package:bibliasacra/bloc/bloc_italic.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
@@ -59,10 +60,11 @@ late int bibleBookChapter;
 late String bibleLang;
 late String versionAbbr;
 late String bookName;
-late int fontListNum;
+//late int fontListNum;
 
 int _selectedIndex = 0;
 late int verseBid;
+late bool italicIsOn;
 
 late AnimationController animationController;
 
@@ -415,8 +417,10 @@ class MainPageState extends State<MainPage>
                   ? Text(
                       "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
                       style: TextStyle(
-                          fontFamily: fontsList[fontListNum],
-                          fontStyle: FontStyle.normal,
+                          fontFamily: fontsList[context.read<FontBloc>().state],
+                          fontStyle: (italicIsOn)
+                              ? FontStyle.italic
+                              : FontStyle.normal,
                           backgroundColor:
                               getHighLightMatch(snapshot.data[index].id)
                                   ? Theme.of(context)
@@ -686,7 +690,7 @@ class MainPageState extends State<MainPage>
   Widget build(BuildContext context) {
     initialPageScroll = true;
 
-    fontListNum = context.read<FontBloc>().state;
+    italicIsOn = context.read<ItalicBloc>().state;
 
     bibleBook = context.read<BookBloc>().state;
 

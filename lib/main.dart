@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_font.dart';
+import 'package:bibliasacra/bloc/bloc_italic.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bloc/bloc_themedata.dart';
@@ -43,6 +44,7 @@ class _BibleAppState extends State<BibleApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<ItalicBloc>(create: (context) => ItalicBloc()),
         BlocProvider<FontBloc>(create: (context) => FontBloc()),
         BlocProvider<ThemeBloc>(create: (context) => ThemeBloc()),
         BlocProvider<SearchBloc>(create: (context) => SearchBloc()),

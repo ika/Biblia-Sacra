@@ -1,4 +1,5 @@
 import 'package:bibliasacra/bloc/bloc_font.dart';
+import 'package:bibliasacra/bloc/bloc_italic.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:bibliasacra/fonts/list.dart';
 
 late int selectedFont;
 late int fontNumber;
+late bool italicIsOn;
 
 class FontsPage extends StatefulWidget {
   const FontsPage({Key? key}) : super(key: key);
@@ -19,6 +21,7 @@ class _FontsPageState extends State<FontsPage> {
   void initState() {
     super.initState();
     selectedFont = context.read<FontBloc>().state;
+    italicIsOn = context.read<ItalicBloc>().state;
   }
 
   Future<dynamic> fontConfirmDialog(BuildContext context) {
@@ -31,7 +34,7 @@ class _FontsPageState extends State<FontsPage> {
           content: Text(
             "The Lord is my shepherd, I lack nothing. He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul. He guides me along the right paths for his name’s sake. Even though I walk through the darkest valley, I will fear no evil, for you are with me; your rod and your staff, they comfort me. You prepare a table before me in the presence of my enemies. You anoint my head with oil; my cup overflows. Surely your goodness and love will follow me all the days of my life, and I will dwell in the house of the Lord forever.",
             softWrap: true,
-            style: TextStyle(fontFamily: fontsList[fontNumber]),
+            style: TextStyle(fontFamily: fontsList[fontNumber], fontStyle: (italicIsOn) ? FontStyle.italic : FontStyle.normal,),
           ),
           actions: [
             Row(
@@ -82,7 +85,17 @@ class _FontsPageState extends State<FontsPage> {
       //backgroundColor: Colors.grey,
       appBar: AppBar(
         centerTitle: true,
-        actions: const [],
+        actions: [
+          Switch(
+            value: italicIsOn,
+            onChanged: (bool value) {
+              context.read<ItalicBloc>().add(ChangeItalic(value));
+              setState(() {
+                italicIsOn = value;
+              });
+            },
+          )
+        ],
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
@@ -124,6 +137,7 @@ class _FontsPageState extends State<FontsPage> {
                     child: Text(
                       "The Lord is my shepherd, I lack nothing.",
                       style: TextStyle(
+                        fontStyle: (italicIsOn) ? FontStyle.italic : FontStyle.normal,
                         fontFamily: fontsList[i],
                       ),
                     ),
