@@ -4,7 +4,6 @@ import 'package:bibliasacra/bloc/bloc_font.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bloc/bloc_themedata.dart';
-import 'package:bibliasacra/fonts/list.dart';
 import 'package:bibliasacra/theme/apptheme.dart';
 import 'package:flutter/material.dart';
 import 'package:bibliasacra/bloc/bloc_chapters.dart';

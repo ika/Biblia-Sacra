@@ -1,14 +1,10 @@
-
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
-    useMaterial3: true,
-    colorScheme: lightColorScheme,
-    //fontFamily: GoogleFonts.getFont(FontList().font).fontFamily
-    );
+    useMaterial3: true, colorScheme: lightColorScheme);
 
-ThemeData darkTheme =
-    ThemeData(useMaterial3: true, colorScheme: darkColorScheme);
+ThemeData darkTheme = ThemeData(
+    useMaterial3: true, colorScheme: darkColorScheme);
 
 const lightColorScheme = ColorScheme(
   brightness: Brightness.light,

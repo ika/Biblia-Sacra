@@ -36,7 +36,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:bibliasacra/fonts/list.dart';
 
 late PageController? pageController;
@@ -317,20 +316,21 @@ class MainPageState extends State<MainPage>
     );
   }
 
-  Widget normalVerseText(snapshot, index) {
-    if (snapshot.data[index].v != 0) {
-      return Text(
-        "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-        style: TextStyle(
-            //fontSize: primaryTextSize,
-            backgroundColor: (getHighLightMatch(snapshot.data[index].id))
-                ? Theme.of(context).colorScheme.primaryContainer
-                : null),
-      );
-    } else {
-      return const Text('');
-    }
-  }
+  // Widget normalVerseText(snapshot, index) {
+  //   if (snapshot.data[index].v != 0) {
+  //     return Text(
+  //       "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+  //       style: TextStyle(
+  //           //fontSize: primaryTextSize,
+  //           //fontFamily: fontsList[fontNumber],
+  //           backgroundColor: (getHighLightMatch(snapshot.data[index].id))
+  //               ? Theme.of(context).colorScheme.primaryContainer
+  //               : null),
+  //     );
+  //   } else {
+  //     return const Text('');
+  //   }
+  // }
 
   SizedBox showNoteIcon(snapshot, index) {
     if (getNotesMatch(snapshot.data[index].id)) {
@@ -414,12 +414,9 @@ class MainPageState extends State<MainPage>
               child: (snapshot.data[index].v != 0)
                   ? Text(
                       "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-                      //style: GoogleFonts.getFont(fontsList[6]),
                       style: TextStyle(
-                          //fontSize: primaryTextSize,
-                          fontFamily:
-                              GoogleFonts.getFont(fontsList[fontListNum])
-                                  .fontFamily,
+                          fontFamily: fontsList[fontListNum],
+                          fontStyle: FontStyle.normal,
                           backgroundColor:
                               getHighLightMatch(snapshot.data[index].id)
                                   ? Theme.of(context)
