@@ -42,7 +42,7 @@ class _FontsPageState extends State<FontsPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.20,
+                  width: MediaQuery.of(context).size.width * 0.30,
                   child: ElevatedButton(
                     onPressed: () {
                       context
@@ -63,7 +63,7 @@ class _FontsPageState extends State<FontsPage> {
                   width: MediaQuery.of(context).size.width * 0.01,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.20,
+                  width: MediaQuery.of(context).size.width * 0.30,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -85,6 +85,7 @@ class _FontsPageState extends State<FontsPage> {
       //backgroundColor: Colors.grey,
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           Switch(
             value: italicIsOn,
@@ -111,7 +112,7 @@ class _FontsPageState extends State<FontsPage> {
         //elevation: 16,
         title: const Text(
           'Font Selector',
-          //style: TextStyle(fontSize: Globals.appBarFontSize),
+          style: TextStyle(fontWeight: FontWeight.w700),
         ),
       ),
       body: Center(

@@ -262,7 +262,7 @@ class _MainSelectorState extends State<MainSelector>
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        // backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
@@ -279,9 +279,7 @@ class _MainSelectorState extends State<MainSelector>
           },
         ),
         title: Text(
-            //Globals.selectorText,
-            //style: TextStyle(fontSize: Globals.appBarFontSize),
-            "$bookName: $_currentChapterValue : $_currentVerseValue"),
+            "$bookName: $_currentChapterValue : $_currentVerseValue", style: const TextStyle(fontWeight: FontWeight.w700),),
         bottom: TabBar(
           controller: tabController,
           //labelStyle: Theme.of(context).tabBarTheme.labelStyle?.copyWith(color: Colors.white),
@@ -289,19 +287,19 @@ class _MainSelectorState extends State<MainSelector>
             Tab(
               child: Text(
                 tabNames[0],
-                //style: const TextStyle(color: Colors.white),
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
             Tab(
               child: Text(
                 tabNames[1],
-                //style: const TextStyle(color: Colors.white),
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
             Tab(
               child: Text(
                 tabNames[2],
-                //style: const TextStyle(color: Colors.white),
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
           ],

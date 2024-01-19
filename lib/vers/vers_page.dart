@@ -78,9 +78,9 @@ class VersionsPageState extends State<VersionsPage> {
     bibleVersion = context.read<VersionBloc>().state;
     vkQueries = VkQueries();
     return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.background,
+      //backgroundColor: Theme.of(
       appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
@@ -95,7 +95,7 @@ class VersionsPageState extends State<VersionsPage> {
         ),
         title: const Text(
           'Bibles',
-          // style: TextStyle(fontSize: Globals.appBarFontSize),
+          style: TextStyle(fontWeight: FontWeight.w700),
         ),
       ),
       body: versionsWidget(),

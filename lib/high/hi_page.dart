@@ -89,7 +89,7 @@ class _HighLightsPage extends State<HighLightsPage> {
           return Scaffold(
             //backgroundColor: Theme.of(context).colorScheme.background,
             appBar: AppBar(
-              //backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               centerTitle: true,
               leading: GestureDetector(
                 child: const Icon(Globals.backArrow),
@@ -109,68 +109,64 @@ class _HighLightsPage extends State<HighLightsPage> {
               //elevation: 0.1,
               title: const Text(
                 'Highlights',
-                //style: TextStyle(fontSize: Globals.appBarFontSize),
+                style: TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onHorizontalDragEnd: (DragEndDetails details) {
-                          if (details.primaryVelocity! > 0 ||
-                              details.primaryVelocity! < 0) {
-                            deleteWrapper(context, list, index);
-                          }
-                        },
-                        child: ListTile(
-                          trailing: Icon(Icons.arrow_right,
-                              color: Theme.of(context).colorScheme.primary),
-                          title: Text(
-                            list[index].title!,
-                            // style: TextStyle(
-                            //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-                          ),
-                          subtitle: Text(
-                            list[index].subtitle!,
-                            // style: TextStyle(fontSize: primaryTextSize),
-                          ),
-                          onTap: () {
-                            context.read<VersionBloc>().add(UpdateVersion(
-                                bibleVersion: list[index].version!));
-
-                            context.read<BookBloc>().add(UpdateBook(
-                                book: list[index].book!)); // UpdateBook
-
-                            context.read<ChapterBloc>().add(
-                                UpdateChapter(chapter: list[index].chapter!));
-
-                            context.read<VerseBloc>().add(UpdateVerse(
-                                verse: list[index].verse!)); // UpdateVerse
-
-                            Route route = MaterialPageRoute(
-                              builder: (context) => const MainPage(),
-                            );
-                            Future.delayed(
-                              Duration(milliseconds: Globals.navigatorDelay),
-                              () {
-                                Navigator.push(context, route);
-                              },
-                            );
-                            //});
-                          },
-                        ),
-                      );
+              child: ListView.separated(
+                // scrollDirection: Axis.vertical,
+                // shrinkWrap: true,
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onHorizontalDragEnd: (DragEndDetails details) {
+                      if (details.primaryVelocity! > 0 ||
+                          details.primaryVelocity! < 0) {
+                        deleteWrapper(context, list, index);
+                      }
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                  ),
-                ],
+                    child: ListTile(
+                      trailing: Icon(Icons.arrow_right,
+                          color: Theme.of(context).colorScheme.primary),
+                      title: Text(
+                        list[index].title!,
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+                      ),
+                      subtitle: Text(
+                        list[index].subtitle!,
+                        // style: TextStyle(fontSize: primaryTextSize),
+                      ),
+                      onTap: () {
+                        context.read<VersionBloc>().add(UpdateVersion(
+                            bibleVersion: list[index].version!));
+              
+                        context.read<BookBloc>().add(UpdateBook(
+                            book: list[index].book!)); // UpdateBook
+              
+                        context.read<ChapterBloc>().add(
+                            UpdateChapter(chapter: list[index].chapter!));
+              
+                        context.read<VerseBloc>().add(UpdateVerse(
+                            verse: list[index].verse!)); // UpdateVerse
+              
+                        Route route = MaterialPageRoute(
+                          builder: (context) => const MainPage(),
+                        );
+                        Future.delayed(
+                          Duration(milliseconds: Globals.navigatorDelay),
+                          () {
+                            Navigator.push(context, route);
+                          },
+                        );
+                        //});
+                      },
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
               ),
             ),
           );

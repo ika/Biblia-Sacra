@@ -1,4 +1,5 @@
 import 'package:bibliasacra/bloc/bloc_book.dart';
+import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
@@ -101,6 +102,8 @@ class AppBarVersionsPage extends State<AppBarVersions> {
                 Globals.dictionaryMode = false;
 
                 Globals.listReadCompleted = false;
+
+                context.read<VerseBloc>().add(UpdateVerse(verse: 1));
 
                 context
                     .read<VersionBloc>()

@@ -98,7 +98,7 @@ class NotesPageState extends State<NotesPage> {
           return Scaffold(
             //backgroundColor: Theme.of(context).colorScheme.background,
             appBar: AppBar(
-              //backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               centerTitle: true,
               leading: GestureDetector(
                 child: const Icon(Globals.backArrow),
@@ -117,60 +117,56 @@ class NotesPageState extends State<NotesPage> {
               ),
               title: const Text(
                 'Notes',
-                //style: TextStyle(fontSize: Globals.appBarFontSize),
+                style: TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
             body: Padding(
-              padding: const EdgeInsets.only(top: 20, left: 20, right: 8),
-              child: Column(
-                children: [
-                  ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      //return makeListTile(list, index);
-                      return GestureDetector(
-                        onHorizontalDragEnd: (DragEndDetails details) {
-                          if (details.primaryVelocity! > 0 ||
-                              details.primaryVelocity! < 0) {
-                            deleteWrapper(context, list, index);
-                          }
-                        },
-                        child: ListTile(
-                          trailing: Icon(Icons.arrow_right,
-                              color: Theme.of(context).colorScheme.primary),
-                          title: Text(
-                            "${list[index].title}",
-                            // style: TextStyle(
-                            //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-                          ),
-                          subtitle: Text(
-                            list[index].contents!,
-                            //style: TextStyle(fontSize: primaryTextSize),
-                          ),
-                          onTap: () {
-                            final model = NtModel(
-                                id: list[index].id,
-                                title: list[index].title,
-                                contents: list[index].contents,
-                                lang: list[index].lang,
-                                version: list[index].version,
-                                abbr: list[index].abbr,
-                                book: list[index].book,
-                                chapter: list[index].chapter,
-                                verse: list[index].verse,
-                                name: list[index].name,
-                                bid: list[index].bid);
-                            gotoEditNote(model);
-                          },
-                        ),
-                      );
+              padding: const EdgeInsets.all(20.0),
+              child: ListView.separated(
+                // scrollDirection: Axis.vertical,
+                // shrinkWrap: true,
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  //return makeListTile(list, index);
+                  return GestureDetector(
+                    onHorizontalDragEnd: (DragEndDetails details) {
+                      if (details.primaryVelocity! > 0 ||
+                          details.primaryVelocity! < 0) {
+                        deleteWrapper(context, list, index);
+                      }
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                  ),
-                ],
+                    child: ListTile(
+                      trailing: Icon(Icons.arrow_right,
+                          color: Theme.of(context).colorScheme.primary),
+                      title: Text(
+                        "${list[index].title}",
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+                      ),
+                      subtitle: Text(
+                        list[index].contents!,
+                        //style: TextStyle(fontSize: primaryTextSize),
+                      ),
+                      onTap: () {
+                        final model = NtModel(
+                            id: list[index].id,
+                            title: list[index].title,
+                            contents: list[index].contents,
+                            lang: list[index].lang,
+                            version: list[index].version,
+                            abbr: list[index].abbr,
+                            book: list[index].book,
+                            chapter: list[index].chapter,
+                            verse: list[index].verse,
+                            name: list[index].name,
+                            bid: list[index].bid);
+                        gotoEditNote(model);
+                      },
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
               ),
             ),
             floatingActionButton: FloatingActionButton(

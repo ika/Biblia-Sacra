@@ -153,7 +153,7 @@ class _DicSearchState extends State<DictSearch> {
           //backgroundColor: Theme.of(context).colorScheme.background,
 
           appBar: AppBar(
-            //backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             centerTitle: true,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
@@ -168,7 +168,7 @@ class _DicSearchState extends State<DictSearch> {
             ),
             title: const Text(
               'Latin Word List',
-              //style: TextStyle(fontSize: Globals.appBarFontSize),
+              style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),
           body: searchWidget(),

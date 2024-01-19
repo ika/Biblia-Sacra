@@ -185,7 +185,7 @@ class _MainSearchState extends State<MainSearch> {
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
@@ -205,7 +205,7 @@ class _MainSearchState extends State<MainSearch> {
           builder: (context, state) {
             return Text(
               "${areasList[state]} - $versionAbbr",
-              // style: TextStyle(fontSize: Globals.appBarFontSize),
+              style: const TextStyle(fontWeight: FontWeight.w700),
             );
           },
         ),

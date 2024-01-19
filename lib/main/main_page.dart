@@ -64,7 +64,6 @@ late String bookName;
 
 int _selectedIndex = 0;
 late int verseBid;
-late bool italicIsOn;
 
 late AnimationController animationController;
 
@@ -286,14 +285,25 @@ class MainPageState extends State<MainPage>
     return match;
   }
 
+  bool getBackGroundMatch(int bid) {
+    bool match = false;
+    match = getHighLightMatch(bid);
+    match = getNotesMatch(bid);
+    match = getBookMarksMatch(bid);
+    return match;
+  }
+
   Widget dicVerseText(BuildContext context, snapshot, index) {
     if (snapshot.data[index].v != 0) {
       return WordSelectableText(
         selectable: true,
         highlight: true,
         text: "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-        // style:
-        //     TextStyle(fontStyle: FontStyle.normal, fontSize: primaryTextSize),
+        style: TextStyle(
+            fontFamily: fontsList[context.read<FontBloc>().state],
+            fontStyle: (context.read<ItalicBloc>().state)
+                ? FontStyle.italic
+                : FontStyle.normal),
         onWordTapped: (word, index) {
           Globals.dictionaryLookup = word;
           dictDialog(context);
@@ -334,64 +344,64 @@ class MainPageState extends State<MainPage>
   //   }
   // }
 
-  SizedBox showNoteIcon(snapshot, index) {
-    if (getNotesMatch(snapshot.data[index].id)) {
-      return SizedBox(
-        height: 30,
-        width: 30,
-        child: IconButton(
-          icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
-          onPressed: () {
-            Future.delayed(
-              Duration(milliseconds: Globals.navigatorDelay),
-              () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NotesPage(),
-                  ),
-                ).then((value) {
-                  setState(() {});
-                });
-              },
-            );
-          },
-        ),
-      );
-    } else {
-      return const SizedBox(height: 0, width: 0);
-    }
-  }
+  // SizedBox showNoteIcon(snapshot, index) {
+  //   if (getNotesMatch(snapshot.data[index].id)) {
+  //     return SizedBox(
+  //       height: 30,
+  //       width: 30,
+  //       child: IconButton(
+  //         icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
+  //         onPressed: () {
+  //           Future.delayed(
+  //             Duration(milliseconds: Globals.navigatorDelay),
+  //             () {
+  //               Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) => const NotesPage(),
+  //                 ),
+  //               ).then((value) {
+  //                 setState(() {});
+  //               });
+  //             },
+  //           );
+  //         },
+  //       ),
+  //     );
+  //   } else {
+  //     return const SizedBox(height: 0, width: 0);
+  //   }
+  // }
 
-  SizedBox showBookMarkIcon(snapshot, index) {
-    if (getBookMarksMatch(snapshot.data[index].id)) {
-      return SizedBox(
-        height: 30,
-        width: 30,
-        child: IconButton(
-          icon: Icon(Icons.bookmark_border_outlined,
-              color: Theme.of(context).colorScheme.primary),
-          onPressed: () {
-            Future.delayed(
-              Duration(milliseconds: Globals.navigatorDelay),
-              () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const BookMarksPage(),
-                  ),
-                ).then((value) {
-                  setState(() {});
-                });
-              },
-            );
-          },
-        ),
-      );
-    } else {
-      return const SizedBox(height: 0, width: 0);
-    }
-  }
+  // SizedBox showBookMarkIcon(snapshot, index) {
+  //   if (getBookMarksMatch(snapshot.data[index].id)) {
+  //     return SizedBox(
+  //       height: 30,
+  //       width: 30,
+  //       child: IconButton(
+  //         icon: Icon(Icons.bookmark_border_outlined,
+  //             color: Theme.of(context).colorScheme.primary),
+  //         onPressed: () {
+  //           Future.delayed(
+  //             Duration(milliseconds: Globals.navigatorDelay),
+  //             () {
+  //               Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) => const BookMarksPage(),
+  //                 ),
+  //               ).then((value) {
+  //                 setState(() {});
+  //               });
+  //             },
+  //           );
+  //         },
+  //       ),
+  //     );
+  //   } else {
+  //     return const SizedBox(height: 0, width: 0);
+  //   }
+  // }
 
   Widget normalMode(BuildContext context, snapshot, index) {
     return GestureDetector(
@@ -403,7 +413,7 @@ class MainPageState extends State<MainPage>
 
         animationController.forward();
 
-        Future.delayed(const Duration(milliseconds: 5000), () {
+        Future.delayed(const Duration(milliseconds: 3000), () {
           animationController.reverse();
         });
       },
@@ -418,11 +428,11 @@ class MainPageState extends State<MainPage>
                       "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
                       style: TextStyle(
                           fontFamily: fontsList[context.read<FontBloc>().state],
-                          fontStyle: (italicIsOn)
+                          fontStyle: (context.read<ItalicBloc>().state)
                               ? FontStyle.italic
                               : FontStyle.normal,
                           backgroundColor:
-                              getHighLightMatch(snapshot.data[index].id)
+                              getBackGroundMatch(snapshot.data[index].id)
                                   ? Theme.of(context)
                                       .colorScheme
                                       .primaryContainer
@@ -430,8 +440,8 @@ class MainPageState extends State<MainPage>
                     )
                   : const Text(''),
             ),
-            showNoteIcon(snapshot, index),
-            showBookMarkIcon(snapshot, index)
+            // showNoteIcon(snapshot, index),
+            // showBookMarkIcon(snapshot, index)
           ],
         ),
       ),
@@ -472,18 +482,17 @@ class MainPageState extends State<MainPage>
 
   Widget showDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       child: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            //decoration: const BoxDecoration(
-            //color: Theme.of(context).colorScheme.secondaryContainer,
-            // image: DecorationImage(
-            //   fit: BoxFit.fill,
-            //   image: AssetImage('path/to/header_background.png'),
-            // ),
-            // ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.inversePrimary,
+              // image: DecorationImage(
+              //   fit: BoxFit.fill,
+              //   image: AssetImage('path/to/header_background.png'),
+              // ),
+            ),
             child: Stack(
               children: [
                 Positioned(
@@ -493,7 +502,10 @@ class MainPageState extends State<MainPage>
                     "Biblia Sacra",
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 32.0),
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: fontsList[context.read<FontBloc>().state],
+                        fontStyle: FontStyle.italic),
                     //fontWeight: FontWeight.w500),
                   ),
                 ),
@@ -690,7 +702,7 @@ class MainPageState extends State<MainPage>
   Widget build(BuildContext context) {
     initialPageScroll = true;
 
-    italicIsOn = context.read<ItalicBloc>().state;
+    //italicIsOn = context.read<ItalicBloc>().state;
 
     bibleBook = context.read<BookBloc>().state;
 
@@ -718,7 +730,7 @@ class MainPageState extends State<MainPage>
       //backgroundColor: theme.colorScheme.background,
       drawer: showDrawer(context),
       appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           // (Globals.bibleLang == 'lat')
           //     ? showIconButton(context)
@@ -886,6 +898,8 @@ class MainPageState extends State<MainPage>
               case 0:
                 // Compare
 
+                //animationController.reverse();
+
                 final model = Bible(
                     id: 0,
                     b: bibleBook,
@@ -905,6 +919,8 @@ class MainPageState extends State<MainPage>
               case 1:
                 // Bookmark
 
+                //animationController.reverse();
+
                 (!getBookMarksMatch(verseBid))
                     ? insertBookMark(verseBid).then((value) {
                         setState(() {});
@@ -918,6 +934,7 @@ class MainPageState extends State<MainPage>
                               builder: (context) => const BookMarksPage(),
                             ),
                           ).then((value) {
+                            //animationController.reverse();
                             setState(() {});
                           });
                         },
@@ -926,6 +943,8 @@ class MainPageState extends State<MainPage>
                 break;
               case 2:
                 // Highlight
+
+                //animationController.reverse();
 
                 (!getHighLightMatch(verseBid))
                     ? insertHighLight(verseBid).then((value) {
@@ -948,6 +967,8 @@ class MainPageState extends State<MainPage>
               case 3:
                 // Note
 
+                //animationController.reverse();
+
                 (getNotesMatch(verseBid))
                     ? Future.delayed(
                         Duration(milliseconds: Globals.navigatorDelay),
@@ -969,6 +990,8 @@ class MainPageState extends State<MainPage>
                 break;
               case 4:
                 // Copy
+
+                //animationController.reverse();
 
                 copyVerseWrapper(context);
                 break;

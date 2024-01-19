@@ -16,6 +16,7 @@ class ThemePageState extends State<ThemePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
@@ -27,7 +28,7 @@ class ThemePageState extends State<ThemePage> {
             );
           },
         ),
-        title: const Text('Theme Switcher'),
+        title: const Text('Theme Switcher', style: TextStyle(fontWeight: FontWeight.w700)),
         // actions: [
         //   Switch(
         //     value: (context.read<ThemeBloc>()) ? true : false,
