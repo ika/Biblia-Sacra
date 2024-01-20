@@ -62,10 +62,13 @@ late String versionAbbr;
 late String bookName;
 //late int fontListNum;
 
-int _selectedIndex = 0;
+// int _selectedIndex = 0;
 late int verseBid;
 
-late AnimationController animationController;
+List<BmModel> bookMarksList = [];
+List<HlModel> hiLightsList = [];
+
+// late AnimationController animationController;
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -74,14 +77,29 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => MainPageState();
 }
 
+// enum TapMenuItemEnum {
+//   delete,
+//   view,
+// }
+
+// extension MemberTapTapMenuItemEnum on TapMenuItemEnum {
+//   String toName() {
+//     return 'THIS';
+//   }
+// }
+
 class MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
+  //var containerKey = GlobalKey();
+  // var tapPositon = const Offset(0, 0);
+//  Size get sizeQuery => MediaQuery.of(context).size;
+
   @override
   initState() {
     super.initState();
 
-    animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 500));
+    // animationController = AnimationController(
+    //     vsync: this, duration: const Duration(milliseconds: 500));
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -104,11 +122,11 @@ class MainPageState extends State<MainPage>
     );
   }
 
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   animationController.dispose();
+  //   super.dispose();
+  // }
 
   ItemScrollController? itemScrollControllerSelector() {
     if (initialPageScroll!) {
@@ -251,9 +269,9 @@ class MainPageState extends State<MainPage>
 
   bool getBookMarksMatch(int bid) {
     bool match = false;
-    if (GetLists.booksList!.isNotEmpty) {
-      for (int b = 0; b < GetLists.booksList!.length; b++) {
-        if (GetLists.booksList![b].bid == bid) {
+    if (bookMarksList.isNotEmpty) {
+      for (int b = 0; b < bookMarksList.length; b++) {
+        if (bookMarksList[b].bid == bid) {
           match = true;
         }
       }
@@ -275,9 +293,9 @@ class MainPageState extends State<MainPage>
 
   bool getHighLightMatch(int bid) {
     bool match = false;
-    if (GetLists.highsList!.isNotEmpty) {
-      for (int h = 0; h < GetLists.highsList!.length; h++) {
-        if (GetLists.highsList![h].bid == bid) {
+    if (hiLightsList.isNotEmpty) {
+      for (int h = 0; h < hiLightsList.length; h++) {
+        if (hiLightsList[h].bid == bid) {
           match = true;
         }
       }
@@ -287,9 +305,13 @@ class MainPageState extends State<MainPage>
 
   bool getBackGroundMatch(int bid) {
     bool match = false;
-    match = getHighLightMatch(bid);
-    match = getNotesMatch(bid);
-    match = getBookMarksMatch(bid);
+    if (getHighLightMatch(bid)) {
+      match = true;
+    } else if (getBookMarksMatch(bid)) {
+      match = true;
+    }
+    // match = getNotesMatch(bid);
+    //match = getBookMarksMatch(bid);
     return match;
   }
 
@@ -403,6 +425,45 @@ class MainPageState extends State<MainPage>
   //   }
   // }
 
+  // void onTapItem(TapMenuItemEnum tap) {
+  //   debugPrint("$tap");
+  // }
+
+  // void getTapPosition(TapDownDetails tapDownDetails) {
+  //   final renderBox = context.findRenderObject() as RenderBox;
+  //   setState(() {
+  //     tapPositon = renderBox.globalToLocal(tapDownDetails.globalPosition);
+  //   });
+  // }
+
+  // void showContextMenu() async {
+  //   await showMenu(
+  //       context: context,
+  //       position: RelativeRect.fromLTRB(
+  //         tapPositon.dx,
+  //         tapPositon.dy,
+  //         sizeQuery.width - tapPositon.dx,
+  //         sizeQuery.height - tapPositon.dy,
+  //       ),
+  //       items: TapMenuItemEnum.values
+  //           .map((e) => PopupMenuItem(
+  //                 child: Text(e.toName()),
+  //                 onTap: () => onTapItem(e),
+  //               ))
+  //           .toList()
+  //       // items: [
+  //       // PopupMenuItem(
+  //       //   child: const Text('View'),
+  //       //   onTap: () => onTapItem(TapMenuItemEnum.view),
+  //       // ),
+  //       //   PopupMenuItem(
+  //       //     child: const Text('Delete'),
+  //       //     onTap: () => onTapItem(TapMenuItemEnum.delete),
+  //       //   ),
+  //       // ],
+  //       );
+  // }
+
   Widget normalMode(BuildContext context, snapshot, index) {
     return GestureDetector(
       onTap: () {
@@ -411,11 +472,13 @@ class MainPageState extends State<MainPage>
         verseText = snapshot.data[index].t;
         verseBid = snapshot.data[index].id;
 
-        animationController.forward();
+        showPopupMenu(verseNumber, verseBid);
 
-        Future.delayed(const Duration(milliseconds: 3000), () {
-          animationController.reverse();
-        });
+        // animationController.forward();
+
+        // Future.delayed(const Duration(milliseconds: 3000), () {
+        //   animationController.reverse();
+        // });
       },
       child: Container(
         margin: const EdgeInsets.only(left: 5, bottom: 6.0),
@@ -698,6 +761,137 @@ class MainPageState extends State<MainPage>
     );
   }
 
+  // Widget offsetPopup() => PopupMenuButton<int>(
+  //       itemBuilder: (context) => [
+  //         const PopupMenuItem(
+  //           value: 1,
+  //           child: Text(
+  //             "Flutter Open",
+  //             style:
+  //                 TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+  //           ),
+  //         ),
+  //         const PopupMenuItem(
+  //           value: 2,
+  //           child: Text(
+  //             "Flutter Tutorial",
+  //             style:
+  //                 TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+  //           ),
+  //         ),
+  //       ],
+  //       // icon: Container(
+  //       //   height: double.infinity,
+  //       //   width: double.infinity,
+  //       //   decoration: const ShapeDecoration(
+  //       //       color: Colors.blue,
+  //       //       shape: StadiumBorder(
+  //       //         side: BorderSide(color: Colors.white, width: 2),
+  //       //       )),
+  //       //   //child: Icon(Icons.menu, color: Colors.white), <-- You can give your icon here
+  //       // ));
+  //     );
+
+  void populateBookMarksList() {
+    BmQueries().getBookMarksVersionList(bibleVersion).then((value) {
+      bookMarksList = value;
+    });
+  }
+
+  void populateHiLightsList() {
+    HlQueries().getHighVersionList(bibleVersion).then((value) {
+      hiLightsList = value;
+    });
+  }
+
+  showPopupMenu(int verseNumber, int verseBid) async {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height * .1;
+
+    await showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(width, height, 50, 0),
+      items: [
+        PopupMenuItem(
+          child: const Text("Compare"),
+          onTap: () {
+            final model = Bible(
+                id: 0,
+                b: bibleBook,
+                c: context.read<ChapterBloc>().state,
+                v: verseNumber,
+                t: '');
+
+            (Globals.activeVersionCount! > 1)
+                ? mainCompareDialog(context, model)
+                : Future.delayed(
+                    Duration(milliseconds: Globals.navigatorLongDelay), () {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(moreVersionsSnackBar);
+                  });
+          },
+        ),
+        PopupMenuItem(
+          child: const Text("Bookmark"),
+          onTap: () {
+            (!getBookMarksMatch(verseBid))
+                ? insertBookMark(verseBid).then((value) {
+                    setState(() {});
+                  })
+                : Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BookMarksPage(),
+                        ),
+                      ).then((value) {
+                        //animationController.reverse();
+                        setState(() {});
+                      });
+                    },
+                  );
+          },
+        ),
+        PopupMenuItem(
+          child: const Text("Hilight"),
+          onTap: () {
+            (!getHighLightMatch(verseBid))
+                ? insertHighLight(verseBid).then((value) {
+                    setState(() {});
+                  })
+                : Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HighLightsPage()),
+                      ).then((value) {
+                        setState(() {});
+                      });
+                    },
+                  );
+          },
+        ),
+        PopupMenuItem(
+          child: const Text("Note"),
+          onTap: () {
+            //debugPrint("Note $bid");
+          },
+        ),
+        PopupMenuItem(
+          child: const Text("Copy"),
+          onTap: () {
+            //debugPrint("Copy $bid");
+          },
+        ),
+      ],
+      elevation: 8.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     initialPageScroll = true;
@@ -714,6 +908,10 @@ class MainPageState extends State<MainPage>
 
     getPageController();
 
+    populateBookMarksList();
+
+    populateHiLightsList();
+
     // initialize font from list
     // FontList().init();
     // String f = FontList().getFont();
@@ -721,10 +919,10 @@ class MainPageState extends State<MainPage>
 
     _dbQueries = DbQueries(bibleVersion);
 
-    if (!Globals.listReadCompleted) {
-      GetLists().updateActiveLists(bibleVersion);
-      Globals.listReadCompleted = true;
-    }
+    // if (!Globals.listReadCompleted) {
+    //   GetLists().updateActiveLists(bibleVersion);
+    //   Globals.listReadCompleted = true;
+    // }
 
     return Scaffold(
       //backgroundColor: theme.colorScheme.background,
@@ -847,158 +1045,158 @@ class MainPageState extends State<MainPage>
         },
       ),
       floatingActionButton: showModes(),
-      bottomNavigationBar: SizeTransition(
-        sizeFactor: animationController,
-        axisAlignment: -1.0,
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          //backgroundColor: Colors.blueAccent,
-          //elevation: 0,
-          //iconSize: 40,
-          //selectedFontSize: 20,
-          //selectedIconTheme: const IconThemeData(color: Colors.redAccent, size: 40),
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          //selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          //  unselectedIconTheme: IconThemeData(
-          //   color: Colors.deepOrangeAccent,
-          // ),
-          // unselectedItemColor: Colors.deepOrangeAccent,
-          // showSelectedLabels: false,
-          // showUnselectedLabels: false,
-          items: const <BottomNavigationBarItem>[
-            //New
-            BottomNavigationBarItem(
-              icon: Icon(Icons.compare),
-              label: 'Compare',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark),
-              label: 'Bookmark',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.highlight),
-              label: 'Highlight',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.note),
-              label: 'Notes',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.copy),
-              label: 'Copy',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
+      // bottomNavigationBar: SizeTransition(
+      //   sizeFactor: animationController,
+      //   axisAlignment: -1.0,
+      //   child: BottomNavigationBar(
+      //     type: BottomNavigationBarType.fixed,
+      //     //backgroundColor: Colors.blueAccent,
+      //     //elevation: 0,
+      //     //iconSize: 40,
+      //     //selectedFontSize: 20,
+      //     //selectedIconTheme: const IconThemeData(color: Colors.redAccent, size: 40),
+      //     selectedItemColor: Theme.of(context).colorScheme.primary,
+      //     //selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+      //     //  unselectedIconTheme: IconThemeData(
+      //     //   color: Colors.deepOrangeAccent,
+      //     // ),
+      //     // unselectedItemColor: Colors.deepOrangeAccent,
+      //     // showSelectedLabels: false,
+      //     // showUnselectedLabels: false,
+      //     items: const <BottomNavigationBarItem>[
+      //       //New
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.compare),
+      //         label: 'Compare',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.bookmark),
+      //         label: 'Bookmark',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.highlight),
+      //         label: 'Highlight',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.note),
+      //         label: 'Notes',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.copy),
+      //         label: 'Copy',
+      //       ),
+      //     ],
+      //     currentIndex: _selectedIndex,
+      //     onTap: (int index) {
+      //       setState(() {
+      //         _selectedIndex = index;
+      //       });
 
-            switch (index) {
-              case 0:
-                // Compare
+      //       switch (index) {
+      //         case 0:
+      //           // Compare
 
-                //animationController.reverse();
+      //           //animationController.reverse();
 
-                final model = Bible(
-                    id: 0,
-                    b: bibleBook,
-                    c: context.read<ChapterBloc>().state,
-                    v: verseNumber,
-                    t: '');
+      //           final model = Bible(
+      //               id: 0,
+      //               b: bibleBook,
+      //               c: context.read<ChapterBloc>().state,
+      //               v: verseNumber,
+      //               t: '');
 
-                (Globals.activeVersionCount! > 1)
-                    ? mainCompareDialog(context, model)
-                    : Future.delayed(
-                        Duration(milliseconds: Globals.navigatorLongDelay), () {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(moreVersionsSnackBar);
-                      });
+      //           (Globals.activeVersionCount! > 1)
+      //               ? mainCompareDialog(context, model)
+      //               : Future.delayed(
+      //                   Duration(milliseconds: Globals.navigatorLongDelay), () {
+      //                   ScaffoldMessenger.of(context)
+      //                       .showSnackBar(moreVersionsSnackBar);
+      //                 });
 
-                break;
-              case 1:
-                // Bookmark
+      //           break;
+      //         case 1:
+      //           // Bookmark
 
-                //animationController.reverse();
+      //           //animationController.reverse();
 
-                (!getBookMarksMatch(verseBid))
-                    ? insertBookMark(verseBid).then((value) {
-                        setState(() {});
-                      })
-                    : Future.delayed(
-                        Duration(milliseconds: Globals.navigatorDelay),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const BookMarksPage(),
-                            ),
-                          ).then((value) {
-                            //animationController.reverse();
-                            setState(() {});
-                          });
-                        },
-                      );
+      //           (!getBookMarksMatch(verseBid))
+      //               ? insertBookMark(verseBid).then((value) {
+      //                   setState(() {});
+      //                 })
+      //               : Future.delayed(
+      //                   Duration(milliseconds: Globals.navigatorDelay),
+      //                   () {
+      //                     Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                         builder: (context) => const BookMarksPage(),
+      //                       ),
+      //                     ).then((value) {
+      //                       //animationController.reverse();
+      //                       setState(() {});
+      //                     });
+      //                   },
+      //                 );
 
-                break;
-              case 2:
-                // Highlight
+      //           break;
+      //         case 2:
+      //           // Highlight
 
-                //animationController.reverse();
+      //           //animationController.reverse();
 
-                (!getHighLightMatch(verseBid))
-                    ? insertHighLight(verseBid).then((value) {
-                        setState(() {});
-                      })
-                    : Future.delayed(
-                        Duration(milliseconds: Globals.navigatorDelay),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HighLightsPage()),
-                          ).then((value) {
-                            setState(() {});
-                          });
-                        },
-                      );
+      //           (!getHighLightMatch(verseBid))
+      //               ? insertHighLight(verseBid).then((value) {
+      //                   setState(() {});
+      //                 })
+      //               : Future.delayed(
+      //                   Duration(milliseconds: Globals.navigatorDelay),
+      //                   () {
+      //                     Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                           builder: (context) => const HighLightsPage()),
+      //                     ).then((value) {
+      //                       setState(() {});
+      //                     });
+      //                   },
+      //                 );
 
-                break;
-              case 3:
-                // Note
+      //           break;
+      //         case 3:
+      //           // Note
 
-                //animationController.reverse();
+      //           //animationController.reverse();
 
-                (getNotesMatch(verseBid))
-                    ? Future.delayed(
-                        Duration(milliseconds: Globals.navigatorDelay),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const NotesPage(),
-                            ),
-                          ).then((value) {
-                            setState(() {});
-                          });
-                        },
-                      )
-                    : saveNote(verseBid).then((value) {
-                        setState(() {});
-                      });
+      //           (getNotesMatch(verseBid))
+      //               ? Future.delayed(
+      //                   Duration(milliseconds: Globals.navigatorDelay),
+      //                   () {
+      //                     Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                         builder: (context) => const NotesPage(),
+      //                       ),
+      //                     ).then((value) {
+      //                       setState(() {});
+      //                     });
+      //                   },
+      //                 )
+      //               : saveNote(verseBid).then((value) {
+      //                   setState(() {});
+      //                 });
 
-                break;
-              case 4:
-                // Copy
+      //           break;
+      //         case 4:
+      //           // Copy
 
-                //animationController.reverse();
+      //           //animationController.reverse();
 
-                copyVerseWrapper(context);
-                break;
-            }
-          },
-        ),
-      ),
+      //           copyVerseWrapper(context);
+      //           break;
+      //       }
+      //     },
+      //   ),
+      // ),
     );
   }
 }
