@@ -30,5 +30,5 @@ class Globals {
   static int? activeVersionCount = 0;
 
   // Initial run - prevent re-reading GetLists
-  static bool listReadCompleted = false;
+  //static bool listReadCompleted = false;
 }

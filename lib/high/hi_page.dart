@@ -66,7 +66,7 @@ class _HighLightsPage extends State<HighLightsPage> {
         if (value) {
           _hlQueries.deleteHighLight(list[index].bid).then(
             (value) {
-              Globals.listReadCompleted = false;
+              //Globals.listReadCompleted = false;
               ScaffoldMessenger.of(context)
                   .showSnackBar(hiLightDeletedSnackBar);
               // ActiveHighLightList()

@@ -69,7 +69,7 @@ class _BookMarkState extends State<BookMarksPage> {
         if (value) {
           _bmQueries.deleteBookMark(list[index].id).then(
             (value) {
-              Globals.listReadCompleted = false;
+             // Globals.listReadCompleted = false;
               ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
               setState(() {});
             },

@@ -67,6 +67,7 @@ late int verseBid;
 
 List<BmModel> bookMarksList = [];
 List<HlModel> hiLightsList = [];
+List<NtModel>? notesList = [];
 
 // late AnimationController animationController;
 
@@ -207,9 +208,10 @@ class MainPageState extends State<MainPage>
         verse: verseNumber,
         name: bookName,
         bid: bid);
-    _bmQueries.saveBookMark(model).then((value) {
-      Globals.listReadCompleted = false;
-    });
+    _bmQueries.saveBookMark(model);
+    // _bmQueries.saveBookMark(model).then((value) {
+    //   Globals.listReadCompleted = false;
+    // });
   }
 
   Future<void> insertHighLight(int bid) async {
@@ -235,9 +237,11 @@ class MainPageState extends State<MainPage>
         name: bookName,
         bid: bid);
 
-    _hlQueries.saveHighLight(model).then((value) {
-      Globals.listReadCompleted = false;
-    });
+    _hlQueries.saveHighLight(model);
+
+    // _hlQueries.saveHighLight(model).then((value) {
+    //   Globals.listReadCompleted = false;
+    // });
   }
 
   Future<void> saveNote(int bid) async {
@@ -262,9 +266,10 @@ class MainPageState extends State<MainPage>
         verse: verseNumber,
         name: bookName,
         bid: bid);
-    _ntQueries.insertNote(model).then((value) {
-      Globals.listReadCompleted = false;
-    });
+    _ntQueries.insertNote(model);
+    // _ntQueries.insertNote(model).then((value) {
+    //   Globals.listReadCompleted = false;
+    // });
   }
 
   bool getBookMarksMatch(int bid) {
@@ -273,6 +278,7 @@ class MainPageState extends State<MainPage>
       for (int b = 0; b < bookMarksList.length; b++) {
         if (bookMarksList[b].bid == bid) {
           match = true;
+          break;
         }
       }
     }
@@ -281,9 +287,9 @@ class MainPageState extends State<MainPage>
 
   bool getNotesMatch(int bid) {
     bool match = false;
-    if (GetLists.notesList!.isNotEmpty) {
-      for (int n = 0; n < GetLists.notesList!.length; n++) {
-        if (GetLists.notesList![n].bid == bid) {
+    if (notesList!.isNotEmpty) {
+      for (int n = 0; n < notesList!.length; n++) {
+        if (notesList![n].bid == bid) {
           match = true;
         }
       }
@@ -297,6 +303,7 @@ class MainPageState extends State<MainPage>
       for (int h = 0; h < hiLightsList.length; h++) {
         if (hiLightsList[h].bid == bid) {
           match = true;
+          break;
         }
       }
     }
@@ -305,13 +312,13 @@ class MainPageState extends State<MainPage>
 
   bool getBackGroundMatch(int bid) {
     bool match = false;
-    if (getHighLightMatch(bid)) {
+    if (getBookMarksMatch(bid)) {
       match = true;
-    } else if (getBookMarksMatch(bid)) {
+    } else if (getHighLightMatch(bid)) {
+      match = true;
+    } else if (getNotesMatch(bid)) {
       match = true;
     }
-    // match = getNotesMatch(bid);
-    //match = getBookMarksMatch(bid);
     return match;
   }
 
@@ -595,7 +602,10 @@ class MainPageState extends State<MainPage>
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route);
+                  Navigator.push(context, route).then((value) {
+                    setState(() {});
+                  });
+                  // Navigator.push(context, route);
                 },
               );
             },
@@ -617,7 +627,10 @@ class MainPageState extends State<MainPage>
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route);
+                  Navigator.push(context, route).then((value) {
+                    setState(() {});
+                  });
+                  // Navigator.push(context, route);
                 },
               );
             },
@@ -639,7 +652,10 @@ class MainPageState extends State<MainPage>
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route);
+                  //Navigator.push(context, route);
+                  Navigator.push(context, route).then((value) {
+                    setState(() {});
+                  });
                 },
               );
             },
@@ -730,6 +746,7 @@ class MainPageState extends State<MainPage>
                   Navigator.push(context, route).then((value) {
                     setState(() {});
                   });
+                  //Navigator.push(context, route);
                 },
               );
             },
@@ -801,6 +818,12 @@ class MainPageState extends State<MainPage>
   void populateHiLightsList() {
     HlQueries().getHighVersionList(bibleVersion).then((value) {
       hiLightsList = value;
+    });
+  }
+
+  void populateNotesList() {
+    NtQueries().getAllVersionNotes(bibleVersion).then((value) {
+      notesList = value;
     });
   }
 
@@ -878,13 +901,29 @@ class MainPageState extends State<MainPage>
         PopupMenuItem(
           child: const Text("Note"),
           onTap: () {
-            //debugPrint("Note $bid");
+            (!getNotesMatch(verseBid))
+                ? saveNote(verseBid).then((value) {
+                    setState(() {});
+                  })
+                : Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NotesPage(),
+                        ),
+                      ).then((value) {
+                        setState(() {});
+                      });
+                    },
+                  );
           },
         ),
         PopupMenuItem(
           child: const Text("Copy"),
           onTap: () {
-            //debugPrint("Copy $bid");
+            copyVerseWrapper(context);
           },
         ),
       ],
@@ -911,6 +950,8 @@ class MainPageState extends State<MainPage>
     populateBookMarksList();
 
     populateHiLightsList();
+
+    populateNotesList();
 
     // initialize font from list
     // FontList().init();

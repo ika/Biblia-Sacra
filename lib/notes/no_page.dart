@@ -79,7 +79,7 @@ class NotesPageState extends State<NotesPage> {
     confirmDialog(arr).then((value) {
       if (value) {
         _ntQueries.deleteNote(list[index].id).then((value) {
-          Globals.listReadCompleted = false;
+          //Globals.listReadCompleted = false;
           //ActiveNotesList().updateActiveNotesList(bibleVersion);
           setState(() {});
         });

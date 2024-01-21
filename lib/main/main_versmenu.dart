@@ -101,7 +101,7 @@ class AppBarVersionsPage extends State<AppBarVersions> {
 
                 Globals.dictionaryMode = false;
 
-                Globals.listReadCompleted = false;
+                //Globals.listReadCompleted = false;
 
                 context.read<VerseBloc>().add(UpdateVerse(verse: 1));
 
