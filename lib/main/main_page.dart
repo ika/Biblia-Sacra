@@ -27,7 +27,6 @@ import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_page.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:bibliasacra/theme/theme.dart';
-import 'package:bibliasacra/utils/utils_getlists.dart';
 import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:bibliasacra/vers/vers_page.dart';
