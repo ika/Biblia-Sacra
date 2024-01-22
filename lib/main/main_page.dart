@@ -186,12 +186,13 @@ class MainPageState extends State<MainPage>
   }
 
   Future<void> insertBookMark(int bid) async {
+    int chapter = bibleBookChapter + 1;
     List<String> stringTitle = [
       versionAbbr,
       ' ',
       bookName,
       ' ',
-      '$bibleBookChapter',
+      '$chapter',
       ':',
       '$verseNumber'
     ];
@@ -203,7 +204,7 @@ class MainPageState extends State<MainPage>
         version: bibleVersion,
         abbr: versionAbbr,
         book: bibleBook,
-        chapter: bibleBookChapter,
+        chapter: chapter,
         verse: verseNumber,
         name: bookName,
         bid: bid);
