@@ -51,6 +51,8 @@ class _MainSearchState extends State<MainSearch> {
   Future<void> runFilter(String enterdKeyWord) async {
     int? k = context.read<SearchBloc>().state;
 
+    enterdKeyWord = " $enterdKeyWord"; // add leading space
+
     String sec = areasSections[k];
     var arr = sec.split('|');
 
@@ -94,20 +96,24 @@ class _MainSearchState extends State<MainSearch> {
         //softWrap: true,
         text: TextSpan(
           text: t.substring(0, idx),
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium,
+          // style: TextStyle(
+          //   color: Theme.of(context).colorScheme.primary,
+          // ),
           children: [
             TextSpan(
               text: t.substring(idx, idx + m.length),
+              //style: Theme.of(context).textTheme.bodyMedium,
               style: TextStyle(
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
+                //fontWeight: FontWeight.w700
+                //color: Theme.of(context).colorScheme.primary
+                backgroundColor: Theme.of(context).colorScheme.errorContainer,
               ),
             ),
             TextSpan(
               text: t.substring(idx + m.length),
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              style: Theme.of(context).textTheme.bodyMedium,
+              //style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
           ],
         ),
@@ -185,8 +191,9 @@ class _MainSearchState extends State<MainSearch> {
     return Scaffold(
       //backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
+        elevation: 5,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {
@@ -223,7 +230,7 @@ class _MainSearchState extends State<MainSearch> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(50.0),
         child: Column(
           children: [
             TextFormField(

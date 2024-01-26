@@ -72,7 +72,7 @@ class _DicSearchState extends State<DictSearch> {
 
   Widget searchWidget() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(50.0),
       child: Column(
         children: [
           TextFormField(
@@ -153,8 +153,9 @@ class _DicSearchState extends State<DictSearch> {
           //backgroundColor: Theme.of(context).colorScheme.background,
 
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             centerTitle: true,
+            elevation: 5,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {

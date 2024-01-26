@@ -1,7 +1,7 @@
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPrefs {
-  final Future<SharedPreferences> sharedPrefs = SharedPreferences.getInstance();
+// class SharedPrefs {
+//   final Future<SharedPreferences> sharedPrefs = SharedPreferences.getInstance();
 
   // ==================SET=====================
 
@@ -106,13 +106,13 @@ class SharedPrefs {
 //   }
 
   // Font List Number
-  Future<void> setFontListNumber(int value) async {
-    final prefs = await sharedPrefs;
-    prefs.setInt("fontNumber", value);
-  }
+  // Future<void> setFontListNumber(int value) async {
+  //   final prefs = await sharedPrefs;
+  //   prefs.setInt("fontNumber", value);
+  // }
 
-  Future<int> getFontListNumber() async {
-    final prefs = await sharedPrefs;
-    return prefs.getInt("fontNumber") ?? 38;
-  }
-}
+  // Future<int> getFontListNumber() async {
+  //   final prefs = await sharedPrefs;
+  //   return prefs.getInt("fontNumber") ?? 38;
+  // }
+//}

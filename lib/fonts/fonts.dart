@@ -34,7 +34,10 @@ class _FontsPageState extends State<FontsPage> {
           content: Text(
             "The Lord is my shepherd, I lack nothing. He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul. He guides me along the right paths for his name’s sake. Even though I walk through the darkest valley, I will fear no evil, for you are with me; your rod and your staff, they comfort me. You prepare a table before me in the presence of my enemies. You anoint my head with oil; my cup overflows. Surely your goodness and love will follow me all the days of my life, and I will dwell in the house of the Lord forever.",
             softWrap: true,
-            style: TextStyle(fontFamily: fontsList[fontNumber], fontStyle: (italicIsOn) ? FontStyle.italic : FontStyle.normal,),
+            style: TextStyle(
+              fontFamily: fontsList[fontNumber],
+              fontStyle: (italicIsOn) ? FontStyle.italic : FontStyle.normal,
+            ),
           ),
           actions: [
             Row(
@@ -85,7 +88,8 @@ class _FontsPageState extends State<FontsPage> {
       //backgroundColor: Colors.grey,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        elevation: 5,
         actions: [
           Switch(
             value: italicIsOn,
@@ -119,7 +123,7 @@ class _FontsPageState extends State<FontsPage> {
         child: ListView(
           children: [
             const SizedBox(
-              height: 20,
+              height: 50,
             ),
             for (int i = 0; i < fontsList.length; i++)
               InkWell(
@@ -128,17 +132,21 @@ class _FontsPageState extends State<FontsPage> {
                   fontConfirmDialog(context);
                 },
                 child: Container(
-                  color: (i == selectedFont)
-                      ? Theme.of(context).colorScheme.inversePrimary
-                      : null,
-                  margin: const EdgeInsets.only(bottom: 8, left: 20, right: 20),
+                  // color: (i == selectedFont)
+                  //     ? Theme.of(context).colorScheme.tertiaryContainer
+                  //     : null,
+                  margin: const EdgeInsets.only(bottom: 8, left: 50, right: 50),
                   height: 55,
                   //color: primarySwatch![300],
                   child: Center(
                     child: Text(
                       "The Lord is my shepherd, I lack nothing.",
                       style: TextStyle(
-                        fontStyle: (italicIsOn) ? FontStyle.italic : FontStyle.normal,
+                        color: (i == selectedFont)
+                            ? Theme.of(context).colorScheme.primary
+                            : null,
+                        fontStyle:
+                            (italicIsOn) ? FontStyle.italic : FontStyle.normal,
                         fontFamily: fontsList[i],
                       ),
                     ),

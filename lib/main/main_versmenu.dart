@@ -25,8 +25,8 @@ Future<dynamic> versionsDialog(BuildContext context, String ret) {
       return SimpleDialog(
         children: [
           SizedBox(
-            height: 300, //Globals.dialogHeight,
-            width: MediaQuery.of(context).size.width,
+            height: Globals.activeVersionCount! * 55,
+            width: MediaQuery.of(context).size.width * .8,
             child: const Padding(
               padding: EdgeInsets.all(20.0),
               child: Column(
@@ -86,44 +86,45 @@ class AppBarVersionsPage extends State<AppBarVersions> {
     return FutureBuilder<List<VkModel>>(
       future: VkQueries().getActiveVersions(bibleVersion),
       builder: (BuildContext context, AsyncSnapshot<List<VkModel>> snapshot) {
-        int len = snapshot.data!.length;
-        return ListView.separated(
-          itemCount: len,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              trailing: Icon(Icons.arrow_right,
-                  color: Theme.of(context).colorScheme.primary),
-              title: Text(
-                snapshot.data![index].m!,
-              ),
-              onTap: () {
-                versionAbbr = snapshot.data![index].r!;
+        if (snapshot.hasData) {
+          return ListView.separated(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                trailing: Icon(Icons.arrow_right,
+                    color: Theme.of(context).colorScheme.primary),
+                title: Text(
+                  snapshot.data![index].m!,
+                ),
+                onTap: () {
+                  versionAbbr = snapshot.data![index].r!;
 
-                Globals.dictionaryMode = false;
+                  Globals.dictionaryMode = false;
 
-                //Globals.listReadCompleted = false;
+                  //Globals.listReadCompleted = false;
 
-                context.read<VerseBloc>().add(UpdateVerse(verse: 1));
+                  context.read<VerseBloc>().add(UpdateVerse(verse: 1));
 
-                context
-                    .read<VersionBloc>()
-                    .add(UpdateVersion(bibleVersion: snapshot.data![index].n!));
+                  context.read<VersionBloc>().add(
+                      UpdateVersion(bibleVersion: snapshot.data![index].n!));
 
-                Route route = MaterialPageRoute(
-                  builder: (context) => const MainPage(),
-                );
-                Future.delayed(
-                  Duration(milliseconds: Globals.navigatorDelay),
-                  () {
-                    Navigator.push(context, route);
-                  },
-                );
-              },
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
-        );
+                  Route route = MaterialPageRoute(
+                    builder: (context) => const MainPage(),
+                  );
+                  Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.push(context, route);
+                    },
+                  );
+                },
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+          );
+        }
+        return Container();
       },
     );
   }

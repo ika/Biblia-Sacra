@@ -90,7 +90,8 @@ class _BookMarkState extends State<BookMarksPage> {
           return Scaffold(
             //backgroundColor: Theme.of(context).colorScheme.background,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              elevation: 5,
               centerTitle: true,
               leading: GestureDetector(
                 child: const Icon(Globals.backArrow),

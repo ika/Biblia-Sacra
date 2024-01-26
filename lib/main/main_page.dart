@@ -829,7 +829,7 @@ class MainPageState extends State<MainPage>
 
   showPopupMenu(int verseNumber, int verseBid) async {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height * .1;
+    double height = MediaQuery.of(context).size.height * .3;
 
     await showMenu(
       context: context,
@@ -969,7 +969,8 @@ class MainPageState extends State<MainPage>
       //backgroundColor: theme.colorScheme.background,
       drawer: showDrawer(context),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        elevation: 5,
         actions: [
           // (Globals.bibleLang == 'lat')
           //     ? showIconButton(context)

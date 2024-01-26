@@ -31,7 +31,7 @@ class VersionsPageState extends State<VersionsPage> {
 
   Widget versionsWidget() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(50.0),
       child: FutureBuilder<List<VkModel>>(
         future: vkQueries.getAllVersions(bibleVersion),
         builder: (context, snapshot) {
@@ -80,8 +80,9 @@ class VersionsPageState extends State<VersionsPage> {
     return Scaffold(
       //backgroundColor: Theme.of(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
+        elevation: 5,
         leading: GestureDetector(
           child: const Icon(Globals.backArrow),
           onTap: () {

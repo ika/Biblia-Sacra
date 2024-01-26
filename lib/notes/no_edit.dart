@@ -137,6 +137,7 @@ class _EditNotePageState extends State<EditNotePage> {
           appBar: AppBar(
             //backgroundColor: Theme.of(context).colorScheme.primary,
             centerTitle: true,
+            elevation: 5,
             leading: GestureDetector(
               child: const Icon(Globals.backArrow),
               onTap: () {
@@ -168,7 +169,7 @@ class _EditNotePageState extends State<EditNotePage> {
           ),
           body: Material(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(50.0),
               child: Column(
                 children: [
                   Form(
