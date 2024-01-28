@@ -26,7 +26,15 @@ class DbProvider {
     return _database!;
   }
 
+  //   if (kIsWeb) {
+  //     String path = "/assets/db";
+  // } else {
+  //     Directory directory = await getApplicationDocumentsDirectory();
+  //     String path = join(directory.path, 'annonce_database.db');
+  // }
+
   Future<Database> initDB() async {
+    
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = p.join(documentsDirectory.path, dataBaseName);
 

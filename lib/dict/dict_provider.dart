@@ -33,7 +33,7 @@ class DicProvider {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = p.join(documentsDirectory.path, dataBaseName);
 
-    if (!(await databaseExists(path))) {
+    if (!await databaseExists(path)) {
       try {
         await io.Directory(p.dirname(path)).create(recursive: true);
       } catch (_) {}
