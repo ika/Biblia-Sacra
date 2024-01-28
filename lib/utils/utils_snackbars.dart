@@ -28,6 +28,10 @@ SnackBar errorSnackBar = const SnackBar(
 //   content: Text('Normal Mode!'),
 // );
 
+SnackBar noteAddedSnackBar = const SnackBar(
+  content: Text('Note added!'),
+);
+
 SnackBar noteDeletedSnackBar = const SnackBar(
   content: Text('Note deleted'),
 );

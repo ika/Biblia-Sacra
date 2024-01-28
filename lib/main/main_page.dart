@@ -186,13 +186,13 @@ class MainPageState extends State<MainPage>
   }
 
   Future<void> insertBookMark(int bid) async {
-    int chapter = bibleBookChapter + 1;
+    bibleBookChapter = context.read<ChapterBloc>().state;
     List<String> stringTitle = [
       versionAbbr,
       ' ',
       bookName,
       ' ',
-      '$chapter',
+      '$bibleBookChapter',
       ':',
       '$verseNumber'
     ];
@@ -204,7 +204,7 @@ class MainPageState extends State<MainPage>
         version: bibleVersion,
         abbr: versionAbbr,
         book: bibleBook,
-        chapter: chapter,
+        chapter: bibleBookChapter,
         verse: verseNumber,
         name: bookName,
         bid: bid);
@@ -215,6 +215,7 @@ class MainPageState extends State<MainPage>
   }
 
   Future<void> insertHighLight(int bid) async {
+    bibleBookChapter = context.read<ChapterBloc>().state;
     List<String> stringTitle = [
       versionAbbr,
       ' ',
@@ -245,6 +246,7 @@ class MainPageState extends State<MainPage>
   }
 
   Future<void> saveNote(int bid) async {
+    bibleBookChapter = context.read<ChapterBloc>().state;
     List<String> stringTitle = [
       versionAbbr,
       ' ',
@@ -322,40 +324,26 @@ class MainPageState extends State<MainPage>
     return match;
   }
 
-  Widget dicVerseText(BuildContext context, snapshot, index) {
-    if (snapshot.data[index].v != 0) {
-      return WordSelectableText(
-        selectable: true,
-        highlight: true,
-        text: "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
-        style: TextStyle(
-            fontFamily: fontsList[context.read<FontBloc>().state],
-            fontStyle: (context.read<ItalicBloc>().state)
-                ? FontStyle.italic
-                : FontStyle.normal),
-        onWordTapped: (word, index) {
-          Globals.dictionaryLookup = word;
-          dictDialog(context);
-        },
-      );
-    } else {
-      return const Text('');
-    }
-  }
-
-  Widget dictionaryMode(BuildContext context, snapshot, index) {
-    return Container(
-      margin: const EdgeInsets.only(left: 5, bottom: 6.0),
-      child: Row(
-        children: [
-          Flexible(
-            fit: FlexFit.loose,
-            child: (dicVerseText(context, snapshot, index)),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget dicVerseText(BuildContext context, snapshot, index) {
+  //   if (snapshot.data[index].v != 0) {
+  //     return WordSelectableText(
+  //       selectable: true,
+  //       highlight: true,
+  //       text: "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+  //       style: TextStyle(
+  //           fontFamily: fontsList[context.read<FontBloc>().state],
+  //           fontStyle: (context.read<ItalicBloc>().state)
+  //               ? FontStyle.italic
+  //               : FontStyle.normal),
+  //       onWordTapped: (word, index) {
+  //         Globals.dictionaryLookup = word;
+  //         dictDialog(context);
+  //       },
+  //     );
+  //   } else {
+  //     return const Text('');
+  //   }
+  // }
 
   // Widget normalVerseText(snapshot, index) {
   //   if (snapshot.data[index].v != 0) {
@@ -471,6 +459,35 @@ class MainPageState extends State<MainPage>
   //       );
   // }
 
+  Widget dictionaryMode(BuildContext context, snapshot, index) {
+    return Container(
+      margin: const EdgeInsets.only(top: 5, right: 5, left: 5),
+      child: Row(
+        children: [
+          Expanded(
+            child: (snapshot.data[index].v != 0)
+                ? WordSelectableText(
+                    selectable: true,
+                    highlight: true,
+                    text:
+                        "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
+                    style: TextStyle(
+                        fontFamily: fontsList[context.read<FontBloc>().state],
+                        fontStyle: (context.read<ItalicBloc>().state)
+                            ? FontStyle.italic
+                            : FontStyle.normal),
+                    onWordTapped: (word, index) {
+                      Globals.dictionaryLookup = word;
+                      dictDialog(context);
+                    },
+                  )
+                : const Text(''),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget normalMode(BuildContext context, snapshot, index) {
     return GestureDetector(
       onTap: () {
@@ -480,19 +497,13 @@ class MainPageState extends State<MainPage>
         verseBid = snapshot.data[index].id;
 
         showPopupMenu(verseNumber, verseBid);
-
-        // animationController.forward();
-
-        // Future.delayed(const Duration(milliseconds: 3000), () {
-        //   animationController.reverse();
-        // });
       },
       child: Container(
-        margin: const EdgeInsets.only(left: 5, bottom: 6.0),
+        margin: const EdgeInsets.only(
+            top: 6, right: 5, left: 5), //requited to stop jumping
         child: Row(
           children: [
-            Flexible(
-              fit: FlexFit.loose,
+            Expanded(
               child: (snapshot.data[index].v != 0)
                   ? Text(
                       "${snapshot.data[index].v}:  ${snapshot.data[index].t}",
@@ -527,7 +538,7 @@ class MainPageState extends State<MainPage>
           });
   }
 
-  Widget showModes() {
+  showModes() {
     if (bibleLang == 'lat') {
       String modeText =
           Globals.dictionaryMode ? 'Dictionary Mode' : 'Normal Mode';
@@ -541,13 +552,13 @@ class MainPageState extends State<MainPage>
       );
     } else {
       Globals.dictionaryMode = false;
-      return Container();
+      //return Container();
     }
   }
 
   getPageController() {
-    bibleBookChapter = context.read<ChapterBloc>().state;
-    pageController = PageController(initialPage: bibleBookChapter - 1);
+    pageController =
+        PageController(initialPage: context.read<ChapterBloc>().state - 1);
   }
 
   Widget showDrawer(BuildContext context) {
@@ -859,6 +870,12 @@ class MainPageState extends State<MainPage>
           onTap: () {
             (!getBookMarksMatch(verseBid))
                 ? insertBookMark(verseBid).then((value) {
+                    Future.delayed(
+                        Duration(milliseconds: Globals.navigatorLongDelay), () {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(bookMarkSnackBar);
+                    });
+
                     setState(() {});
                   })
                 : Future.delayed(
@@ -882,6 +899,12 @@ class MainPageState extends State<MainPage>
           onTap: () {
             (!getHighLightMatch(verseBid))
                 ? insertHighLight(verseBid).then((value) {
+                    Future.delayed(
+                        Duration(milliseconds: Globals.navigatorLongDelay), () {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(hiLightAddedSnackBar);
+                    });
+
                     setState(() {});
                   })
                 : Future.delayed(
@@ -903,6 +926,11 @@ class MainPageState extends State<MainPage>
           onTap: () {
             (!getNotesMatch(verseBid))
                 ? saveNote(verseBid).then((value) {
+                    Future.delayed(
+                        Duration(milliseconds: Globals.navigatorLongDelay), () {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(noteAddedSnackBar);
+                    });
                     setState(() {});
                   })
                 : Future.delayed(
@@ -968,6 +996,8 @@ class MainPageState extends State<MainPage>
     return Scaffold(
       //backgroundColor: theme.colorScheme.background,
       drawer: showDrawer(context),
+      // //floatingActionButtonLocation: StandardFabLocation,
+      // floatingActionButton: FloatingActionButton(onPressed: () {  },),
       appBar: AppBar(
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         elevation: 5,

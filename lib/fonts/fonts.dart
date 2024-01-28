@@ -142,8 +142,8 @@ class _FontsPageState extends State<FontsPage> {
                     child: Text(
                       "The Lord is my shepherd, I lack nothing.",
                       style: TextStyle(
-                        color: (i == selectedFont)
-                            ? Theme.of(context).colorScheme.primary
+                        backgroundColor: (i == selectedFont)
+                            ? Theme.of(context).colorScheme.tertiaryContainer
                             : null,
                         fontStyle:
                             (italicIsOn) ? FontStyle.italic : FontStyle.normal,
