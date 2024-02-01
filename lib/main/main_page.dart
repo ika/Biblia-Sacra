@@ -495,7 +495,6 @@ class MainPageState extends State<MainPage>
         verseNumber = snapshot.data[index].v;
         verseText = snapshot.data[index].t;
         verseBid = snapshot.data[index].id;
-
         showPopupMenu(verseNumber, verseBid);
       },
       child: Container(
