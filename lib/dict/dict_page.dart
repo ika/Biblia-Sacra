@@ -149,30 +149,33 @@ class _DicSearchState extends State<DictSearch> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          //backgroundColor: Theme.of(context).colorScheme.background,
-
-          appBar: AppBar(
-            //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            centerTitle: true,
-            elevation: 5,
-            leading: GestureDetector(
-              child: const Icon(Globals.backArrow),
-              onTap: () {
-                Future.delayed(
-                  Duration(milliseconds: Globals.navigatorDelay),
-                  () {
-                    Navigator.of(context).pop();
-                  },
-                );
-              },
+        child: PopScope(
+          canPop: false,
+          child: Scaffold(
+            //backgroundColor: Theme.of(context).colorScheme.background,
+          
+            appBar: AppBar(
+              //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              centerTitle: true,
+              elevation: 5,
+              leading: GestureDetector(
+                child: const Icon(Globals.backArrow),
+                onTap: () {
+                  Future.delayed(
+                    Duration(milliseconds: Globals.navigatorDelay),
+                    () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ),
+              title: const Text(
+                'Latin Word List',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
             ),
-            title: const Text(
-              'Latin Word List',
-              style: TextStyle(fontWeight: FontWeight.w700),
-            ),
+            body: searchWidget(),
           ),
-          body: searchWidget(),
         ),
       );
 }

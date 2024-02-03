@@ -84,76 +84,79 @@ class _FontsPageState extends State<FontsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //backgroundColor: Colors.grey,
-      appBar: AppBar(
-        centerTitle: true,
-        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        elevation: 5,
-        actions: [
-          Switch(
-            value: italicIsOn,
-            onChanged: (bool value) {
-              context.read<ItalicBloc>().add(ChangeItalic(value));
-              setState(() {
-                italicIsOn = value;
-              });
-            },
-          )
-        ],
-        leading: GestureDetector(
-          child: const Icon(Globals.backArrow),
-          onTap: () {
-            //backButton(context);
-            Future.delayed(
-              Duration(milliseconds: Globals.navigatorDelay),
-              () {
-                Navigator.of(context).pop();
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        //backgroundColor: Colors.grey,
+        appBar: AppBar(
+          centerTitle: true,
+          //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          elevation: 5,
+          actions: [
+            Switch(
+              value: italicIsOn,
+              onChanged: (bool value) {
+                context.read<ItalicBloc>().add(ChangeItalic(value));
+                setState(() {
+                  italicIsOn = value;
+                });
               },
-            );
-          },
-        ),
-        //elevation: 16,
-        title: const Text(
-          'Font Selector',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
-      ),
-      body: Center(
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            for (int i = 0; i < fontsList.length; i++)
-              InkWell(
-                onTap: () {
-                  fontNumber = i;
-                  fontConfirmDialog(context);
+            )
+          ],
+          leading: GestureDetector(
+            child: const Icon(Globals.backArrow),
+            onTap: () {
+              //backButton(context);
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.of(context).pop();
                 },
-                child: Container(
-                  // color: (i == selectedFont)
-                  //     ? Theme.of(context).colorScheme.tertiaryContainer
-                  //     : null,
-                  margin: const EdgeInsets.only(bottom: 8, left: 50, right: 50),
-                  height: 55,
-                  //color: primarySwatch![300],
-                  child: Center(
-                    child: Text(
-                      "The Lord is my shepherd, I lack nothing.",
-                      style: TextStyle(
-                        backgroundColor: (i == selectedFont)
-                            ? Theme.of(context).colorScheme.tertiaryContainer
-                            : null,
-                        fontStyle:
-                            (italicIsOn) ? FontStyle.italic : FontStyle.normal,
-                        fontFamily: fontsList[i],
+              );
+            },
+          ),
+          //elevation: 16,
+          title: const Text(
+            'Font Selector',
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ),
+        body: Center(
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              for (int i = 0; i < fontsList.length; i++)
+                InkWell(
+                  onTap: () {
+                    fontNumber = i;
+                    fontConfirmDialog(context);
+                  },
+                  child: Container(
+                    // color: (i == selectedFont)
+                    //     ? Theme.of(context).colorScheme.tertiaryContainer
+                    //     : null,
+                    margin: const EdgeInsets.only(bottom: 8, left: 50, right: 50),
+                    height: 55,
+                    //color: primarySwatch![300],
+                    child: Center(
+                      child: Text(
+                        "The Lord is my shepherd, I lack nothing.",
+                        style: TextStyle(
+                          backgroundColor: (i == selectedFont)
+                              ? Theme.of(context).colorScheme.tertiaryContainer
+                              : null,
+                          fontStyle:
+                              (italicIsOn) ? FontStyle.italic : FontStyle.normal,
+                          fontFamily: fontsList[i],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

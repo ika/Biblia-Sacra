@@ -259,66 +259,69 @@ class _MainSelectorState extends State<MainSelector>
     _currentChapterValue = context.read<ChapterBloc>().state;
     _currentVerseValue = context.read<VerseBloc>().state;
 
-    return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        centerTitle: true,
-        elevation: 5,
-        leading: GestureDetector(
-          child: const Icon(Globals.backArrow),
-          onTap: () {
-            Route route = MaterialPageRoute(
-              builder: (context) => const MainPage(),
-            );
-            Future.delayed(
-              Duration(milliseconds: Globals.navigatorDelay),
-              () {
-                Navigator.push(context, route);
-              },
-            );
-          },
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        //backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+          //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          centerTitle: true,
+          elevation: 5,
+          leading: GestureDetector(
+            child: const Icon(Globals.backArrow),
+            onTap: () {
+              Route route = MaterialPageRoute(
+                builder: (context) => const MainPage(),
+              );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.push(context, route);
+                },
+              );
+            },
+          ),
+          title: Text(
+              "$bookName: $_currentChapterValue : $_currentVerseValue", style: const TextStyle(fontWeight: FontWeight.w700),),
+          bottom: TabBar(
+            controller: tabController,
+            //labelStyle: Theme.of(context).tabBarTheme.labelStyle?.copyWith(color: Colors.white),
+            tabs: [
+              Tab(
+                child: Text(
+                  tabNames[0],
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  tabNames[1],
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  tabNames[2],
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
+          ),
         ),
-        title: Text(
-            "$bookName: $_currentChapterValue : $_currentVerseValue", style: const TextStyle(fontWeight: FontWeight.w700),),
-        bottom: TabBar(
+        body: TabBarView(
           controller: tabController,
-          //labelStyle: Theme.of(context).tabBarTheme.labelStyle?.copyWith(color: Colors.white),
-          tabs: [
-            Tab(
-              child: Text(
-                tabNames[0],
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              ),
+          children: [
+            Center(
+              child: booksWidget(),
             ),
-            Tab(
-              child: Text(
-                tabNames[1],
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              ),
+            Center(
+              child: chaptersWidget(),
             ),
-            Tab(
-              child: Text(
-                tabNames[2],
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              ),
+            Center(
+              child: versesWidget(),
             ),
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: tabController,
-        children: [
-          Center(
-            child: booksWidget(),
-          ),
-          Center(
-            child: chaptersWidget(),
-          ),
-          Center(
-            child: versesWidget(),
-          ),
-        ],
       ),
     );
   }

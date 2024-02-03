@@ -132,122 +132,125 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          //backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: AppBar(
-            //backgroundColor: Theme.of(context).colorScheme.primary,
-            centerTitle: true,
-            elevation: 5,
-            leading: GestureDetector(
-              child: const Icon(Globals.backArrow),
-              onTap: () {
-                //Navigator.of(context).pop();
-                // if (_formKey.currentState!.validate()) {
-                updateEdit().then((value) {
-                  Future.delayed(
-                    Duration(milliseconds: Globals.navigatorDelay),
-                    () {
-                      Navigator.of(context).pop();
-                    },
-                  );
-                });
-                // }
-              },
-            ),
-            title: const Text(
-              'Edit Note',
-              //style: TextStyle(fontSize: Globals.appBarFontSize),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  deleteWrapper();
+        child: PopScope(
+          canPop: false,
+          child: Scaffold(
+            //backgroundColor: Theme.of(context).colorScheme.background,
+            appBar: AppBar(
+              //backgroundColor: Theme.of(context).colorScheme.primary,
+              centerTitle: true,
+              elevation: 5,
+              leading: GestureDetector(
+                child: const Icon(Globals.backArrow),
+                onTap: () {
+                  //Navigator.of(context).pop();
+                  // if (_formKey.currentState!.validate()) {
+                  updateEdit().then((value) {
+                    Future.delayed(
+                      Duration(milliseconds: Globals.navigatorDelay),
+                      () {
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  });
+                  // }
                 },
-              )
-            ],
-          ),
-          body: Material(
-            child: Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: Column(
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextFormField(
-                            controller: _titleController,
-                            maxLength: 50,
-                            maxLines: 1, // auto line break
-                            autofocus: false,
-                            decoration: InputDecoration(
-                              labelText: 'Title',
-                              labelStyle:
-                                  Theme.of(context).textTheme.titleMedium,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Title is required!';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          TextFormField(
-                            controller: _contentsController,
-                            maxLength: 256,
-                            maxLines: null, // auto line break
-                            autofocus: false,
-                            decoration: InputDecoration(
-                              labelText: 'Text',
-                              labelStyle:
-                                  Theme.of(context).textTheme.titleMedium,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Text is required!';
-                              }
-                              return null;
-                            },
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      updateEdit().then((value) {
-                                        Navigator.of(context).pop();
-                                      });
-                                    }
-                                  },
-                                  child: const Text('Submit'),
+              ),
+              title: const Text(
+                'Edit Note',
+                //style: TextStyle(fontSize: Globals.appBarFontSize),
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    deleteWrapper();
+                  },
+                )
+              ],
+            ),
+            body: Material(
+              child: Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: Column(
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              controller: _titleController,
+                              maxLength: 50,
+                              maxLines: 1, // auto line break
+                              autofocus: false,
+                              decoration: InputDecoration(
+                                labelText: 'Title',
+                                labelStyle:
+                                    Theme.of(context).textTheme.titleMedium,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
                                 ),
-                              ],
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Title is required!';
+                                }
+                                return null;
+                              },
                             ),
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            TextFormField(
+                              controller: _contentsController,
+                              maxLength: 256,
+                              maxLines: null, // auto line break
+                              autofocus: false,
+                              decoration: InputDecoration(
+                                labelText: 'Text',
+                                labelStyle:
+                                    Theme.of(context).textTheme.titleMedium,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Text is required!';
+                                }
+                                return null;
+                              },
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        updateEdit().then((value) {
+                                          Navigator.of(context).pop();
+                                        });
+                                      }
+                                    },
+                                    child: const Text('Submit'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
+            floatingActionButton: showGotoVerse(),
           ),
-          floatingActionButton: showGotoVerse(),
         ),
       );
 }

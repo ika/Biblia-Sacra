@@ -18,14 +18,14 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isAndroid || Platform.isLinux) {
+  if (Platform.isLinux || Platform.isWindows) {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
-
-    HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory: await getApplicationDocumentsDirectory(),
-    );
   }
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
 
   runApp(
     const BibleApp(),

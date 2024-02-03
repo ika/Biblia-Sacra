@@ -35,6 +35,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:share/share.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
 import 'package:bibliasacra/fonts/list.dart';
 
@@ -555,6 +556,13 @@ class MainPageState extends State<MainPage>
     }
   }
 
+ void onShareLink() async {
+    //String subject = 'Westminster Confession';
+    String uri =
+        'https://play.google.com/store/apps/details?id=org.armstrong.ika.bibliasacra';
+    await Share.share(uri);
+  }
+
   getPageController() {
     pageController =
         PageController(initialPage: context.read<ChapterBloc>().state - 1);
@@ -783,6 +791,29 @@ class MainPageState extends State<MainPage>
               );
             },
           ),
+          ListTile(
+            trailing: const Icon(Icons.arrow_right),
+            //color: Theme.of(context).colorScheme.primary),
+            title: const Text(
+              'Share',
+              // style: TextStyle(
+              //     //color: Colors.white,
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              // Route route = MaterialPageRoute(
+              //   builder: (context) => const ThemePage(),
+              // );
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.pop(context);
+                  onShareLink();
+                },
+              );
+            },
+          ),
         ],
       ),
     );
@@ -992,282 +1023,285 @@ class MainPageState extends State<MainPage>
     //   Globals.listReadCompleted = true;
     // }
 
-    return Scaffold(
-      //backgroundColor: theme.colorScheme.background,
-      drawer: showDrawer(context),
-      // //floatingActionButtonLocation: StandardFabLocation,
-      // floatingActionButton: FloatingActionButton(onPressed: () {  },),
-      appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        elevation: 5,
-        actions: [
-          // (Globals.bibleLang == 'lat')
-          //     ? showIconButton(context)
-          //     : Container(),
-          Row(
-            children: [
-              FilledButton(
-                // style: ElevatedButton.styleFrom(
-                //     backgroundColor: theme.colorScheme.secondary
-                //     ),
-                onPressed: () {
-                  Route route = MaterialPageRoute(
-                    builder: (context) => MainSelector(bibleLang: bibleLang),
-                  );
-                  Future.delayed(
-                    Duration(milliseconds: Globals.navigatorDelay),
-                    () {
-                      Navigator.push(context, route);
-                    },
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      '$bookName: ',
-                      //style: const TextStyle(fontWeight: FontWeight.bold)
-                    ),
-                    BlocBuilder<ChapterBloc, int>(
-                      builder: (context, state) {
-                        return Text(
-                          state.toString(),
-                          //style: const TextStyle(fontWeight: FontWeight.bold)
-                        );
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        //backgroundColor: theme.colorScheme.background,
+        drawer: showDrawer(context),
+        // //floatingActionButtonLocation: StandardFabLocation,
+        // floatingActionButton: FloatingActionButton(onPressed: () {  },),
+        appBar: AppBar(
+          //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          elevation: 5,
+          actions: [
+            // (Globals.bibleLang == 'lat')
+            //     ? showIconButton(context)
+            //     : Container(),
+            Row(
+              children: [
+                FilledButton(
+                  // style: ElevatedButton.styleFrom(
+                  //     backgroundColor: theme.colorScheme.secondary
+                  //     ),
+                  onPressed: () {
+                    Route route = MaterialPageRoute(
+                      builder: (context) => MainSelector(bibleLang: bibleLang),
+                    );
+                    Future.delayed(
+                      Duration(milliseconds: Globals.navigatorDelay),
+                      () {
+                        Navigator.push(context, route);
                       },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              FilledButton(
-                // style: ElevatedButton.styleFrom(
-                //     backgroundColor: theme.colorScheme.secondary),
-                child: Text(
-                  versionAbbr,
-                  //style: const TextStyle(fontWeight: FontWeight.bold)
-                ),
-                onPressed: () {
-                  showVersionsDialog(context);
-                },
-              ),
-              const SizedBox(
-                // right side border width
-                width: 16,
-              ),
-            ],
-          ),
-        ],
-      ),
-      body: FutureBuilder<int>(
-        future: _dbQueries.getChapterCount(bibleBook),
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          if (snapshot.hasData) {
-            int chapterCount = snapshot.data!.toInt();
-            return ScrollConfiguration(
-              behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-                PointerDeviceKind.touch,
-                PointerDeviceKind.mouse,
-              }),
-              child: PageView.builder(
-                controller: pageController,
-                itemCount: chapterCount,
-                physics: const BouncingScrollPhysics(),
-                pageSnapping: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    padding: const EdgeInsets.all(20.0),
-                    child: FutureBuilder<List<Bible>>(
-                      future: _dbQueries.getBookChapter(bibleBook, index + 1),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<Bible>> snapshot) {
-                        if (snapshot.hasData) {
-                          return ScrollablePositionedList.builder(
-                            itemCount: snapshot.data!.length,
-                            itemScrollController:
-                                itemScrollControllerSelector(),
-                            itemBuilder: (context, index) {
-                              return (Globals.dictionaryMode)
-                                  ? dictionaryMode(context, snapshot, index)
-                                  : normalMode(context, snapshot, index);
-                            },
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        '$bookName: ',
+                        //style: const TextStyle(fontWeight: FontWeight.bold)
+                      ),
+                      BlocBuilder<ChapterBloc, int>(
+                        builder: (context, state) {
+                          return Text(
+                            state.toString(),
+                            //style: const TextStyle(fontWeight: FontWeight.bold)
                           );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ),
-                  );
-                },
-                onPageChanged: (index) {
-                  // move to top of next chapter
-                  context
-                      .read<ChapterBloc>()
-                      .add(UpdateChapter(chapter: index + 1));
-                  context.read<VerseBloc>().add(UpdateVerse(verse: 1));
-                },
-              ),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                FilledButton(
+                  // style: ElevatedButton.styleFrom(
+                  //     backgroundColor: theme.colorScheme.secondary),
+                  child: Text(
+                    versionAbbr,
+                    //style: const TextStyle(fontWeight: FontWeight.bold)
+                  ),
+                  onPressed: () {
+                    showVersionsDialog(context);
+                  },
+                ),
+                const SizedBox(
+                  // right side border width
+                  width: 16,
+                ),
+              ],
+            ),
+          ],
+        ),
+        body: FutureBuilder<int>(
+          future: _dbQueries.getChapterCount(bibleBook),
+          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+            if (snapshot.hasData) {
+              int chapterCount = snapshot.data!.toInt();
+              return ScrollConfiguration(
+                behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                }),
+                child: PageView.builder(
+                  controller: pageController,
+                  itemCount: chapterCount,
+                  physics: const BouncingScrollPhysics(),
+                  pageSnapping: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FutureBuilder<List<Bible>>(
+                        future: _dbQueries.getBookChapter(bibleBook, index + 1),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Bible>> snapshot) {
+                          if (snapshot.hasData) {
+                            return ScrollablePositionedList.builder(
+                              itemCount: snapshot.data!.length,
+                              itemScrollController:
+                                  itemScrollControllerSelector(),
+                              itemBuilder: (context, index) {
+                                return (Globals.dictionaryMode)
+                                    ? dictionaryMode(context, snapshot, index)
+                                    : normalMode(context, snapshot, index);
+                              },
+                            );
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  onPageChanged: (index) {
+                    // move to top of next chapter
+                    context
+                        .read<ChapterBloc>()
+                        .add(UpdateChapter(chapter: index + 1));
+                    context.read<VerseBloc>().add(UpdateVerse(verse: 1));
+                  },
+                ),
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
+        floatingActionButton: showModes(),
+        // bottomNavigationBar: SizeTransition(
+        //   sizeFactor: animationController,
+        //   axisAlignment: -1.0,
+        //   child: BottomNavigationBar(
+        //     type: BottomNavigationBarType.fixed,
+        //     //backgroundColor: Colors.blueAccent,
+        //     //elevation: 0,
+        //     //iconSize: 40,
+        //     //selectedFontSize: 20,
+        //     //selectedIconTheme: const IconThemeData(color: Colors.redAccent, size: 40),
+        //     selectedItemColor: Theme.of(context).colorScheme.primary,
+        //     //selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        //     //  unselectedIconTheme: IconThemeData(
+        //     //   color: Colors.deepOrangeAccent,
+        //     // ),
+        //     // unselectedItemColor: Colors.deepOrangeAccent,
+        //     // showSelectedLabels: false,
+        //     // showUnselectedLabels: false,
+        //     items: const <BottomNavigationBarItem>[
+        //       //New
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.compare),
+        //         label: 'Compare',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.bookmark),
+        //         label: 'Bookmark',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.highlight),
+        //         label: 'Highlight',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.note),
+        //         label: 'Notes',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.copy),
+        //         label: 'Copy',
+        //       ),
+        //     ],
+        //     currentIndex: _selectedIndex,
+        //     onTap: (int index) {
+        //       setState(() {
+        //         _selectedIndex = index;
+        //       });
+      
+        //       switch (index) {
+        //         case 0:
+        //           // Compare
+      
+        //           //animationController.reverse();
+      
+        //           final model = Bible(
+        //               id: 0,
+        //               b: bibleBook,
+        //               c: context.read<ChapterBloc>().state,
+        //               v: verseNumber,
+        //               t: '');
+      
+        //           (Globals.activeVersionCount! > 1)
+        //               ? mainCompareDialog(context, model)
+        //               : Future.delayed(
+        //                   Duration(milliseconds: Globals.navigatorLongDelay), () {
+        //                   ScaffoldMessenger.of(context)
+        //                       .showSnackBar(moreVersionsSnackBar);
+        //                 });
+      
+        //           break;
+        //         case 1:
+        //           // Bookmark
+      
+        //           //animationController.reverse();
+      
+        //           (!getBookMarksMatch(verseBid))
+        //               ? insertBookMark(verseBid).then((value) {
+        //                   setState(() {});
+        //                 })
+        //               : Future.delayed(
+        //                   Duration(milliseconds: Globals.navigatorDelay),
+        //                   () {
+        //                     Navigator.push(
+        //                       context,
+        //                       MaterialPageRoute(
+        //                         builder: (context) => const BookMarksPage(),
+        //                       ),
+        //                     ).then((value) {
+        //                       //animationController.reverse();
+        //                       setState(() {});
+        //                     });
+        //                   },
+        //                 );
+      
+        //           break;
+        //         case 2:
+        //           // Highlight
+      
+        //           //animationController.reverse();
+      
+        //           (!getHighLightMatch(verseBid))
+        //               ? insertHighLight(verseBid).then((value) {
+        //                   setState(() {});
+        //                 })
+        //               : Future.delayed(
+        //                   Duration(milliseconds: Globals.navigatorDelay),
+        //                   () {
+        //                     Navigator.push(
+        //                       context,
+        //                       MaterialPageRoute(
+        //                           builder: (context) => const HighLightsPage()),
+        //                     ).then((value) {
+        //                       setState(() {});
+        //                     });
+        //                   },
+        //                 );
+      
+        //           break;
+        //         case 3:
+        //           // Note
+      
+        //           //animationController.reverse();
+      
+        //           (getNotesMatch(verseBid))
+        //               ? Future.delayed(
+        //                   Duration(milliseconds: Globals.navigatorDelay),
+        //                   () {
+        //                     Navigator.push(
+        //                       context,
+        //                       MaterialPageRoute(
+        //                         builder: (context) => const NotesPage(),
+        //                       ),
+        //                     ).then((value) {
+        //                       setState(() {});
+        //                     });
+        //                   },
+        //                 )
+        //               : saveNote(verseBid).then((value) {
+        //                   setState(() {});
+        //                 });
+      
+        //           break;
+        //         case 4:
+        //           // Copy
+      
+        //           //animationController.reverse();
+      
+        //           copyVerseWrapper(context);
+        //           break;
+        //       }
+        //     },
+        //   ),
+        // ),
       ),
-      floatingActionButton: showModes(),
-      // bottomNavigationBar: SizeTransition(
-      //   sizeFactor: animationController,
-      //   axisAlignment: -1.0,
-      //   child: BottomNavigationBar(
-      //     type: BottomNavigationBarType.fixed,
-      //     //backgroundColor: Colors.blueAccent,
-      //     //elevation: 0,
-      //     //iconSize: 40,
-      //     //selectedFontSize: 20,
-      //     //selectedIconTheme: const IconThemeData(color: Colors.redAccent, size: 40),
-      //     selectedItemColor: Theme.of(context).colorScheme.primary,
-      //     //selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-      //     //  unselectedIconTheme: IconThemeData(
-      //     //   color: Colors.deepOrangeAccent,
-      //     // ),
-      //     // unselectedItemColor: Colors.deepOrangeAccent,
-      //     // showSelectedLabels: false,
-      //     // showUnselectedLabels: false,
-      //     items: const <BottomNavigationBarItem>[
-      //       //New
-      //       BottomNavigationBarItem(
-      //         icon: Icon(Icons.compare),
-      //         label: 'Compare',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(Icons.bookmark),
-      //         label: 'Bookmark',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(Icons.highlight),
-      //         label: 'Highlight',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(Icons.note),
-      //         label: 'Notes',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(Icons.copy),
-      //         label: 'Copy',
-      //       ),
-      //     ],
-      //     currentIndex: _selectedIndex,
-      //     onTap: (int index) {
-      //       setState(() {
-      //         _selectedIndex = index;
-      //       });
-
-      //       switch (index) {
-      //         case 0:
-      //           // Compare
-
-      //           //animationController.reverse();
-
-      //           final model = Bible(
-      //               id: 0,
-      //               b: bibleBook,
-      //               c: context.read<ChapterBloc>().state,
-      //               v: verseNumber,
-      //               t: '');
-
-      //           (Globals.activeVersionCount! > 1)
-      //               ? mainCompareDialog(context, model)
-      //               : Future.delayed(
-      //                   Duration(milliseconds: Globals.navigatorLongDelay), () {
-      //                   ScaffoldMessenger.of(context)
-      //                       .showSnackBar(moreVersionsSnackBar);
-      //                 });
-
-      //           break;
-      //         case 1:
-      //           // Bookmark
-
-      //           //animationController.reverse();
-
-      //           (!getBookMarksMatch(verseBid))
-      //               ? insertBookMark(verseBid).then((value) {
-      //                   setState(() {});
-      //                 })
-      //               : Future.delayed(
-      //                   Duration(milliseconds: Globals.navigatorDelay),
-      //                   () {
-      //                     Navigator.push(
-      //                       context,
-      //                       MaterialPageRoute(
-      //                         builder: (context) => const BookMarksPage(),
-      //                       ),
-      //                     ).then((value) {
-      //                       //animationController.reverse();
-      //                       setState(() {});
-      //                     });
-      //                   },
-      //                 );
-
-      //           break;
-      //         case 2:
-      //           // Highlight
-
-      //           //animationController.reverse();
-
-      //           (!getHighLightMatch(verseBid))
-      //               ? insertHighLight(verseBid).then((value) {
-      //                   setState(() {});
-      //                 })
-      //               : Future.delayed(
-      //                   Duration(milliseconds: Globals.navigatorDelay),
-      //                   () {
-      //                     Navigator.push(
-      //                       context,
-      //                       MaterialPageRoute(
-      //                           builder: (context) => const HighLightsPage()),
-      //                     ).then((value) {
-      //                       setState(() {});
-      //                     });
-      //                   },
-      //                 );
-
-      //           break;
-      //         case 3:
-      //           // Note
-
-      //           //animationController.reverse();
-
-      //           (getNotesMatch(verseBid))
-      //               ? Future.delayed(
-      //                   Duration(milliseconds: Globals.navigatorDelay),
-      //                   () {
-      //                     Navigator.push(
-      //                       context,
-      //                       MaterialPageRoute(
-      //                         builder: (context) => const NotesPage(),
-      //                       ),
-      //                     ).then((value) {
-      //                       setState(() {});
-      //                     });
-      //                   },
-      //                 )
-      //               : saveNote(verseBid).then((value) {
-      //                   setState(() {});
-      //                 });
-
-      //           break;
-      //         case 4:
-      //           // Copy
-
-      //           //animationController.reverse();
-
-      //           copyVerseWrapper(context);
-      //           break;
-      //       }
-      //     },
-      //   ),
-      // ),
     );
   }
 }

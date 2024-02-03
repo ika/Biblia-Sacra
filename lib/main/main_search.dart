@@ -188,105 +188,108 @@ class _MainSearchState extends State<MainSearch> {
   @override
   Widget build(BuildContext context) {
     versionAbbr = Utilities(bibleVersion).getVersionAbbr();
-    return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        centerTitle: true,
-        elevation: 5,
-        leading: GestureDetector(
-          child: const Icon(Globals.backArrow),
-          onTap: () {
-            Future.delayed(
-              Duration(milliseconds: Globals.navigatorDelay),
-              () {
-                Navigator.of(context).pop();
-              },
-            );
-          },
-        ),
-        // title: Text("${Globals.areaSearchTitle} - ${Globals.versionAbbr}"
-        //     //style: TextStyle(fontSize: Globals.appBarFontSize),
-        //     ),
-        title: BlocBuilder<SearchBloc, int>(
-          builder: (context, state) {
-            return Text(
-              "${areasList[state]} - $versionAbbr",
-              style: const TextStyle(fontWeight: FontWeight.w700),
-            );
-          },
-        ),
-        actions: [
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {
-                  searchAreasDialog(context);
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        //backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+          //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          centerTitle: true,
+          elevation: 5,
+          leading: GestureDetector(
+            child: const Icon(Globals.backArrow),
+            onTap: () {
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.of(context).pop();
                 },
-              )
-            ],
-          )
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(50.0),
-        child: Column(
-          children: [
-            TextFormField(
-              initialValue: '',
-              maxLength: 40,
-              maxLines: 1,
-              autofocus: false,
-              onTap: () {
-                filteredSearch = Future.value([]);
-              },
-              onChanged: (value) {
-                _contents = value;
-              },
-              decoration: InputDecoration(
-                labelText: 'Search',
-                //labelStyle: TextStyle(fontSize: primaryTextSize),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search),
+              );
+            },
+          ),
+          // title: Text("${Globals.areaSearchTitle} - ${Globals.versionAbbr}"
+          //     //style: TextStyle(fontSize: Globals.appBarFontSize),
+          //     ),
+          title: BlocBuilder<SearchBloc, int>(
+            builder: (context, state) {
+              return Text(
+                "${areasList[state]} - $versionAbbr",
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              );
+            },
+          ),
+          actions: [
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.settings),
                   onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    Future.delayed(
-                      Duration(milliseconds: Globals.navigatorDelay),
-                      () {
-                        _contents.isEmpty
-                            ? emptyInputDialog(context)
-                            : runFilter(_contents);
-                      },
+                    searchAreasDialog(context);
+                  },
+                )
+              ],
+            )
+          ],
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(50.0),
+          child: Column(
+            children: [
+              TextFormField(
+                initialValue: '',
+                maxLength: 40,
+                maxLines: 1,
+                autofocus: false,
+                onTap: () {
+                  filteredSearch = Future.value([]);
+                },
+                onChanged: (value) {
+                  _contents = value;
+                },
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                  //labelStyle: TextStyle(fontSize: primaryTextSize),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      Future.delayed(
+                        Duration(milliseconds: Globals.navigatorDelay),
+                        () {
+                          _contents.isEmpty
+                              ? emptyInputDialog(context)
+                              : runFilter(_contents);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              Expanded(
+                child: FutureBuilder<List<Bible>>(
+                  future: filteredSearch,
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return listTileMethod(snapshot, index);
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
                   },
                 ),
               ),
-            ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            Expanded(
-              child: FutureBuilder<List<Bible>>(
-                future: filteredSearch,
-                builder: (BuildContext context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.separated(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return listTileMethod(snapshot, index);
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(),
-                    );
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

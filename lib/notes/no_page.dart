@@ -95,98 +95,101 @@ class NotesPageState extends State<NotesPage> {
         if (snapshot.hasData) {
           //return notesList(snapshot.data, context);
           list = snapshot.data!;
-          return Scaffold(
-            //backgroundColor: Theme.of(context).colorScheme.background,
-            appBar: AppBar(
-              //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              centerTitle: true,
-              elevation: 5,
-              leading: GestureDetector(
-                child: const Icon(Globals.backArrow),
-                onTap: () {
-                  // Route route = MaterialPageRoute(
-                  //   builder: (context) => const MainPage(),
-                  // );
-                  Future.delayed(
-                    Duration(milliseconds: Globals.navigatorDelay),
-                    () {
-                      //Navigator.push(context, route);
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
-              ),
-              title: const Text(
-                'Notes',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ListView.separated(
-                // scrollDirection: Axis.vertical,
-                // shrinkWrap: true,
-                itemCount: list.length,
-                itemBuilder: (BuildContext context, int index) {
-                  //return makeListTile(list, index);
-                  return GestureDetector(
-                    onHorizontalDragEnd: (DragEndDetails details) {
-                      if (details.primaryVelocity! > 0 ||
-                          details.primaryVelocity! < 0) {
-                        deleteWrapper(context, list, index);
-                      }
-                    },
-                    child: ListTile(
-                      trailing: Icon(Icons.arrow_right,
-                          color: Theme.of(context).colorScheme.primary),
-                      title: Text(
-                        "${list[index].title}",
-                        // style: TextStyle(
-                        //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
-                      ),
-                      subtitle: Text(
-                        list[index].contents!,
-                        //style: TextStyle(fontSize: primaryTextSize),
-                      ),
-                      onTap: () {
-                        final model = NtModel(
-                            id: list[index].id,
-                            title: list[index].title,
-                            contents: list[index].contents,
-                            lang: list[index].lang,
-                            version: list[index].version,
-                            abbr: list[index].abbr,
-                            book: list[index].book,
-                            chapter: list[index].chapter,
-                            verse: list[index].verse,
-                            name: list[index].name,
-                            bid: list[index].bid);
-                        gotoEditNote(model);
+          return PopScope(
+            canPop: false,
+            child: Scaffold(
+              //backgroundColor: Theme.of(context).colorScheme.background,
+              appBar: AppBar(
+                //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                centerTitle: true,
+                elevation: 5,
+                leading: GestureDetector(
+                  child: const Icon(Globals.backArrow),
+                  onTap: () {
+                    // Route route = MaterialPageRoute(
+                    //   builder: (context) => const MainPage(),
+                    // );
+                    Future.delayed(
+                      Duration(milliseconds: Globals.navigatorDelay),
+                      () {
+                        //Navigator.push(context, route);
+                        Navigator.of(context).pop();
                       },
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+                    );
+                  },
+                ),
+                title: const Text(
+                  'Notes',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
               ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              //backgroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: () {
-                final model = NtModel(
-                    title: '',
-                    contents: '',
-                    lang: '',
-                    version: 0,
-                    abbr: '',
-                    book: 0,
-                    chapter: 0,
-                    verse: 0,
-                    name: '',
-                    bid: 0);
-                addPage(model);
-              },
-              child: const Icon(Icons.add),
+              body: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ListView.separated(
+                  // scrollDirection: Axis.vertical,
+                  // shrinkWrap: true,
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    //return makeListTile(list, index);
+                    return GestureDetector(
+                      onHorizontalDragEnd: (DragEndDetails details) {
+                        if (details.primaryVelocity! > 0 ||
+                            details.primaryVelocity! < 0) {
+                          deleteWrapper(context, list, index);
+                        }
+                      },
+                      child: ListTile(
+                        trailing: Icon(Icons.arrow_right,
+                            color: Theme.of(context).colorScheme.primary),
+                        title: Text(
+                          "${list[index].title}",
+                          // style: TextStyle(
+                          //     fontWeight: FontWeight.bold, fontSize: primaryTextSize),
+                        ),
+                        subtitle: Text(
+                          list[index].contents!,
+                          //style: TextStyle(fontSize: primaryTextSize),
+                        ),
+                        onTap: () {
+                          final model = NtModel(
+                              id: list[index].id,
+                              title: list[index].title,
+                              contents: list[index].contents,
+                              lang: list[index].lang,
+                              version: list[index].version,
+                              abbr: list[index].abbr,
+                              book: list[index].book,
+                              chapter: list[index].chapter,
+                              verse: list[index].verse,
+                              name: list[index].name,
+                              bid: list[index].bid);
+                          gotoEditNote(model);
+                        },
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(),
+                ),
+              ),
+              floatingActionButton: FloatingActionButton(
+                //backgroundColor: Theme.of(context).colorScheme.primary,
+                onPressed: () {
+                  final model = NtModel(
+                      title: '',
+                      contents: '',
+                      lang: '',
+                      version: 0,
+                      abbr: '',
+                      book: 0,
+                      chapter: 0,
+                      verse: 0,
+                      name: '',
+                      bid: 0);
+                  addPage(model);
+                },
+                child: const Icon(Icons.add),
+              ),
             ),
           );
         }

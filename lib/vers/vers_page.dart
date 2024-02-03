@@ -77,29 +77,32 @@ class VersionsPageState extends State<VersionsPage> {
   Widget build(BuildContext context) {
     bibleVersion = context.read<VersionBloc>().state;
     vkQueries = VkQueries();
-    return Scaffold(
-      //backgroundColor: Theme.of(
-      appBar: AppBar(
-        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        centerTitle: true,
-        elevation: 5,
-        leading: GestureDetector(
-          child: const Icon(Globals.backArrow),
-          onTap: () {
-            Future.delayed(
-              Duration(milliseconds: Globals.navigatorDelay),
-              () {
-                Navigator.of(context).pop();
-              },
-            );
-          },
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        //backgroundColor: Theme.of(
+        appBar: AppBar(
+          //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          centerTitle: true,
+          elevation: 5,
+          leading: GestureDetector(
+            child: const Icon(Globals.backArrow),
+            onTap: () {
+              Future.delayed(
+                Duration(milliseconds: Globals.navigatorDelay),
+                () {
+                  Navigator.of(context).pop();
+                },
+              );
+            },
+          ),
+          title: const Text(
+            'Bibles',
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
         ),
-        title: const Text(
-          'Bibles',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
+        body: versionsWidget(),
       ),
-      body: versionsWidget(),
     );
   }
 }
