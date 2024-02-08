@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_font.dart';
@@ -556,7 +557,7 @@ class MainPageState extends State<MainPage>
     }
   }
 
- void onShareLink() async {
+  void onShareLink() async {
     //String subject = 'Westminster Confession';
     String uri =
         'https://play.google.com/store/apps/details?id=org.armstrong.ika.bibliasacra';
@@ -632,7 +633,7 @@ class MainPageState extends State<MainPage>
             trailing: const Icon(Icons.arrow_right),
             //color: Theme.of(context).colorScheme.primary),
             title: const Text(
-              'Hilights',
+              'Highlights',
               // style: TextStyle(
               //     //color: Colors.white,
               //     fontSize: 16.0,
@@ -791,29 +792,31 @@ class MainPageState extends State<MainPage>
               );
             },
           ),
-          ListTile(
-            trailing: const Icon(Icons.arrow_right),
-            //color: Theme.of(context).colorScheme.primary),
-            title: const Text(
-              'Share',
-              // style: TextStyle(
-              //     //color: Colors.white,
-              //     fontSize: 16.0,
-              //     fontWeight: FontWeight.bold),
-            ),
-            onTap: () {
-              // Route route = MaterialPageRoute(
-              //   builder: (context) => const ThemePage(),
-              // );
-              Future.delayed(
-                Duration(milliseconds: Globals.navigatorDelay),
-                () {
-                  Navigator.pop(context);
-                  onShareLink();
-                },
-              );
-            },
-          ),
+          (Platform.isAndroid)
+              ? ListTile(
+                  trailing: const Icon(Icons.arrow_right),
+                  //color: Theme.of(context).colorScheme.primary),
+                  title: const Text(
+                    'Share',
+                    // style: TextStyle(
+                    //     //color: Colors.white,
+                    //     fontSize: 16.0,
+                    //     fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    // Route route = MaterialPageRoute(
+                    //   builder: (context) => const ThemePage(),
+                    // );
+                    Future.delayed(
+                      Duration(milliseconds: Globals.navigatorDelay),
+                      () {
+                        Navigator.pop(context);
+                        onShareLink();
+                      },
+                    );
+                  },
+                )
+              : Container()
         ],
       ),
     );
@@ -925,7 +928,7 @@ class MainPageState extends State<MainPage>
           },
         ),
         PopupMenuItem(
-          child: const Text("Hilight"),
+          child: const Text("Highlight"),
           onTap: () {
             (!getHighLightMatch(verseBid))
                 ? insertHighLight(verseBid).then((value) {
@@ -1100,7 +1103,8 @@ class MainPageState extends State<MainPage>
             if (snapshot.hasData) {
               int chapterCount = snapshot.data!.toInt();
               return ScrollConfiguration(
-                behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(dragDevices: {
                   PointerDeviceKind.touch,
                   PointerDeviceKind.mouse,
                 }),
@@ -1195,20 +1199,20 @@ class MainPageState extends State<MainPage>
         //       setState(() {
         //         _selectedIndex = index;
         //       });
-      
+
         //       switch (index) {
         //         case 0:
         //           // Compare
-      
+
         //           //animationController.reverse();
-      
+
         //           final model = Bible(
         //               id: 0,
         //               b: bibleBook,
         //               c: context.read<ChapterBloc>().state,
         //               v: verseNumber,
         //               t: '');
-      
+
         //           (Globals.activeVersionCount! > 1)
         //               ? mainCompareDialog(context, model)
         //               : Future.delayed(
@@ -1216,13 +1220,13 @@ class MainPageState extends State<MainPage>
         //                   ScaffoldMessenger.of(context)
         //                       .showSnackBar(moreVersionsSnackBar);
         //                 });
-      
+
         //           break;
         //         case 1:
         //           // Bookmark
-      
+
         //           //animationController.reverse();
-      
+
         //           (!getBookMarksMatch(verseBid))
         //               ? insertBookMark(verseBid).then((value) {
         //                   setState(() {});
@@ -1241,13 +1245,13 @@ class MainPageState extends State<MainPage>
         //                     });
         //                   },
         //                 );
-      
+
         //           break;
         //         case 2:
         //           // Highlight
-      
+
         //           //animationController.reverse();
-      
+
         //           (!getHighLightMatch(verseBid))
         //               ? insertHighLight(verseBid).then((value) {
         //                   setState(() {});
@@ -1264,13 +1268,13 @@ class MainPageState extends State<MainPage>
         //                     });
         //                   },
         //                 );
-      
+
         //           break;
         //         case 3:
         //           // Note
-      
+
         //           //animationController.reverse();
-      
+
         //           (getNotesMatch(verseBid))
         //               ? Future.delayed(
         //                   Duration(milliseconds: Globals.navigatorDelay),
@@ -1288,13 +1292,13 @@ class MainPageState extends State<MainPage>
         //               : saveNote(verseBid).then((value) {
         //                   setState(() {});
         //                 });
-      
+
         //           break;
         //         case 4:
         //           // Copy
-      
+
         //           //animationController.reverse();
-      
+
         //           copyVerseWrapper(context);
         //           break;
         //       }
