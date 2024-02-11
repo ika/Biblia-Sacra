@@ -56,7 +56,7 @@ echo "Running appimagetool\n"
 echo "---------------------------------------------\n"
 
 if [ -f /usr/local/bin/appimagetool ]; then
-	appimagetool AppDir/ biblia.AppImage
+	appimagetool AppDir/ bibliasacra.AppImage
 fi
 
 sleep 1
@@ -65,8 +65,8 @@ echo "---------------------------------------------\n"
 echo "tar and gzipinf\n"
 echo "---------------------------------------------\n"
 
-if [ -f biblia.AppImage ]; then
-	tar -czvf biblia.tar.gz biblia.AppImage
+if [ -f bibliasacra.AppImage ]; then
+	tar -czvf bibliasacra.tar.gz bibliasacra.AppImage
 fi
 
 sleep 1
