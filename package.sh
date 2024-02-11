@@ -26,12 +26,12 @@ if [ -d AppDir/lib ]; then
 	rm -r AppDir/lib
 fi
 
-if [ -f biblia.AppImage ]; then
-	rm -f biblia.AppImage
+if [ -f bibliasacra.AppImage ]; then
+	rm -f bibliasacra.AppImage
 fi
 
-if [ -f biblia.tar.gz ]; then
-	rm -f biblia.tar.gz
+if [ -f bibliasacra.tar.gz ]; then
+	rm -f bibliasacra.tar.gz
 fi
 
 sleep 1
