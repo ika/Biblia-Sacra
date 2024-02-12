@@ -2,17 +2,20 @@
 #
 # package.sh
 #
-echo "---------------------------------------------\n"
-echo "Building linux release\n"
-echo "---------------------------------------------\n"
+
+pkgver='1.0.4-x86_64'
+
+echo "---------------------------------------------"
+echo "Building linux release"
+echo "---------------------------------------------"
 
 flutter build linux --release
 
 sleep 1
 
-echo "---------------------------------------------\n"
-echo "Removing old files\n"
-echo "---------------------------------------------\n"
+echo "---------------------------------------------"
+echo "Removing old files"
+echo "---------------------------------------------"
 
 if [ -f AppDir/bibliasacra ]; then
 	rm -f AppDir/bibliasacra
@@ -26,18 +29,15 @@ if [ -d AppDir/lib ]; then
 	rm -r AppDir/lib
 fi
 
-if [ -f bibliasacra.AppImage ]; then
-	rm -f bibliasacra.AppImage
-fi
-
-if [ -f bibliasacra.tar.gz ]; then
-	rm -f bibliasacra.tar.gz
+if [ -f bibliasacra-${pkgver}.AppImage ]; then
+	rm -f bibliasacra-${pkgver}.AppImage
 fi
 
 sleep 1
-echo "---------------------------------------------\n"
-echo "Copying release to AppDir\n"
-echo "---------------------------------------------\n"
+
+echo "---------------------------------------------"
+echo "Copying release to AppDir"
+echo "---------------------------------------------"
 
 if [ -f build/linux/x64/release/bundle/bibliasacra ]; then
 	cp build/linux/x64/release/bundle/bibliasacra AppDir
@@ -51,26 +51,16 @@ fi
 
 sleep 1
 
-echo "---------------------------------------------\n"
-echo "Running appimagetool\n"
-echo "---------------------------------------------\n"
+echo "---------------------------------------------"
+echo "Running appimagetool"
+echo "---------------------------------------------"
 
 if [ -f /usr/local/bin/appimagetool ]; then
-	appimagetool AppDir/ bibliasacra.AppImage
+	appimagetool AppDir/ bibliasacra-${pkgver}.AppImage
 fi
 
 sleep 1
 
-echo "---------------------------------------------\n"
-echo "tar and gzipinf\n"
-echo "---------------------------------------------\n"
-
-if [ -f bibliasacra.AppImage ]; then
-	tar -czvf bibliasacra.tar.gz bibliasacra.AppImage
-fi
-
-sleep 1
-
-echo "---------------------------------------------\n"
-echo "Packaging finished\n"
-echo "---------------------------------------------\n"
+echo "---------------------------------------------"
+echo "Packaging finished"
+echo "---------------------------------------------"
