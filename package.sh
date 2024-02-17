@@ -3,7 +3,7 @@
 # package.sh
 #
 
-pkgver='1.0.4-x86_64'
+pkgver='v1.0.4-x86_64'
 
 echo "---------------------------------------------"
 echo "Building linux release"
@@ -62,5 +62,7 @@ fi
 sleep 1
 
 echo "---------------------------------------------"
-echo "Packaging finished"
+echo "Success"
 echo "---------------------------------------------"
+exit 0
+

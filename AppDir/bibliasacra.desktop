@@ -4,5 +4,5 @@ Type=Application
 Terminal=false
 Name=Biblia Sacra
 Exec=bibliasacra %u
-Icon=ic_launcher
+Icon=bibliasacra
 Categories=Utility;
