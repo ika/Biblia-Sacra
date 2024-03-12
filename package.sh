@@ -3,7 +3,7 @@
 # package.sh
 #
 
-pkgver='v1.0.4-x86_64'
+pkgver='v1.0.6-x86_64'
 
 echo "---------------------------------------------"
 echo "Building linux release"
