@@ -73,7 +73,7 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-    //with SingleTickerProviderStateMixin {
+  //with SingleTickerProviderStateMixin {
   ItemScrollController initialScrollController = ItemScrollController();
 
   @override
@@ -93,6 +93,8 @@ class MainPageState extends State<MainPage> {
               duration: Duration(milliseconds: Globals.navigatorLongDelay),
               curve: Curves.easeInOutCubic,
             );
+          } else {
+            debugPrint("initialScrollController is NOT attached");
           }
         });
       },
@@ -755,7 +757,6 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-
     bibleBook = context.read<BookBloc>().state;
 
     bibleVersion = context.read<VersionBloc>().state;
