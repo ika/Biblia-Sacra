@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_font.dart';
 import 'package:bibliasacra/bloc/bloc_italic.dart';
+import 'package:bibliasacra/bloc/bloc_size.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bloc/bloc_themedata.dart';
@@ -51,7 +52,7 @@ class _BibleAppState extends State<BibleApp> {
         BlocProvider<VersionBloc>(create: (context) => VersionBloc()),
         BlocProvider<BookBloc>(create: (context) => BookBloc()),
         BlocProvider<ChapterBloc>(create: (context) => ChapterBloc()),
-        BlocProvider<VerseBloc>(create: (context) => VerseBloc()),
+        BlocProvider<SizeBloc>(create: (context) => SizeBloc()),
       ],
       child: BlocBuilder<ThemeBloc, bool>(
         builder: (context, state) {

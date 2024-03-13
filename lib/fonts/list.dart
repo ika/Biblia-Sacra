@@ -1,32 +1,4 @@
-// class FontList {
-//   String? font;
-//   int? num;
-
-//   void init() {
-//     SharedPrefs().getFontListNumber().then((n) {
-//       //saveFontData(n);
-//       num = n;
-//       font = fontsList[n];
-//     });
-//   }
-
-//   String getFont() {
-//     return font!;
-//   }
-
-//   int getNum() {
-//     return num!;
-//   }
-
-//   saveFontData(int n) {
-//     num = n;
-//     font = fontsList[n];
-//     // debugPrint("Font $font");
-//   }
-
-//   void setFont(int num) {
-//     SharedPrefs().setFontListNumber(num);
-//   }
+List<int> fontSizes = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30];
 
 List<String> fontsList = [
   "OpenSans",
@@ -40,4 +12,3 @@ List<String> fontsList = [
   "PlayfairDisplay",
   "Poppins"
 ];
-//}

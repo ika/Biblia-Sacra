@@ -1,5 +1,6 @@
 import 'package:bibliasacra/bloc/bloc_font.dart';
 import 'package:bibliasacra/bloc/bloc_italic.dart';
+import 'package:bibliasacra/bloc/bloc_size.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:bibliasacra/fonts/list.dart';
 late int selectedFont;
 late int fontNumber;
 late bool italicIsOn;
+late double textSize;
 
 class FontsPage extends StatefulWidget {
   const FontsPage({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class _FontsPageState extends State<FontsPage> {
     super.initState();
     selectedFont = context.read<FontBloc>().state;
     italicIsOn = context.read<ItalicBloc>().state;
+    textSize = context.read<SizeBloc>().state;
   }
 
   Future<dynamic> fontConfirmDialog(BuildContext context) {
@@ -82,27 +85,16 @@ class _FontsPageState extends State<FontsPage> {
     );
   }
 
+  late String valueChosen;
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        //backgroundColor: Colors.grey,
         appBar: AppBar(
           centerTitle: true,
-          //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           elevation: 5,
-          actions: [
-            Switch(
-              value: italicIsOn,
-              onChanged: (bool value) {
-                context.read<ItalicBloc>().add(ChangeItalic(value));
-                setState(() {
-                  italicIsOn = value;
-                });
-              },
-            )
-          ],
           leading: GestureDetector(
             child: const Icon(Globals.backArrow),
             onTap: () {
@@ -117,9 +109,97 @@ class _FontsPageState extends State<FontsPage> {
           ),
           //elevation: 16,
           title: const Text(
-            'Font Selector',
+            'Fonts',
             style: TextStyle(fontWeight: FontWeight.w700),
           ),
+          actions: [
+            //   Switch(
+            //     value: italicIsOn,
+            //     onChanged: (bool value) {
+            //       context.read<ItalicBloc>().add(ChangeItalic(value));
+            //       setState(() {
+            //         italicIsOn = value;
+            //       });
+            //     },
+            //   )
+            PopupMenuButton(
+              icon: const Icon(Icons.format_size_sharp),
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem<int>(
+                    value: 12,
+                    child: Text("12"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 14,
+                    child: Text("14"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 16,
+                    child: Text("16"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 18,
+                    child: Text("18"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 20,
+                    child: Text("20"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 22,
+                    child: Text("22"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 24,
+                    child: Text("24"),
+                  ),
+                  // const PopupMenuItem<int>(
+                  //   value: 26,
+                  //   child: Text("26"),
+                  // ),
+                  // const PopupMenuItem<int>(
+                  //   value: 28,
+                  //   child: Text("28"),
+                  // ),
+                  // const PopupMenuItem<int>(
+                  //   value: 30,
+                  //   child: Text("30"),
+                  // ),
+                ];
+              },
+              onSelected: (int value) {
+               double val = value.toDouble();
+                context.read<SizeBloc>().add(UpdateSize(size: val));
+                setState(() {
+                  textSize = val;
+                });
+              },
+            ),
+            PopupMenuButton(
+              icon: const Icon(Icons.format_italic_sharp),
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem<int>(
+                    value: 0,
+                    child: Text("Normal"),
+                  ),
+                  const PopupMenuItem<int>(
+                    value: 1,
+                    child: Text("Italic",
+                        style: TextStyle(fontStyle: FontStyle.italic)),
+                  ),
+                ];
+              },
+              onSelected: (int value) {
+                bool on = (value == 1) ? true : false;
+                context.read<ItalicBloc>().add(ChangeItalic(on));
+                setState(() {
+                  italicIsOn = on;
+                });
+              },
+            ),
+          ],
         ),
         body: Center(
           child: ListView(
@@ -134,23 +214,23 @@ class _FontsPageState extends State<FontsPage> {
                     fontConfirmDialog(context);
                   },
                   child: Container(
-                    // color: (i == selectedFont)
-                    //     ? Theme.of(context).colorScheme.tertiaryContainer
-                    //     : null,
-                    margin: const EdgeInsets.only(bottom: 8, left: 50, right: 50),
+                    margin:
+                        const EdgeInsets.only(bottom: 8, left: 50, right: 50),
                     height: 55,
-                    //color: primarySwatch![300],
                     child: Center(
                       child: Text(
-                        "The Lord is my shepherd, I lack nothing.",
+                        "The Lord is my shepherd",
                         style: TextStyle(
-                          backgroundColor: (i == selectedFont)
-                              ? Theme.of(context).colorScheme.tertiaryContainer
-                              : null,
-                          fontStyle:
-                              (italicIsOn) ? FontStyle.italic : FontStyle.normal,
-                          fontFamily: fontsList[i],
-                        ),
+                            backgroundColor: (i == selectedFont)
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer
+                                : null,
+                            fontStyle: (italicIsOn)
+                                ? FontStyle.italic
+                                : FontStyle.normal,
+                            fontFamily: fontsList[i],
+                            fontSize: textSize),
                       ),
                     ),
                   ),
