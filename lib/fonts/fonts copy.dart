@@ -93,7 +93,7 @@ class _FontsPageState extends State<FontsPage> {
       canPop: false,
       child: Scaffold(
         appBar: AppBar(
-          //centerTitle: true,
+          centerTitle: true,
           elevation: 5,
           leading: GestureDetector(
             child: const Icon(Globals.backArrow),
@@ -108,8 +108,9 @@ class _FontsPageState extends State<FontsPage> {
             },
           ),
           //elevation: 16,
-          title: Text("Font size $textSize",
-            style: const TextStyle(fontWeight: FontWeight.w700),
+          title: const Text(
+            'Fonts',
+            style: TextStyle(fontWeight: FontWeight.w700),
           ),
           actions: [
             //   Switch(
@@ -127,31 +128,31 @@ class _FontsPageState extends State<FontsPage> {
                 return [
                   const PopupMenuItem<int>(
                     value: 12,
-                    child: Text("12.0"),
+                    child: Text("12"),
                   ),
                   const PopupMenuItem<int>(
                     value: 14,
-                    child: Text("14.0"),
+                    child: Text("14"),
                   ),
                   const PopupMenuItem<int>(
                     value: 16,
-                    child: Text("16.0"),
+                    child: Text("16"),
                   ),
                   const PopupMenuItem<int>(
                     value: 18,
-                    child: Text("18.0"),
+                    child: Text("18"),
                   ),
                   const PopupMenuItem<int>(
                     value: 20,
-                    child: Text("20.0"),
+                    child: Text("20"),
                   ),
                   const PopupMenuItem<int>(
                     value: 22,
-                    child: Text("22.0"),
+                    child: Text("22"),
                   ),
                   const PopupMenuItem<int>(
                     value: 24,
-                    child: Text("24.0"),
+                    child: Text("24"),
                   ),
                   // const PopupMenuItem<int>(
                   //   value: 26,
@@ -168,7 +169,7 @@ class _FontsPageState extends State<FontsPage> {
                 ];
               },
               onSelected: (int value) {
-                double val = value.toDouble();
+               double val = value.toDouble();
                 context.read<SizeBloc>().add(UpdateSize(size: val));
                 setState(() {
                   textSize = val;
@@ -201,33 +202,41 @@ class _FontsPageState extends State<FontsPage> {
           ],
         ),
         body: Center(
-          child: ListView.builder(
-            itemCount: fontsList.length,
-            itemBuilder: (BuildContext context, int index) {
-              String t = (italicIsOn) ? 'Italic' : 'Normal';
-              return ListTile(
-                title: Text("${fontsList[index]} $t",
-                    style: TextStyle(
-                      fontStyle:
-                          (italicIsOn) ? FontStyle.italic : FontStyle.normal,
-                    )),
-                subtitle: Text(
-                  "The Lord is my shepherd",
-                  style: TextStyle(
-                      backgroundColor: (index == selectedFont)
-                          ? Theme.of(context).colorScheme.tertiaryContainer
-                          : null,
-                      fontStyle:
-                          (italicIsOn) ? FontStyle.italic : FontStyle.normal,
-                      fontFamily: fontsList[index],
-                      fontSize: textSize),
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              for (int i = 0; i < fontsList.length; i++)
+                InkWell(
+                  onTap: () {
+                    fontNumber = i;
+                    fontConfirmDialog(context);
+                  },
+                  child: Container(
+                    margin:
+                        const EdgeInsets.only(bottom: 8, left: 50, right: 50),
+                    height: 55,
+                    child: Center(
+                      child: Text(
+                        "The Lord is my shepherd",
+                        style: TextStyle(
+                            backgroundColor: (i == selectedFont)
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer
+                                : null,
+                            fontStyle: (italicIsOn)
+                                ? FontStyle.italic
+                                : FontStyle.normal,
+                            fontFamily: fontsList[i],
+                            fontSize: textSize),
+                      ),
+                    ),
+                  ),
                 ),
-                onTap: () {
-                  fontNumber = index;
-                  fontConfirmDialog(context);
-                },
-              );
-            },
+  
+            ],
           ),
         ),
       ),

@@ -52,6 +52,7 @@ class _BibleAppState extends State<BibleApp> {
         BlocProvider<VersionBloc>(create: (context) => VersionBloc()),
         BlocProvider<BookBloc>(create: (context) => BookBloc()),
         BlocProvider<ChapterBloc>(create: (context) => ChapterBloc()),
+        BlocProvider<VerseBloc>(create: (context) => VerseBloc()),
         BlocProvider<SizeBloc>(create: (context) => SizeBloc()),
       ],
       child: BlocBuilder<ThemeBloc, bool>(

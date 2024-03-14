@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:bibliasacra/bloc/bloc_book.dart';
 import 'package:bibliasacra/bloc/bloc_font.dart';
 import 'package:bibliasacra/bloc/bloc_italic.dart';
+import 'package:bibliasacra/bloc/bloc_size.dart';
 import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/bmarks/bm_model.dart';
@@ -50,6 +51,7 @@ NtQueries _ntQueries = NtQueries();
 String verseText = '';
 int verseNumber = 0;
 int chapterNumber = 0;
+late double textSize;
 
 late int bibleVersion;
 late int bibleBook;
@@ -275,7 +277,8 @@ class MainPageState extends State<MainPage> {
                         fontFamily: fontsList[context.read<FontBloc>().state],
                         fontStyle: (context.read<ItalicBloc>().state)
                             ? FontStyle.italic
-                            : FontStyle.normal),
+                            : FontStyle.normal,
+                        fontSize: textSize),
                     onWordTapped: (word, index) {
                       Globals.dictionaryLookup = word;
                       dictDialog(context);
@@ -313,6 +316,7 @@ class MainPageState extends State<MainPage> {
                           fontStyle: (context.read<ItalicBloc>().state)
                               ? FontStyle.italic
                               : FontStyle.normal,
+                          fontSize: textSize,
                           backgroundColor:
                               getBackGroundMatch(snapshot.data[index].id)
                                   ? Theme.of(context)
@@ -758,6 +762,8 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     bibleBook = context.read<BookBloc>().state;
+
+    textSize = context.read<SizeBloc>().state;
 
     bibleVersion = context.read<VersionBloc>().state;
 
