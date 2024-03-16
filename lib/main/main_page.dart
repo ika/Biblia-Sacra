@@ -40,6 +40,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:share/share.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
 import 'package:bibliasacra/fonts/list.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 late PageController? pageController;
 
@@ -81,6 +82,14 @@ class MainPageState extends State<MainPage> {
   @override
   initState() {
     super.initState();
+
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      String appName = packageInfo.appName;
+      String packageName = packageInfo.packageName;
+      String version = packageInfo.version;
+      String buildNumber = packageInfo.buildNumber;
+      debugPrint("$appName $packageName $version $buildNumber");
+    });
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {

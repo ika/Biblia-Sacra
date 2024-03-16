@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bibliasacra/bloc/bloc_font.dart';
 import 'package:bibliasacra/bloc/bloc_italic.dart';
 import 'package:bibliasacra/bloc/bloc_size.dart';
@@ -108,7 +110,8 @@ class _FontsPageState extends State<FontsPage> {
             },
           ),
           //elevation: 16,
-          title: Text("Font size $textSize",
+          title: Text(
+            "Font size $textSize",
             style: const TextStyle(fontWeight: FontWeight.w700),
           ),
           actions: [
@@ -124,48 +127,77 @@ class _FontsPageState extends State<FontsPage> {
             PopupMenuButton(
               icon: const Icon(Icons.format_size_sharp),
               itemBuilder: (context) {
-                return [
-                  const PopupMenuItem<int>(
-                    value: 12,
-                    child: Text("12.0"),
-                  ),
-                  const PopupMenuItem<int>(
-                    value: 14,
-                    child: Text("14.0"),
-                  ),
-                  const PopupMenuItem<int>(
-                    value: 16,
-                    child: Text("16.0"),
-                  ),
-                  const PopupMenuItem<int>(
-                    value: 18,
-                    child: Text("18.0"),
-                  ),
-                  const PopupMenuItem<int>(
-                    value: 20,
-                    child: Text("20.0"),
-                  ),
-                  const PopupMenuItem<int>(
-                    value: 22,
-                    child: Text("22.0"),
-                  ),
-                  const PopupMenuItem<int>(
-                    value: 24,
-                    child: Text("24.0"),
-                  ),
-                  // const PopupMenuItem<int>(
-                  //   value: 26,
-                  //   child: Text("26"),
-                  // ),
-                  // const PopupMenuItem<int>(
-                  //   value: 28,
-                  //   child: Text("28"),
-                  // ),
-                  // const PopupMenuItem<int>(
-                  //   value: 30,
-                  //   child: Text("30"),
-                  // ),
-                ];
+                if (Platform.isLinux || Platform.isWindows) {
+                  return [
+                    const PopupMenuItem<int>(
+                      value: 14,
+                      child: Text("14.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 16,
+                      child: Text("16.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 18,
+                      child: Text("18.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 20,
+                      child: Text("20.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 22,
+                      child: Text("22.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 24,
+                      child: Text("24.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 26,
+                      child: Text("26.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 28,
+                      child: Text("28.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 30,
+                      child: Text("30.0"),
+                    ),
+                  ];
+                } else {
+                  return [
+                    const PopupMenuItem<int>(
+                      value: 12,
+                      child: Text("12.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 14,
+                      child: Text("14.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 16,
+                      child: Text("16.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 18,
+                      child: Text("18.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 20,
+                      child: Text("20.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 22,
+                      child: Text("22.0"),
+                    ),
+                    const PopupMenuItem<int>(
+                      value: 24,
+                      child: Text("24.0"),
+                    ),
+                  ];
+                }
               },
               onSelected: (int value) {
                 double val = value.toDouble();
