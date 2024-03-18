@@ -79,17 +79,20 @@ class MainPageState extends State<MainPage> {
   //with SingleTickerProviderStateMixin {
   ItemScrollController initialScrollController = ItemScrollController();
 
+  PackageInfo packageInfo = PackageInfo(
+    appName: '',
+    packageName: '',
+    version: '',
+    buildNumber: '',
+    buildSignature: '',
+    installerStore: '',
+  );
+
   @override
   initState() {
     super.initState();
 
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      String appName = packageInfo.appName;
-      String packageName = packageInfo.packageName;
-      String version = packageInfo.version;
-      String buildNumber = packageInfo.buildNumber;
-      debugPrint("$appName $packageName $version $buildNumber");
-    });
+    initPackageInfo();
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -98,18 +101,25 @@ class MainPageState extends State<MainPage> {
         });
 
         Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
-          if (initialScrollController!.isAttached) {
-            initialScrollController!.scrollTo(
+          if (initialScrollController.isAttached) {
+            initialScrollController.scrollTo(
               index: context.read<VerseBloc>().state - 1,
               duration: Duration(milliseconds: Globals.navigatorLongDelay),
               curve: Curves.easeInOutCubic,
             );
-          } else {
-            debugPrint("initialScrollController is NOT attached");
+          // } else {
+          //   debugPrint("initialScrollController is NOT attached");
           }
         });
       },
     );
+  }
+
+  Future<void> initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      packageInfo = info;
+    });
   }
 
   itemScrollControllerSelector() {
@@ -375,12 +385,12 @@ class MainPageState extends State<MainPage> {
     await Share.share(uri);
   }
 
-  getPageController() {
+  void getPageController() {
     pageController =
         PageController(initialPage: context.read<ChapterBloc>().state - 1);
   }
 
-  Widget showDrawer(BuildContext context) {
+  showDrawer(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -392,7 +402,7 @@ class MainPageState extends State<MainPage> {
             child: Stack(
               children: [
                 Positioned(
-                  bottom: 20.0,
+                  bottom: 40.0,
                   //left: 16.0,
                   child: Text(
                     "Biblia Sacra",
@@ -402,8 +412,13 @@ class MainPageState extends State<MainPage> {
                         fontWeight: FontWeight.w700,
                         fontFamily: fontsList[context.read<FontBloc>().state],
                         fontStyle: FontStyle.italic),
-                    //fontWeight: FontWeight.w500),
                   ),
+                ),
+                Positioned(
+                  bottom: 10.0,
+                  right: 30.0,
+                  child: Text(
+                      "Ver: ${packageInfo.version}-${packageInfo.buildNumber}", style: const TextStyle(fontSize: 12),),
                 ),
               ],
             ),
@@ -627,6 +642,7 @@ class MainPageState extends State<MainPage> {
         ],
       ),
     );
+    // });
   }
 
   void populateBookMarksList() {
@@ -780,6 +796,8 @@ class MainPageState extends State<MainPage> {
     bibleLang = Utilities(bibleVersion).getLanguage();
     bookName = BookLists().readBookName(bibleBook, bibleVersion);
 
+    _dbQueries = DbQueries(bibleVersion);
+
     getPageController();
 
     populateBookMarksList();
@@ -788,7 +806,7 @@ class MainPageState extends State<MainPage> {
 
     populateNotesList();
 
-    _dbQueries = DbQueries(bibleVersion);
+    // getPackageInfo();
 
     return PopScope(
       canPop: false,
