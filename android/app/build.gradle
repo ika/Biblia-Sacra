@@ -51,10 +51,10 @@ android {
         applicationId "org.armstrong.ika.bibliasacra"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        minSdkVersion flutter.minSdkVersion //flutter.minSdkVersion // flutter.minSdkVersion
+        targetSdkVersion 34 // flutter.targetSdkVersion
+        versionCode 8 // flutterVersionCode.toInteger()
+        versionName '1.0.7' // flutterVersionName
     }
 
     signingConfigs {
