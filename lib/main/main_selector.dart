@@ -6,7 +6,7 @@ import 'package:bibliasacra/bloc/bloc_verse.dart';
 import 'package:bibliasacra/bloc/bloc_version.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
-import 'package:bibliasacra/main/db_queries.dart';
+import 'package:bibliasacra/main/main_queries.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

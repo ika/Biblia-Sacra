@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:io' as io;
-import 'package:path/path.dart' as p;
+import 'dart:io';
+import 'package:path/path.dart';
 import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,8 +27,8 @@ class HlProvider {
   }
 
   Future<Database> initDB() async {
-    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = p.join(documentsDirectory.path, dataBaseName);
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, dataBaseName);
 
     var db = await databaseFactory.openDatabase(path);
 

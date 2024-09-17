@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:bibliasacra/main/db_model.dart';
-import 'package:bibliasacra/main/db_provider.dart';
+import 'package:bibliasacra/main/main_model.dart';
+import 'package:bibliasacra/main/main_provider.dart';
 
 // Bible database queries
 

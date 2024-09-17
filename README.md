@@ -1,3 +1,4 @@
+
 # BibliaSacra
 
 A Flutter Bible project, containing seven versions of the Bible, five in English and two in Latin. It contains a comprehensive Latin dictionary, bookmarks, highlights, notes and a search function. Fonts and theme can be changed.
@@ -15,6 +16,3 @@ The GPL 3 is a strong copyleft license, meaning that any copy or modification of
 # Android app
 
 https://play.google.com/store/apps/details?id=org.armstrong.ika.bibliasacra
-
-
-

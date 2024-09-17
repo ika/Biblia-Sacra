@@ -1,6 +1,6 @@
 import 'package:bibliasacra/bloc/bloc_version.dart';
-import 'package:bibliasacra/main/db_model.dart';
-import 'package:bibliasacra/main/db_queries.dart';
+import 'package:bibliasacra/main/main_model.dart';
+import 'package:bibliasacra/main/main_queries.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
 import 'package:bibliasacra/vers/vers_queries.dart';
 import 'package:flutter/material.dart';

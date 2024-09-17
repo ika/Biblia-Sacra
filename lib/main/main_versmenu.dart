@@ -66,16 +66,6 @@ void versionChangeSnackBar(BuildContext context, String snackBarText) {
 }
 
 class AppBarVersionsPage extends State<AppBarVersions> {
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   WidgetsBinding.instance.addPostFrameCallback(
-  //     (_) {
-  //       bibleBook = context.read<BookBloc>().state.book;
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
