@@ -5,7 +5,7 @@ import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-// Bookmarks database helper
+// bm_provider.dart
 
 class BmProvider {
   final String dataBaseName = Constants.bmksDbname;

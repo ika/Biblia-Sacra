@@ -3,6 +3,8 @@ import 'package:bibliasacra/dict/dict_queries.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 
+// dict_page.dart
+
 DictQueries _dictQueries = DictQueries();
 
 Future<List<DicModel>>? blankSearch;
@@ -153,7 +155,7 @@ class _DicSearchState extends State<DictSearch> {
           canPop: false,
           child: Scaffold(
             //backgroundColor: Theme.of(context).colorScheme.background,
-          
+
             appBar: AppBar(
               //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               centerTitle: true,

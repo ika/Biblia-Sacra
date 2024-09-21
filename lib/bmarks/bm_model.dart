@@ -1,4 +1,4 @@
-// BookMark Model
+// bm_mode.dart
 
 class BmModel {
   int? id;

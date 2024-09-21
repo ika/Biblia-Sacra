@@ -3,7 +3,7 @@ import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-// Bookmarks database helper
+// bm_queries.dart:q
 
 BmProvider? _bmProvider;
 

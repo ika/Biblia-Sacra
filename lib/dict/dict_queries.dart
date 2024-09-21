@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dict_provider.dart';
 
+// dict_queries.dart
+
 class DicModel {
   int? id;
   String? word;

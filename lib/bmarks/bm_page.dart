@@ -10,7 +10,7 @@ import 'package:bibliasacra/bmarks/bm_model.dart';
 import 'package:bibliasacra/bmarks/bm_queries.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Bookmarks
+// bm_page.dart
 
 BmQueries _bmQueries = BmQueries();
 //late ScrollController scrollController;
