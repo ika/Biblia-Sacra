@@ -1,3 +1,4 @@
+// no_model.dart
 
 class NtModel {
   int? id;

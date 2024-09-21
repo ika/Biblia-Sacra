@@ -4,6 +4,8 @@ import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:flutter/material.dart';
 
+// no_page.dart
+
 NtQueries _ntQueries = NtQueries();
 
 class NotesPage extends StatefulWidget {

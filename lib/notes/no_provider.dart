@@ -5,6 +5,8 @@ import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
+// no_provider.dart
+
 class NtProvider {
   static NtProvider? _ntProvider;
   static Database? _database;

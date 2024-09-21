@@ -1,6 +1,8 @@
 import 'package:bibliasacra/notes/no_model.dart';
 import 'package:bibliasacra/notes/no_provider.dart';
 
+// no_queries.dart
+
 NtProvider? _ntProvider;
 
 class NtQueries {
