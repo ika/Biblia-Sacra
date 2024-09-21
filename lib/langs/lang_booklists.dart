@@ -1,4 +1,5 @@
-// BookLists
+
+// lang_booklists.dart
 
 import 'package:bibliasacra/langs/lang_eng.dart';
 import 'package:bibliasacra/langs/lang_latin.dart';

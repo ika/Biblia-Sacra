@@ -1,4 +1,6 @@
-  // List<String> afrList = [
+// lang_afr.dart
+//
+// List<String> afrList = [
   //   "Génesis",
   //   "Exodus",
   //   "Levítikus",

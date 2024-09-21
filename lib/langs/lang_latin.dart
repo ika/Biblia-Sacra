@@ -1,4 +1,6 @@
-  List<String> latList = [
+// lang_latin.dart
+
+List<String> latList = [
     "Genesis",
     "Exodus",
     "Leviticus",

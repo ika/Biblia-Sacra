@@ -1,4 +1,6 @@
-  List<String> engList = [
+// lang_eng.dart
+
+ List<String> engList = [
     "Genesis",
     "Exodus",
     "Leviticus",
