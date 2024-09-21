@@ -16,6 +16,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+// main.dart
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
