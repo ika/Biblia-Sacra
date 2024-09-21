@@ -3,7 +3,7 @@ import 'package:bibliasacra/high/hl_model.dart';
 import 'package:bibliasacra/high/hl_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-// Highlights database queries
+// hi_queries.dart
 
 HlProvider? _hlProvider;
 

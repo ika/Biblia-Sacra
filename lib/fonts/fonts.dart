@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bibliasacra/bloc/bloc_font.dart';
 import 'package:bibliasacra/bloc/bloc_italic.dart';
 import 'package:bibliasacra/bloc/bloc_size.dart';
@@ -7,6 +6,8 @@ import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bibliasacra/fonts/list.dart';
+
+// fonts.dart
 
 late int selectedFont;
 late int fontNumber;

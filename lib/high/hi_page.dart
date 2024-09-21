@@ -10,7 +10,7 @@ import 'package:bibliasacra/utils/utils_snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Highlights
+// hi_page.dart
 
 HlQueries _hlQueries = HlQueries();
 
@@ -144,16 +144,16 @@ class _HighLightsPage extends State<HighLightsPage> {
                         onTap: () {
                           context.read<VersionBloc>().add(UpdateVersion(
                               bibleVersion: list[index].version!));
-                
+
                           context.read<BookBloc>().add(UpdateBook(
                               book: list[index].book!)); // UpdateBook
-                
+
                           context.read<ChapterBloc>().add(
                               UpdateChapter(chapter: list[index].chapter!));
-                
+
                           context.read<VerseBloc>().add(UpdateVerse(
                               verse: list[index].verse!)); // UpdateVerse
-                
+
                           Route route = MaterialPageRoute(
                             builder: (context) => const MainPage(),
                           );

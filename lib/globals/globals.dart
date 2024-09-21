@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// globals.dart
+
 class Globals {
 
   // Navigarot delay
