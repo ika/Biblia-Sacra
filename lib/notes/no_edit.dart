@@ -9,6 +9,8 @@ import 'package:bibliasacra/notes/no_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// no_edit.dart
+
 NtQueries _ntQueries = NtQueries();
 
 class EditNotePage extends StatefulWidget {
@@ -254,3 +256,6 @@ class _EditNotePageState extends State<EditNotePage> {
         ),
       );
 }
+
+
+// no_edit.dart
