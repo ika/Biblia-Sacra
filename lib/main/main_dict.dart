@@ -2,6 +2,8 @@ import 'package:bibliasacra/dict/dict_queries.dart';
 import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 
+// main_dict.dart
+
 DictQueries _dictQueries = DictQueries();
 
 Future<dynamic> dictDialog(BuildContext context) {
@@ -33,7 +35,7 @@ Future<dynamic> dictDialog(BuildContext context) {
 }
 
 Future<List<DicModel>> repeatSearch() async {
-  
+
   List<DicModel> searchList = [];
   String word = ''; //Globals.dictionaryLookup;
 

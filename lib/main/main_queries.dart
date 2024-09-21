@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:bibliasacra/main/main_model.dart';
 import 'package:bibliasacra/main/main_provider.dart';
 
-// Bible database queries
+// imain_queries.dart
 
 DbProvider? _dbProvider;
 

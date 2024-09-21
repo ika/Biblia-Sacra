@@ -1,4 +1,4 @@
-// Bible Database Model
+// main_model.dart
 
 class Bible {
   int? id; // id

@@ -3,6 +3,8 @@ import 'package:bibliasacra/globals/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// main_areas.dart
+
 var searchAreasList = {};
 
 Future<dynamic> searchAreasDialog(BuildContext context) {
