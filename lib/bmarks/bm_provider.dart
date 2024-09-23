@@ -3,23 +3,20 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 
 // bm_provider.dart
 
 class BmProvider {
+  final int newDbVersion = 0;
   final String dataBaseName = Constants.bmksDbname;
   final String tableName = 'bmks_table';
 
-  static BmProvider? _dbProvider;
-  static Database? _database;
+  BmProvider.internal();
+  static dynamic _database;
 
-  BmProvider._createInstance();
+  static final BmProvider _instance = BmProvider.internal();
 
-  factory BmProvider() {
-    _dbProvider ??= BmProvider._createInstance();
-    return _dbProvider!;
-  }
+  factory BmProvider() => _instance;
 
   Future<Database> get database async {
     _database ??= await initDB();
@@ -27,12 +24,21 @@ class BmProvider {
   }
 
   Future<Database> initDB() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, dataBaseName);
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, dataBaseName);
 
-    var db = await databaseFactory.openDatabase(path);
+    Database db = await openDatabase(path);
 
-    await db.execute('''
+    if (await db.getVersion() < newDbVersion) {
+      db.close();
+      await deleteDatabase(path);
+
+      db = await openDatabase(
+        path,
+        version: newDbVersion,
+        onOpen: (db) async {},
+        onCreate: (Database db, int version) async {
+          await db.execute('''
                 CREATE TABLE IF NOT EXISTS $tableName (
                     id INTEGER PRIMARY KEY,
                     title TEXT DEFAULT '',
@@ -47,6 +53,9 @@ class BmProvider {
                     bid INTEGER DEFAULT 0
                 )
             ''');
+        },
+      );
+    }
     return db;
   }
 

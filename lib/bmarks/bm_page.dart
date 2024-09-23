@@ -62,7 +62,7 @@ class _BookMarkState extends State<BookMarksPage> {
         if (value) {
           _bmQueries.deleteBookMark(list[index].id).then(
             (value) {
-             // Globals.listReadCompleted = false;
+              // Globals.listReadCompleted = false;
               ScaffoldMessenger.of(context).showSnackBar(bmDeletedSnackBar);
               setState(() {});
             },
@@ -137,15 +137,14 @@ class _BookMarkState extends State<BookMarksPage> {
                           // style: TextStyle(fontSize: primaryTextSize),
                         ),
                         onTap: () {
-                          context.read<VersionBloc>().add(
-                              UpdateVersion(bibleVersion: list[index].version!));
+                          context.read<VersionBloc>().add(UpdateVersion(
+                              bibleVersion: list[index].version!));
 
-                          context.read<BookBloc>().add(
-                              UpdateBook(book: list[index].book!)); // UpdateBook
+                          context.read<BookBloc>().add(UpdateBook(
+                              book: list[index].book!)); // UpdateBook
 
-                          context
-                              .read<ChapterBloc>()
-                              .add(UpdateChapter(chapter: list[index].chapter!));
+                          context.read<ChapterBloc>().add(
+                              UpdateChapter(chapter: list[index].chapter!));
 
                           context.read<VerseBloc>().add(UpdateVerse(
                               verse: list[index].verse!)); // UpdateVerse
