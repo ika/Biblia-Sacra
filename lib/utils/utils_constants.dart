@@ -16,7 +16,7 @@ class Constants {
   // Bookmarks
   static const String bmksDbname = "ndba_bkmarks.db";
 
-    // Highlights
+  // Highlights
   static const String hltsDbname = "ndba_hlights.db";
 
   // Language Key

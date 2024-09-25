@@ -19,7 +19,6 @@ class UpdateChapter extends ChapterEvent {
 // -------------------------------------------------
 class ChapterBloc extends HydratedBloc<ChapterEvent, int> {
   ChapterBloc() : super(1) {
-    
     on<UpdateChapter>((event, emit) {
       emit(event.chapter);
     });

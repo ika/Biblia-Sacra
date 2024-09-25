@@ -1,40 +1,38 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 
 // dict_provider.dart
 
 class DicProvider {
+  final int newDbVersion = 1;
   final String dataBaseName = Constants.dictDbname;
 
-  static final DicProvider _instance = DicProvider.internal();
-
-  factory DicProvider() {
-    return _instance;
-  }
-
-  static dynamic _db;
-
-  Future<Database> get db async {
-    if (_db != null) {
-      return _db;
-    }
-    _db = await initDB();
-    return _db;
-  }
+  DicProvider();
 
   DicProvider.internal();
+  static final DicProvider _instance = DicProvider.internal();
+  static Database? _database;
 
-  initDB() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, dataBaseName);
+  Future<Database> get database async {
+    _database ??= await initDB();
+    return _database!;
+  }
 
-    if (!await databaseExists(path)) {
+  Future<Database> initDB() async {
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, dataBaseName);
+
+    Database db = await openDatabase(path);
+
+    // not exists returns zero
+    if (await db.getVersion() < newDbVersion) {
+      db.close();
+      await deleteDatabase(path);
+
       try {
         await Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
@@ -42,14 +40,16 @@ class DicProvider {
       ByteData data = await rootBundle.load(join("assets/dict", dataBaseName));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-
       await File(path).writeAsBytes(bytes, flush: true);
-    }
 
-    return await databaseFactory.openDatabase(path);
+      db = await openDatabase(path);
+
+      db.setVersion(newDbVersion);
+    }
+    return db;
   }
 
   Future close() async {
-    return _db.close();
+    return _database!.close();
   }
 }

@@ -60,8 +60,10 @@ class _FontsPageState extends State<FontsPage> {
                       Future.delayed(
                         Duration(milliseconds: Globals.navigatorDelay),
                         () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          }
                         },
                       );
                     },
@@ -105,7 +107,9 @@ class _FontsPageState extends State<FontsPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.of(context).pop();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
                 },
               );
             },

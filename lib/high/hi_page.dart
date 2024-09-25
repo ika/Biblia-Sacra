@@ -97,14 +97,12 @@ class _HighLightsPage extends State<HighLightsPage> {
                 leading: GestureDetector(
                   child: const Icon(Globals.backArrow),
                   onTap: () {
-                    // Route route = MaterialPageRoute(
-                    //   builder: (context) => const MainPage(),
-                    // );
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
-                        //Navigator.push(context, route);
-                        Navigator.of(context).pop();
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
                       },
                     );
                   },
@@ -160,7 +158,9 @@ class _HighLightsPage extends State<HighLightsPage> {
                           Future.delayed(
                             Duration(milliseconds: Globals.navigatorDelay),
                             () {
-                              Navigator.push(context, route);
+                              if (context.mounted) {
+                                Navigator.push(context, route);
+                              }
                             },
                           );
                           //});

@@ -2,37 +2,37 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 // main_provider.dart
 
-late String dataBaseName;
-
 class DbProvider {
-  String dbName = '';
-  static String? dataBaseName;
-  static DbProvider? _dbProvider;
-  static Database? _database;
+  final int newDbVersion = 1;
+  late String dataBaseName;
 
-  DbProvider._createInstance();
-
-  DbProvider(this.dbName) {
+  DbProvider(dbName) {
     dataBaseName = dbName;
-    _dbProvider ??= DbProvider._createInstance();
   }
 
+  DbProvider.internal();
+  static final DbProvider instance = DbProvider.internal();
+  static Database? _database;
+
   Future<Database> get database async {
-    //_database ??= await initDB();
     _database = await initDB();
     return _database!;
   }
 
   Future<Database> initDB() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, dataBaseName);
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, dataBaseName);
 
-    if (!await databaseExists(path)) {
+    Database db = await openDatabase(path);
+
+    if (await db.getVersion() < newDbVersion) {
+      db.close();
+      await deleteDatabase(path);
+
       try {
         await Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
@@ -41,11 +41,13 @@ class DbProvider {
           await rootBundle.load(join("assets/bibles", dataBaseName));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-
       await File(path).writeAsBytes(bytes, flush: true);
-    }
 
-    return await databaseFactory.openDatabase(path);
+      db = await openDatabase(path);
+
+      db.setVersion(newDbVersion);
+    }
+    return db;
   }
 
   Future close() async {

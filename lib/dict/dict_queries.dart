@@ -37,7 +37,7 @@ class DictQueries {
     final mod = DicModel(id: 0, word: 'No results.', trans: '');
     emptyList.add(mod);
 
-    final db = await dicProvider.db;
+    final db = await dicProvider.database;
 
     // var res = await db.rawQuery(
     //     '''SELECT * FROM $_tableName WHERE word LIKE ? ORDER BY word''',

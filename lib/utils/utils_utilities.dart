@@ -1,4 +1,3 @@
-
 class Utilities {
   Utilities(this.bibleVersion);
   final int bibleVersion;

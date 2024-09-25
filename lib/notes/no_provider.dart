@@ -1,25 +1,20 @@
 import 'dart:async';
-import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 
 // no_provider.dart
 
 class NtProvider {
-  static NtProvider? _ntProvider;
-  static Database? _database;
-
+  final int newDbVersion = 1;
   final String dataBaseName = Constants.notesDbname;
   final String _tableName = 'notes';
 
-  NtProvider._createInstance();
+  NtProvider();
 
-  factory NtProvider() {
-    _ntProvider ??= NtProvider._createInstance();
-    return _ntProvider!;
-  }
+  NtProvider.internal();
+  static final NtProvider _instance = NtProvider.internal();
+  static Database? _database;
 
   Future<Database> get database async {
     _database ??= await initDB();
@@ -27,12 +22,21 @@ class NtProvider {
   }
 
   Future<Database> initDB() async {
-    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, dataBaseName);
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, dataBaseName);
 
-    var db = await databaseFactory.openDatabase(path);
+    Database db = await openDatabase(path);
 
-    await db.execute('''
+    if (await db.getVersion() < newDbVersion) {
+      db.close();
+      await deleteDatabase(path);
+
+      db = await openDatabase(
+        path,
+        version: newDbVersion,
+        onOpen: (db) async {},
+        onCreate: (Database db, int version) async {
+          await db.execute('''
                 CREATE TABLE IF NOT EXISTS $_tableName (
                     id INTEGER PRIMARY KEY,
                     title TEXT DEFAULT '',
@@ -47,7 +51,9 @@ class NtProvider {
                     bid INTEGER DEFAULT 0
                 )
             ''');
-
+        },
+      );
+    }
     return db;
   }
 

@@ -1,26 +1,21 @@
 import 'dart:async';
-import 'dart:io' as io;
+import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:path/path.dart' as p;
+import 'package:path/path.dart';
 import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
 
 // Version Key helper
 
 class VkProvider {
-  static VkProvider? _vkProvider;
-  static Database? _database;
-
+  final int newDbVersion = 1;
   final String dataBaseName = Constants.vkeyDbname;
-  //final String tableName = 'version_key';
 
-  VkProvider._createInstance();
+  VkProvider();
 
-  factory VkProvider() {
-    _vkProvider ??= VkProvider._createInstance();
-    return _vkProvider!;
-  }
+  VkProvider.internal();
+  static final VkProvider instance = VkProvider.internal();
+  static Database? _database;
 
   Future<Database> get database async {
     _database ??= await initDB();
@@ -28,44 +23,31 @@ class VkProvider {
   }
 
   Future<Database> initDB() async {
-    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = p.join(documentsDirectory.path, dataBaseName);
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, dataBaseName);
 
-    if (!await databaseExists(path)) {
+    Database db = await openDatabase(path);
+
+    // not exists returns zero
+    if (await db.getVersion() < newDbVersion) {
+      db.close();
+      await deleteDatabase(path);
+
       try {
-        await io.Directory(p.dirname(path)).create(recursive: true);
+        await Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
 
-      ByteData data =
-          await rootBundle.load(p.join("assets/vkey", dataBaseName));
+      ByteData data = await rootBundle.load(join("assets/vkey", dataBaseName));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(path).writeAsBytes(bytes, flush: true);
 
-      await io.File(path).writeAsBytes(bytes, flush: true);
+      db = await openDatabase(path);
+
+      db.setVersion(newDbVersion);
     }
-
-    return await databaseFactory.openDatabase(path);
+    return db;
   }
-
-  //   Future<Database> initDB() async {
-  //   io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-  //   String path = join(documentsDirectory.path, dataBaseName);
-
-  //   var db = await databaseFactory.openDatabase(path);
-
-  //   await db.execute('''
-  //               CREATE TABLE IF NOT EXISTS $tableName (
-  //                   id INTEGER PRIMARY KEY,
-  //                   number INTEGER DEFAULT 0,
-  //                   active INTEGER DEFAULT 0,
-  //                   abbr TEXT DEFAULT '',
-  //                   lang TEXT DEFAULT '',
-  //                   name TEXT DEFAULT ''
-  //               )
-  //           ''');
-
-  //   return db;
-  // }
 
   Future close() async {
     return _database!.close();

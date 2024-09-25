@@ -27,5 +27,4 @@ class VkModel {
         'lang': l,
         'name': m,
       };
-
 }

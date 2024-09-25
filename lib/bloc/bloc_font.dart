@@ -19,7 +19,6 @@ class UpdateFont extends FontEvent {
 // -------------------------------------------------
 class FontBloc extends HydratedBloc<FontEvent, int> {
   FontBloc() : super(7) {
-
     on<UpdateFont>((event, emit) {
       emit(event.font);
     });

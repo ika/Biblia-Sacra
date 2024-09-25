@@ -29,7 +29,8 @@ class Compare {
   Future<List<CompareModel>> activeVersions(Bible model) async {
     List<CompareModel> compareList = [];
 
-    List activeVersions = await VkQueries().getActiveVersionNumbers(bibleVersion);
+    List activeVersions =
+        await VkQueries().getActiveVersionNumbers(bibleVersion);
 
     for (int x = 0; x < activeVersions.length; x++) {
       int bibleVer = activeVersions[x]['number'];

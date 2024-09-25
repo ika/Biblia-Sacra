@@ -16,9 +16,8 @@ class VkQueries {
 
   Future<int?> getActiveVersionCount() async {
     final db = await _vkProvider!.database;
-    return  Sqflite.firstIntValue(await db.rawQuery(
-        '''SELECT COUNT(*) FROM $tableName WHERE active=?''',
-        ['1']));
+    return Sqflite.firstIntValue(await db
+        .rawQuery('''SELECT COUNT(*) FROM $tableName WHERE active=?''', ['1']));
   }
 
   Future<void> updateActiveState(int a, int i) async {
@@ -31,8 +30,7 @@ class VkQueries {
     final db = await _vkProvider!.database;
 
     var res = await db.rawQuery(
-        '''SELECT * FROM $tableName WHERE number <> ?''',
-        [bibleVersion]);
+        '''SELECT * FROM $tableName WHERE number <> ?''', [bibleVersion]);
 
     List<VkModel> list = res.isNotEmpty
         ? res.map((tableName) => VkModel.fromJson(tableName)).toList()

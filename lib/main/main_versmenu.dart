@@ -68,7 +68,6 @@ void versionChangeSnackBar(BuildContext context, String snackBarText) {
 }
 
 class AppBarVersionsPage extends State<AppBarVersions> {
-
   @override
   Widget build(BuildContext context) {
     bibleBook = context.read<BookBloc>().state;

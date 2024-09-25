@@ -19,7 +19,6 @@ class UpdateSearchArea extends SearchEvent {
 // -------------------------------------------------
 class SearchBloc extends HydratedBloc<SearchEvent, int> {
   SearchBloc() : super(5) {
-    
     on<UpdateSearchArea>((event, emit) {
       emit(event.area);
     });

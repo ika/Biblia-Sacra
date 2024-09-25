@@ -80,7 +80,9 @@ class _EditNotePageState extends State<EditNotePage> {
           Future.delayed(
             Duration(milliseconds: Globals.navigatorDelay),
             () {
-              Navigator.push(context, route);
+              if (context.mounted) {
+                Navigator.push(context, route);
+              }
             },
           );
         },
@@ -123,7 +125,9 @@ class _EditNotePageState extends State<EditNotePage> {
         if (value) {
           _ntQueries.deleteNote(widget.model.id!).then(
             (value) {
-              Navigator.pop(context, 'deleted');
+              if (context.mounted) {
+                Navigator.pop(context, 'deleted');
+              }
             },
           );
         }
@@ -151,7 +155,9 @@ class _EditNotePageState extends State<EditNotePage> {
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
-                        Navigator.of(context).pop();
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
                       },
                     );
                   });
@@ -226,16 +232,22 @@ class _EditNotePageState extends State<EditNotePage> {
                               },
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 10.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
-                                        updateEdit().then((value) {
-                                          Navigator.of(context).pop();
-                                        });
+                                        updateEdit().then(
+                                          (value) {
+                                            if (context.mounted) {
+                                              Navigator.of(context).pop();
+                                            }
+                                          },
+                                        );
                                       }
                                     },
                                     child: const Text('Submit'),
@@ -256,6 +268,5 @@ class _EditNotePageState extends State<EditNotePage> {
         ),
       );
 }
-
 
 // no_edit.dart

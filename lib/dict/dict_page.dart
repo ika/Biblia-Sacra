@@ -98,9 +98,11 @@ class _DicSearchState extends State<DictSearch> {
                   Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      _contents.isEmpty
-                          ? emptyInputDialog(context)
-                          : runFilter(_contents);
+                      if (_contents.isEmpty && context.mounted) {
+                        emptyInputDialog(context);
+                      } else {
+                        runFilter(_contents);
+                      }
                     },
                   );
                 },
@@ -166,7 +168,9 @@ class _DicSearchState extends State<DictSearch> {
                   Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      Navigator.of(context).pop();
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
                     },
                   );
                 },

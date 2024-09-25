@@ -26,12 +26,15 @@ class ThemePageState extends State<ThemePage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.of(context).pop();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
                 },
               );
             },
           ),
-          title: const Text('Theme Switcher', style: TextStyle(fontWeight: FontWeight.w700)),
+          title: const Text('Theme Switcher',
+              style: TextStyle(fontWeight: FontWeight.w700)),
           // actions: [
           //   Switch(
           //     value: (context.read<ThemeBloc>()) ? true : false,

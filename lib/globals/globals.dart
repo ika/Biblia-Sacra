@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // globals.dart
 
 class Globals {
-
   // Navigarot delay
   static int navigatorDelay = 200;
   static int navigatorLongDelay = 500;
@@ -19,5 +18,4 @@ class Globals {
 
   // Active Version count
   static int? activeVersionCount = 0;
-
 }

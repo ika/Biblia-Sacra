@@ -38,7 +38,7 @@ class NtQueries {
     return list;
   }
 
-    Future<List<NtModel>> getAllNotes() async {
+  Future<List<NtModel>> getAllNotes() async {
     final db = await _ntProvider!.database;
 
     var res =

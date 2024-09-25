@@ -43,9 +43,11 @@ class NotesPageState extends State<NotesPage> {
     Future.delayed(
       Duration(milliseconds: Globals.navigatorDelay),
       () {
-        Navigator.push(context, route).then((v) {
-          setState(() {});
-        });
+        if (context.mounted) {
+          Navigator.push(context, route).then((v) {
+            setState(() {});
+          });
+        }
       },
     );
   }

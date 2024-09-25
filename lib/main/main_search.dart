@@ -11,7 +11,7 @@ import 'package:bibliasacra/main/main_queries.dart';
 import 'package:bibliasacra/langs/lang_booklists.dart';
 import 'package:bibliasacra/main/main_page.dart';
 import 'package:bibliasacra/main/main_versmenu.dart';
-import 'package:bibliasacra/main/search_areas.dart';
+import 'package:bibliasacra/main/main_areas.dart';
 import 'package:bibliasacra/utils/utils_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

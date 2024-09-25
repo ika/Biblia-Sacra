@@ -19,7 +19,6 @@ class ChangeItalic extends ItalicEvent {
 // -------------------------------------------------
 class ItalicBloc extends HydratedBloc<ItalicEvent, bool> {
   ItalicBloc() : super(false) {
-
     on<ChangeItalic>((event, emit) {
       emit(event.italicIsOn);
     });

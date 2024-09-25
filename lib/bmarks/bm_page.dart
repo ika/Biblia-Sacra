@@ -97,8 +97,9 @@ class _BookMarkState extends State<BookMarksPage> {
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
-                        //Navigator.push(context, route);
-                        Navigator.of(context).pop();
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
                       },
                     );
                   },
@@ -155,7 +156,9 @@ class _BookMarkState extends State<BookMarksPage> {
                           Future.delayed(
                             Duration(milliseconds: Globals.navigatorDelay),
                             () {
-                              Navigator.push(context, route);
+                              if (context.mounted) {
+                                Navigator.push(context, route);
+                              }
                             },
                           );
                           //});

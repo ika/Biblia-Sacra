@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:path/path.dart';
 import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
@@ -7,16 +6,15 @@ import 'package:sqflite/sqflite.dart';
 // bm_provider.dart
 
 class BmProvider {
-  final int newDbVersion = 0;
+  final int newDbVersion = 1;
   final String dataBaseName = Constants.bmksDbname;
   final String tableName = 'bmks_table';
 
+  BmProvider();
+
   BmProvider.internal();
-  static dynamic _database;
-
   static final BmProvider _instance = BmProvider.internal();
-
-  factory BmProvider() => _instance;
+  static Database? _database;
 
   Future<Database> get database async {
     _database ??= await initDB();

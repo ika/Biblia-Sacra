@@ -1,4 +1,3 @@
-
 // lang_booklists.dart
 
 import 'package:bibliasacra/langs/lang_eng.dart';
@@ -59,6 +58,4 @@ class BookLists {
   String readBookName(int bibleBook, int bibleVersion) {
     return getBookByNumber(bibleBook, Utilities(bibleVersion).getLanguage());
   }
-
-
 }

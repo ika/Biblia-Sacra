@@ -19,7 +19,6 @@ class UpdateBook extends BookEvent {
 // -------------------------------------------------
 class BookBloc extends HydratedBloc<BookEvent, int> {
   BookBloc() : super(43) {
-
     on<UpdateBook>((event, emit) {
       emit(event.book);
     });

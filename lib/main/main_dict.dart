@@ -35,7 +35,6 @@ Future<dynamic> dictDialog(BuildContext context) {
 }
 
 Future<List<DicModel>> repeatSearch() async {
-
   List<DicModel> searchList = [];
   String word = ''; //Globals.dictionaryLookup;
 

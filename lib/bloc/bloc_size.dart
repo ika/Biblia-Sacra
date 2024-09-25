@@ -19,7 +19,6 @@ class UpdateSize extends SizeEvent {
 // -------------------------------------------------
 class SizeBloc extends HydratedBloc<SizeEvent, double> {
   SizeBloc() : super(14.0) {
-
     on<UpdateSize>((event, emit) {
       emit(event.size);
     });

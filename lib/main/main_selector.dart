@@ -283,7 +283,9 @@ class _MainSelectorState extends State<MainSelector>
             },
           ),
           title: Text(
-              "$bookName: $_currentChapterValue : $_currentVerseValue", style: const TextStyle(fontWeight: FontWeight.w700),),
+            "$bookName: $_currentChapterValue : $_currentVerseValue",
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
           bottom: TabBar(
             controller: tabController,
             //labelStyle: Theme.of(context).tabBarTheme.labelStyle?.copyWith(color: Colors.white),

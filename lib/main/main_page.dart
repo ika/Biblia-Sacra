@@ -109,8 +109,8 @@ class MainPageState extends State<MainPage> {
               duration: Duration(milliseconds: Globals.navigatorLongDelay),
               curve: Curves.easeInOutCubic,
             );
-          // } else {
-          //   debugPrint("initialScrollController is NOT attached");
+            // } else {
+            //   debugPrint("initialScrollController is NOT attached");
           }
         });
       },
@@ -420,7 +420,9 @@ class MainPageState extends State<MainPage> {
                   bottom: 10.0,
                   right: 30.0,
                   child: Text(
-                      "Ver: ${packageInfo.version}-${packageInfo.buildNumber}", style: const TextStyle(fontSize: 12),),
+                    "Ver: ${packageInfo.version}-${packageInfo.buildNumber}",
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 ),
               ],
             ),
