@@ -10,11 +10,11 @@ class BmProvider {
   final String dataBaseName = Constants.bmksDbname;
   final String tableName = 'bmks_table';
 
-  BmProvider();
-
   BmProvider.internal();
   static final BmProvider _instance = BmProvider.internal();
   static Database? _database;
+
+  factory BmProvider() => _instance;
 
   Future<Database> get database async {
     _database ??= await initDB();

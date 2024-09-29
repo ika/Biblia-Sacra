@@ -8,14 +8,13 @@ import 'package:sqflite/sqflite.dart';
 // dict_provider.dart
 
 class DicProvider {
-  final int newDbVersion = 1;
   final String dataBaseName = Constants.dictDbname;
-
-  DicProvider();
 
   DicProvider.internal();
   static final DicProvider _instance = DicProvider.internal();
   static Database? _database;
+
+  factory DicProvider() => _instance;
 
   Future<Database> get database async {
     _database ??= await initDB();
@@ -26,12 +25,7 @@ class DicProvider {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, dataBaseName);
 
-    Database db = await openDatabase(path);
-
-    // not exists returns zero
-    if (await db.getVersion() < newDbVersion) {
-      db.close();
-      await deleteDatabase(path);
+    if (!await databaseExists(path)) {
 
       try {
         await Directory(dirname(path)).create(recursive: true);
@@ -42,10 +36,9 @@ class DicProvider {
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes, flush: true);
 
-      db = await openDatabase(path);
-
-      db.setVersion(newDbVersion);
     }
+
+    Database db = await openDatabase(path);
     return db;
   }
 

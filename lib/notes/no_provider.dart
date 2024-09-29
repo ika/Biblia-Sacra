@@ -10,11 +10,11 @@ class NtProvider {
   final String dataBaseName = Constants.notesDbname;
   final String _tableName = 'notes';
 
-  NtProvider();
-
   NtProvider.internal();
   static final NtProvider _instance = NtProvider.internal();
   static Database? _database;
+
+  factory NtProvider() => _instance;
 
   Future<Database> get database async {
     _database ??= await initDB();

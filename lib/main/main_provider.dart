@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 // main_provider.dart
 
 class DbProvider {
-  final int newDbVersion = 1;
   late String dataBaseName;
 
   DbProvider(dbName) {
@@ -18,6 +17,8 @@ class DbProvider {
   static final DbProvider instance = DbProvider.internal();
   static Database? _database;
 
+  //factory DbProvider() => _instance;
+
   Future<Database> get database async {
     _database = await initDB();
     return _database!;
@@ -27,12 +28,7 @@ class DbProvider {
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, dataBaseName);
 
-    Database db = await openDatabase(path);
-
-    if (await db.getVersion() < newDbVersion) {
-      db.close();
-      await deleteDatabase(path);
-
+    if (!await databaseExists(path)) {
       try {
         await Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
@@ -42,11 +38,9 @@ class DbProvider {
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes, flush: true);
-
-      db = await openDatabase(path);
-
-      db.setVersion(newDbVersion);
     }
+
+    Database db = await openDatabase(path);
     return db;
   }
 
