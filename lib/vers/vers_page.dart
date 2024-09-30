@@ -9,11 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 late VkQueries vkQueries;
 late int bibleVersion;
-//DbQueries dbQueries = DbQueries();
 
 int counter = 0;
-
-//double? primaryTextSize;
 
 class VersionsPage extends StatefulWidget {
   const VersionsPage({super.key});
@@ -91,7 +88,9 @@ class VersionsPageState extends State<VersionsPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.of(context).pop();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
                 },
               );
             },

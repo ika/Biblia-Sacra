@@ -117,8 +117,6 @@ class DbQueries {
       String search, String low, String high) async {
     final db = await _dbProvider!.database;
 
-    //debugPrint("TEXT $search LOW $low HIGH $high");
-
     List<Bible> returnList = [];
     final defList = Bible(id: 0, b: 0, c: 0, v: 0, t: 'No search results.');
     returnList.add(defList);

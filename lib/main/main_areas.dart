@@ -93,7 +93,9 @@ class SearchAreasList extends StatelessWidget {
             Future.delayed(
               Duration(milliseconds: Globals.navigatorDelay),
               () {
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
             );
           },

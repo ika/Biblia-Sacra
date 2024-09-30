@@ -277,7 +277,9 @@ class _MainSelectorState extends State<MainSelector>
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route);
+                  if (context.mounted) {
+                    Navigator.push(context, route);
+                  }
                 },
               );
             },

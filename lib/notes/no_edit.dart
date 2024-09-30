@@ -53,10 +53,9 @@ class _EditNotePageState extends State<EditNotePage> {
     }
   }
 
-  Widget showGotoVerse() {
+  Widget showGotoVerse(BuildContext context) {
     if (widget.model.bid! > 0 && widget.mode.isNotEmpty) {
       return FloatingActionButton.extended(
-        //backgroundColor: Theme.of(context).colorScheme.primary,
         label: const Text('Go to Verse'),
         icon: const Icon(Icons.arrow_circle_right_outlined),
         onPressed: () {
@@ -115,7 +114,7 @@ class _EditNotePageState extends State<EditNotePage> {
     );
   }
 
-  deleteWrapper() {
+  deleteWrapper(BuildContext context) {
     var arr = List.filled(2, '');
     arr[0] = "Delete?";
     arr[1] = "Do you want to delete this note?";
@@ -131,7 +130,7 @@ class _EditNotePageState extends State<EditNotePage> {
             },
           );
         }
-      }, //_deleteWrapper,
+      },
     );
   }
 
@@ -172,7 +171,7 @@ class _EditNotePageState extends State<EditNotePage> {
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () {
-                    deleteWrapper();
+                    deleteWrapper(context);
                   },
                 )
               ],
@@ -263,10 +262,8 @@ class _EditNotePageState extends State<EditNotePage> {
                 ),
               ),
             ),
-            floatingActionButton: showGotoVerse(),
+            floatingActionButton: showGotoVerse(context),
           ),
         ),
       );
 }
-
-// no_edit.dart

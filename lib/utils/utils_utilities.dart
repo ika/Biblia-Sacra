@@ -2,18 +2,6 @@ class Utilities {
   Utilities(this.bibleVersion);
   final int bibleVersion;
 
-  // void getDialogeHeight() {
-  //   VkQueries(bibleVersion).getActiveVersionCount().then(
-  //     (value) {
-  //       double dialogHeight = (value!.toDouble() * 50.00);
-  //       if (dialogHeight > 400.00) {
-  //         dialogHeight = 400.00;
-  //       }
-  //       Globals.dialogHeight = dialogHeight;
-  //     },
-  //   );
-  // }
-
   String getLanguage() {
     return (bibleVersion == 2 || bibleVersion == 4) ? 'lat' : 'eng';
   }

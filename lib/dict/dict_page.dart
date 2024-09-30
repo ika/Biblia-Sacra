@@ -72,7 +72,7 @@ class _DicSearchState extends State<DictSearch> {
     );
   }
 
-  Widget searchWidget() {
+  Widget searchWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(50.0),
       child: Column(
@@ -180,7 +180,7 @@ class _DicSearchState extends State<DictSearch> {
                 style: TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
-            body: searchWidget(),
+            body: searchWidget(context),
           ),
         ),
       );

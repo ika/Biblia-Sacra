@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // bm_page.dart
 
 BmQueries _bmQueries = BmQueries();
-//late ScrollController scrollController;
 
 class BookMarksPage extends StatefulWidget {
   const BookMarksPage({super.key});

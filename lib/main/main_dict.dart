@@ -63,7 +63,7 @@ Widget listTileMethod(AsyncSnapshot<List<DicModel>> snapshot, int index) {
 }
 
 class DictListing extends StatelessWidget {
-  const DictListing({Key? key}) : super(key: key);
+  const DictListing({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -90,7 +90,7 @@ Future<dynamic> mainCompareDialog(BuildContext context, Bible model) {
 }
 
 class ComparePage extends StatefulWidget {
-  const ComparePage({Key? key, required this.model}) : super(key: key);
+  const ComparePage({super.key, required this.model});
 
   final Bible model;
 
@@ -100,18 +100,6 @@ class ComparePage extends StatefulWidget {
 
 class _ComparePage extends State<ComparePage> {
   List<CompareModel> list = List<CompareModel>.empty();
-
-  @override
-  void initState() {
-    super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (_) {
-    //     //bibleBook = context.read<BookBloc>().state;
-    //     //bibleVersion = context.read<VersionBloc>().state;
-    //   },
-    // );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +119,9 @@ class _ComparePage extends State<ComparePage> {
               return ListTile(
                 title: Text(
                   "${list[index].a} - ${list[index].b} ${list[index].c}:${list[index].v}",
-                  // style:
-                  //     TextStyle(fontWeight: FontWeight.bold, fontSize: primaryTextSize),
                 ),
                 subtitle: Text(
                   list[index].t,
-                  // style: TextStyle(fontSize: primaryTextSize),
                 ),
               );
             },

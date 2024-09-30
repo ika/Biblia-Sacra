@@ -134,7 +134,7 @@ class _MainSearchState extends State<MainSearch> {
     }
   }
 
-  ListTile listTileMethod(AsyncSnapshot<List<Bible>> snapshot, int index) {
+  ListTile listTileMethod(BuildContext context,  AsyncSnapshot<List<Bible>> snapshot, int index) {
     bool emptySearchResult = (snapshot.data![index].b == 0) ? true : false;
     String bookName = (!emptySearchResult)
         ? BookLists().getBookByNumber(snapshot.data![index].b!, bibleLang)
@@ -172,7 +172,9 @@ class _MainSearchState extends State<MainSearch> {
         Future.delayed(
           Duration(milliseconds: Globals.navigatorDelay),
           () {
-            Navigator.push(context, route);
+            if (context.mounted) {
+              Navigator.push(context, route);
+            }
           },
         );
       },
@@ -204,7 +206,9 @@ class _MainSearchState extends State<MainSearch> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.of(context).pop();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
                 },
               );
             },
@@ -258,9 +262,11 @@ class _MainSearchState extends State<MainSearch> {
                       Future.delayed(
                         Duration(milliseconds: Globals.navigatorDelay),
                         () {
-                          _contents.isEmpty
-                              ? emptyInputDialog(context)
-                              : runFilter(_contents);
+                          if (_contents.isEmpty && context.mounted) {
+                            emptyInputDialog(context);
+                          } else {
+                            runFilter(_contents);
+                          }
                         },
                       );
                     },
@@ -278,7 +284,7 @@ class _MainSearchState extends State<MainSearch> {
                       return ListView.separated(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return listTileMethod(snapshot, index);
+                          return listTileMethod(context, snapshot, index);
                         },
                         separatorBuilder: (BuildContext context, int index) =>
                             const Divider(),

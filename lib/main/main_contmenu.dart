@@ -31,7 +31,7 @@ Future<dynamic> contextMenuDialog(BuildContext context) {
 }
 
 class ContextDialogList extends StatelessWidget {
-  ContextDialogList({Key? key}) : super(key: key);
+  ContextDialogList({super.key});
 
   final List<String> contextMenu = [
     'Compare',

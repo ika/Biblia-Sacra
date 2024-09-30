@@ -48,7 +48,7 @@ Future<dynamic> versionsDialog(BuildContext context, String ret) {
 }
 
 class AppBarVersions extends StatefulWidget {
-  const AppBarVersions({Key? key}) : super(key: key);
+  const AppBarVersions({super.key});
 
   @override
   State<StatefulWidget> createState() => AppBarVersionsPage();
@@ -58,11 +58,13 @@ void versionChangeSnackBar(BuildContext context, String snackBarText) {
   Future.delayed(
     Duration(milliseconds: Globals.navigatorLongestDelay),
     () {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(snackBarText),
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(snackBarText),
+          ),
+        );
+      }
     },
   );
 }
@@ -105,7 +107,9 @@ class AppBarVersionsPage extends State<AppBarVersions> {
                   Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      Navigator.push(context, route);
+                      if (context.mounted) {
+                        Navigator.push(context, route);
+                      }
                     },
                   );
                 },

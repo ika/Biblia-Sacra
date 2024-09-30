@@ -15,7 +15,7 @@ late bool italicIsOn;
 late double textSize;
 
 class FontsPage extends StatefulWidget {
-  const FontsPage({Key? key}) : super(key: key);
+  const FontsPage({super.key});
 
   @override
   State<FontsPage> createState() => _FontsPageState();
@@ -120,15 +120,6 @@ class _FontsPageState extends State<FontsPage> {
             style: const TextStyle(fontWeight: FontWeight.w700),
           ),
           actions: [
-            //   Switch(
-            //     value: italicIsOn,
-            //     onChanged: (bool value) {
-            //       context.read<ItalicBloc>().add(ChangeItalic(value));
-            //       setState(() {
-            //         italicIsOn = value;
-            //       });
-            //     },
-            //   )
             PopupMenuButton(
               icon: const Icon(Icons.format_size_sharp),
               itemBuilder: (context) {

@@ -39,10 +39,6 @@ class DictQueries {
 
     final db = await dicProvider.database;
 
-    // var res = await db.rawQuery(
-    //     '''SELECT * FROM $_tableName WHERE word LIKE ? ORDER BY word''',
-    //     ['%$s%']);
-
     var res = await db.rawQuery(
         '''SELECT * FROM $_tableName WHERE word LIKE ? ORDER BY word''',
         ['$s%']);
@@ -51,8 +47,6 @@ class DictQueries {
         ? res.map((tableName) => DicModel.fromMap(tableName)).toList()
         : emptyList;
 
-    // alphabetical order
-    //list.sort(((a, b) => a.word!.toLowerCase().compareTo(b.word!.toLowerCase())));
     list.sort((a, b) => a.toString().compareTo(b.toString()));
 
     return list;

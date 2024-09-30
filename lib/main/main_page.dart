@@ -37,7 +37,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:word_selectable_text/word_selectable_text.dart';
 import 'package:bibliasacra/fonts/list.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -65,6 +65,7 @@ late String versionAbbr;
 late String bookName;
 
 late int verseBid;
+late int verseBlokState;
 
 List<BmModel> bookMarksList = [];
 List<HlModel> hiLightsList = [];
@@ -78,7 +79,6 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  //with SingleTickerProviderStateMixin {
   ItemScrollController initialScrollController = ItemScrollController();
 
   PackageInfo packageInfo = PackageInfo(
@@ -105,7 +105,7 @@ class MainPageState extends State<MainPage> {
         Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
           if (initialScrollController.isAttached) {
             initialScrollController.scrollTo(
-              index: context.read<VerseBloc>().state - 1,
+              index: verseBlokState,
               duration: Duration(milliseconds: Globals.navigatorLongDelay),
               curve: Curves.easeInOutCubic,
             );
@@ -148,7 +148,9 @@ class MainPageState extends State<MainPage> {
       ClipboardData(text: sb.toString()),
     ).then((_) {
       Future.delayed(Duration(milliseconds: Globals.navigatorLongDelay), () {
-        ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(textCopiedSnackBar);
+        }
       });
     });
   }
@@ -320,7 +322,7 @@ class MainPageState extends State<MainPage> {
         verseText = snapshot.data[index].t;
         verseBid = snapshot.data[index].id;
         if (verseNumber > 0) {
-          showPopupMenu(verseNumber, verseBid);
+          showPopupMenu(context, verseNumber, verseBid);
         }
       },
       child: Container(
@@ -359,7 +361,10 @@ class MainPageState extends State<MainPage> {
         : Future.delayed(
             Duration(milliseconds: Globals.navigatorLongDelay),
             () {
-              ScaffoldMessenger.of(context).showSnackBar(moreVersionsSnackBar);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(moreVersionsSnackBar);
+              }
             },
           );
   }
@@ -447,10 +452,11 @@ class MainPageState extends State<MainPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route).then((value) {
-                    setState(() {});
-                  });
-                  // Navigator.push(context, route);
+                  if (context.mounted) {
+                    Navigator.push(context, route).then((value) {
+                      setState(() {});
+                    });
+                  }
                 },
               );
             },
@@ -472,10 +478,11 @@ class MainPageState extends State<MainPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route).then((value) {
-                    setState(() {});
-                  });
-                  // Navigator.push(context, route);
+                  if (context.mounted) {
+                    Navigator.push(context, route).then((value) {
+                      setState(() {});
+                    });
+                  }
                 },
               );
             },
@@ -497,10 +504,11 @@ class MainPageState extends State<MainPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  //Navigator.push(context, route);
-                  Navigator.push(context, route).then((value) {
-                    setState(() {});
-                  });
+                  if (context.mounted) {
+                    Navigator.push(context, route).then((value) {
+                      setState(() {});
+                    });
+                  }
                 },
               );
             },
@@ -522,7 +530,9 @@ class MainPageState extends State<MainPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route);
+                  if (context.mounted) {
+                    Navigator.push(context, route);
+                  }
                 },
               );
             },
@@ -544,7 +554,9 @@ class MainPageState extends State<MainPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route);
+                  if (context.mounted) {
+                    Navigator.push(context, route);
+                  }
                 },
               );
             },
@@ -566,7 +578,9 @@ class MainPageState extends State<MainPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route);
+                  if (context.mounted) {
+                    Navigator.push(context, route);
+                  }
                 },
               );
             },
@@ -588,10 +602,11 @@ class MainPageState extends State<MainPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route).then((value) {
-                    setState(() {});
-                  });
-                  //Navigator.push(context, route);
+                  if (context.mounted) {
+                    Navigator.push(context, route).then((value) {
+                      setState(() {});
+                    });
+                  }
                 },
               );
             },
@@ -613,7 +628,9 @@ class MainPageState extends State<MainPage> {
               Future.delayed(
                 Duration(milliseconds: Globals.navigatorDelay),
                 () {
-                  Navigator.push(context, route);
+                  if (context.mounted) {
+                    Navigator.push(context, route);
+                  }
                 },
               );
             },
@@ -636,8 +653,10 @@ class MainPageState extends State<MainPage> {
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
-                        Navigator.pop(context);
-                        onShareLink();
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                          onShareLink();
+                        }
                       },
                     );
                   },
@@ -667,7 +686,7 @@ class MainPageState extends State<MainPage> {
     });
   }
 
-  showPopupMenu(int verseNumber, int verseBid) async {
+  showPopupMenu(BuildContext context, verseNumber, int verseBid) async {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height * .3;
 
@@ -688,10 +707,14 @@ class MainPageState extends State<MainPage> {
             (Globals.activeVersionCount! > 1)
                 ? mainCompareDialog(context, model)
                 : Future.delayed(
-                    Duration(milliseconds: Globals.navigatorLongDelay), () {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(moreVersionsSnackBar);
-                  });
+                    Duration(milliseconds: Globals.navigatorLongDelay),
+                    () {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(moreVersionsSnackBar);
+                      }
+                    },
+                  );
           },
         ),
         PopupMenuItem(
@@ -701,8 +724,10 @@ class MainPageState extends State<MainPage> {
                 ? insertBookMark(verseBid).then((value) {
                     Future.delayed(
                         Duration(milliseconds: Globals.navigatorLongDelay), () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(bookMarkSnackBar);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(bookMarkSnackBar);
+                      }
                     });
 
                     setState(() {});
@@ -710,15 +735,17 @@ class MainPageState extends State<MainPage> {
                 : Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BookMarksPage(),
-                        ),
-                      ).then((value) {
-                        //animationController.reverse();
-                        setState(() {});
-                      });
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const BookMarksPage(),
+                          ),
+                        ).then((value) {
+                          //animationController.reverse();
+                          setState(() {});
+                        });
+                      }
                     },
                   );
           },
@@ -730,8 +757,10 @@ class MainPageState extends State<MainPage> {
                 ? insertHighLight(verseBid).then((value) {
                     Future.delayed(
                         Duration(milliseconds: Globals.navigatorLongDelay), () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(hiLightAddedSnackBar);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(hiLightAddedSnackBar);
+                      }
                     });
 
                     setState(() {});
@@ -739,13 +768,15 @@ class MainPageState extends State<MainPage> {
                 : Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HighLightsPage()),
-                      ).then((value) {
-                        setState(() {});
-                      });
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HighLightsPage()),
+                        ).then((value) {
+                          setState(() {});
+                        });
+                      }
                     },
                   );
           },
@@ -757,22 +788,26 @@ class MainPageState extends State<MainPage> {
                 ? saveNote(verseBid).then((value) {
                     Future.delayed(
                         Duration(milliseconds: Globals.navigatorLongDelay), () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(noteAddedSnackBar);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(noteAddedSnackBar);
+                      }
                     });
                     setState(() {});
                   })
                 : Future.delayed(
                     Duration(milliseconds: Globals.navigatorDelay),
                     () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NotesPage(),
-                        ),
-                      ).then((value) {
-                        setState(() {});
-                      });
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NotesPage(),
+                          ),
+                        ).then((value) {
+                          setState(() {});
+                        });
+                      }
                     },
                   );
           },
@@ -791,11 +826,9 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     bibleBook = context.read<BookBloc>().state;
-
     textSize = context.read<SizeBloc>().state;
-
     bibleVersion = context.read<VersionBloc>().state;
-
+    verseBlokState = context.read<VerseBloc>().state - 1;
     versionAbbr = Utilities(bibleVersion).getVersionAbbr();
     bibleLang = Utilities(bibleVersion).getLanguage();
     bookName = BookLists().readBookName(bibleBook, bibleVersion);
@@ -839,7 +872,9 @@ class MainPageState extends State<MainPage> {
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
-                        Navigator.push(context, route);
+                        if (context.mounted) {
+                          Navigator.push(context, route);
+                        }
                       },
                     );
                   },

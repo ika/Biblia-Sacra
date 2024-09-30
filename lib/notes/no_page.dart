@@ -18,25 +18,16 @@ class NotesPage extends StatefulWidget {
 class NotesPageState extends State<NotesPage> {
   List<NtModel> list = List<NtModel>.empty();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   WidgetsBinding.instance.addPostFrameCallback(
-  //     (_) {
-  //       bibleVersion = context.read<VersionBloc>().state;
-  //     },
-  //   );
-  // }
-
-  Future<void> addPage(NtModel model) async {
+  Future<void> addPage(BuildContext context, NtModel model) async {
     _ntQueries.insertNote(model).then((noteid) {
       model.id = noteid;
-      gotoEditNote(model);
+      if (context.mounted) {
+        gotoEditNote(context, model);
+      }
     });
   }
 
-  Future<void> gotoEditNote(NtModel model) async {
+  Future<void> gotoEditNote(BuildContext context, model) async {
     Route route = MaterialPageRoute(
       builder: (context) => EditNotePage(model: model, mode: 'note'),
     );
@@ -110,14 +101,12 @@ class NotesPageState extends State<NotesPage> {
                 leading: GestureDetector(
                   child: const Icon(Globals.backArrow),
                   onTap: () {
-                    // Route route = MaterialPageRoute(
-                    //   builder: (context) => const MainPage(),
-                    // );
                     Future.delayed(
                       Duration(milliseconds: Globals.navigatorDelay),
                       () {
-                        //Navigator.push(context, route);
-                        Navigator.of(context).pop();
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
                       },
                     );
                   },
@@ -167,7 +156,7 @@ class NotesPageState extends State<NotesPage> {
                               verse: list[index].verse,
                               name: list[index].name,
                               bid: list[index].bid);
-                          gotoEditNote(model);
+                          gotoEditNote(context, model);
                         },
                       ),
                     );
@@ -190,7 +179,7 @@ class NotesPageState extends State<NotesPage> {
                       verse: 0,
                       name: '',
                       bid: 0);
-                  addPage(model);
+                  addPage(context, model);
                 },
                 child: const Icon(Icons.add),
               ),
