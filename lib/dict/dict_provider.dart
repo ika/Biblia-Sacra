@@ -6,6 +6,7 @@ import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
 
 // dict_provider.dart
+// The dict.db file is not correctly formatted - missing second field in some cases
 
 class DicProvider {
   final String dataBaseName = Constants.dictDbname;

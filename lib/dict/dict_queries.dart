@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dict_provider.dart';
 
 // dict_queries.dart
+// The dict.db file is not correctly formatted - missing second field in some cases
 
 class DicModel {
   int? id;
