@@ -55,11 +55,15 @@ class DbProvider {
 
   Future<Database> initDB() async {
     var databasesPath = await getDatabasesPath();
-    String path =join(databasesPath, dataBaseName);
+    String path = join(databasesPath, dataBaseName);
 
     Database db = await openDatabase(path);
 
-    if (await db.getVersion() < newDbVersion) {
+    int oldDbVersion = await db.getVersion();
+
+    //debugPrint("OLDDB VERSION $oldDbVersion");
+
+    if (oldDbVersion < newDbVersion) {
       db.close();
       await deleteDatabase(path);
 
@@ -74,7 +78,7 @@ class DbProvider {
       await File(path).writeAsBytes(bytes, flush: true);
 
       db = await openDatabase(path);
-      
+
       db.setVersion(newDbVersion);
     }
 

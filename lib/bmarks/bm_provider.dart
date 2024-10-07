@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 // bm_provider.dart
 
 class BmProvider {
-  final int newDbVersion = 1;
+  final int newDbVersion = 2;
   final String dataBaseName = Constants.bmksDbname;
   final String tableName = 'bmks_table';
 

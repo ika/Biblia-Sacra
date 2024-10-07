@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:bibliasacra/utils/utils_constants.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:csv/csv.dart';
 
 // Version Key helper
 
 class VkProvider {
-  final int newDbVersion = 1;
-  final String dataBaseName = Constants.vkeyDbname;
+  final int newDbVersion = 2;
+  final String dataBaseName = Constants.vkeyCvsName;
   final String tableName = 'version_key';
 
   VkProvider.internal();
@@ -30,12 +27,13 @@ class VkProvider {
 
     Database db = await openDatabase(path);
 
-    if (await db.getVersion() < newDbVersion) {
+    int oldDbVersion = await db.getVersion();
+
+    if (oldDbVersion < newDbVersion) {
       db.close();
       await deleteDatabase(path);
 
-      final vkeycsv = await rootBundle.loadString('asset/vkey/vkey.csv');
-      List<List<dynamic>> csvRows = const CsvToListConverter().convert(vkeycsv);
+      //debugPrint('///////////// -VERSE PROVIDER- /////////////////////');
 
       db = await openDatabase(
         path,
@@ -45,26 +43,35 @@ class VkProvider {
           await db.execute('''
               CREATE TABLE IF NOT EXISTS $tableName (
               "id" INTEGER PRIMARY KEY,
-         	  "number" INTEGER,
-         	  "active" INTEGER,
-         	  "abbr" TEXT,
-         	  "lang" TEXT,
-         	  "name" TEXT
+              "number" INTEGER,
+              "active" INTEGER,
+              "abbr" TEXT,
+              "lang" TEXT,
+              "name" TEXT
               )
           ''');
-          Batch batch = db.batch();
-          for (int i = 0; i < csvRows.length; i++) {
-            batch.rawInsert(
-                "INSERT INTO $tableName (number,active,abbr,lang,name) VALUES (?,?,?,?,?)",
-                [
-                  "${csvRows[i][0]}",
-                  "${csvRows[i][1]}",
-                  "${csvRows[i][2]}",
-                  "${csvRows[i][3]}",
-                  "${csvRows[i][4]}"
-                ]);
-          }
-          await batch.commit();
+
+          await db.rawInsert(
+              "INSERT INTO $tableName (number,active,abbr,lang,name) VALUES (?,?,?,?,?)",
+              ['1', '1', 'KJV', 'eng', 'King James']);
+          await db.rawInsert(
+              "INSERT INTO $tableName (number,active,abbr,lang,name) VALUES (?,?,?,?,?)",
+              ['2', '1', 'CLVUL', 'lat', 'Vulgata Clementina']);
+          await db.rawInsert(
+              "INSERT INTO $tableName (number,active,abbr,lang,name) VALUES (?,?,?,?,?)",
+              ['3', '1', 'CPDV', 'eng', 'Catholic Public Domain']);
+          await db.rawInsert(
+              "INSERT INTO $tableName (number,active,abbr,lang,name) VALUES (?,?,?,?,?)",
+              ['4', '1', 'NVUL', 'lat', 'Nova Vulgata']);
+          await db.rawInsert(
+              "INSERT INTO $tableName (number,active,abbr,lang,name) VALUES (?,?,?,?,?)",
+              ['7', '1', 'UKJV', 'eng', 'Updated King James']);
+          await db.rawInsert(
+              "INSERT INTO $tableName (number,active,abbr,lang,name) VALUES (?,?,?,?,?)",
+              ['8', '1', 'WEBBE', 'eng', 'World English Bible']);
+          await db.rawInsert(
+              "INSERT INTO $tableName (number,active,abbr,lang,name) VALUES (?,?,?,?,?)",
+              ['10', '1', 'ASV', 'eng', 'American Standard']);
         },
       );
     }

@@ -23,7 +23,7 @@ class Constants {
   //static const String lkeyDbname = "dba_lkey_1.db";
 
   // Version Key
-  //static const String vkeyDbname = "vkey.db";
+  static const String vkeyCvsName = "vkey.cvs";
 
   // Notes
   static const String notesDbname = "notes.db";

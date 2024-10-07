@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 // hi_provider.dart
 
 class HlProvider {
-  final int newDbVersion = 1;
+  final int newDbVersion = 2;
   final String dataBaseName = Constants.hltsDbname;
   final String tableName = 'hlts_table';
 
