@@ -3,43 +3,14 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:bibliasacra/utils/utils_constants.dart';
 
 // main_provider.dart
-
-late int newDbVersion;
 
 class DbProvider {
   late String dataBaseName;
 
   DbProvider(dbName) {
     dataBaseName = dbName;
-
-    switch (dataBaseName) {
-      case Constants.kjvbDbname:
-        newDbVersion = 2;
-        break;
-      case Constants.ukjvDbname:
-        newDbVersion = 2;
-        break;
-      case Constants.clemDbname:
-        newDbVersion = 2;
-        break;
-      case Constants.cpdvDbname:
-        newDbVersion = 2;
-        break;
-      case Constants.nvulDbname:
-        newDbVersion = 2;
-        break;
-      case Constants.webbDbname:
-        newDbVersion = 2;
-        break;
-      case Constants.asvbDbname:
-        newDbVersion = 2;
-        break;
-      default:
-        newDbVersion = 2;
-    }
   }
 
   DbProvider.internal();
@@ -57,16 +28,14 @@ class DbProvider {
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, dataBaseName);
 
-    Database db = await openDatabase(path);
+    late Database db;
 
-    int oldDbVersion = await db.getVersion();
+    bool exists = await databaseExists(path);
 
-    //debugPrint("OLDDB VERSION $oldDbVersion");
+    if (!exists) {
 
-    if (oldDbVersion < newDbVersion) {
-      db.close();
-      await deleteDatabase(path);
-
+      //debugPrint("DATABASE NOT EXISTS $dataBaseName");
+      
       try {
         await Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
@@ -75,12 +44,13 @@ class DbProvider {
           await rootBundle.load(join("assets/bibles", dataBaseName));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+
       await File(path).writeAsBytes(bytes, flush: true);
-
-      db = await openDatabase(path);
-
-      db.setVersion(newDbVersion);
+      
+      await Future.delayed(const Duration(milliseconds: 500));
     }
+
+    db = await openDatabase(path, readOnly: true);
 
     return db;
   }

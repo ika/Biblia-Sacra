@@ -26,8 +26,11 @@ class DicProvider {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, dataBaseName);
 
-    if (!await databaseExists(path)) {
+    late Database db;
 
+    bool exists = await databaseExists(path);
+
+    if (!exists) {
       try {
         await Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
@@ -37,9 +40,10 @@ class DicProvider {
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes, flush: true);
 
+      await Future.delayed(const Duration(milliseconds: 500));
     }
 
-    Database db = await openDatabase(path);
+    db = await openDatabase(path);
     return db;
   }
 

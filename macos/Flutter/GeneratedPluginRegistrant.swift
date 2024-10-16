@@ -8,7 +8,7 @@ import Foundation
 import package_info_plus
 import path_provider_foundation
 import share_plus
-import sqflite
+import sqflite_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FPPPackageInfoPlusPlugin.register(with: registry.registrar(forPlugin: "FPPPackageInfoPlusPlugin"))

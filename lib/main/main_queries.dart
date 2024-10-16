@@ -77,23 +77,27 @@ class DbQueries {
       list.insertAll(list.length, emptyList);
     }
 
-    return list;
-  }
-
-  Future<List<Bible>> getSampleChapter(int b, int c) async {
-    final db = await _dbProvider!.database;
-
-    List<Bible> list = [];
-
-    var res = await db
-        .rawQuery('''SELECT * FROM $tableName WHERE b=? AND c=?''', [b, c]);
-
-    if (res.isNotEmpty) {
-      list = res.map((tableName) => Bible.fromJson(tableName)).toList();
-    }
+    //db.close();
 
     return list;
   }
+
+  // Future<List<Bible>> getSampleChapter(int b, int c) async {
+  //   final db = await _dbProvider!.database;
+
+  //   List<Bible> list = [];
+
+  //   var res = await db
+  //       .rawQuery('''SELECT * FROM $tableName WHERE b=? AND c=?''', [b, c]);
+
+  //   if (res.isNotEmpty) {
+  //     list = res.map((tableName) => Bible.fromJson(tableName)).toList();
+  //   }
+
+  //   db.close();
+
+  //   return list;
+  // }
 
   Future<List<Bible>> getVerse(int book, int chap, int verse) async {
     final db = await _dbProvider!.database;
@@ -109,6 +113,8 @@ class DbQueries {
     List<Bible> list = res.isNotEmpty
         ? res.map((tableName) => Bible.fromJson(tableName)).toList()
         : returnList;
+
+    //db.close();
 
     return list;
   }
@@ -129,6 +135,8 @@ class DbQueries {
         ? res.map((tableName) => Bible.fromJson(tableName)).toList()
         : returnList;
 
+    //db.close();
+
     return list;
   }
 
@@ -138,6 +146,9 @@ class DbQueries {
     var cnt = Sqflite.firstIntValue(
       await db.rawQuery('''SELECT MAX(c) FROM $tableName WHERE b=?''', [b]),
     );
+
+    //db.close();
+
     return cnt ?? 0;
   }
 
@@ -148,6 +159,9 @@ class DbQueries {
       await db.rawQuery(
           '''SELECT MAX(v) FROM $tableName WHERE b=? AND c=?''', [b, c]),
     );
+
+    //db.close();
+    
     return cnt ?? 0;
   }
 }
